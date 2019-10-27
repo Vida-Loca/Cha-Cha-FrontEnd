@@ -4,14 +4,15 @@
   background-color: white;
   width: 70%;
   border: 1px solid #ccc;
-  -webkit-box-shadow: 1px 1px 1px black;
-          box-shadow: 1px 1px 1px black;
-  padding: 16px;
+  -webkit-box-shadow: 1px 1px 5px rgba(0, 0, 0, 0.445);
+          box-shadow: 1px 1px 5px rgba(0, 0, 0, 0.445);
+  padding: 2rem 3rem;
   left: 15%;
-  top: 30%;
+  top: -10rem;
   -webkit-box-sizing: border-box;
           box-sizing: border-box;
-  -webkit-transition: all 0.3s ease-out;
-  transition: all 0.3s ease-out;
+  -webkit-transition: all 0.5s ease-out;
+  transition: all 0.5s ease-out;
+  border-radius: 15px;
 }
 /*# sourceMappingURL=Modal.css.map */
