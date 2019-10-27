@@ -1,0 +1,29 @@
+$main-blue: #065CF7;
+$main-orange: #FD9F25;
+$dark-blue: #1F2638;
+$grey-1: #DFDFDF;
+$grey-2: #C4C4C4;
+$grey-3: #909090;
+$blue-gradient: linear-gradient(280.32deg, #06CCF7 -15.08%, rgba(255, 255, 255, 0) 113.02%), #065CF7;
+$orange-gradient: linear-gradient(278.08deg, #FDE725 0.06%, #FD9F25 97.22%), #FD9F25;
+
+
+$border-radius-sm: 5px;
+$border-radius-md: 15px;
+$border-radius-lg: 35px;
+
+@mixin breaking-point-1 {
+    @media (min-width: #{760px}) {
+        @content;
+    }
+}
+@mixin breaking-point-2 {
+    @media (min-width: #{1063px}) {
+        @content;
+    }
+}
+@mixin breaking-point-3 {
+    @media (min-width: #{1600px}) {
+        @content;
+    }
+}

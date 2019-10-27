@@ -1,0 +1,36 @@
+@import './globalVariabels.scss';
+@import '../components/button/button.scss';
+@import '../components//Modal/Modal.scss';
+@import '../components//Backdrop/Backdrop.scss';
+
+
+html, body{
+    font-family: 'Montserrat', sans-serif;
+  }
+
+  body{
+      background: $main-blue;
+  }
+  
+  .App{
+      background: white;
+      margin: 4% 8%;
+      padding: 1.5rem 3rem;
+      border-radius: $border-radius-md;
+      height: 70%;
+  }
+  
+  .FirstLayout{
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+  }
+
+  .bg-curved{
+    background: $dark-blue;
+    min-height: 1px;
+    height: 15rem;
+    margin: -1.5rem -3rem;
+    border-radius: $border-radius-md $border-radius-md 0 0;
+    clip-path: polygon(0 0, 100% 0, 100% 100%, 0 89%);
+  }
