@@ -2,6 +2,7 @@ import React from 'react';
 import Button from '../components/button/Button';
 import Modal from '../components/Modal/Modal';
 import Input from '../components/Input/Input';
+import Form from '../components/Form/Form';
 
 class openingPageLayout extends React.Component{
     state = {
@@ -30,23 +31,23 @@ class openingPageLayout extends React.Component{
         returnForm = (isLog) =>{
             if(isLog){
                 return(
-                    <form action="">
+                    <Form>
                         <Input type="text" placeholder="username" />
                         <Input type="password" placeholder="password" />
-                        <Button classes="btn-blueGradient btn-sm">Submit</Button>
-                    </form>
+                        <Button classes="btn-blueGradient btn-md">Submit</Button>
+                    </Form>
                 );
             } else {
                 return(
-                    <form action="">
-                    <Input type="text" placeholder="username" />
-                    <Input type="text" placeholder="password" />
-                    <Input type="text" placeholder="password2" />
-                    <Input type="text" placeholder="name" />
-                    <Input type="text" placeholder="surname" />
-                    <Input type="text" placeholder="e-mail" />
-                    <Button classes="btn-blueGradient btn-sm">Submit</Button>
-                </form>
+                    <Form>
+                        <Input type="text" placeholder="username" />
+                        <Input type="text" placeholder="password" />
+                        <Input type="text" placeholder="password2" />
+                        <Input type="text" placeholder="name" />
+                        <Input type="text" placeholder="surname" />
+                        <Input type="text" placeholder="e-mail" />
+                        <Button classes="btn-blueGradient btn-md">Submit</Button>
+                    </Form>
                 );
             }
         }
@@ -64,11 +65,12 @@ class openingPageLayout extends React.Component{
             </Modal>
 
             <div className="bg-curved"></div>
-
-            <h1>Skibidi</h1>
-            <Button clicked={this.openLogIn} classes="btn-blueGradient btn-md">Sign In</Button>
-            <Button clicked={this.openRegister} classes="btn-blueGradient btn-md">Sign Up</Button>
-            {this.props.children}
+            <div className="SignContent">
+                <h1>Skibidi</h1>
+                <Button clicked={this.openLogIn} classes="btn-blueGradient btn-lg">Sign In</Button>
+                <Button clicked={this.openRegister} classes="btn-orangeGradient btn-lg">Sign Up</Button>
+                {this.props.children}
+            </div>
         </div>
     );
 }}

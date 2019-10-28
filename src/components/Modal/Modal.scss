@@ -2,15 +2,15 @@
 
 .Modal {
     position: fixed;
-    z-index: 500;
+    z-index: 999;
     background-color: white;
     width: 70%;
     border: 1px solid #ccc;
     box-shadow: 1px 1px 5px rgba(0, 0, 0, 0.445);
     padding: 2rem 3rem;
     left: 15%;
-    top: -10rem;
+    top: -20rem;
     box-sizing: border-box;
-    transition: all 0.5s ease-out;
+    transition: all 0.3s ease-out;
     border-radius: $border-radius-md;
   }

@@ -5,9 +5,14 @@
 @import '../components//Sidebar/SideBar.scss';
 @import '../layout/Layout.scss';
 @import '../components//Sidebar//SideBarItem/SideBarItem.scss';
+@import '../components/Form/Form.scss';
 
 
-html, body{
+html, body, .root{
+    margin: 0;
+    padding: 0;
+    height: 100%;
+    width: 100%;
     font-family: 'Montserrat', sans-serif;
   }
 
@@ -17,22 +22,10 @@ html, body{
   
   .App{
       background: white;
-      margin: 4% 8%;
+      margin: 2% 2%;
       border-radius: $border-radius-md;
-      height: 70%;
+      display:block;
+      min-height: 700px;
+      
   }
   
-  .FirstLayout{
-    display: flex;
-    flex-direction: column;
-    justify-content: center;
-  }
-
-  .bg-curved{
-    background: $dark-blue;
-    min-height: 1px;
-    height: 15rem;
-
-    border-radius: $border-radius-md $border-radius-md 0 0;
-    clip-path: polygon(0 0, 100% 0, 100% 100%, 0 89%);
-  }

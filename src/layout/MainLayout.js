@@ -5,27 +5,58 @@ import SidebarItem from '../components/Sidebar/SideBarItem/SdeBarItem';
 class MainLayout extends React.Component {
 
     state = {
-        CurrentUser: ""
+        mainNav : {
+            Home: true,
+            Profile: false,
+            Admin: false
+        },
+        EventNav: {
+            Suplies: false,
+            Location: false,
+            Members: false,
+            Photos: false,
+            Forum: false,
+            Games: false
+        }
+
     }
 
 
+    changeActivityMainNav = (linkName) =>{
+        const updatedNavLinks = {
+            ...this.state.mainNav
+        };
+        let navItemNames = Object.keys(updatedNavLinks);
+        navItemNames.map(item => {
+            updatedNavLinks[item] = false;
+        });
+        updatedNavLinks[linkName] = true;
+        this.setState({mainNav: updatedNavLinks});
+        
+    }
+
+    changeActivityEventNav = (linkName) =>{
+        const updatedNavLinks = {
+            ...this.state.EventNav
+        };
+        let navItemNames = Object.keys(updatedNavLinks);
+        navItemNames.map(item => {
+            updatedNavLinks[item] = false;
+        });
+        updatedNavLinks[linkName] = true;
+        this.setState({EventNav: updatedNavLinks});
+        
+    }
+
     render() {
+        
         return (
             <div className="MainLayout">
-                <Sidebar classes="SideBar-orange">
-                    <SidebarItem active={true}>Home</SidebarItem>
-                    <SidebarItem>Profile</SidebarItem>
-                </Sidebar>
+                <Sidebar classes="SideBar-orange" navlinks={this.state.mainNav} clicked={this.changeActivityMainNav} />
                 <div>
                     content
                 </div>
-                <Sidebar classes="SideBar-darkBlue">
-                    <SidebarItem>Suplies</SidebarItem>
-                    <SidebarItem active={true}>Location</SidebarItem>
-                    <SidebarItem>Memebrs</SidebarItem>
-                    <SidebarItem>Games</SidebarItem>
-                    <SidebarItem>Photos</SidebarItem>
-                </Sidebar>
+                <Sidebar classes="SideBar-darkBlue" navName="EventNav" navlinks={this.state.EventNav} clicked={this.changeActivityEventNav} />
             </div>
         );
     }

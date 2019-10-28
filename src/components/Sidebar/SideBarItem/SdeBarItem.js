@@ -3,9 +3,8 @@ import React from 'react';
 const sideBarItem = (props) => {
     var active = props.active ? "active" : "";
     active = active + " SideBarItem";
-    console.log(active);
     return(
-        <div className={active}>
+        <div className={active} onClick={() => props.clicked(props.name)}>
             {props.children}
         </div>
     );

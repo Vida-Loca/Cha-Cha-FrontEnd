@@ -1,4 +1,30 @@
 .MainLayout{
     display: grid;
     grid-template-columns: 1fr 5fr 1fr;
+    min-height: 700px;
 }
+
+.FirstLayout{
+    display: flex;
+    flex-direction: column;
+    text-align: center;
+    // background: $main-orange;
+  }
+
+  .bg-curved{
+    background: $dark-blue;
+    min-height: 1px;
+    height: 30rem;
+    margin: -1px;
+
+    border-radius: $border-radius-md $border-radius-md 0 0;
+    clip-path: polygon(0 0, 100% 0, 100% 100%, 0 89%);
+  }
+
+  .SignContent{
+      margin-top: -300px ;
+      z-index: 500;
+      h1{
+          color: white;
+      }
+  }

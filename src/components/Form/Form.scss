@@ -1,0 +1,8 @@
+@import '../../globalStyles/globalVariabels.scss';
+
+.FormContainer {
+    display: flex;
+    flex-direction: column;
+    text-align: auto;
+    justify-content: flex-start;
+}
