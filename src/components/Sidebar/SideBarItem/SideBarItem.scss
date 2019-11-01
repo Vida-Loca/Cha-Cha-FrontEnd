@@ -1,17 +1,18 @@
 @import '../../../globalStyles/globalVariabels.scss';
 
 .SideBarItem {
+    text-decoration: none;
     color: white;
     font-weight: bold;
     letter-spacing: 0.05rem;
     margin: 1rem 0;
-    padding: 0.2rem 0.4rem;
+    padding: 0.5rem 0.8rem;
     cursor: pointer;
+    border-radius: $border-radius-md;
+    transition: 0.2s all;
     &:hover {
         background: white;
         color: black;
-        
-        border-radius: $border-radius-md;
     }
 }
 

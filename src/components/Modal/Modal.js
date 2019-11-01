@@ -1,5 +1,6 @@
 import React, {Fragment} from 'react';
 import Backdrop from '../Backdrop/Backdrop';
+import './Modal.scss';
 
 class modal extends React.Component{
 

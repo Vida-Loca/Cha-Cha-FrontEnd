@@ -5,12 +5,16 @@ import MainLayout from './layout/MainLayout';
 
 
 class App extends React.Component {
+  state = {
+    isLoggedIn: true
+  }
   
   render(){
   return (
-    <div className="App">
-      <MainLayout />
-    </div>
+      <div className="App">
+        {!this.state.isLoggedIn ? <OpeningLayout />: <MainLayout />}
+      </div>
+
   );
 }}
 

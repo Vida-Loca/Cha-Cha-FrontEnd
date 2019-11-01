@@ -1,22 +1,11 @@
 import React from 'react';
 import SideBarItem from './SideBarItem/SdeBarItem';
+import './SideBar.scss';
 
 const Sidebar = (props) =>{
 
-        // generates NavLinks using component SideBarItems
-        let transformedNavLinks = Object.keys({...props.navlinks}).map(item => {
-            let activity = props.navlinks[item];
-            return <SideBarItem 
-                clicked={props.clicked} 
-                name={item} 
-                key={item} 
-                active={activity} 
-    
-                    >{item}</SideBarItem>
-        });
-
-        
-        // console.log(Object.keys(kok));
+        let transformedNavLinks = props.navlinks.map( navLink => 
+            (<SideBarItem key={navLink} name={navLink}>{navLink}</SideBarItem>));
 
         return(
             <div className={props.classes}>

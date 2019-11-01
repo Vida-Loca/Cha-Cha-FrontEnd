@@ -3,6 +3,7 @@ import Button from '../components/button/Button';
 import Modal from '../components/Modal/Modal';
 import Input from '../components/Input/Input';
 import Form from '../components/Form/Form';
+// import {Link} from 'react-router-dom';
 
 class openingPageLayout extends React.Component{
     state = {
@@ -34,7 +35,8 @@ class openingPageLayout extends React.Component{
                     <Form>
                         <Input type="text" placeholder="username" />
                         <Input type="password" placeholder="password" />
-                        <Button classes="btn-blueGradient btn-md">Submit</Button>
+                        <em>Forot Password</em>
+                        <Button to="/home" classes="btn-blueGradient btn-md">Log In</Button>
                     </Form>
                 );
             } else {

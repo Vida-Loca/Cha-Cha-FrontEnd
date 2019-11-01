@@ -1,12 +1,13 @@
 import React from 'react';
+import {NavLink} from 'react-router-dom';
+import './SideBarItem.scss';
 
 const sideBarItem = (props) => {
-    var active = props.active ? "active" : "";
-    active = active + " SideBarItem";
+    
     return(
-        <div className={active} onClick={() => props.clicked(props.name)}>
+        <NavLink to={props.name.toLowerCase()} className="SideBarItem">
             {props.children}
-        </div>
+        </NavLink>
     );
 }
 

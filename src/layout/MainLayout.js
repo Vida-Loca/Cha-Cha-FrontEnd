@@ -1,62 +1,48 @@
 import React from 'react';
 import Sidebar from '../components/Sidebar/Sidebar';
-import SidebarItem from '../components/Sidebar/SideBarItem/SdeBarItem';
+import {BrowserRouter, Route} from 'react-router-dom';
 
 class MainLayout extends React.Component {
 
     state = {
-        mainNav : {
-            Home: true,
-            Profile: false,
-            Admin: false
-        },
-        EventNav: {
-            Suplies: false,
-            Location: false,
-            Members: false,
-            Photos: false,
-            Forum: false,
-            Games: false
-        }
+        mainNav : [
+            'Home',
+            'Profile',
+            'Admin'
+        ],
+        EventNav: [
+            'Suplies',
+            'Location',
+            'Members',
+            'Photos',
+            'Forum',
+            'Games'
+        ]
 
     }
 
-
-    changeActivityMainNav = (linkName) =>{
-        const updatedNavLinks = {
-            ...this.state.mainNav
-        };
-        let navItemNames = Object.keys(updatedNavLinks);
-        navItemNames.map(item => {
-            updatedNavLinks[item] = false;
-        });
-        updatedNavLinks[linkName] = true;
-        this.setState({mainNav: updatedNavLinks});
-        
-    }
-
-    changeActivityEventNav = (linkName) =>{
-        const updatedNavLinks = {
-            ...this.state.EventNav
-        };
-        let navItemNames = Object.keys(updatedNavLinks);
-        navItemNames.map(item => {
-            updatedNavLinks[item] = false;
-        });
-        updatedNavLinks[linkName] = true;
-        this.setState({EventNav: updatedNavLinks});
-        
-    }
 
     render() {
         
         return (
             <div className="MainLayout">
-                <Sidebar classes="SideBar-orange" navlinks={this.state.mainNav} clicked={this.changeActivityMainNav} />
+                <BrowserRouter>
+                <Sidebar classes="SideBar-orange" navlinks={this.state.mainNav} />
                 <div>
-                    content
+        
+                <Route path="/home" exact render={() => <h1>this is Home</h1>} />
+                <Route path="/profile" exact render={() => <h1>this is Home</h1>} />
+                <Route path="/admin" exact render={() => <h1>this is Admin</h1>} />
+                <Route path="/suplies" exact render={() => <h1>this is Suplies</h1>} />
+                <Route path="/location" exact render={() => <h1>this is Location</h1>} />
+                <Route path="/members" exact render={() => <h1>this is Memebrs</h1>} />
+                <Route path="/photos" exact render={() => <h1>this is Photos</h1>} />
+                <Route path="/forum" exact render={() => <h1>this is Forum</h1>} />
+                <Route path="/games" exact render={() => <h1>this is Games</h1>} />
+
                 </div>
-                <Sidebar classes="SideBar-darkBlue" navName="EventNav" navlinks={this.state.EventNav} clicked={this.changeActivityEventNav} />
+                <Sidebar classes="SideBar-darkBlue" navName="EventNav" navlinks={this.state.EventNav} />
+                </BrowserRouter>
             </div>
         );
     }
