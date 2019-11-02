@@ -33,8 +33,8 @@ class openingPageLayout extends React.Component{
             if(isLog){
                 return(
                     <Form>
-                        <Input type="text" placeholder="username" />
-                        <Input type="password" placeholder="password" />
+                        <Input icon="fas fa-user" type="text" placeholder="username" />
+                        <Input icon="fas fa-key" type="password" placeholder="password" />
                         <em>Forot Password</em>
                         <Button to="/home" classes="btn-blueGradient btn-md">Log In</Button>
                     </Form>
@@ -42,12 +42,12 @@ class openingPageLayout extends React.Component{
             } else {
                 return(
                     <Form>
-                        <Input type="text" placeholder="username" />
-                        <Input type="text" placeholder="password" />
-                        <Input type="text" placeholder="password2" />
-                        <Input type="text" placeholder="name" />
-                        <Input type="text" placeholder="surname" />
-                        <Input type="text" placeholder="e-mail" />
+                        <Input icon="fas fa-user" type="text" placeholder="username" />
+                        <Input icon="fas fa-key" type="text" placeholder="password" />
+                        <Input icon="fas fa-key" type="text" placeholder="password2" />
+                        <Input icon="fas fa-passport" type="text" placeholder="name" />
+                        <Input icon="fas fa-passport" type="text" placeholder="surname" />
+                        <Input icon="fas fa-at" type="text" placeholder="e-mail" />
                         <Button classes="btn-blueGradient btn-md">Submit</Button>
                     </Form>
                 );

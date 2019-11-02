@@ -8,12 +8,21 @@ class modal extends React.Component{
     return(
         <Fragment>
             <Backdrop clicked={this.props.modalClose} show={this.props.show} />
-            <div className="Modal"
-            style={{
-                opacity: this.props.show ? '1': '0',
-                top: this.props.show ? '20%' : '-10rem'
+            <div style={{
+                width: '100%',
+                height: '100%',
+                position: 'absolute',
+                display: 'flex',
+                justifyContent: 'center',
+                // top:
                 }}>
-                {this.props.children}
+                <div className="Modal"
+                style={{
+                    opacity: this.props.show ? '1': '0',
+                    top: this.props.show ? '20%' : '-10rem'
+                    }}>
+                    {this.props.children}
+                </div>
             </div>
         </Fragment>
 )}}

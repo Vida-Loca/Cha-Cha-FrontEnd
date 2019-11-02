@@ -4,12 +4,11 @@
     position: fixed;
     z-index: 999;
     background-color: white;
-    width: 70%;
+    width: 30rem;
     border: 1px solid #ccc;
     box-shadow: 1px 1px 5px rgba(0, 0, 0, 0.445);
     padding: 2rem 3rem;
-    left: 15%;
-    top: -20rem;
+    position: absolute;
     box-sizing: border-box;
     transition: all 0.3s ease-out;
     border-radius: $border-radius-lg;

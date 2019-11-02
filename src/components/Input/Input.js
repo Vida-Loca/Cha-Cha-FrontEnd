@@ -6,7 +6,7 @@ const input = (props) => {
         <div className="input-container">
             <span>{props.placeholder}</span>
             <div>
-                <i class="fas fa-user"></i>
+                <i class={props.icon}></i>
                 <input 
                     className=""
                     type={props.type} 
