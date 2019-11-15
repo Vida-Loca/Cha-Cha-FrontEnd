@@ -5,7 +5,7 @@ import './SideBar.scss';
 const Sidebar = (props) =>{
 
         let transformedNavLinks = props.navlinks.map( navLink => 
-            (<SideBarItem key={navLink} name={navLink}>{navLink}</SideBarItem>));
+            (<SideBarItem key={navLink[0]} name={navLink[0]} icon={navLink[1]}>{navLink[0]}</SideBarItem>));
 
         return(
             <div className={props.classes}>

@@ -12,14 +12,16 @@ class modal extends React.Component{
                 width: '100%',
                 height: '100%',
                 position: 'absolute',
-                display: 'flex',
+                display: this.props.show ? 'flex': 'none',
                 justifyContent: 'center',
-                // top:
+                alignItems: 'center',
+                marginTop: '-2rem'
                 }}>
                 <div className="Modal"
                 style={{
                     opacity: this.props.show ? '1': '0',
-                    top: this.props.show ? '20%' : '-10rem'
+                    // display: this.props.show ? 'none': 'none',
+                    // top: this.props.show ? '20%' : '-30rem'
                     }}>
                     {this.props.children}
                 </div>

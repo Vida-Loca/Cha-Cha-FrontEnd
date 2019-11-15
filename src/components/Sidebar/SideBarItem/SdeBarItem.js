@@ -6,6 +6,7 @@ const sideBarItem = (props) => {
     
     return(
         <NavLink to={props.name.toLowerCase()} className="SideBarItem">
+            <i class={props.icon}></i>
             {props.children}
         </NavLink>
     );

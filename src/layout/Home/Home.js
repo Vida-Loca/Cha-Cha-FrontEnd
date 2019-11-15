@@ -5,9 +5,12 @@ import {Link} from 'react-router-dom';
 import './Home.scss';
 
 class HomeLayout extends Component {
+
+
     render() {
         return (
             <div className="HomeLayout">
+
                 <Link to="/">
                     <Button classes="btn-md btn-blueGradient">+ Create Event</Button>
                 </Link>

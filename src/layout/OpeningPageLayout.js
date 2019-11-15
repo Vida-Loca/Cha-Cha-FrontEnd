@@ -60,13 +60,10 @@ class openingPageLayout extends React.Component{
         <div className="FirstLayout">
 
             <Modal show={this.state.show} modalClose={this.hideModal}>
-
-            {this.returnForm(this.state.isLogin)}
-
-                
+                {this.returnForm(this.state.isLogin)}
             </Modal>
 
-            <div className="bg-curved"></div>
+        
             <div className="SignContent">
                 <h1>Skibidi</h1>
                 <Button clicked={this.openLogIn} classes="btn-blueGradient btn-lg">Sign In</Button>
