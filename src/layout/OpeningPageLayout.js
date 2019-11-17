@@ -7,7 +7,7 @@ import Form from '../components/Form/Form';
 
 class openingPageLayout extends React.Component{
     state = {
-        isLogin: false,
+        chooseForm: false,
         show: false
       }
 
@@ -21,38 +21,40 @@ class openingPageLayout extends React.Component{
 
         openLogIn = () => {
             this.showModal();
-            this.setState({isLogin: true});
+            this.setState({chooseForm: true});
         }
 
         openRegister = () => {
             this.showModal();
-            this.setState({isLogin: false});
+            this.setState({chooseForm: false});
         }
 
-        returnForm = (isLog) =>{
-            if(isLog){
-                return(
-                    <Form>
-                        <Input icon="fas fa-user" type="text" placeholder="username" />
-                        <Input icon="fas fa-key" type="password" placeholder="password" />
-                        <em>Forot Password</em>
-                        <Button to="/home" classes="btn-blueGradient btn-md">Log In</Button>
-                    </Form>
-                );
-            } else {
-                return(
-                    <Form>
-                        <Input icon="fas fa-user" type="text" placeholder="username" />
-                        <Input icon="fas fa-key" type="text" placeholder="password" />
-                        <Input icon="fas fa-key" type="text" placeholder="password2" />
-                        <Input icon="fas fa-passport" type="text" placeholder="name" />
-                        <Input icon="fas fa-passport" type="text" placeholder="surname" />
-                        <Input icon="fas fa-at" type="text" placeholder="e-mail" />
-                        <Button classes="btn-blueGradient btn-md">Submit</Button>
-                    </Form>
-                );
-            }
-        }
+
+    loginFrom = () => {
+        return(
+            <Form>
+                <Input icon="fas fa-user" type="text" placeholder="username" />
+                <Input icon="fas fa-key" type="password" placeholder="password" />
+                <em>Forot Password</em>
+                <Button to="/home" classes="btn-blueGradient btn-md">Log In</Button>
+            </Form>
+        );
+    }
+
+
+    registerForm = () => {
+        return(
+            <Form>
+                <Input icon="fas fa-user" type="text" placeholder="username" />
+                <Input icon="fas fa-key" type="text" placeholder="password" />
+                <Input icon="fas fa-key" type="text" placeholder="password2" />
+                <Input icon="fas fa-passport" type="text" placeholder="name" />
+                <Input icon="fas fa-passport" type="text" placeholder="surname" />
+                <Input icon="fas fa-at" type="text" placeholder="e-mail" />
+                <Button classes="btn-blueGradient btn-md">Submit</Button>
+            </Form>
+        );
+    }
 
 
     render(){
@@ -60,7 +62,7 @@ class openingPageLayout extends React.Component{
         <div className="FirstLayout">
 
             <Modal show={this.state.show} modalClose={this.hideModal}>
-                {this.returnForm(this.state.isLogin)}
+                {this.state.chooseForm ? this.loginFrom() : this.registerForm()}
             </Modal>
 
         
