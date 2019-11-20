@@ -1,6 +1,6 @@
 import React, {Component, useState, useContext} from 'react';
 import Button from '../../components/button/Button';
-import Input from '../../components/Input/Input';
+import TextInput from '../../components/Inputs/TextInput/TextInput';
 import Form from '../../components/Form/Form';
 import EventCard from '../../components/EventCard/EventCard';
 import {FormContext} from '../../context/FormContext';
@@ -23,10 +23,10 @@ const HomeLayout = (props) => {
         const newEventForm= () => {
             return(
                 <Form>
-                    <Input icon="fas fa-user" type="text" placeholder="name" />
-                    <Input icon="fas fa-key" type="password" placeholder="location" />
-                    <Input icon="fas fa-key" type="password" placeholder="date" />
-                    <Input icon="fas fa-key" type="password" placeholder="time" />
+                    <TextInput placeholder="name" name="name" />
+                    <TextInput placeholder="location" name="location" />
+                    <TextInput placeholder="date" name="date" />
+                    <TextInput placeholder="time" name="time" />
                     <Button to="/home" classes="btn-blueGradient btn-md">apply</Button>
                 </Form>
             );

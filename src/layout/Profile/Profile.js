@@ -1,7 +1,7 @@
 import React, {useContext} from 'react';
 import {FormContext} from '../../context/FormContext';
 import Button from '../../components/button/Button';
-import Input from '../../components/Input/Input';
+import TextInput from '../../components/Inputs/TextInput/TextInput';
 import Form from '../../components/Form/Form';
 import EventCard from '../../components/EventCard/EventCard';
 import './Profile.scss';
@@ -18,10 +18,10 @@ const Profile = (props) =>{
     const ProfileForm= () => {
         return(
             <Form>
-                <Input icon="fas fa-user" type="text" placeholder="name" />
-                <Input icon="fas fa-key" type="password" placeholder="surname" />
-                <Input icon="fas fa-key" type="password" placeholder="email" />
-                <Input icon="fas fa-key" type="password" placeholder="password" />
+                <TextInput placeholder="name" name="name" />
+                <TextInput placeholder="surname" name="surname" />
+                <TextInput placeholder="email" name="email" />
+                <TextInput placeholder="password" name="password" />
                 <Button to="/home" classes="btn-blueGradient btn-md">update</Button>
             </Form>
         );

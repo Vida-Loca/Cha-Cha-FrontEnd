@@ -1,9 +1,8 @@
 import React from 'react';
 import Button from '../components/button/Button';
 import Modal from '../components/Modal/Modal';
-import Input from '../components/Input/Input';
+import TextInput from '../components/Inputs/TextInput/TextInput';
 import Form from '../components/Form/Form';
-// import {Link} from 'react-router-dom';
 
 class openingPageLayout extends React.Component{
     state = {
@@ -33,8 +32,8 @@ class openingPageLayout extends React.Component{
     loginFrom = () => {
         return(
             <Form>
-                <Input icon="fas fa-user" type="text" placeholder="username" />
-                <Input icon="fas fa-key" type="password" placeholder="password" />
+                <TextInput placeholder="username" name="username" />
+                <TextInput placeholder="password" name="password" />
                 <em>Forot Password</em>
                 <Button to="/home" classes="btn-blueGradient btn-md">Log In</Button>
             </Form>
@@ -45,12 +44,12 @@ class openingPageLayout extends React.Component{
     registerForm = () => {
         return(
             <Form>
-                <Input icon="fas fa-user" type="text" placeholder="username" />
-                <Input icon="fas fa-key" type="text" placeholder="password" />
-                <Input icon="fas fa-key" type="text" placeholder="password2" />
-                <Input icon="fas fa-passport" type="text" placeholder="name" />
-                <Input icon="fas fa-passport" type="text" placeholder="surname" />
-                <Input icon="fas fa-at" type="text" placeholder="e-mail" />
+                <TextInput placeholder="username" name="username" />
+                <TextInput placeholder="password" name="password" />
+                <TextInput placeholder="repeat password" name="password2" />
+                <TextInput placeholder="name" name="name" />
+                <TextInput placeholder="surname" name="surname" />
+                <TextInput placeholder="e-mail" name="email" />
                 <Button classes="btn-blueGradient btn-md">Submit</Button>
             </Form>
         );

@@ -1,8 +1,6 @@
 import React, {setState,useState,useContext} from 'react';
 import Sidebar from '../components/Sidebar/Sidebar';
 import Modal from '../components/Modal/Modal';
-import Input from '../components/Input/Input';
-import Form from '../components/Form/Form';
 import {FormContext} from '../context/FormContext';
 import {BrowserRouter, Route, Redirect} from 'react-router-dom';
 
@@ -12,24 +10,7 @@ import Profile from './Profile/Profile';
 
 const MainLayout = (props) => {
 
-    
-    // state = {
-    //     show : false,
-    //     mainNav : [
-    //         ['Home','fas fa-home'],
-    //         ['Profile','fas fa-user-alt'],
-    //         ['Admin','fas fa-user-shield']
-    //     ],
-    //     EventNav: [
-    //         ['Suplies','fas fa-box-open'],
-    //         ['Location','fas fa-map-marker-alt'],
-    //         ['Members','fas fa-users'],
-    //         ['Photos', 'fas fa-images'],
-    //         ['Forum','fas fa-comments'],
-    //         ['Games', 'fas fa-gamepad']
-    //     ]
 
-    // }
 
     const [changedForm, setChangesForm] = useContext(FormContext);
 
