@@ -1,18 +1,15 @@
-.HomeLayout{
-    display: grid;
-    grid-template-columns: 1fr 1fr;
-    text-align: center;
+.HomeLayout {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  text-align: center;
 
-    &>a{
-       grid-column-start: 1;
-       grid-column-end: 3;
-       text-decoration: none;
-       &>div{
-           display: flex;
-           justify-content: space-around;
-           
-       }
-       
+  & > a {
+    grid-column-start: 1;
+    grid-column-end: 3;
+    text-decoration: none;
+    & > div {
+      display: flex;
+      justify-content: space-around;
     }
+  }
 }
-

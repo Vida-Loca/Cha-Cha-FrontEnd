@@ -1,42 +1,42 @@
 @import '../../globalStyles/globalVariabels.scss';
 
-.icon-span{
-    grid-column-start: 1;
-    grid-column-end: 3;
+.icon-span {
+  grid-column-start: 1;
+  grid-column-end: 3;
 }
-.information{
-    grid-gap: 1rem;
-    display: grid;
-    grid-template-columns: 1fr 1fr;
-    justify-content: center;
-    align-items: center;
-    &>div>button{
-        display: flex;
-        justify-content: flex-start;
-    }
-    i{
-        margin-right: 0.5rem;
-    }
-}
-
-.profileRootContainer{
-    margin: 2rem 0;
-    text-align: center;
-    display: grid;
-    grid-template-columns: 1fr;
-    @include breaking-point-2{
-        grid-template-columns: 3fr 4fr;
-    }
+.information {
+  grid-gap: 1rem;
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  justify-content: center;
+  align-items: center;
+  & > div > button {
+    display: flex;
+    justify-content: flex-start;
+  }
+  i {
+    margin-right: 0.5rem;
+  }
 }
 
-.username{
-    font-weight: bold;
-    text-align: end;
+.profileRootContainer {
+  margin: 2rem 0;
+  text-align: center;
+  display: grid;
+  grid-template-columns: 1fr;
+  @include breaking-point-2 {
+    grid-template-columns: 3fr 4fr;
+  }
 }
 
-img{
-    width: 10rem;
-    height: 10rem;
-    object-fit: cover;
-    border-radius: 70rem;
+.username {
+  font-weight: bold;
+  text-align: end;
+}
+
+img {
+  width: 10rem;
+  height: 10rem;
+  object-fit: cover;
+  border-radius: 70rem;
 }

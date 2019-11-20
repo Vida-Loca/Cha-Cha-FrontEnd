@@ -1,92 +1,85 @@
 @import '../../../globalStyles/globalVariabels.scss';
 
-
-
-%transition{
-  transition: all 0.25s cubic-bezier(.53,.01,.35,1.5);
+%transition {
+  transition: all 0.25s cubic-bezier(0.53, 0.01, 0.35, 1.5);
 }
 
 @mixin translate($x, $y) {
-    -webkit-transform: translate($x, $y);
-       -moz-transform: translate($x, $y);
-        -ms-transform: translate($x, $y);
-         -o-transform: translate($x, $y);
-            transform: translate($x, $y);
+  -webkit-transform: translate($x, $y);
+  -moz-transform: translate($x, $y);
+  -ms-transform: translate($x, $y);
+  -o-transform: translate($x, $y);
+  transform: translate($x, $y);
+}
+@mixin transform($transforms) {
+  -moz-transform: $transforms;
+  -o-transform: $transforms;
+  -ms-transform: $transforms;
+  -webkit-transform: $transforms;
+  transform: $transforms;
+}
+
+.textInput {
+  position: relative;
+  padding: 10px 0;
+
+  &:first-of-type {
+    padding-top: 0;
   }
-  @mixin transform($transforms) {
-    -moz-transform: $transforms;
-      -o-transform: $transforms;
-     -ms-transform: $transforms;
- -webkit-transform: $transforms;
-       transform: $transforms;
-}
 
+  &:last-of-type {
+    padding-bottom: 0;
+  }
 
-.textInput{
+  label {
+    @extend %transition;
+    transform-origin: left center;
+    color: $main-blue;
+    font-weight: 100;
+    letter-spacing: 0.01em;
+    font-size: 17px;
+    box-sizing: border-box;
+    padding: 10px 15px;
+    display: block;
+    position: absolute;
+    margin-top: -40px;
+    z-index: 2;
+    pointer-events: none;
+  }
+  input[type='text'] {
+    @extend %transition;
+    margin-top: 0.7rem;
+    appearance: none;
+    outline: none;
+    background-color: none;
+    border: 1px solid $main-blue;
+    line-height: 0;
+    font-size: 17px;
+    width: 100%;
+    display: block;
+    box-sizing: border-box;
+    padding: 10px 15px;
+    border-radius: 60px;
+    color: $main-blue;
+    font-weight: 100;
+    letter-spacing: 0.01em;
     position: relative;
-    padding: 10px 0;
-    
-    &:first-of-type{
-      padding-top: 0;
-    }
-      
-    &:last-of-type{
-      padding-bottom: 0;
-    }
-      
-    label{
-      @extend %transition;
-      transform-origin: left center;
-      color: $main-blue;
-      font-weight: 100;
-      letter-spacing: 0.01em;
-      font-size: 17px;
-      box-sizing: border-box;
-      padding: 10px 15px;
-      display: block;
-      position: absolute;
-      margin-top: -40px;
-      z-index: 2;
-      pointer-events: none;
-    }
-    input[type="text"]{
-      @extend %transition;
-      margin-top: 0.7rem;
-      appearance: none;
+    z-index: 1;
+
+    &:focus {
       outline: none;
-      background-color: none;
-      border: 1px solid $main-blue;
-      line-height: 0;
-      font-size: 17px;
-      width: 100%;
-      display: block;
-      box-sizing: border-box;
-      padding: 10px 15px;
-      border-radius: 60px;
-      color: $main-blue;
-      font-weight: 100;
-      letter-spacing: 0.01em;
-      position: relative;
-      z-index: 1;       
-    
-      &:focus{
-        outline: none;
-        background: $main-blue;
-        color: white;
-      }
-          
-      &:focus ~ label{
-        @include translate( 0 , -35px );
-      }
-      
-      &:valid ~ label{
-        text-transform: uppercase;
-        font-style: italic;
-        @include transform( translate( 5px , -35px ) scale(0.6));
-      }
-    
+      background: $main-blue;
+      color: white;
     }
+
+    &:focus ~ label {
+      @include translate(0, -35px);
+    }
+
+    &:valid ~ label {
+      text-transform: uppercase;
+      font-style: italic;
+      @include transform(translate(5px, -35px) scale(0.6));
+    }
+  }
 }
-
-
-

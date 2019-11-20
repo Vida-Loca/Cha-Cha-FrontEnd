@@ -1,15 +1,14 @@
-import React from 'react';
-import {NavLink} from 'react-router-dom';
-import './SideBarItem.scss';
+import React from "react";
+import { NavLink } from "react-router-dom";
+import "./SideBarItem.scss";
 
-const sideBarItem = (props) => {
-
-    return(
-        <NavLink to={props.name.toLowerCase()} className="SideBarItem">
-            <i className={props.icon}></i>
-            {props.children}
-        </NavLink>
-    );
-}
+const sideBarItem = ({ name, icon, children }) => {
+  return (
+    <NavLink to={name.toLowerCase()} className="SideBarItem">
+      <i className={icon}></i>
+      {children}
+    </NavLink>
+  );
+};
 
 export default sideBarItem;

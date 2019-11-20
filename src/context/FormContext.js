@@ -1,18 +1,13 @@
-import React, {useState, createContext} from 'react';
+import React, { useState, createContext } from "react";
 
 export const FormContext = createContext();
 
-export const FormProvider = (props) => {
+export const FormProvider = props => {
+  const [form, setform] = useState({ c: "" });
 
-    const [movie, setmovie] = useState(
-        {
-            name: 'kesk'
-        }
-    );
-
-    return(
-        <FormContext.Provider value={[movie, setmovie]}>
-            {props.children}
-        </FormContext.Provider>
-    );
-}
+  return (
+    <FormContext.Provider value={[form, setform]}>
+      {props.children}
+    </FormContext.Provider>
+  );
+};
