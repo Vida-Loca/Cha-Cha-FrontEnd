@@ -1,4 +1,5 @@
 import React, { useContext } from "react";
+import PropTypes from "prop-types";
 import { FormContext } from "../../context/FormContext";
 import Button from "../../components/button/Button";
 import TextInput from "../../components/Inputs/TextInput/TextInput";
@@ -7,12 +8,7 @@ import EventCard from "../../components/EventCard/EventCard";
 import "./Profile.scss";
 
 const Profile = props => {
-  const [form, setform] = useContext(FormContext);
-
-  const insideProfile = () => {
-    setform({ renderForm: ProfileForm() });
-    props.openModal();
-  };
+  const setform = useContext(FormContext)[1];
 
   const ProfileForm = () => {
     return (
@@ -28,6 +24,11 @@ const Profile = props => {
     );
   };
 
+  const insideProfile = () => {
+    setform({ renderForm: ProfileForm() });
+    props.openModal();
+  };
+
   return (
     <div className="profileRootContainer">
       <div>
@@ -41,11 +42,11 @@ const Profile = props => {
             Edit Profile
           </Button>
           <div className="icon-span">
-            <i className="fas fa-calendar-alt"></i>
+            <i className="fas fa-calendar-alt" />
             <span>joined 10-12-2009</span>
           </div>
           <div className="icon-span">
-            <i className="fas fa-users"></i>
+            <i className="fas fa-users" />
             <span>Friends 20</span>
           </div>
         </div>
@@ -60,6 +61,11 @@ const Profile = props => {
       </div>
     </div>
   );
+};
+
+Profile.propTypes = {
+  // eslint-disable-next-line react/require-default-props
+  openModal: PropTypes.func
 };
 
 export default Profile;

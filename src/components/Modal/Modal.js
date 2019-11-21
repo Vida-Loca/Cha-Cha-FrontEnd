@@ -1,21 +1,28 @@
 import React from "react";
+import PropTypes from "prop-types";
 import Backdrop from "../Backdrop/Backdrop";
 import "./Modal.scss";
 
-const Modal = props => {
+const Modal = ({ show, modalClose, children }) => {
   return (
     <>
-      {props.show ? <Backdrop clicked={props.modalClose} /> : null}
+      {show ? <Backdrop clicked={modalClose} /> : null}
       <div
         className="ModalContainer"
-        style={{ display: props.show ? "flex" : "none" }}
+        style={{ display: show ? "flex" : "none" }}
       >
-        <div className="Modal" style={{ opacity: props.show ? "1" : "0" }}>
-          {props.children}
+        <div className="Modal" style={{ opacity: show ? "1" : "0" }}>
+          {children}
         </div>
       </div>
     </>
   );
+};
+
+Modal.propTypes = {
+  show: PropTypes.bool.isRequired,
+  modalClose: PropTypes.func.isRequired,
+  children: PropTypes.node.isRequired
 };
 
 export default Modal;

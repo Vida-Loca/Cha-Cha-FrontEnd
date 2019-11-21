@@ -1,4 +1,5 @@
 import React from "react";
+import PropTypes from "prop-types";
 import "./TextInput.scss";
 
 const TextInput = ({ name, placeholder }) => {
@@ -8,6 +9,15 @@ const TextInput = ({ name, placeholder }) => {
       <label>{placeholder}</label>
     </div>
   );
+};
+
+TextInput.defaultProps = {
+  placeholder: ""
+};
+
+TextInput.propTypes = {
+  name: PropTypes.string.isRequired,
+  placeholder: PropTypes.string
 };
 
 export default TextInput;

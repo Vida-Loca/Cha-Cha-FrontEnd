@@ -2,12 +2,13 @@ import React, { useState, createContext } from "react";
 
 export const FormContext = createContext();
 
-export const FormProvider = props => {
+// eslint-disable-next-line react/prop-types
+export const FormProvider = ({ children }) => {
   const [form, setform] = useState({ c: "" });
 
   return (
     <FormContext.Provider value={[form, setform]}>
-      {props.children}
+      {children}
     </FormContext.Provider>
   );
 };

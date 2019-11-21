@@ -1,14 +1,14 @@
 import React, { useState, useContext } from "react";
+import { BrowserRouter, Route, Redirect } from "react-router-dom";
 import Sidebar from "../components/Sidebar/Sidebar";
 import Modal from "../components/Modal/Modal";
 import { FormContext } from "../context/FormContext";
-import { BrowserRouter, Route, Redirect } from "react-router-dom";
 
 import Home from "./Home/Home";
 import Profile from "./Profile/Profile";
 
-const MainLayout = props => {
-  const [changedForm, setChangedForm] = useContext(FormContext);
+const MainLayout = () => {
+  const changedForm = useContext(FormContext)[0];
 
   const [mainState, mainStateSet] = useState({
     show: false,
