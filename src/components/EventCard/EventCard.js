@@ -1,25 +1,34 @@
 import React from "react";
+import PropTypes from "prop-types";
 import "./EventCard.scss";
 
-const eventCard = () => {
+const EventCard = ({ name, date, location }) => {
   return (
     <div className="Event-Card">
       <div className="eventIcon">
         <i className="fas fa-glass-cheers" />
       </div>
       <div className="content">
-        <h2>Ny party</h2>
+        <h2>{name}</h2>
         <span>
           <i className="fas fa-calendar-alt" />
-          10-10-2020
+          {date}
         </span>
         <span>
           <i className="fas fa-map-marker-alt" />
-          Locaion, Location
+          {location}
         </span>
       </div>
       <i className="fas fa-arrow-circle-right" />
     </div>
   );
 };
-export default eventCard;
+
+EventCard.propTypes = {
+  // eslint-disable-next-line react/require-default-props
+  name: PropTypes.string.isRequired,
+  date: PropTypes.string.isRequired,
+  location: PropTypes.string.isRequired
+};
+
+export default EventCard;

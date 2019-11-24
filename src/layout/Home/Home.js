@@ -1,4 +1,4 @@
-import React, { useContext } from "react";
+import React, { useContext, useState } from "react";
 import { Link } from "react-router-dom";
 import PropTypes from "prop-types";
 import Button from "../../components/button/Button";
@@ -10,6 +10,45 @@ import "./Home.scss";
 
 const HomeLayout = props => {
   const setform = useContext(FormContext)[1];
+
+  const events = useState([
+    {
+      name: "event 1",
+      time: "2:30PM",
+      date: "10-12-2019",
+      location: "Gdansk, Oliwskiego 25"
+    },
+    {
+      name: "event 2",
+      time: "2:30PM",
+      date: "10-12-2019",
+      location: "Gdansk, Oliwskiego 25"
+    },
+    {
+      name: "event 3",
+      time: "2:30PM",
+      date: "10-12-2019",
+      location: "Gdansk, Oliwskiego 25"
+    },
+    {
+      name: "event 4",
+      time: "2:30PM",
+      date: "10-12-2019",
+      location: "Gdansk, Oliwskiego 25"
+    },
+    {
+      name: "event 5",
+      time: "2:30PM",
+      date: "10-12-2019",
+      location: "Gdansk, Oliwskiego 25"
+    },
+    {
+      name: "event 6",
+      time: "2:30PM",
+      date: "10-12-2019",
+      location: "Gdansk, Oliwskiego 25"
+    }
+  ])[0];
 
   const newEventForm = () => {
     return (
@@ -39,11 +78,15 @@ const HomeLayout = props => {
       </Link>
       <div>
         <h2>Public Events</h2>
-        <EventCard />
-        <EventCard />
-        <EventCard />
-        <EventCard />
-        <EventCard />
+        {events.map(event => {
+          return (
+            <EventCard
+              name={event.name}
+              location={event.location}
+              date={event.date}
+            />
+          );
+        })}
       </div>
     </div>
   );
