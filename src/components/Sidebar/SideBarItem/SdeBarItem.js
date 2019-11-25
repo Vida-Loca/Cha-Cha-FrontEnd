@@ -3,9 +3,9 @@ import PropTypes from "prop-types";
 import { NavLink } from "react-router-dom";
 import "./SideBarItem.scss";
 
-const SideBarItem = ({ name, icon, children }) => {
+const SideBarItem = ({ name, icon, children, beforeLink }) => {
   return (
-    <NavLink to={name.toLowerCase()} className="SideBarItem">
+    <NavLink to={`${beforeLink}/${name.toLowerCase()}`} className="SideBarItem">
       <i className={icon} />
       {children}
     </NavLink>
@@ -13,12 +13,14 @@ const SideBarItem = ({ name, icon, children }) => {
 };
 
 SideBarItem.defaultProps = {
-  icon: "fab fa-bandcamp"
+  icon: "fab fa-bandcamp",
+  beforeLink: "/"
 };
 
 SideBarItem.propTypes = {
   name: PropTypes.string.isRequired,
   icon: PropTypes.string,
+  beforeLink: PropTypes.string,
   children: PropTypes.node.isRequired
 };
 

@@ -19,10 +19,14 @@ const Modal = ({ show, modalClose, children }) => {
   );
 };
 
+Modal.defaultPoprs = {
+  children: ""
+};
+
 Modal.propTypes = {
   show: PropTypes.bool.isRequired,
   modalClose: PropTypes.func.isRequired,
-  children: PropTypes.node.isRequired
+  children: PropTypes.node
 };
 
 export default Modal;
