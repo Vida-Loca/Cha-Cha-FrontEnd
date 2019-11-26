@@ -1,0 +1,34 @@
+@import "../../globalStyles/globalVariabels.scss";
+
+.UserTileBody {
+  background: $grey-2;
+  padding: 0;
+  margin: 0.5rem 1rem;
+  border-radius: $border-radius-md;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  flex-flow: row wrap;
+  span {
+    margin: 0 0.4rem;
+  }
+
+  .UsernameLabel {
+    margin-left: 1rem;
+    color: black;
+    font-weight: bold;
+  }
+  .SuplyNameLabel {
+    font-style: italic;
+    justify-self: flex-start;
+  }
+
+  .price {
+    font-weight: bold;
+    color: white;
+    background: $orange-gradient;
+    padding: 0.4rem 0.4rem;
+    border-radius: $border-radius-md;
+    margin-right: 0;
+  }
+}

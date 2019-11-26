@@ -7,6 +7,8 @@ import { FormContext } from "../context/FormContext";
 import Home from "./Home/Home";
 import Profile from "./Profile/Profile";
 
+import Suplies from "./EventTabs/Suplies/Suplies";
+
 const MainLayout = () => {
   const changedForm = useContext(FormContext)[0];
 
@@ -76,7 +78,7 @@ const MainLayout = () => {
           <Route
             path="/event/:id/suplies"
             exact
-            render={() => <h1>this is Suplies</h1>}
+            render={() => <Suplies />}
             // render component with suplies and pass id as a prop
           />
           <Route
