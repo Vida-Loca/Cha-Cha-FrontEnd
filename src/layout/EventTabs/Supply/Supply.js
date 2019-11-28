@@ -1,13 +1,13 @@
 import React, { useState, useContext } from "react";
 import PropTypes from "prop-types";
-import "./Suplies.scss";
+import "./Supply.scss";
 import { FormContext } from "../../../context/FormContext";
-import SuplyUserTile from "../../../components/SuplyUserTile/SuplyUserTile";
+import SupplyUserTile from "../../../components/SupplyUserTile/SupplyUserTile";
 import Button from "../../../components/button/Button";
 import TextInput from "../../../components/Inputs/TextInput/TextInput";
 import Form from "../../../components/Form/Form";
 
-const Suplies = ({ openModal }) => {
+const Supply = ({ openModal }) => {
   const setform = useContext(FormContext)[1];
 
   const [supplyList, setsupply] = useState({
@@ -129,7 +129,7 @@ const Suplies = ({ openModal }) => {
 
             {supCont.supplies.map((sup, key) => {
               return (
-                <SuplyUserTile
+                <SupplyUserTile
                   user={sup.user}
                   supply={sup.supply}
                   price={sup.price}
@@ -153,9 +153,9 @@ const Suplies = ({ openModal }) => {
   );
 };
 
-Suplies.propTypes = {
+Supply.propTypes = {
   // eslint-disable-next-line react/require-default-props
   openModal: PropTypes.func
 };
 
-export default Suplies;
+export default Supply;

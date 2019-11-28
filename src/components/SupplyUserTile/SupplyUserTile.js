@@ -2,9 +2,9 @@ import React, { useState } from "react";
 import PropTypes from "prop-types";
 import Avatar from "../Avatar/Avatar";
 import Button from "../button/Button";
-import "./SuplyUserTile.scss";
+import "./SupplyUserTile.scss";
 
-const SuplyUserTile = ({ user, supply, price, openModal }) => {
+const SupplyUserTile = ({ user, supply, price, openModal }) => {
   const [tileState, tileStateSet] = useState({ options: false });
 
   const changeOptions = () => {
@@ -38,7 +38,7 @@ const SuplyUserTile = ({ user, supply, price, openModal }) => {
   );
 };
 
-SuplyUserTile.propTypes = {
+SupplyUserTile.propTypes = {
   user: PropTypes.string.isRequired,
   supply: PropTypes.string.isRequired,
   price: PropTypes.number.isRequired,
@@ -46,4 +46,4 @@ SuplyUserTile.propTypes = {
   openModal: PropTypes.func
 };
 
-export default SuplyUserTile;
+export default SupplyUserTile;

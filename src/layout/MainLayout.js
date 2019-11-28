@@ -7,7 +7,7 @@ import { FormContext } from "../context/FormContext";
 import Home from "./Home/Home";
 import Profile from "./Profile/Profile";
 
-import Suplies from "./EventTabs/Suplies/Suplies";
+import Suplies from "./EventTabs/Supply/Supply";
 
 const MainLayout = () => {
   const changedForm = useContext(FormContext)[0];
