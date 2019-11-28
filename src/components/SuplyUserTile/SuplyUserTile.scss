@@ -2,33 +2,63 @@
 
 .UserTileBody {
   background: $grey-2;
-  padding: 0;
-  margin: 0.5rem 1rem;
+  padding: 0.5rem;
+  margin: 1.5rem 1rem;
   border-radius: $border-radius-md;
-  display: flex;
+  display: grid;
+  text-align: center;
+  grid-template-columns: 1fr 1fr 5fr;
   align-items: center;
-  justify-content: space-between;
-  flex-flow: row wrap;
+  cursor: pointer;
+  transition: 0.2s all;
+
+  &:hover {
+    margin: 1.5rem 0.5rem;
+  }
+
   span {
     margin: 0 0.4rem;
   }
 
+  img {
+    height: 3rem;
+    width: 3rem;
+  }
+
+  .NameAndPrice {
+    display: grid;
+    grid-template-columns: 1fr;
+    row-gap: 0.5rem;
+  }
+
   .UsernameLabel {
-    margin-left: 1rem;
+    // margin-left: 1rem;
     color: black;
     font-weight: bold;
+    justify-self: flex-start;
+    font-size: 0.7rem;
   }
   .SuplyNameLabel {
     font-style: italic;
-    justify-self: flex-start;
+  }
+
+  .quantityLabel {
+    display: flex;
+    justify-content: flex-end;
   }
 
   .price {
     font-weight: bold;
     color: white;
     background: $orange-gradient;
-    padding: 0.4rem 0.4rem;
     border-radius: $border-radius-md;
-    margin-right: 0;
+    font-size: 0.7rem;
   }
+}
+
+.Options {
+  display: flex;
+  justify-content: center;
+  grid-column-start: 1;
+  grid-column-end: 5;
 }

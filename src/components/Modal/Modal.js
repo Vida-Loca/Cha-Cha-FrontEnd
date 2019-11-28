@@ -6,7 +6,6 @@ import "./Modal.scss";
 const Modal = ({ show, modalClose, children }) => {
   return (
     <>
-      {show ? <Backdrop clicked={modalClose} /> : null}
       <div
         className="ModalContainer"
         style={{ display: show ? "flex" : "none" }}
@@ -15,6 +14,7 @@ const Modal = ({ show, modalClose, children }) => {
           {children}
         </div>
       </div>
+      {show ? <Backdrop clicked={modalClose} /> : null}
     </>
   );
 };

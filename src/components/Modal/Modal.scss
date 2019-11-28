@@ -1,4 +1,4 @@
-@import '../../globalStyles/globalVariabels.scss';
+@import "../../globalStyles/globalVariabels.scss";
 
 .ModalContainer {
   width: 95%;
@@ -18,7 +18,7 @@
   border: 1px solid #ccc;
   box-shadow: 1px 1px 5px rgba(0, 0, 0, 0.445);
   padding: 2rem 3rem;
-  position: absolute;
+  position: fixed;
   box-sizing: border-box;
   transition: all 0.3s ease-out;
   border-radius: $border-radius-lg;

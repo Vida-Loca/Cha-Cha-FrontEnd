@@ -78,7 +78,7 @@ const MainLayout = () => {
           <Route
             path="/event/:id/suplies"
             exact
-            render={() => <Suplies />}
+            render={() => <Suplies openModal={showModal} />}
             // render component with suplies and pass id as a prop
           />
           <Route
