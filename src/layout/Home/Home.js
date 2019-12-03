@@ -1,18 +1,42 @@
-import React, {Component} from 'react';
+import React, {Component, useState, useContext} from 'react';
 import Button from '../../components/button/Button';
+import TextInput from '../../components/Inputs/TextInput/TextInput';
+import Form from '../../components/Form/Form';
 import EventCard from '../../components/EventCard/EventCard';
+import {FormContext} from '../../context/FormContext';
 import {Link} from 'react-router-dom';
 import './Home.scss';
 
-class HomeLayout extends Component {
+const HomeLayout = (props) => {
+        const [movie, setmovie] = useContext(FormContext)
 
 
-    render() {
+        const insideHome = () => {
+            setmovie( {name: newEventForm()})
+            props.openModal();
+        }
+
+        const saysom = () => {
+            console.log(movie.name)
+        };
+
+        const newEventForm= () => {
+            return(
+                <Form>
+                    <TextInput placeholder="name" name="name" />
+                    <TextInput placeholder="location" name="location" />
+                    <TextInput placeholder="date" name="date" />
+                    <TextInput placeholder="time" name="time" />
+                    <Button to="/home" classes="btn-blueGradient btn-md">apply</Button>
+                </Form>
+            );
+        }
+
+
         return (
             <div className="HomeLayout">
-
                 <Link to="/">
-                    <Button classes="btn-md btn-blueGradient">+ Create Event</Button>
+                    <Button clicked={insideHome} classes="btn-md btn-blueGradient">+ Create Event</Button>
                 </Link>
                 <div>
                     <h2>Public Events</h2>
@@ -21,10 +45,11 @@ class HomeLayout extends Component {
                     <EventCard />
                     <EventCard />
                     <EventCard />
+                
                 </div>
             </div>
         );
-    }
+    
 }
 
 export default HomeLayout;

@@ -1,13 +1,12 @@
 import React from 'react';
 import Button from '../components/button/Button';
 import Modal from '../components/Modal/Modal';
-import Input from '../components/Input/Input';
+import TextInput from '../components/Inputs/TextInput/TextInput';
 import Form from '../components/Form/Form';
-// import {Link} from 'react-router-dom';
 
 class openingPageLayout extends React.Component{
     state = {
-        isLogin: false,
+        chooseForm: false,
         show: false
       }
 
@@ -21,38 +20,40 @@ class openingPageLayout extends React.Component{
 
         openLogIn = () => {
             this.showModal();
-            this.setState({isLogin: true});
+            this.setState({chooseForm: true});
         }
 
         openRegister = () => {
             this.showModal();
-            this.setState({isLogin: false});
+            this.setState({chooseForm: false});
         }
 
-        returnForm = (isLog) =>{
-            if(isLog){
-                return(
-                    <Form>
-                        <Input icon="fas fa-user" type="text" placeholder="username" />
-                        <Input icon="fas fa-key" type="password" placeholder="password" />
-                        <em>Forot Password</em>
-                        <Button to="/home" classes="btn-blueGradient btn-md">Log In</Button>
-                    </Form>
-                );
-            } else {
-                return(
-                    <Form>
-                        <Input icon="fas fa-user" type="text" placeholder="username" />
-                        <Input icon="fas fa-key" type="text" placeholder="password" />
-                        <Input icon="fas fa-key" type="text" placeholder="password2" />
-                        <Input icon="fas fa-passport" type="text" placeholder="name" />
-                        <Input icon="fas fa-passport" type="text" placeholder="surname" />
-                        <Input icon="fas fa-at" type="text" placeholder="e-mail" />
-                        <Button classes="btn-blueGradient btn-md">Submit</Button>
-                    </Form>
-                );
-            }
-        }
+
+    loginFrom = () => {
+        return(
+            <Form>
+                <TextInput placeholder="username" name="username" />
+                <TextInput placeholder="password" name="password" />
+                <em>Forot Password</em>
+                <Button to="/home" classes="btn-blueGradient btn-md">Log In</Button>
+            </Form>
+        );
+    }
+
+
+    registerForm = () => {
+        return(
+            <Form>
+                <TextInput placeholder="username" name="username" />
+                <TextInput placeholder="password" name="password" />
+                <TextInput placeholder="repeat password" name="password2" />
+                <TextInput placeholder="name" name="name" />
+                <TextInput placeholder="surname" name="surname" />
+                <TextInput placeholder="e-mail" name="email" />
+                <Button classes="btn-blueGradient btn-md">Submit</Button>
+            </Form>
+        );
+    }
 
 
     render(){
@@ -60,7 +61,7 @@ class openingPageLayout extends React.Component{
         <div className="FirstLayout">
 
             <Modal show={this.state.show} modalClose={this.hideModal}>
-                {this.returnForm(this.state.isLogin)}
+                {this.state.chooseForm ? this.loginFrom() : this.registerForm()}
             </Modal>
 
         

@@ -9,13 +9,13 @@ class modal extends React.Component{
         <Fragment>
             <Backdrop clicked={this.props.modalClose} show={this.props.show} />
             <div style={{
-                width: '100%',
+                width: '95%',
                 height: '100%',
                 position: 'absolute',
                 display: this.props.show ? 'flex': 'none',
                 justifyContent: 'center',
                 alignItems: 'center',
-                marginTop: '-2rem'
+                marginTop: '-6rem'
                 }}>
                 <div className="Modal"
                 style={{
