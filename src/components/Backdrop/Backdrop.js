@@ -1,9 +1,26 @@
-import React from 'react';
-import './Backdrop.scss'; 
+import React from "react";
+import PropTypes from "prop-types";
+import "./Backdrop.scss";
 
-const backdrop = (props) => (
-    props.show ? <div onClick={props.clicked} className="backdrop"></div> : null
-);    
+const Backdrop = ({ clicked }) => {
+  const handleKeyPress = event => {
+    if (event.key === "Enter") {
+      console.log("enter press here! ");
+    }
+  };
 
+  return (
+    <div
+      onClick={clicked}
+      role="presentation"
+      onKeyPress={handleKeyPress}
+      className="backdrop"
+    ></div>
+  );
+};
 
-export default backdrop
+Backdrop.propTypes = {
+  clicked: PropTypes.func.isRequired
+};
+
+export default Backdrop;

@@ -1,18 +1,14 @@
-import React, {useState, createContext} from 'react';
+import React, { useState, createContext } from "react";
 
 export const FormContext = createContext();
 
-export const FormProvider = (props) => {
+// eslint-disable-next-line react/prop-types
+export const FormProvider = ({ children }) => {
+  const [form, setform] = useState({ c: "" });
 
-    const [movie, setmovie] = useState(
-        {
-            name: 'kesk'
-        }
-    );
-
-    return(
-        <FormContext.Provider value={[movie, setmovie]}>
-            {props.children}
-        </FormContext.Provider>
-    );
-}
+  return (
+    <FormContext.Provider value={[form, setform]}>
+      {children}
+    </FormContext.Provider>
+  );
+};

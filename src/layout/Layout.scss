@@ -1,39 +1,35 @@
-.MainLayout{
-    display: grid;
-    grid-gap: 1rem;
-    grid-template-columns: 1fr 6fr 1fr;
-    min-height: 700px;
-    @include breaking-point-1{
-        grid-template-columns: 1fr 4fr 1fr;
-       
-    }
-    @include breaking-point-2{
-        grid-template-columns: 1fr 5fr 1fr;
-      
-    }
-    @include breaking-point-3{
-        grid-template-columns: 1fr 7fr 1fr;
-       
-    }
+.MainLayout {
+  display: grid;
+  grid-gap: 1rem;
+  grid-template-columns: 1fr 6fr 1fr;
+  min-height: 700px;
+  @include breaking-point-1 {
+    grid-template-columns: 1fr 4fr 1fr;
+  }
+  @include breaking-point-2 {
+    grid-template-columns: 1fr 5fr 1fr;
+  }
+  @include breaking-point-3 {
+    grid-template-columns: 1fr 7fr 1fr;
+  }
 }
 
-.FirstLayout{
-    display: flex;
-    flex-direction: column;
-    text-align: center;
-    background: $dark-blue;
-    min-height: 700px;
-    border-radius: $border-radius-md;
-    
-    // background: $main-orange;
-  }
+.FirstLayout {
+  display: flex;
+  flex-direction: column;
+  text-align: center;
+  background: $dark-blue;
+  min-height: 700px;
+  border-radius: $border-radius-md;
 
+  // background: $main-orange;
+}
 
-  .SignContent{
-      height: 100%;
-      z-index: 500;
-      padding-top: 11rem;
-      h1{
-          color: white;
-      }
+.SignContent {
+  height: 100%;
+  z-index: 500;
+  padding-top: 11rem;
+  h1 {
+    color: white;
   }
+}

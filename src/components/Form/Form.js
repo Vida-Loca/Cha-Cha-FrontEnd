@@ -1,14 +1,24 @@
-import React, {Component} from 'react';
-import './Form.scss';
+import React from "react";
+import PropTypes from "prop-types";
+import "./Form.scss";
 
-class Form extends Component {
-    render() {
-        return(
-            <form className="FormContainer" action={this.props.action} method={this.props.method}>
-                {this.props.children}
-            </form>
-        );
-    }
-}
+const Form = ({ action, method, children }) => {
+  return (
+    <form className="FormContainer" action={action} method={method}>
+      {children}
+    </form>
+  );
+};
+
+Form.defaultProps = {
+  action: "",
+  method: "GET"
+};
+
+Form.propTypes = {
+  action: PropTypes.string,
+  method: PropTypes.string,
+  children: PropTypes.node.isRequired
+};
 
 export default Form;

@@ -1,32 +1,32 @@
 @import '../../globalStyles//globalVariabels.scss';
 
-.SideBar-orange{
-    background: $main-orange;
-    border-radius: $border-radius-md 0 0 $border-radius-md;
-    display: flex;
-    flex-direction: column;
-    justify-content: flex-start;
-    align-items: flex-end;
-    padding-right: 1rem;
-    padding-top: 4rem;
+.SideBar-orange {
+  background: $main-orange;
+  border-radius: $border-radius-md 0 0 $border-radius-md;
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-start;
+  align-items: flex-end;
+  padding-right: 1rem;
+  padding-top: 4rem;
 
-    .active{
-        margin-right: -4rem;
-        padding-right: 3.5rem;
-    }
+  .active {
+    margin-right: -4rem;
+    padding-right: 3.5rem;
+  }
 }
-.SideBar-darkBlue{
-    background: $dark-blue;
-    border-radius: 0 $border-radius-md $border-radius-md 0;
-    display: flex;
-    flex-direction: column;
-    justify-content: flex-start;
-    align-items: flex-start;
-    padding-left: 1rem;
-    padding-top: 4rem;
-    
-    .active{
-        margin-left: -4rem;
-        padding-left: 3.5rem;
-    }
+.SideBar-darkBlue {
+  background: $dark-blue;
+  border-radius: 0 $border-radius-md $border-radius-md 0;
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-start;
+  align-items: flex-start;
+  padding-left: 1rem;
+  padding-top: 4rem;
+
+  .active {
+    margin-left: -4rem;
+    padding-left: 3.5rem;
+  }
 }

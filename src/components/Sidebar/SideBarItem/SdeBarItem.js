@@ -1,15 +1,25 @@
-import React from 'react';
-import {NavLink} from 'react-router-dom';
-import './SideBarItem.scss';
+import React from "react";
+import PropTypes from "prop-types";
+import { NavLink } from "react-router-dom";
+import "./SideBarItem.scss";
 
-const sideBarItem = (props) => {
+const SideBarItem = ({ name, icon, children }) => {
+  return (
+    <NavLink to={name.toLowerCase()} className="SideBarItem">
+      <i className={icon} />
+      {children}
+    </NavLink>
+  );
+};
 
-    return(
-        <NavLink to={props.name.toLowerCase()} className="SideBarItem">
-            <i className={props.icon}></i>
-            {props.children}
-        </NavLink>
-    );
-}
+SideBarItem.defaultProps = {
+  icon: "fab fa-bandcamp"
+};
 
-export default sideBarItem;
+SideBarItem.propTypes = {
+  name: PropTypes.string.isRequired,
+  icon: PropTypes.string,
+  children: PropTypes.node.isRequired
+};
+
+export default SideBarItem;

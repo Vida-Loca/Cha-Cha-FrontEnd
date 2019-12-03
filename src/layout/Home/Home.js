@@ -1,55 +1,99 @@
-import React, {Component, useState, useContext} from 'react';
-import Button from '../../components/button/Button';
-import TextInput from '../../components/Inputs/TextInput/TextInput';
-import Form from '../../components/Form/Form';
-import EventCard from '../../components/EventCard/EventCard';
-import {FormContext} from '../../context/FormContext';
-import {Link} from 'react-router-dom';
-import './Home.scss';
+import React, { useContext, useState } from "react";
+import { Link } from "react-router-dom";
+import PropTypes from "prop-types";
+import Button from "../../components/button/Button";
+import TextInput from "../../components/Inputs/TextInput/TextInput";
+import Form from "../../components/Form/Form";
+import EventCard from "../../components/EventCard/EventCard";
+import { FormContext } from "../../context/FormContext";
+import "./Home.scss";
 
-const HomeLayout = (props) => {
-        const [movie, setmovie] = useContext(FormContext)
+const HomeLayout = props => {
+  const setform = useContext(FormContext)[1];
 
+  const events = useState([
+    {
+      name: "event 1",
+      time: "2:30PM",
+      date: "10-12-2019",
+      location: "Gdansk, Oliwskiego 25"
+    },
+    {
+      name: "event 2",
+      time: "2:30PM",
+      date: "10-12-2019",
+      location: "Gdansk, Oliwskiego 25"
+    },
+    {
+      name: "event 3",
+      time: "2:30PM",
+      date: "10-12-2019",
+      location: "Gdansk, Oliwskiego 25"
+    },
+    {
+      name: "event 4",
+      time: "2:30PM",
+      date: "10-12-2019",
+      location: "Gdansk, Oliwskiego 25"
+    },
+    {
+      name: "event 5",
+      time: "2:30PM",
+      date: "10-12-2019",
+      location: "Gdansk, Oliwskiego 25"
+    },
+    {
+      name: "event 6",
+      time: "2:30PM",
+      date: "10-12-2019",
+      location: "Gdansk, Oliwskiego 25"
+    }
+  ])[0];
 
-        const insideHome = () => {
-            setmovie( {name: newEventForm()})
-            props.openModal();
-        }
+  const newEventForm = () => {
+    return (
+      <Form>
+        <TextInput placeholder="name" name="name" />
+        <TextInput placeholder="location" name="location" />
+        <TextInput placeholder="date" name="date" />
+        <TextInput placeholder="time" name="time" />
+        <Button to="/home" classes="btn-blueGradient btn-md">
+          apply
+        </Button>
+      </Form>
+    );
+  };
 
-        const saysom = () => {
-            console.log(movie.name)
-        };
+  const insideHome = () => {
+    setform({ renderForm: newEventForm() });
+    props.openModal();
+  };
 
-        const newEventForm= () => {
-            return(
-                <Form>
-                    <TextInput placeholder="name" name="name" />
-                    <TextInput placeholder="location" name="location" />
-                    <TextInput placeholder="date" name="date" />
-                    <TextInput placeholder="time" name="time" />
-                    <Button to="/home" classes="btn-blueGradient btn-md">apply</Button>
-                </Form>
-            );
-        }
-
-
-        return (
-            <div className="HomeLayout">
-                <Link to="/">
-                    <Button clicked={insideHome} classes="btn-md btn-blueGradient">+ Create Event</Button>
-                </Link>
-                <div>
-                    <h2>Public Events</h2>
-                    <EventCard />
-                    <EventCard />
-                    <EventCard />
-                    <EventCard />
-                    <EventCard />
-                
-                </div>
-            </div>
-        );
-    
-}
+  return (
+    <div className="HomeLayout">
+      <Link to="/">
+        <Button clicked={insideHome} classes="btn-md btn-blueGradient">
+          + Create Event
+        </Button>
+      </Link>
+      <div>
+        <h2>Public Events</h2>
+        {events.map(event => {
+          return (
+            <EventCard
+              name={event.name}
+              location={event.location}
+              date={event.date}
+            />
+          );
+        })}
+      </div>
+    </div>
+  );
+};
+HomeLayout.propTypes = {
+  // eslint-disable-next-line react/require-default-props
+  openModal: PropTypes.func
+};
 
 export default HomeLayout;
