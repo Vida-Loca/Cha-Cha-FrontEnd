@@ -1,79 +1,165 @@
-import React, { Component } from "react";
+import React, { useState } from "react";
+import axios from "axios";
 import Button from "../components/button/Button";
 import Modal from "../components/Modal/Modal";
 import TextInput from "../components/Inputs/TextInput/TextInput";
 import Form from "../components/Form/Form";
 
-class OpeningPageLayout extends Component {
-  state = { chooseForm: false, show: false };
+const OpeningPageLayout = props => {
+  // state = { chooseForm: false, show: false };
+  const [newState, seNewState] = useState({
+    chooseForm: false,
+    show: false,
+    loginData: { username: "k", password: "" },
+    registerData: {
+      username: "k",
+      password: "",
+      password2: "",
+      name: "",
+      surname: "",
+      email: ""
+    }
+  });
 
-  hideModal = () => {
-    this.setState({ show: false });
-  };
-  showModal = () => {
-    this.setState({ show: true });
+  const hideModal = () => {
+    seNewState({ ...newState, show: false });
   };
 
-  openLogIn = () => {
-    this.showModal();
-    this.setState({ chooseForm: true });
+  const openLogIn = () => {
+    // showModal();
+    seNewState({ ...newState, chooseForm: true, show: true });
+    console.log(newState);
   };
 
-  openRegister = () => {
-    this.showModal();
-    this.setState({ chooseForm: false });
+  const openRegister = () => {
+    // showModal();
+    seNewState({ ...newState, chooseForm: false, show: true });
+    console.log(newState);
   };
 
-  loginFrom = () => {
+  const handleLoginChange = event => {
+    seNewState({
+      ...newState,
+      loginData: {
+        ...newState.loginData,
+        [`${event.target.name}`]: event.target.value
+      }
+    });
+  };
+
+  const handleRegsterChange = event => {
+    seNewState({
+      ...newState,
+      registerData: {
+        ...newState.registerData,
+        [`${event.target.name}`]: event.target.value
+      }
+    });
+  };
+
+  const handleLogIn = event => {
+    event.preventDefault();
+    axios
+      .get(
+        `https://jsonplaceholder.typicode.com/users/?username=${newState.loginData.username}`,
+        newState.loginData
+      )
+      .then(res => {
+        console.log(res);
+      });
+  };
+
+  const handleRegister = event => {
+    event.preventDefault();
+    axios
+      .get(
+        `https://jsonplaceholder.typicode.com/users/?username=${newState.registerData.username}`,
+        newState.registerData
+      )
+      .then(res => {
+        console.log(res);
+      });
+  };
+
+  const loginFrom = () => {
     return (
       <Form>
-        <TextInput placeholder="username" name="username" />
-        <TextInput placeholder="password" name="password" />
+        <TextInput
+          onChange={handleLoginChange}
+          placeholder="username"
+          name="username"
+        />
+        <TextInput
+          onChange={handleLoginChange}
+          placeholder="password"
+          name="password"
+        />
         <em>Forot Password</em>
-        <Button to="/home" classes="btn-blueGradient btn-md">
+        <Button clicked={handleLogIn} classes="btn-blueGradient btn-md">
           Log In
         </Button>
       </Form>
     );
   };
 
-  registerForm = () => {
+  const registerForm = () => {
     return (
       <Form>
-        <TextInput placeholder="username" name="username" />
-        <TextInput placeholder="password" name="password" />
-        <TextInput placeholder="repeat password" name="password2" />
-        <TextInput placeholder="name" name="name" />
-        <TextInput placeholder="surname" name="surname" />
-        <TextInput placeholder="e-mail" name="email" />
-        <Button classes="btn-blueGradient btn-md">Submit</Button>
+        <TextInput
+          onChange={handleRegsterChange}
+          placeholder="username"
+          name="username"
+        />
+        <TextInput
+          onChange={handleRegsterChange}
+          placeholder="password"
+          name="password"
+        />
+        <TextInput
+          onChange={handleRegsterChange}
+          placeholder="repeat password"
+          name="password2"
+        />
+        <TextInput
+          onChange={handleRegsterChange}
+          placeholder="name"
+          name="name"
+        />
+        <TextInput
+          onChange={handleRegsterChange}
+          placeholder="surname"
+          name="surname"
+        />
+        <TextInput
+          onChange={handleRegsterChange}
+          placeholder="e-mail"
+          name="email"
+        />
+        <Button clicked={handleRegister} classes="btn-blueGradient btn-md">
+          Submit
+        </Button>
       </Form>
     );
   };
 
-  render() {
-    return (
-      <div className="FirstLayout">
-        <Modal show={this.state.show} modalClose={this.hideModal}>
-          {this.state.chooseForm ? this.loginFrom() : this.registerForm()}
-        </Modal>
+  return (
+    <div className="FirstLayout">
+      <Modal show={newState.show} modalClose={hideModal}>
+        {newState.chooseForm ? loginFrom() : registerForm()}
+      </Modal>
 
-        <div className="SignContent">
-          <h1>Skibidi</h1>
-          <Button clicked={this.openLogIn} classes="btn-blueGradient btn-lg">
-            Sign In
-          </Button>
-          <Button
-            clicked={this.openRegister}
-            classes="btn-orangeGradient btn-lg"
-          >
-            Sign Up
-          </Button>
-          {this.props.children}
-        </div>
+      <div className="SignContent">
+        <h1>Skibidi</h1>
+        <Button clicked={openLogIn} classes="btn-blueGradient btn-lg">
+          Sign In
+        </Button>
+        <Button clicked={openRegister} classes="btn-orangeGradient btn-lg">
+          Sign Up
+        </Button>
+        {props.children}
       </div>
-    );
-  }
-}
+    </div>
+  );
+};
 
 export default OpeningPageLayout;

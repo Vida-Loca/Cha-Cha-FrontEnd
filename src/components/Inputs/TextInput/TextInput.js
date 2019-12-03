@@ -2,10 +2,10 @@ import React from "react";
 import PropTypes from "prop-types";
 import "./TextInput.scss";
 
-const TextInput = ({ name, placeholder }) => {
+const TextInput = ({ name, placeholder, onChange }) => {
   return (
     <div className="textInput">
-      <input type="text" name={name} required />
+      <input type="text" name={name} onChange={onChange} required />
       <label>{placeholder}</label>
     </div>
   );
