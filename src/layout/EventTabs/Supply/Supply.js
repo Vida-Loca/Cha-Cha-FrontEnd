@@ -125,7 +125,15 @@ const Supply = ({ openModal }) => {
       {supplyList.SupplyContainers.map((supCont, key) => {
         return (
           <div className="CategoryContainer" key={key}>
-            <p className="CategoryLabel">{supCont.Category}</p>
+            <div className="SupplyHeader">
+              <p className="CategoryLabel">{supCont.Category}</p>
+              <p className="PriceLabel">
+                {Object.keys(supCont.supplies).reduce((previous, key) => {
+                  return previous + supCont.supplies[key].price;
+                }, 0)}
+                <span> zl</span>
+              </p>
+            </div>
 
             {supCont.supplies.map((sup, key) => {
               return (

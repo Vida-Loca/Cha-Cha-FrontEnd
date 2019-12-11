@@ -33,19 +33,23 @@
   & > div:last-child {
     text-align: center;
   }
+  .SupplyHeader {
+    display: flex;
+    border-bottom: solid black 1px;
+    justify-content: space-between;
 
-  .CategoryLabel {
-    color: black;
-    font-weight: bold;
-    text-transform: uppercase;
-    margin: 1rem;
-
-    &:after {
-      content: "";
-      display: block;
-      background: $grey-2;
-      height: 2px;
-      margin: 0.6rem 0;
+    .PriceLabel {
+      background: $orange-gradient;
+      color: white;
+      font-weight: bold;
+      border-radius: 0.5rem;
+      padding: 0.25rem 0.5rem;
+    }
+    .CategoryLabel {
+      color: black;
+      font-weight: bold;
+      text-transform: uppercase;
+      margin: 1rem;
     }
   }
 }
