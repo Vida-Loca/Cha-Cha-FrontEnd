@@ -8,6 +8,7 @@ import Home from "./Home/Home";
 import Profile from "./Profile/Profile";
 
 import Suplies from "./EventTabs/Supply/Supply";
+import Location from "./EventTabs/Location/Location";
 
 const MainLayout = () => {
   const changedForm = useContext(FormContext)[0];
@@ -84,7 +85,7 @@ const MainLayout = () => {
           <Route
             path="/event/:id/location"
             exact
-            render={() => <h1>this is Location</h1>}
+            render={() => <Location openModal={showModal} />}
           />
           <Route
             path="/event/:id/members"
