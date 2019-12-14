@@ -4,6 +4,7 @@ import "./Supply.scss";
 import { FormContext } from "../../../context/FormContext";
 import SupplyUserTile from "../../../components/SupplyUserTile/SupplyUserTile";
 import Button from "../../../components/button/Button";
+import ShowMoreButton from "../../../components/ShowMoreButton/ShowMoreButton";
 import TextInput from "../../../components/Inputs/TextInput/TextInput";
 import Form from "../../../components/Form/Form";
 
@@ -15,6 +16,7 @@ const Supply = ({ openModal }) => {
     SupplyContainers: [
       {
         Category: "Drinks",
+        showMore: false,
         supplies: [
           {
             supply:
@@ -31,6 +33,7 @@ const Supply = ({ openModal }) => {
       },
       {
         Category: "Food",
+        showMore: false,
         supplies: [
           { supply: "hortex juice", user: "Lukas", quantity: 2, price: 5 },
           { supply: "beer", user: "Gorgios", quantity: 1, price: 5 },
@@ -41,6 +44,7 @@ const Supply = ({ openModal }) => {
       },
       {
         Category: "Party Items",
+        showMore: false,
         supplies: [
           { supply: "hortex juice", user: "Lukas", quantity: 2, price: 5 },
           { supply: "beer", user: "Gorgios", quantity: 1, price: 5 },
@@ -51,6 +55,12 @@ const Supply = ({ openModal }) => {
       }
     ]
   });
+
+  const showMoreHandler = some => {
+    let tempSupplyContainers = supplyList.SupplyContainers;
+    tempSupplyContainers[some].showMore = !tempSupplyContainers[some].showMore;
+    setsupply({ ...supplyList, tempSupplyContainers });
+  };
 
   const newSupplyContainerForm = () => {
     return (
@@ -124,9 +134,22 @@ const Supply = ({ openModal }) => {
       </Button>
       {supplyList.SupplyContainers.map((supCont, key) => {
         return (
-          <div className="CategoryContainer" key={key}>
+          <div
+            className={
+              supCont.showMore ? "CategoryContainer" : "CategoryContainer hide"
+            }
+            // className="CategoryContainer"
+            key={key}
+          >
             <div className="SupplyHeader">
-              <p className="CategoryLabel">{supCont.Category}</p>
+              <div>
+                <p className="CategoryLabel">{supCont.Category}</p>
+                <ShowMoreButton
+                  showState={supCont.showMore}
+                  clicked={() => showMoreHandler(key)}
+                />
+                {/* <Button clicked={() => showMoreHandler(key)}>\/</Button> */}
+              </div>
               <p className="PriceLabel">
                 {Object.keys(supCont.supplies).reduce((previous, key) => {
                   return previous + supCont.supplies[key].price;
@@ -134,26 +157,25 @@ const Supply = ({ openModal }) => {
                 <span> zl</span>
               </p>
             </div>
-
-            {supCont.supplies.map((sup, key) => {
-              return (
-                <SupplyUserTile
-                  user={sup.user}
-                  supply={sup.supply}
-                  price={sup.price}
-                  key={key}
-                  openModal={openModalEditSupply}
-                />
-              );
-            })}
-
-            <Button
-              clicked={openModalAddSupply}
-              classes="btn-sm btn-blueGradient"
-            >
-              {" "}
-              + Add
-            </Button>
+            <div className="SupplyBody">
+              {supCont.supplies.map((sup, key) => {
+                return (
+                  <SupplyUserTile
+                    user={sup.user}
+                    supply={sup.supply}
+                    price={sup.price}
+                    key={key}
+                    openModal={openModalEditSupply}
+                  />
+                );
+              })}
+              <Button
+                clicked={openModalAddSupply}
+                classes="btn-sm btn-blueGradient"
+              >
+                + Add
+              </Button>
+            </div>
           </div>
         );
       })}
