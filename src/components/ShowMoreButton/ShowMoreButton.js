@@ -3,17 +3,15 @@ import PropTypes from "prop-types";
 import "./ShowMoreButton.scss";
 
 const ShowMoreButton = ({ clicked, showState }) => {
-  const changeArrow = () => {
-    clicked();
-  };
-
   return (
-    <button onClick={changeArrow}>
+    <button onClick={clicked}>
       <i
         className={
-          showState ? "fas fa-angle-right rotateArrow" : "fas fa-angle-right"
+          showState
+            ? "fas fa-angle-right rotateArrow showMoreArrow"
+            : "fas fa-angle-right showMoreArrow"
         }
-      ></i>
+      />
     </button>
   );
 };
@@ -23,7 +21,8 @@ ShowMoreButton.defaultProps = {
 };
 
 ShowMoreButton.propTypes = {
-  clicked: PropTypes.func
+  clicked: PropTypes.func,
+  showState: PropTypes.bool.isRequired
 };
 
 export default ShowMoreButton;
