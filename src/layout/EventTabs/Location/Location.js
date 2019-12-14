@@ -89,7 +89,7 @@ const Location = props => {
           alt=""
         />
         <div className="TextInfo">
-          <p>
+          <div>
             <strong>Adress:</strong>
             <Button
               clicked={openModalToEditAdress}
@@ -97,12 +97,12 @@ const Location = props => {
             >
               Edit
             </Button>
-          </p>
-          <p>
+          </div>
+          <div>
             {location.Address.City},{location.Address.Street},{" "}
             {location.Address.HouseNumber}/{location.Address.ApartmentNumber}
-          </p>
-          <p>
+          </div>
+          <div>
             <strong>Phone Number:</strong>
             <Button
               clicked={openModalToEditPhoneNumber}
@@ -110,9 +110,9 @@ const Location = props => {
             >
               Edit
             </Button>
-          </p>
-          <p>{location.Contact}</p>
-          <p>
+          </div>
+          <div>{location.Contact}</div>
+          <div>
             <strong>Date & Time:</strong>
             <Button
               clicked={openModalToEditDateAndTtime}
@@ -120,11 +120,11 @@ const Location = props => {
             >
               Edit
             </Button>
-          </p>
-          <p>
+          </div>
+          <div>
             {location.Date}, {location.Time}
-          </p>
-          <p>
+          </div>
+          <div>
             <strong>Additional Information:</strong>
             <Button
               clicked={openModalToAdditionalInformation}
@@ -132,8 +132,8 @@ const Location = props => {
             >
               Edit
             </Button>
-          </p>
-          <p>{location.AdditionalInformation}</p>
+          </div>
+          <div>{location.AdditionalInformation}</div>
         </div>
       </div>
     </div>
