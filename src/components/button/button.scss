@@ -1,4 +1,4 @@
-@import '../../globalStyles/globalVariabels.scss';
+@import "../../globalStyles/globalVariabels.scss";
 %btn {
   cursor: pinter;
   font-weight: bold;
@@ -6,7 +6,6 @@
   cursor: pointer;
   transition: 0.2s all;
   border-width: 0;
-  margin: 1rem;
   outline: none;
 }
 

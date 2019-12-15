@@ -1,0 +1,16 @@
+.showMoreArrow {
+  font-size: 1.5rem;
+  cursor: pointer;
+  transform: rotate(90deg);
+  transition: all 0.3s;
+}
+
+.rotateArrow {
+  transform: rotate(-90deg);
+}
+
+button {
+  background: transparent;
+  border: none;
+  outline: none;
+}

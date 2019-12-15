@@ -4,6 +4,8 @@ import "./Supply.scss";
 import { FormContext } from "../../../context/FormContext";
 import SupplyUserTile from "../../../components/SupplyUserTile/SupplyUserTile";
 import Button from "../../../components/button/Button";
+import ShowMoreButton from "../../../components/ShowMoreButton/ShowMoreButton";
+import ThreeDots from "../../../components/ThreeDots/ThreeDots";
 import TextInput from "../../../components/Inputs/TextInput/TextInput";
 import Form from "../../../components/Form/Form";
 
@@ -11,10 +13,10 @@ const Supply = ({ openModal }) => {
   const setform = useContext(FormContext)[1];
 
   const [supplyList, setsupply] = useState({
-    eventName: "NewYear 2020",
     SupplyContainers: [
       {
         Category: "Drinks",
+        showMore: false,
         supplies: [
           {
             supply:
@@ -31,6 +33,7 @@ const Supply = ({ openModal }) => {
       },
       {
         Category: "Food",
+        showMore: false,
         supplies: [
           { supply: "hortex juice", user: "Lukas", quantity: 2, price: 5 },
           { supply: "beer", user: "Gorgios", quantity: 1, price: 5 },
@@ -41,6 +44,7 @@ const Supply = ({ openModal }) => {
       },
       {
         Category: "Party Items",
+        showMore: false,
         supplies: [
           { supply: "hortex juice", user: "Lukas", quantity: 2, price: 5 },
           { supply: "beer", user: "Gorgios", quantity: 1, price: 5 },
@@ -51,6 +55,13 @@ const Supply = ({ openModal }) => {
       }
     ]
   });
+
+  const showMoreHandler = index => {
+    const tempSupplyContainers = supplyList.SupplyContainers;
+    tempSupplyContainers[index].showMore = !tempSupplyContainers[index]
+      .showMore;
+    setsupply({ ...supplyList, tempSupplyContainers });
+  };
 
   const newSupplyContainerForm = () => {
     return (
@@ -114,46 +125,63 @@ const Supply = ({ openModal }) => {
 
   return (
     <div className="SuplyBody">
-      <p className="EventName">{supplyList.eventName}</p>
-
-      <Button
-        classes="btn-md btn-blueGradient"
-        clicked={openModalNewSupplyContainer}
-      >
-        Create new supply container
-      </Button>
+      <p className="EventName">Event Name</p>
+      <div className="buttonContainer">
+        <Button
+          classes="btn-md btn-blueGradient"
+          clicked={openModalNewSupplyContainer}
+        >
+          Create new supply container
+        </Button>
+      </div>
       {supplyList.SupplyContainers.map((supCont, key) => {
         return (
-          <div className="CategoryContainer" key={key}>
+          <div
+            className={
+              supCont.showMore ? "CategoryContainer" : "CategoryContainer hide"
+            }
+            key={supCont.Category}
+          >
             <div className="SupplyHeader">
-              <p className="CategoryLabel">{supCont.Category}</p>
-              <p className="PriceLabel">
-                {Object.keys(supCont.supplies).reduce((previous, key) => {
-                  return previous + supCont.supplies[key].price;
-                }, 0)}
-                <span> zl</span>
-              </p>
+              <div>
+                <p className="CategoryLabel">{supCont.Category}</p>
+                <ShowMoreButton
+                  showState={supCont.showMore}
+                  clicked={() => showMoreHandler(key)}
+                />
+              </div>
+              <div className="DotsAndPrice">
+                <div className="PriceAndAdd">
+                  <p className="PriceLabel">
+                    {Object.keys(supCont.supplies).reduce((previous, index) => {
+                      return previous + supCont.supplies[index].price;
+                    }, 0)}
+                    <span> zl</span>
+                  </p>
+                  <Button
+                    clicked={openModalAddSupply}
+                    classes="btn-sm btn-orangeGradient"
+                  >
+                    <i className="fas fa-plus-circle" />
+                  </Button>
+                </div>
+                <ThreeDots />
+              </div>
             </div>
 
-            {supCont.supplies.map((sup, key) => {
-              return (
-                <SupplyUserTile
-                  user={sup.user}
-                  supply={sup.supply}
-                  price={sup.price}
-                  key={key}
-                  openModal={openModalEditSupply}
-                />
-              );
-            })}
-
-            <Button
-              clicked={openModalAddSupply}
-              classes="btn-sm btn-blueGradient"
-            >
-              {" "}
-              + Add
-            </Button>
+            <div className="SupplyBody">
+              {supCont.supplies.map((sup, indexing) => {
+                return (
+                  <SupplyUserTile
+                    user={sup.user}
+                    supply={sup.supply}
+                    price={sup.price}
+                    key={sup.user + indexing}
+                    openModal={openModalEditSupply}
+                  />
+                );
+              })}
+            </div>
           </div>
         );
       })}

@@ -1,19 +1,39 @@
 @import "../../globalStyles/globalVariabels.scss";
 
+.OuterSupplyTile {
+  display: flex;
+  flex-direction: row;
+
+  button {
+    cursor: pointer;
+  }
+  .UserTileBody {
+    z-index: 100;
+    width: 110%;
+  }
+  .Options {
+    position: absolute;
+    right: 20%;
+  }
+}
+
 .UserTileBody {
-  background: $grey-2;
+  background: rgb(196, 197, 204);
   padding: 0.5rem;
-  margin: 1.5rem 1rem;
-  border-radius: $border-radius-md;
-  display: grid;
+  margin: 0 -1rem;
+  margin-bottom: 3px;
+  display: flex;
+  justify-content: space-between;
   text-align: center;
-  grid-template-columns: 1fr 1fr 5fr;
   align-items: center;
   cursor: pointer;
+  border-bottom: 1px solid $grey-3;
   transition: 0.2s all;
 
-  &:hover {
-    margin: 1.5rem 0.5rem;
+  & > div:nth-child(1) {
+    display: flex;
+    justify-content: center;
+    align-items: center;
   }
 
   span {
@@ -31,15 +51,9 @@
     row-gap: 0.5rem;
   }
 
-  .UsernameLabel {
-    // margin-left: 1rem;
-    color: black;
-    font-weight: bold;
-    justify-self: flex-start;
-    font-size: 0.7rem;
-  }
   .SuplyNameLabel {
     font-style: italic;
+    text-align: start;
   }
 
   .quantityLabel {
@@ -59,6 +73,10 @@
 .Options {
   display: flex;
   justify-content: center;
-  grid-column-start: 1;
-  grid-column-end: 5;
+  flex-direction: column;
+  margin-top: 0.3rem;
+  transition: all 0.3s;
+  & > button:nth-child(1) {
+    margin-bottom: 0.5rem;
+  }
 }
