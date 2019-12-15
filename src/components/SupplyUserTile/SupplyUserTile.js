@@ -1,6 +1,7 @@
 import React, { useState } from "react";
 import PropTypes from "prop-types";
 import Avatar from "../Avatar/Avatar";
+import ThreeDots from "../ThreeDots/ThreeDots";
 import Button from "../button/Button";
 import "./SupplyUserTile.scss";
 
@@ -12,15 +13,20 @@ const SupplyUserTile = ({ user, supply, price, openModal }) => {
   };
 
   return (
-    <div className="UserTileBody" onClick={changeOptions}>
-      {/* <div className="OptionOverlay">.sss.</div> */}
-      <Avatar imageLink="https://basicincome.org/wp-content/uploads/2018/12/profilepic.jpg" />
-      <div className="NameAndPrice">
-        <span className="UsernameLabel">{user}</span>
-        <span className="price">{price}zl</span>
+    <div className="OutterSupplyTile">
+      <div className="UserTileBody">
+        <div>
+          <Avatar imageLink="https://basicincome.org/wp-content/uploads/2018/12/profilepic.jpg" />
+          <span className="SuplyNameLabel">
+            <strong>
+              {price}
+              zl -{" "}
+            </strong>
+            {supply}
+          </span>
+        </div>
+        <ThreeDots clicked={changeOptions} />
       </div>
-      <span className="SuplyNameLabel">{supply}</span>
-
       {tileState.options ? (
         <div className="Options">
           <Button

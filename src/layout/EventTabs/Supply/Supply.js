@@ -5,6 +5,7 @@ import { FormContext } from "../../../context/FormContext";
 import SupplyUserTile from "../../../components/SupplyUserTile/SupplyUserTile";
 import Button from "../../../components/button/Button";
 import ShowMoreButton from "../../../components/ShowMoreButton/ShowMoreButton";
+import ThreeDots from "../../../components/ThreeDots/ThreeDots";
 import TextInput from "../../../components/Inputs/TextInput/TextInput";
 import Form from "../../../components/Form/Form";
 
@@ -12,7 +13,6 @@ const Supply = ({ openModal }) => {
   const setform = useContext(FormContext)[1];
 
   const [supplyList, setsupply] = useState({
-    eventName: "NewYear 2020",
     SupplyContainers: [
       {
         Category: "Drinks",
@@ -56,9 +56,10 @@ const Supply = ({ openModal }) => {
     ]
   });
 
-  const showMoreHandler = some => {
-    let tempSupplyContainers = supplyList.SupplyContainers;
-    tempSupplyContainers[some].showMore = !tempSupplyContainers[some].showMore;
+  const showMoreHandler = index => {
+    const tempSupplyContainers = supplyList.SupplyContainers;
+    tempSupplyContainers[index].showMore = !tempSupplyContainers[index]
+      .showMore;
     setsupply({ ...supplyList, tempSupplyContainers });
   };
 
@@ -124,22 +125,22 @@ const Supply = ({ openModal }) => {
 
   return (
     <div className="SuplyBody">
-      <p className="EventName">{supplyList.eventName}</p>
-
-      <Button
-        classes="btn-md btn-blueGradient"
-        clicked={openModalNewSupplyContainer}
-      >
-        Create new supply container
-      </Button>
+      <p className="EventName">Event Name</p>
+      <div className="buttonContainer">
+        <Button
+          classes="btn-md btn-blueGradient"
+          clicked={openModalNewSupplyContainer}
+        >
+          Create new supply container
+        </Button>
+      </div>
       {supplyList.SupplyContainers.map((supCont, key) => {
         return (
           <div
             className={
               supCont.showMore ? "CategoryContainer" : "CategoryContainer hide"
             }
-            // className="CategoryContainer"
-            key={key}
+            key={supCont.Category}
           >
             <div className="SupplyHeader">
               <div>
@@ -148,33 +149,38 @@ const Supply = ({ openModal }) => {
                   showState={supCont.showMore}
                   clicked={() => showMoreHandler(key)}
                 />
-                {/* <Button clicked={() => showMoreHandler(key)}>\/</Button> */}
               </div>
-              <p className="PriceLabel">
-                {Object.keys(supCont.supplies).reduce((previous, key) => {
-                  return previous + supCont.supplies[key].price;
-                }, 0)}
-                <span> zl</span>
-              </p>
+              <div className="DotsAndPrice">
+                <div className="PriceAndAdd">
+                  <p className="PriceLabel">
+                    {Object.keys(supCont.supplies).reduce((previous, index) => {
+                      return previous + supCont.supplies[index].price;
+                    }, 0)}
+                    <span> zl</span>
+                  </p>
+                  <Button
+                    clicked={openModalAddSupply}
+                    classes="btn-sm btn-orangeGradient"
+                  >
+                    <i className="fas fa-plus-circle" />
+                  </Button>
+                </div>
+                <ThreeDots />
+              </div>
             </div>
+
             <div className="SupplyBody">
-              {supCont.supplies.map((sup, key) => {
+              {supCont.supplies.map((sup, indexing) => {
                 return (
                   <SupplyUserTile
                     user={sup.user}
                     supply={sup.supply}
                     price={sup.price}
-                    key={key}
+                    key={sup.user + indexing}
                     openModal={openModalEditSupply}
                   />
                 );
               })}
-              <Button
-                clicked={openModalAddSupply}
-                classes="btn-sm btn-blueGradient"
-              >
-                + Add
-              </Button>
             </div>
           </div>
         );
