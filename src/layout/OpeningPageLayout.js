@@ -1,5 +1,4 @@
 import React, { useState } from "react";
-import axios from "axios";
 import Button from "../components/button/Button";
 import Modal from "../components/Modal/Modal";
 import TextInput from "../components/Inputs/TextInput/TextInput";
@@ -12,7 +11,7 @@ const OpeningPageLayout = props => {
     show: false,
     loginData: { username: "k", password: "" },
     registerData: {
-      username: "k",
+      username: "",
       password: "",
       password2: "",
       name: "",
@@ -57,30 +56,6 @@ const OpeningPageLayout = props => {
     });
   };
 
-  const handleLogIn = event => {
-    event.preventDefault();
-    axios
-      .get(
-        `https://jsonplaceholder.typicode.com/users/?username=${newState.loginData.username}`,
-        newState.loginData
-      )
-      .then(res => {
-        console.log(res);
-      });
-  };
-
-  const handleRegister = event => {
-    event.preventDefault();
-    axios
-      .get(
-        `https://jsonplaceholder.typicode.com/users/?username=${newState.registerData.username}`,
-        newState.registerData
-      )
-      .then(res => {
-        console.log(res);
-      });
-  };
-
   const loginFrom = () => {
     return (
       <Form>
@@ -95,9 +70,7 @@ const OpeningPageLayout = props => {
           name="password"
         />
         <em>Forot Password</em>
-        <Button clicked={handleLogIn} classes="btn-blueGradient btn-md">
-          Log In
-        </Button>
+        <Button classes="btn-blueGradient btn-md">Log In</Button>
       </Form>
     );
   };
@@ -135,9 +108,7 @@ const OpeningPageLayout = props => {
           placeholder="e-mail"
           name="email"
         />
-        <Button clicked={handleRegister} classes="btn-blueGradient btn-md">
-          Submit
-        </Button>
+        <Button classes="btn-blueGradient btn-md">Submit</Button>
       </Form>
     );
   };

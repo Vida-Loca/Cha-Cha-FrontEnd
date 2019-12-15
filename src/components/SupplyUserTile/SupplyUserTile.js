@@ -13,7 +13,7 @@ const SupplyUserTile = ({ user, supply, price, openModal }) => {
   };
 
   return (
-    <div className="OutterSupplyTile">
+    <div className="OuterSupplyTile">
       <div className="UserTileBody">
         <div>
           <Avatar imageLink="https://basicincome.org/wp-content/uploads/2018/12/profilepic.jpg" />
