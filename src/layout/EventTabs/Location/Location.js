@@ -1,11 +1,13 @@
 import React, { useState, useContext } from "react";
+import PropTypes from "prop-types";
 import "./Location.scss";
 import { FormContext } from "../../../context/FormContext";
 import Button from "../../../components/button/Button";
+import IconButton from "../../../components/button/IconButton";
 import Form from "../../../components/Form/Form";
 import TextInput from "../../../components/Inputs/TextInput/TextInput";
 
-const Location = props => {
+const Location = ({ openModal }) => {
   const setform = useContext(FormContext)[1];
 
   const [location, setLocation] = useState({
@@ -64,19 +66,19 @@ const Location = props => {
 
   const openModalToEditAdress = () => {
     setform({ renderForm: editAddress() });
-    props.openModal();
+    openModal();
   };
   const openModalToEditPhoneNumber = () => {
     setform({ renderForm: editPhoneNumber() });
-    props.openModal();
+    openModal();
   };
   const openModalToEditDateAndTtime = () => {
     setform({ renderForm: editDateAndTime() });
-    props.openModal();
+    openModal();
   };
   const openModalToAdditionalInformation = () => {
     setform({ renderForm: editAttitionalInformation() });
-    props.openModal();
+    openModal();
   };
 
   return (
@@ -89,55 +91,62 @@ const Location = props => {
           alt=""
         />
         <div className="TextInfo">
-          <p>
-            <strong>Adress:</strong>
-            <Button
-              clicked={openModalToEditAdress}
-              classes="btn-blueGradient btn-sm"
-            >
-              Edit
-            </Button>
-          </p>
-          <p>
-            {location.Address.City},{location.Address.Street},{" "}
-            {location.Address.HouseNumber}/{location.Address.ApartmentNumber}
-          </p>
-          <p>
-            <strong>Phone Number:</strong>
-            <Button
-              clicked={openModalToEditPhoneNumber}
-              classes="btn-blueGradient btn-sm"
-            >
-              Edit
-            </Button>
-          </p>
-          <p>{location.Contact}</p>
-          <p>
-            <strong>Date & Time:</strong>
-            <Button
-              clicked={openModalToEditDateAndTtime}
-              classes="btn-blueGradient btn-sm"
-            >
-              Edit
-            </Button>
-          </p>
-          <p>
-            {location.Date}, {location.Time}
-          </p>
-          <p>
-            <strong>Additional Information:</strong>
-            <Button
-              clicked={openModalToAdditionalInformation}
-              classes="btn-blueGradient btn-sm"
-            >
-              Edit
-            </Button>
-          </p>
-          <p>{location.AdditionalInformation}</p>
+          <div className="infoSection">
+            <div>
+              <IconButton
+                clicked={openModalToEditAdress}
+                iconClass="fas fa-edit"
+              />
+              <strong>Adress:</strong>
+            </div>
+            <div>
+              {location.Address.City},{location.Address.Street},{" "}
+              {location.Address.HouseNumber}/{location.Address.ApartmentNumber}
+            </div>
+          </div>
+
+          <div className="infoSection">
+            <div>
+              <IconButton
+                clicked={openModalToEditPhoneNumber}
+                iconClass="fas fa-edit"
+              />
+              <strong>Phone Number:</strong>
+            </div>
+            <div>{location.Contact}</div>
+          </div>
+
+          <div className="infoSection">
+            <div>
+              <IconButton
+                clicked={openModalToEditDateAndTtime}
+                iconClass="fas fa-edit"
+              />
+              <strong>Date & Time:</strong>
+            </div>
+            <div>
+              {location.Date}, {location.Time}
+            </div>
+          </div>
+
+          <div className="infoSection">
+            <div>
+              <IconButton
+                clicked={openModalToAdditionalInformation}
+                iconClass="fas fa-edit"
+              />
+              <strong>Additional Information:</strong>
+            </div>
+            <div>{location.AdditionalInformation}</div>
+          </div>
         </div>
       </div>
     </div>
   );
+};
+
+Location.propTypes = {
+  openModal: PropTypes.func.isRequired
 };
 
 export default Location;

@@ -6,7 +6,7 @@ import { FormProvider } from "./context/FormContext";
 
 class App extends React.Component {
   state = {
-    isLoggedIn: false
+    isLoggedIn: true
   };
 
   render() {
