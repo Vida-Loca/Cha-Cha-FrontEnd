@@ -53,11 +53,41 @@ const Profile = props => {
       </div>
       <div>
         <h2>My Events</h2>
-        <EventCard />
-        <EventCard />
-        <EventCard />
-        <EventCard />
-        <EventCard />
+        <EventCard
+          id="dwkm45s"
+          key="1"
+          name="Ebent 233"
+          location="some location"
+          date="2010-23-2"
+        />
+        <EventCard
+          id="swf45"
+          key="2"
+          name="Ebent 233"
+          location="some location"
+          date="2010-23-2"
+        />
+        <EventCard
+          id="swdwf245"
+          key="3"
+          name="Ebent 233"
+          location="some location"
+          date="2010-23-2"
+        />
+        <EventCard
+          id="dwwDD45"
+          key="4"
+          name="Ebent 233"
+          location="some location"
+          date="2010-23-2"
+        />
+        <EventCard
+          id="dawdGTh4J"
+          key="5"
+          name="Ebent 233"
+          location="some location"
+          date="2010-23-2"
+        />
       </div>
     </div>
   );

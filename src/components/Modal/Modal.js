@@ -6,7 +6,6 @@ import "./Modal.scss";
 const Modal = ({ show, modalClose, children }) => {
   return (
     <>
-      {show ? <Backdrop clicked={modalClose} /> : null}
       <div
         className="ModalContainer"
         style={{ display: show ? "flex" : "none" }}
@@ -15,14 +14,19 @@ const Modal = ({ show, modalClose, children }) => {
           {children}
         </div>
       </div>
+      {show ? <Backdrop clicked={modalClose} /> : null}
     </>
   );
+};
+
+Modal.defaultPoprs = {
+  children: ""
 };
 
 Modal.propTypes = {
   show: PropTypes.bool.isRequired,
   modalClose: PropTypes.func.isRequired,
-  children: PropTypes.node.isRequired
+  children: PropTypes.node
 };
 
 export default Modal;

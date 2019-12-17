@@ -7,6 +7,8 @@ import { FormContext } from "../context/FormContext";
 import Home from "./Home/Home";
 import Profile from "./Profile/Profile";
 
+import Suplies from "./EventTabs/Supply/Supply";
+
 const MainLayout = () => {
   const changedForm = useContext(FormContext)[0];
 
@@ -18,12 +20,30 @@ const MainLayout = () => {
       { navLink: "Admin", iconClass: "fas fa-user-shield" }
     ],
     eventNav: [
-      { navLink: "Suplies", iconClass: "fas fa-box-open" },
-      { navLink: "Location", iconClass: "fas fa-map-marker-alt" },
-      { navLink: "Members", iconClass: "fas fa-users" },
-      { navLink: "Photos", iconClass: "fas fa-images" },
-      { navLink: "Forum", iconClass: "fas fa-comments" },
-      { navLink: "Games", iconClass: "fas fa-gamepad" }
+      {
+        navLink: "Suplies",
+        iconClass: "fas fa-box-open"
+      },
+      {
+        navLink: "Location",
+        iconClass: "fas fa-map-marker-alt"
+      },
+      {
+        navLink: "Members",
+        iconClass: "fas fa-users"
+      },
+      {
+        navLink: "Photos",
+        iconClass: "fas fa-images"
+      },
+      {
+        navLink: "Forum",
+        iconClass: "fas fa-comments"
+      },
+      {
+        navLink: "Games",
+        iconClass: "fas fa-gamepad"
+      }
     ]
   });
 
@@ -56,17 +76,18 @@ const MainLayout = () => {
           />
           <Route path="/admin" exact render={() => <h1>this is Admin</h1>} />
           <Route
-            path="/suplies"
+            path="/event/:id/suplies"
             exact
-            render={() => <h1>this is Suplies</h1>}
+            render={() => <Suplies openModal={showModal} />}
+            // render component with suplies and pass id as a prop
           />
           <Route
-            path="/location"
+            path="/event/:id/location"
             exact
             render={() => <h1>this is Location</h1>}
           />
           <Route
-            path="/members"
+            path="/event/:id/members"
             exact
             render={() => <h1>this is Memebrs</h1>}
           />
@@ -74,10 +95,16 @@ const MainLayout = () => {
           <Route path="/forum" exact render={() => <h1>this is Forum</h1>} />
           <Route path="/games" exact render={() => <h1>this is Games</h1>} />
         </div>
-        <Sidebar
-          classes="SideBar-darkBlue"
-          navName="EventNav"
-          navlinks={mainState.eventNav}
+        <Route
+          path="/event/:id"
+          render={props => (
+            <Sidebar
+              eventId={props.match.params.id}
+              classes="SideBar-darkBlue"
+              navName="EventNav"
+              navlinks={mainState.eventNav}
+            />
+          )}
         />
       </BrowserRouter>
     </div>

@@ -1,4 +1,8 @@
-@import '../../globalStyles/globalVariabels.scss';
+@import "../../globalStyles/globalVariabels.scss";
+a {
+  text-decoration: none;
+  color: black;
+}
 
 .Event-Card {
   display: grid;

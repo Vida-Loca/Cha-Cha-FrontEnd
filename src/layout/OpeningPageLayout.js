@@ -1,79 +1,123 @@
-import React, { Component } from "react";
+import React, { useState } from "react";
 import Button from "../components/button/Button";
 import Modal from "../components/Modal/Modal";
 import TextInput from "../components/Inputs/TextInput/TextInput";
 import Form from "../components/Form/Form";
 
-class OpeningPageLayout extends Component {
-  state = { chooseForm: false, show: false };
+const OpeningPageLayout = props => {
+  // state = { chooseForm: false, show: false };
+  const [newState, seNewState] = useState({
+    chooseForm: false,
+    show: false,
+    loginData: { username: "", password: "" },
+    registerData: {
+      username: "",
+      password: "",
+      password2: "",
+      name: "",
+      lastname: "",
+      email: ""
+    }
+  });
 
-  hideModal = () => {
-    this.setState({ show: false });
-  };
-  showModal = () => {
-    this.setState({ show: true });
+  const hideModal = () => {
+    seNewState({ ...newState, show: false });
   };
 
-  openLogIn = () => {
-    this.showModal();
-    this.setState({ chooseForm: true });
+  const openLogIn = () => {
+    // showModal();
+    seNewState({ ...newState, chooseForm: true, show: true });
+    console.log(newState);
   };
 
-  openRegister = () => {
-    this.showModal();
-    this.setState({ chooseForm: false });
+  const openRegister = () => {
+    // showModal();
+    seNewState({ ...newState, chooseForm: false, show: true });
   };
 
-  loginFrom = () => {
+  const handleLoginChange = event => {
+    seNewState({
+      ...newState,
+      loginData: {
+        ...newState.loginData,
+        [`${event.target.name}`]: event.target.value
+      }
+    });
+  };
+
+  const handleRegsterChange = event => {
+    seNewState({
+      ...newState,
+      registerData: {
+        ...newState.registerData,
+        [`${event.target.name}`]: event.target.value
+      }
+    });
+  };
+
+  const loginFrom = () => {
     return (
       <Form>
-        <TextInput placeholder="username" name="username" />
-        <TextInput placeholder="password" name="password" />
+        <TextInput
+          onChange={handleLoginChange}
+          placeholder="username"
+          name="username"
+        />
+        <TextInput
+          onChange={handleLoginChange}
+          placeholder="password"
+          name="password"
+        />
         <em>Forot Password</em>
-        <Button to="/home" classes="btn-blueGradient btn-md">
-          Log In
-        </Button>
+        <Button classes="btn-blueGradient btn-md">Log In</Button>
       </Form>
     );
   };
 
-  registerForm = () => {
+  const registerForm = () => {
+    const data = [
+      { placeholder: "username", name: "username" },
+      { placeholder: "password", name: "password" },
+      { placeholder: "repeat rassword", name: "password2" },
+      { placeholder: "name", name: "name" },
+      { placeholder: "lastname", name: "lastname" },
+      { placeholder: "e-mail", name: "email" }
+    ];
     return (
       <Form>
-        <TextInput placeholder="username" name="username" />
-        <TextInput placeholder="password" name="password" />
-        <TextInput placeholder="repeat password" name="password2" />
-        <TextInput placeholder="name" name="name" />
-        <TextInput placeholder="surname" name="surname" />
-        <TextInput placeholder="e-mail" name="email" />
+        {data.map(inputs => {
+          return (
+            <TextInput
+              onChange={handleRegsterChange}
+              placeholder={inputs.placeholder}
+              name={inputs.name}
+              key={inputs.name}
+            />
+          );
+        })}
+
         <Button classes="btn-blueGradient btn-md">Submit</Button>
       </Form>
     );
   };
 
-  render() {
-    return (
-      <div className="FirstLayout">
-        <Modal show={this.state.show} modalClose={this.hideModal}>
-          {this.state.chooseForm ? this.loginFrom() : this.registerForm()}
-        </Modal>
+  return (
+    <div className="FirstLayout">
+      <Modal show={newState.show} modalClose={hideModal}>
+        {newState.chooseForm ? loginFrom() : registerForm()}
+      </Modal>
 
-        <div className="SignContent">
-          <h1>Skibidi</h1>
-          <Button clicked={this.openLogIn} classes="btn-blueGradient btn-lg">
-            Sign In
-          </Button>
-          <Button
-            clicked={this.openRegister}
-            classes="btn-orangeGradient btn-lg"
-          >
-            Sign Up
-          </Button>
-          {this.props.children}
-        </div>
+      <div className="SignContent">
+        <h1>Skibidi</h1>
+        <Button clicked={openLogIn} classes="btn-blueGradient btn-lg">
+          Sign In
+        </Button>
+        <Button clicked={openRegister} classes="btn-orangeGradient btn-lg">
+          Sign Up
+        </Button>
       </div>
-    );
-  }
-}
+    </div>
+  );
+};
 
 export default OpeningPageLayout;
