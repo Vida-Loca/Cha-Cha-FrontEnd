@@ -9,13 +9,13 @@ const OpeningPageLayout = props => {
   const [newState, seNewState] = useState({
     chooseForm: false,
     show: false,
-    loginData: { username: "k", password: "" },
+    loginData: { username: "", password: "" },
     registerData: {
       username: "",
       password: "",
       password2: "",
       name: "",
-      surname: "",
+      lastname: "",
       email: ""
     }
   });
@@ -33,7 +33,6 @@ const OpeningPageLayout = props => {
   const openRegister = () => {
     // showModal();
     seNewState({ ...newState, chooseForm: false, show: true });
-    console.log(newState);
   };
 
   const handleLoginChange = event => {
@@ -76,38 +75,27 @@ const OpeningPageLayout = props => {
   };
 
   const registerForm = () => {
+    const data = [
+      { placeholder: "username", name: "username" },
+      { placeholder: "password", name: "password" },
+      { placeholder: "repeat rassword", name: "password2" },
+      { placeholder: "name", name: "name" },
+      { placeholder: "lastname", name: "lastname" },
+      { placeholder: "e-mail", name: "email" }
+    ];
     return (
       <Form>
-        <TextInput
-          onChange={handleRegsterChange}
-          placeholder="username"
-          name="username"
-        />
-        <TextInput
-          onChange={handleRegsterChange}
-          placeholder="password"
-          name="password"
-        />
-        <TextInput
-          onChange={handleRegsterChange}
-          placeholder="repeat password"
-          name="password2"
-        />
-        <TextInput
-          onChange={handleRegsterChange}
-          placeholder="name"
-          name="name"
-        />
-        <TextInput
-          onChange={handleRegsterChange}
-          placeholder="surname"
-          name="surname"
-        />
-        <TextInput
-          onChange={handleRegsterChange}
-          placeholder="e-mail"
-          name="email"
-        />
+        {data.map(inputs => {
+          return (
+            <TextInput
+              onChange={handleRegsterChange}
+              placeholder={inputs.placeholder}
+              name={inputs.name}
+              key={inputs.name}
+            />
+          );
+        })}
+
         <Button classes="btn-blueGradient btn-md">Submit</Button>
       </Form>
     );
@@ -127,7 +115,6 @@ const OpeningPageLayout = props => {
         <Button clicked={openRegister} classes="btn-orangeGradient btn-lg">
           Sign Up
         </Button>
-        {props.children}
       </div>
     </div>
   );
