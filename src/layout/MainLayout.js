@@ -9,6 +9,7 @@ import Profile from "./Profile/Profile";
 
 import Suplies from "./EventTabs/Supply/Supply";
 import Location from "./EventTabs/Location/Location";
+import Members from "./EventTabs/Members/Members";
 
 const MainLayout = () => {
   const changedForm = useContext(FormContext)[0];
@@ -90,7 +91,7 @@ const MainLayout = () => {
           <Route
             path="/event/:id/members"
             exact
-            render={() => <h1>this is Memebrs</h1>}
+            render={() => <Members openModal={showModal} />}
           />
           <Route path="/photos" exact render={() => <h1>this is Photos</h1>} />
           <Route path="/forum" exact render={() => <h1>this is Forum</h1>} />

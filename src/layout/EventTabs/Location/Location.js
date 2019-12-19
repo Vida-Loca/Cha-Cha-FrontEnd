@@ -91,6 +91,7 @@ const Location = ({ openModal }) => {
           alt=""
         />
         <div className="TextInfo">
+
           <div className="infoSection">
             <div>
               <IconButton
@@ -139,6 +140,7 @@ const Location = ({ openModal }) => {
             </div>
             <div>{location.AdditionalInformation}</div>
           </div>
+
         </div>
       </div>
     </div>
