@@ -27,12 +27,13 @@
 .info {
   display: grid;
   grid-template-columns: 1fr;
-  justify-content: center;
+  // justify-content: center;
   @include breaking-point-2 {
     grid-template-columns: 1fr 1fr;
   }
   .TextInfo {
-    margin: 1rem auto;
+    margin: 2rem;
+    justify-self: flex-start;
     @include breaking-point-2 {
       p {
         display: flex;
@@ -41,9 +42,10 @@
   }
 
   .Map {
+    margin: 2rem;
     border-radius: 2rem;
     width: 20rem;
     height: 20rem;
-    justify-self: center;
+    justify-self: flex-end;
   }
 }
