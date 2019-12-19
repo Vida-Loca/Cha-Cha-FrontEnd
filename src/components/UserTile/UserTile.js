@@ -16,8 +16,14 @@ const UserTile = ({ username, buttonClass, buttonName }) => {
   );
 };
 
-UserTile.propType = {
-  username: PropTypes.string.isRequired
+UserTile.defaultProps = {
+  buttonClass: ""
+};
+
+UserTile.propTypes = {
+  username: PropTypes.string.isRequired,
+  buttonClass: PropTypes.string,
+  buttonName: PropTypes.string.isRequired
 };
 
 export default UserTile;
