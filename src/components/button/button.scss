@@ -8,6 +8,14 @@
   border-width: 0;
   outline: none;
 }
+.buttonIcon {
+  cursor: pointer;
+  color: black;
+
+  &:hover {
+    color: rgb(46, 46, 46);
+  }
+}
 
 .btn-sm {
   padding: 0.4rem 0.8rem;

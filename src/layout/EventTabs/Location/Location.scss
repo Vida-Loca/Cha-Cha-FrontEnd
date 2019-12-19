@@ -1,0 +1,49 @@
+@import "../../../globalStyles//globalVariabels.scss";
+
+.EventName {
+  margin-left: 1rem;
+  font-weight: bold;
+  letter-spacing: 1px;
+  font-size: 2rem;
+  &::after {
+    content: "";
+    margin-top: 1.5rem;
+    display: block;
+    width: 100%;
+    height: 1px;
+    background: black;
+  }
+}
+
+.infoSection {
+  margin: 1rem 0;
+  display: flex;
+  flex-direction: column;
+  @include breaking-point-2 {
+    justify-content: center;
+  }
+}
+
+.info {
+  display: grid;
+  grid-template-columns: 1fr;
+  justify-content: center;
+  @include breaking-point-2 {
+    grid-template-columns: 1fr 1fr;
+  }
+  .TextInfo {
+    margin: 1rem auto;
+    @include breaking-point-2 {
+      p {
+        display: flex;
+      }
+    }
+  }
+
+  .Map {
+    border-radius: 2rem;
+    width: 20rem;
+    height: 20rem;
+    justify-self: center;
+  }
+}
