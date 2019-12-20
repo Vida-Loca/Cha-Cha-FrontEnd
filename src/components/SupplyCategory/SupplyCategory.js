@@ -15,8 +15,10 @@ import {
 import { FormContext } from "../../context/FormContext";
 
 const SupplyCategory = ({ openModal, supCont }) => {
-  const [supplyContainer, setsupplyContainer] = useState(supCont);
-
+  const [supplyContainer, setsupplyContainer] = useState({
+    ...supCont,
+    showMore: false
+  });
   const setform = useContext(FormContext)[1];
 
   const openModalEditSupply = userId => {
@@ -68,13 +70,13 @@ const SupplyCategory = ({ openModal, supCont }) => {
       </div>
 
       <div className="SupplyBody">
-        {supplyContainer.supplies.map((sup, indexing) => {
+        {supplyContainer.supplies.map(sup => {
           return (
             <SupplyUserTile
               user={sup.user}
               supply={sup.supply}
               price={sup.price}
-              key={sup.user + indexing}
+              key={sup.id}
               openModal={openModalEditSupply}
             />
           );
@@ -87,7 +89,11 @@ const SupplyCategory = ({ openModal, supCont }) => {
 SupplyCategory.propTypes = {
   // eslint-disable-next-line react/require-default-props
   openModal: PropTypes.func,
-  supCont: Object.isRequired
+  // eslint-disable-next-line react/require-default-props
+  supCont: PropTypes.shape({
+    Category: PropTypes.string.isRequired,
+    supplies: PropTypes.array.isRequired
+  })
 };
 
 export default SupplyCategory;
