@@ -7,7 +7,7 @@ import { FormContext } from "../context/FormContext";
 import Home from "./Home/Home";
 import Profile from "./Profile/Profile";
 
-import Suplies from "./EventTabs/Supply/Supply";
+import Supply from "./EventTabs/Supply/Supply";
 import Location from "./EventTabs/Location/Location";
 import Members from "./EventTabs/Members/Members";
 
@@ -80,7 +80,7 @@ const MainLayout = () => {
           <Route
             path="/event/:id/suplies"
             exact
-            render={() => <Suplies openModal={showModal} />}
+            render={() => <Supply openModal={showModal} />}
             // render component with suplies and pass id as a prop
           />
           <Route

@@ -34,6 +34,7 @@ const Supply = ({ openModal }) => {
           Create new supply container
         </Button>
       </div>
+
       {supplyList.SupplyContainers.map(supCont => {
         return (
           <SupplyCategory
