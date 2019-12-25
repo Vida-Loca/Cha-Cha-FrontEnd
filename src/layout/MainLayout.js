@@ -1,11 +1,13 @@
 import React, { useState, useContext } from "react";
-import { BrowserRouter, Route, Redirect } from "react-router-dom";
+import { Switch, BrowserRouter, Route, Redirect } from "react-router-dom";
 import Sidebar from "../components/Sidebar/Sidebar";
 import Modal from "../components/Modal/Modal";
 import { FormContext } from "../context/FormContext";
 
 import Home from "./Home/Home";
 import Profile from "./Profile/Profile";
+import Admin from "./Admin/Admin";
+import Event from "./EventTabs/Event";
 
 import Supply from "./EventTabs/Supply/Supply";
 import Location from "./EventTabs/Location/Location";
@@ -20,6 +22,10 @@ const MainLayout = () => {
       { navLink: "Profile", iconClass: "fas fa-user-alt" },
       { navLink: "Admin", iconClass: "fas fa-user-shield" }
     ],
+    adminNav: [
+      { navLink: "Users", iconClass: "fas fa-home" },
+      { navLink: "Events", iconClass: "fas fa-user-alt" }
+    ],
     eventNav: [
       {
         navLink: "Suplies",
@@ -32,18 +38,6 @@ const MainLayout = () => {
       {
         navLink: "Members",
         iconClass: "fas fa-users"
-      },
-      {
-        navLink: "Photos",
-        iconClass: "fas fa-images"
-      },
-      {
-        navLink: "Forum",
-        iconClass: "fas fa-comments"
-      },
-      {
-        navLink: "Games",
-        iconClass: "fas fa-gamepad"
       }
     ]
   });
@@ -64,46 +58,50 @@ const MainLayout = () => {
       <BrowserRouter>
         <Sidebar classes="SideBar-orange" navlinks={mainState.mainNav} />
         <div>
-          <Route path="/" exact render={() => <Redirect to="/home" />} />
-          <Route
-            path="/home"
-            exact
-            render={() => <Home openModal={showModal} />}
-          />
-          <Route
-            path="/profile"
-            exact
-            render={() => <Profile openModal={showModal} />}
-          />
-          <Route path="/admin" exact render={() => <h1>this is Admin</h1>} />
-          <Route
-            path="/event/:id/suplies"
-            exact
-            render={() => <Supply openModal={showModal} />}
-            // render component with suplies and pass id as a prop
-          />
-          <Route
-            path="/event/:id/location"
-            exact
-            render={() => <Location openModal={showModal} />}
-          />
-          <Route
-            path="/event/:id/members"
-            exact
-            render={() => <h1>this is Memebrs</h1>}
-          />
-          <Route path="/photos" exact render={() => <h1>this is Photos</h1>} />
-          <Route path="/forum" exact render={() => <h1>this is Forum</h1>} />
-          <Route path="/games" exact render={() => <h1>this is Games</h1>} />
+          <Switch>
+            <Route path="/" exact render={() => <Redirect to="/home" />} />
+            <Route
+              path="/home"
+              exact
+              render={() => <Home openModal={showModal} />}
+            />
+            <Route
+              path="/profile"
+              exact
+              render={() => <Profile openModal={showModal} />}
+            />
+
+            <Route
+              path="/admin"
+              render={() => <Admin openModal={showModal} />}
+            />
+            <Route
+              path="/event/:id"
+              render={({ match }) => (
+                <Event match={match} openModal={showModal} />
+              )}
+            />
+          </Switch>
         </div>
         <Route
           path="/event/:id"
-          render={props => (
+          render={({ match }) => (
             <Sidebar
-              eventId={props.match.params.id}
+              beforeLink={`/event/${match.params.id}`}
               classes="SideBar-darkBlue"
               navName="EventNav"
               navlinks={mainState.eventNav}
+            />
+          )}
+        />
+        <Route
+          path="/admin"
+          render={() => (
+            <Sidebar
+              beforeLink="/admin"
+              classes="SideBar-darkBlue"
+              navName="EventNav"
+              navlinks={mainState.adminNav}
             />
           )}
         />
