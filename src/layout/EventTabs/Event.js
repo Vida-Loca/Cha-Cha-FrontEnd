@@ -2,6 +2,7 @@ import React from "react";
 import { Route } from "react-router-dom";
 import Supply from "./Supply/Supply";
 import Location from "./Location/Location";
+import Members from "./Members/Members";
 
 const Event = ({ openModal, match }) => {
   return (
@@ -19,7 +20,7 @@ const Event = ({ openModal, match }) => {
       <Route
         path={`${match.path}/members`}
         exact
-        render={() => <h1>this is Memebrs</h1>}
+        render={() => <Members openModal={openModal} />}
       />
     </div>
   );

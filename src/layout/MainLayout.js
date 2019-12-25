@@ -9,9 +9,6 @@ import Profile from "./Profile/Profile";
 import Admin from "./Admin/Admin";
 import Event from "./EventTabs/Event";
 
-import Supply from "./EventTabs/Supply/Supply";
-import Location from "./EventTabs/Location/Location";
-
 const MainLayout = () => {
   const changedForm = useContext(FormContext)[0];
 

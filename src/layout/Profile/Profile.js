@@ -38,9 +38,11 @@ const Profile = props => {
         />
         <div className="information">
           <span className="username">@Heylee</span>
-          <Button clicked={insideProfile} classes="btn-sm btn-blueGradient">
-            Edit Profile
-          </Button>
+          <div>
+            <Button clicked={insideProfile} classes="btn-sm btn-blueGradient">
+              Edit Profile
+            </Button>
+          </div>
           <div className="icon-span">
             <i className="fas fa-calendar-alt" />
             <span>joined 10-12-2009</span>
