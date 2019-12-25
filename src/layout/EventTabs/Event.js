@@ -1,23 +1,23 @@
 import React from "react";
-import { BrowserRouter, Route, Redirect } from "react-router-dom";
+import { Route } from "react-router-dom";
 import Supply from "./Supply/Supply";
 import Location from "./Location/Location";
 
-const Event = ({ openModal }) => {
+const Event = ({ openModal, match }) => {
   return (
     <div>
       <Route
-        path="/event/:id/suplies"
+        path={`${match.path}/suplies`}
         exact
         render={() => <Supply openModal={openModal} />}
       />
       <Route
-        path="/event/:id/location"
+        path={`${match.path}/location`}
         exact
         render={() => <Location openModal={openModal} />}
       />
       <Route
-        path="/event/:id/members"
+        path={`${match.path}/members`}
         exact
         render={() => <h1>this is Memebrs</h1>}
       />

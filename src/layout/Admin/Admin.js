@@ -3,6 +3,7 @@ import "./Admin.scss";
 import { BrowserRouter, Route, Redirect } from "react-router-dom";
 
 import UserLayout from "./UsersLayout/UsersLayout";
+import EventLayout from "./EventLayout/EventLayout";
 
 const Admin = ({ openModal }) => {
   return (
@@ -20,7 +21,7 @@ const Admin = ({ openModal }) => {
       <Route
         path="/admin/events"
         exact
-        render={() => <div>admin event placeholder</div>}
+        render={() => <EventLayout openModal={openModal} />}
       />
     </div>
   );

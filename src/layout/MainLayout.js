@@ -1,5 +1,5 @@
 import React, { useState, useContext } from "react";
-import { BrowserRouter, Route, Redirect } from "react-router-dom";
+import { Switch, BrowserRouter, Route, Redirect } from "react-router-dom";
 import Sidebar from "../components/Sidebar/Sidebar";
 import Modal from "../components/Modal/Modal";
 import { FormContext } from "../context/FormContext";
@@ -58,22 +58,30 @@ const MainLayout = () => {
       <BrowserRouter>
         <Sidebar classes="SideBar-orange" navlinks={mainState.mainNav} />
         <div>
-          <Route path="/" exact render={() => <Redirect to="/home" />} />
-          <Route
-            path="/home"
-            exact
-            render={() => <Home openModal={showModal} />}
-          />
-          <Route
-            path="/profile"
-            exact
-            render={() => <Profile openModal={showModal} />}
-          />
-          <Route path="/admin" render={() => <Admin openModal={showModal} />} />
-          <Route
-            path="/event/:id"
-            render={() => <Event openModal={showModal} />}
-          />
+          <Switch>
+            <Route path="/" exact render={() => <Redirect to="/home" />} />
+            <Route
+              path="/home"
+              exact
+              render={() => <Home openModal={showModal} />}
+            />
+            <Route
+              path="/profile"
+              exact
+              render={() => <Profile openModal={showModal} />}
+            />
+
+            <Route
+              path="/admin"
+              render={() => <Admin openModal={showModal} />}
+            />
+            <Route
+              path="/event/:id"
+              render={({ match }) => (
+                <Event match={match} openModal={showModal} />
+              )}
+            />
+          </Switch>
         </div>
         <Route
           path="/event/:id"
