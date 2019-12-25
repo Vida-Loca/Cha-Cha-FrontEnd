@@ -16,7 +16,7 @@ const AdminUserTile = ({ id, image, name, openModal }) => {
       <span>{name}</span>
       <ThreeDots clicked={changeOptions} />
       {tileState.options ? (
-        <div className="Options">
+        <div className="Osptions">
           <Button
             // clicked={() => openModal(user)}
             classes="btn-sm btn-blueGradient"

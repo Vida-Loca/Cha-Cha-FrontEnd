@@ -24,7 +24,8 @@
   }
 }
 
-.Options {
+.Osptions {
+  display: flex;
+  flex-direction: row;
   position: absolute;
-  right: 7rem;
 }

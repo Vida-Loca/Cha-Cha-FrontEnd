@@ -7,6 +7,7 @@ import { FormContext } from "../context/FormContext";
 import Home from "./Home/Home";
 import Profile from "./Profile/Profile";
 import Admin from "./Admin/Admin";
+import Event from "./EventTabs/Event";
 
 import Supply from "./EventTabs/Supply/Supply";
 import Location from "./EventTabs/Location/Location";
@@ -68,33 +69,17 @@ const MainLayout = () => {
             exact
             render={() => <Profile openModal={showModal} />}
           />
+          <Route path="/admin" render={() => <Admin openModal={showModal} />} />
           <Route
-            path="/admin"
-            exact
-            render={() => <Admin openModal={showModal} />}
-          />
-          <Route
-            path="/event/:id/suplies"
-            exact
-            render={() => <Supply openModal={showModal} />}
-            // render component with suplies and pass id as a prop
-          />
-          <Route
-            path="/event/:id/location"
-            exact
-            render={() => <Location openModal={showModal} />}
-          />
-          <Route
-            path="/event/:id/members"
-            exact
-            render={() => <h1>this is Memebrs</h1>}
+            path="/event/:id"
+            render={() => <Event openModal={showModal} />}
           />
         </div>
         <Route
           path="/event/:id"
-          render={props => (
+          render={({ match }) => (
             <Sidebar
-              eventId={props.match.params.id}
+              beforeLink={`/event/${match.params.id}`}
               classes="SideBar-darkBlue"
               navName="EventNav"
               navlinks={mainState.eventNav}
@@ -103,9 +88,9 @@ const MainLayout = () => {
         />
         <Route
           path="/admin"
-          render={props => (
+          render={() => (
             <Sidebar
-              eventId={props.match.params.id}
+              beforeLink="/admin"
               classes="SideBar-darkBlue"
               navName="EventNav"
               navlinks={mainState.adminNav}

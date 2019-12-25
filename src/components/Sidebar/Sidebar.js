@@ -3,17 +3,17 @@ import PropTypes from "prop-types";
 import SideBarItem from "./SideBarItem/SdeBarItem";
 import "./SideBar.scss";
 
-const Sidebar = ({ navlinks, classes, eventId }) => {
+const Sidebar = ({ navlinks, classes, beforeLink }) => {
   return (
     <div className={classes}>
       {navlinks.map(navLink => {
-        const eventIdtemp = eventId !== undefined ? `/event/${eventId}` : "";
+        const tempBeforeLink = beforeLink !== undefined ? beforeLink : "";
         return (
           <SideBarItem
             key={navLink.navLink}
             name={navLink.navLink}
             icon={navLink.iconClass}
-            beforeLink={eventIdtemp}
+            beforeLink={tempBeforeLink}
           >
             {navLink.navLink}
           </SideBarItem>
