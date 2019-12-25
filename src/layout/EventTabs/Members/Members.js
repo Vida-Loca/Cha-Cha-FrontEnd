@@ -56,7 +56,7 @@ Members.defaultProps = {
 };
 
 Members.propTypes = {
-  openModal: PropTypes.string
+  openModal: PropTypes.func
 };
 
 export default Members;
