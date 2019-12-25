@@ -6,6 +6,7 @@ import { FormContext } from "../context/FormContext";
 
 import Home from "./Home/Home";
 import Profile from "./Profile/Profile";
+import Admin from "./Admin/Admin";
 
 import Supply from "./EventTabs/Supply/Supply";
 import Location from "./EventTabs/Location/Location";
@@ -20,6 +21,10 @@ const MainLayout = () => {
       { navLink: "Profile", iconClass: "fas fa-user-alt" },
       { navLink: "Admin", iconClass: "fas fa-user-shield" }
     ],
+    adminNav: [
+      { navLink: "Users", iconClass: "fas fa-home" },
+      { navLink: "Events", iconClass: "fas fa-user-alt" }
+    ],
     eventNav: [
       {
         navLink: "Suplies",
@@ -32,18 +37,6 @@ const MainLayout = () => {
       {
         navLink: "Members",
         iconClass: "fas fa-users"
-      },
-      {
-        navLink: "Photos",
-        iconClass: "fas fa-images"
-      },
-      {
-        navLink: "Forum",
-        iconClass: "fas fa-comments"
-      },
-      {
-        navLink: "Games",
-        iconClass: "fas fa-gamepad"
       }
     ]
   });
@@ -75,7 +68,11 @@ const MainLayout = () => {
             exact
             render={() => <Profile openModal={showModal} />}
           />
-          <Route path="/admin" exact render={() => <h1>this is Admin</h1>} />
+          <Route
+            path="/admin"
+            exact
+            render={() => <Admin openModal={showModal} />}
+          />
           <Route
             path="/event/:id/suplies"
             exact
@@ -92,9 +89,6 @@ const MainLayout = () => {
             exact
             render={() => <h1>this is Memebrs</h1>}
           />
-          <Route path="/photos" exact render={() => <h1>this is Photos</h1>} />
-          <Route path="/forum" exact render={() => <h1>this is Forum</h1>} />
-          <Route path="/games" exact render={() => <h1>this is Games</h1>} />
         </div>
         <Route
           path="/event/:id"
@@ -104,6 +98,17 @@ const MainLayout = () => {
               classes="SideBar-darkBlue"
               navName="EventNav"
               navlinks={mainState.eventNav}
+            />
+          )}
+        />
+        <Route
+          path="/admin"
+          render={props => (
+            <Sidebar
+              eventId={props.match.params.id}
+              classes="SideBar-darkBlue"
+              navName="EventNav"
+              navlinks={mainState.adminNav}
             />
           )}
         />
