@@ -10,10 +10,9 @@ import Admin from "./Admin/Admin";
 import Event from "./EventTabs/Event";
 
 const MainLayout = () => {
-  const changedForm = useContext(FormContext)[0];
+  const [changedForm, setChangedForm] = useContext(FormContext);
 
-  const [mainState, mainStateSet] = useState({
-    show: false,
+  const mainState = useState({
     mainNav: [
       { navLink: "Home", iconClass: "fas fa-home" },
       { navLink: "Profile", iconClass: "fas fa-user-alt" },
@@ -37,18 +36,18 @@ const MainLayout = () => {
         iconClass: "fas fa-users"
       }
     ]
-  });
+  })[0];
 
   const hideModal = () => {
-    mainStateSet({ ...mainState, show: false });
+    setChangedForm({ ...changedForm, show: false });
   };
   const showModal = () => {
-    mainStateSet({ ...mainState, show: true });
+    setChangedForm({ ...changedForm, show: true });
   };
 
   return (
     <div className="MainLayout">
-      <Modal show={mainState.show} modalClose={hideModal}>
+      <Modal show={changedForm.show} modalClose={hideModal}>
         {changedForm.renderForm}
       </Modal>
 
@@ -57,21 +56,9 @@ const MainLayout = () => {
         <div>
           <Switch>
             <Route path="/" exact render={() => <Redirect to="/home" />} />
-            <Route
-              path="/home"
-              exact
-              render={() => <Home openModal={showModal} />}
-            />
-            <Route
-              path="/profile"
-              exact
-              render={() => <Profile openModal={showModal} />}
-            />
-
-            <Route
-              path="/admin"
-              render={() => <Admin openModal={showModal} />}
-            />
+            <Route path="/home" exact render={() => <Home />} />
+            <Route path="/profile" exact render={() => <Profile />} />
+            <Route path="/admin" render={() => <Admin />} />
             <Route
               path="/event/:id"
               render={({ match }) => (

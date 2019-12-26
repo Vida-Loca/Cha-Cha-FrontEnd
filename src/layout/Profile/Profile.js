@@ -25,8 +25,7 @@ const Profile = props => {
   };
 
   const insideProfile = () => {
-    setform({ renderForm: ProfileForm() });
-    props.openModal();
+    setform({ renderForm: ProfileForm(), show: true });
   };
 
   return (

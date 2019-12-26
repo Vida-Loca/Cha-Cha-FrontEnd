@@ -4,7 +4,7 @@ import Avatar from "../Avatar/Avatar";
 import ThreeDots from "../ThreeDots/ThreeDots";
 import Button from "../button/Button";
 
-const AdminUserTile = ({ id, image, name, openModal }) => {
+const AdminUserTile = ({ id, image, name }) => {
   const [tileState, tileStateSet] = useState({ options: false });
 
   const changeOptions = () => {
@@ -17,10 +17,7 @@ const AdminUserTile = ({ id, image, name, openModal }) => {
       <ThreeDots clicked={changeOptions} />
       {tileState.options ? (
         <div className="Osptions">
-          <Button
-            // clicked={() => openModal(user)}
-            classes="btn-sm btn-blueGradient"
-          >
+          <Button classes="btn-sm btn-blueGradient">
             <i className="far fa-edit" />
           </Button>
           <Button classes="btn-sm btn-orangeGradient">

@@ -1,14 +1,15 @@
-import React, { useState } from "react";
+import React, { useState, useContext } from "react";
 import Button from "../components/button/Button";
 import Modal from "../components/Modal/Modal";
 import TextInput from "../components/Inputs/TextInput/TextInput";
 import Form from "../components/Form/Form";
+import { FormContext } from "../context/FormContext";
 
 const OpeningPageLayout = props => {
-  // state = { chooseForm: false, show: false };
+  const [changedForm, setChangedForm] = useContext(FormContext);
+
   const [newState, seNewState] = useState({
     chooseForm: false,
-    show: false,
     loginData: { username: "", password: "" },
     registerData: {
       username: "",
@@ -21,18 +22,18 @@ const OpeningPageLayout = props => {
   });
 
   const hideModal = () => {
-    seNewState({ ...newState, show: false });
+    setChangedForm({ ...changedForm, show: false });
   };
-
   const openLogIn = () => {
     // showModal();
-    seNewState({ ...newState, chooseForm: true, show: true });
-    console.log(newState);
+    setChangedForm({ ...changedForm, show: true });
+    seNewState({ ...newState, chooseForm: true });
   };
 
   const openRegister = () => {
     // showModal();
-    seNewState({ ...newState, chooseForm: false, show: true });
+    setChangedForm({ ...changedForm, show: true });
+    seNewState({ ...newState, chooseForm: false });
   };
 
   const handleLoginChange = event => {
@@ -68,7 +69,7 @@ const OpeningPageLayout = props => {
           placeholder="password"
           name="password"
         />
-        <em>Forot Password</em>
+
         <Button classes="btn-blueGradient btn-md">Log In</Button>
       </Form>
     );
@@ -103,7 +104,7 @@ const OpeningPageLayout = props => {
 
   return (
     <div className="FirstLayout">
-      <Modal show={newState.show} modalClose={hideModal}>
+      <Modal show={changedForm.show} modalClose={hideModal}>
         {newState.chooseForm ? loginFrom() : registerForm()}
       </Modal>
 

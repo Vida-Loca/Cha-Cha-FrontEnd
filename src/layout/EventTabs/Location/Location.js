@@ -1,5 +1,5 @@
 import React, { useState, useContext } from "react";
-import PropTypes from "prop-types";
+
 import "./Location.scss";
 import { FormContext } from "../../../context/FormContext";
 import {
@@ -12,26 +12,22 @@ import TempData from "./Data/TempData";
 
 import InfoSection from "../../../components/InfoSection/InfoSection";
 
-const Location = ({ openModal }) => {
+const Location = () => {
   const setform = useContext(FormContext)[1];
 
   const [location, setLocation] = useState(TempData);
 
   const openModalToEditAdress = () => {
-    setform({ renderForm: editAddress() });
-    openModal();
+    setform({ show: true, renderForm: editAddress() });
   };
   const openModalToEditPhoneNumber = () => {
-    setform({ renderForm: editPhoneNumber() });
-    openModal();
+    setform({ show: true, renderForm: editPhoneNumber() });
   };
   const openModalToEditDateAndTtime = () => {
-    setform({ renderForm: editDateAndTime() });
-    openModal();
+    setform({ show: true, renderForm: editDateAndTime() });
   };
   const openModalToAdditionalInformation = () => {
-    setform({ renderForm: editAttitionalInformation() });
-    openModal();
+    setform({ show: true, renderForm: editAttitionalInformation() });
   };
 
   return (
@@ -68,10 +64,6 @@ const Location = ({ openModal }) => {
       </div>
     </div>
   );
-};
-
-Location.propTypes = {
-  openModal: PropTypes.func.isRequired
 };
 
 export default Location;

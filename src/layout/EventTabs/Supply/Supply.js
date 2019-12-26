@@ -11,7 +11,7 @@ import SupplyContainers from "./Data/TempData";
 import Button from "../../../components/button/Button";
 import SupplyCategory from "../../../components/SupplyCategory/SupplyCategory";
 
-const Supply = ({ openModal }) => {
+const Supply = () => {
   const setform = useContext(FormContext)[1];
 
   const [supplyList, setsupply] = useState({
@@ -19,8 +19,7 @@ const Supply = ({ openModal }) => {
   });
 
   const openModalNewSupplyContainer = () => {
-    setform({ renderForm: newSupplyContainerForm() });
-    openModal();
+    setform({ show: true, renderForm: newSupplyContainerForm() });
   };
 
   return (
@@ -38,7 +37,6 @@ const Supply = ({ openModal }) => {
       {supplyList.SupplyContainers.map(supCont => {
         return (
           <SupplyCategory
-            openModal={openModal}
             supCont={supCont}
             key={supCont.Category.slice().replace(" ", "")}
           />

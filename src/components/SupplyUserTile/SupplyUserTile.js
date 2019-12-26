@@ -5,7 +5,7 @@ import ThreeDots from "../ThreeDots/ThreeDots";
 import Button from "../button/Button";
 import "./SupplyUserTile.scss";
 
-const SupplyUserTile = ({ user, supply, price, openModal }) => {
+const SupplyUserTile = ({ user, supply, price }) => {
   const [tileState, tileStateSet] = useState({ options: false });
 
   const changeOptions = () => {
@@ -29,10 +29,7 @@ const SupplyUserTile = ({ user, supply, price, openModal }) => {
       </div>
       {tileState.options ? (
         <div className="Options">
-          <Button
-            clicked={() => openModal(user)}
-            classes="btn-sm btn-blueGradient"
-          >
+          <Button classes="btn-sm btn-blueGradient">
             <i className="far fa-edit" />
           </Button>
           <Button classes="btn-sm btn-orangeGradient">
@@ -47,9 +44,7 @@ const SupplyUserTile = ({ user, supply, price, openModal }) => {
 SupplyUserTile.propTypes = {
   user: PropTypes.string.isRequired,
   supply: PropTypes.string.isRequired,
-  price: PropTypes.number.isRequired,
-  // eslint-disable-next-line react/require-default-props
-  openModal: PropTypes.func
+  price: PropTypes.number.isRequired
 };
 
 export default SupplyUserTile;

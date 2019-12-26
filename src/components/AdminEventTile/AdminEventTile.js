@@ -3,7 +3,7 @@ import "./AdminEventTile.scss";
 import ThreeDots from "../ThreeDots/ThreeDots";
 import Button from "../button/Button";
 
-const AdminEventTile = ({ id, name, openModal }) => {
+const AdminEventTile = ({ id, name }) => {
   const [tileState, tileStateSet] = useState({ options: false });
 
   const changeOptions = () => {
@@ -15,10 +15,7 @@ const AdminEventTile = ({ id, name, openModal }) => {
       <ThreeDots clicked={changeOptions} />
       {tileState.options ? (
         <div className="Osptions">
-          <Button
-            // clicked={() => openModal(user)}
-            classes="btn-sm btn-blueGradient"
-          >
+          <Button classes="btn-sm btn-blueGradient">
             <i className="far fa-edit" />
           </Button>
           <Button classes="btn-sm btn-orangeGradient">
