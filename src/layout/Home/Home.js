@@ -3,6 +3,7 @@ import { Link } from "react-router-dom";
 import PropTypes from "prop-types";
 import Button from "../../components/button/Button";
 import TextInput from "../../components/Inputs/TextInput/TextInput";
+import DateInput from "../../components/Inputs/DateInput/DateInput";
 import Form from "../../components/Form/Form";
 import EventCard from "../../components/EventCard/EventCard";
 import { FormContext } from "../../context/FormContext";
@@ -61,8 +62,8 @@ const HomeLayout = props => {
       <Form>
         <TextInput placeholder="name" name="name" />
         <TextInput placeholder="location" name="location" />
-        <TextInput placeholder="date" name="date" />
-        <TextInput placeholder="time" name="time" />
+        <DateInput placeholder="date" name="date" />
+        <DateInput type="time" placeholder="time" name="time" />
         <Button to="/home" classes="btn-blueGradient btn-md">
           apply
         </Button>

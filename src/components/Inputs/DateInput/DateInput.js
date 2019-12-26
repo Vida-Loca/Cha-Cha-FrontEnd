@@ -2,24 +2,24 @@ import React from "react";
 import PropTypes from "prop-types";
 import "./TextInput.scss";
 
-const TextInput = ({ name, type, placeholder, onChange }) => {
+const DateInput = ({ name, placeholder, onChange, type }) => {
   return (
-    <div className="textInput">
+    <div className="textInputt">
       <input type={type} name={name} onChange={onChange} required />
       <label>{placeholder}</label>
     </div>
   );
 };
 
-TextInput.defaultProps = {
+DateInput.defaultProps = {
   placeholder: "",
-  type: "text"
+  type: "date"
 };
 
-TextInput.propTypes = {
+DateInput.propTypes = {
   name: PropTypes.string.isRequired,
-  type: PropTypes.oneOf(["text", "password", "number"]),
+  type: PropTypes.oneOf(["date", "time"]),
   placeholder: PropTypes.string
 };
 
-export default TextInput;
+export default DateInput;

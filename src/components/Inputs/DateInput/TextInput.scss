@@ -19,7 +19,7 @@
   transform: $transforms;
 }
 
-.textInput {
+.textInputt {
   position: relative;
   padding: 10px 0;
 
@@ -44,6 +44,7 @@
     position: absolute;
     margin-top: -38px;
     z-index: 2;
+    color: transparent;
     pointer-events: none;
   }
   input {
@@ -74,11 +75,14 @@
 
     &:focus ~ label {
       @include translate(0, -30px);
+      color: $main-blue;
     }
 
     &:valid ~ label {
       text-transform: uppercase;
       font-style: italic;
+      color: $main-blue;
+
       @include transform(translate(5px, -30px) scale(0.6));
     }
   }
