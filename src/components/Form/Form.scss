@@ -1,15 +1,23 @@
-@import '../../globalStyles/globalVariabels.scss';
+@import "../../globalStyles/globalVariabels.scss";
 
 .FormContainer {
-    display: flex;
-    flex-direction: column;
-    text-align: center;
-    justify-content: flex-start;
+  display: flex;
+  flex-direction: column;
+  text-align: center;
+  justify-content: flex-start;
 
-    em{
-        font-size: 0.8rem;
-        margin-left: -6rem;
-        margin-top: 0.5rem;
-        margin-bottom: 1rem;
-    }
+  em {
+    font-size: 0.8rem;
+    margin-left: -6rem;
+    margin-top: 0.5rem;
+    margin-bottom: 1rem;
+  }
+
+  button {
+    margin-top: 2rem;
+  }
+}
+
+.errorLabel {
+  color: red;
 }
