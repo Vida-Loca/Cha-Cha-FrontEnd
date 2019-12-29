@@ -1,7 +1,12 @@
+@import "../../globalStyles/globalVariabels.scss";
+
 .HomeLayout {
   display: grid;
-  grid-template-columns: 1fr 1fr;
+  grid-template-columns: 1fr;
   text-align: center;
+  @include breaking-point-2 {
+    grid-template-columns: 1fr 1fr;
+  }
 
   & > a {
     grid-column-start: 1;

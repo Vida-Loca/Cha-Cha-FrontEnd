@@ -32,7 +32,6 @@ const Location = () => {
 
   return (
     <div className="LocationBody">
-      <p className="EventName">New Year 2020</p>
       <div className="info">
         <img
           className="Map"

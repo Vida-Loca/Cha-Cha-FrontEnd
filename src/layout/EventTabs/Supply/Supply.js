@@ -24,7 +24,6 @@ const Supply = () => {
 
   return (
     <div className="SuplyBody">
-      <p className="EventName">Event Name</p>
       <div className="buttonContainer">
         <Button
           classes="btn-md btn-blueGradient"

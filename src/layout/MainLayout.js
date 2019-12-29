@@ -3,6 +3,7 @@ import { Switch, BrowserRouter, Route, Redirect } from "react-router-dom";
 import Sidebar from "../components/Sidebar/Sidebar";
 import Modal from "../components/Modal/Modal";
 import { FormContext } from "../context/FormContext";
+import Button from "../components/button/Button";
 
 import Home from "./Home/Home";
 import Profile from "./Profile/Profile";
@@ -44,6 +45,9 @@ const MainLayout = () => {
   const showModal = () => {
     setChangedForm({ ...changedForm, show: true });
   };
+  // const openNav = () => {
+
+  // }
 
   return (
     <div className="MainLayout">
