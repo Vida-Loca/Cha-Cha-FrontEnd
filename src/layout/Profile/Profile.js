@@ -1,14 +1,28 @@
-import React, { useContext } from "react";
+import React, { useContext, useState } from "react";
 import PropTypes from "prop-types";
 import { FormContext } from "../../context/FormContext";
 import Button from "../../components/button/Button";
 import TextInput from "../../components/Inputs/TextInput/TextInput";
 import Form from "../../components/Form/Form";
 import EventCard from "../../components/EventCard/EventCard";
+import Pagination from "../../components/Pagination/Pagination";
+import { tempEvents } from "./Data/TempData";
+
 import "./Profile.scss";
 
 const Profile = props => {
   const setform = useContext(FormContext)[1];
+  const [myEvents] = useState(tempEvents);
+
+  const [currentPage, setCurrentPage] = useState(1);
+  const [postsPerPage] = useState(5);
+
+  const indexOfLastPost = currentPage * postsPerPage;
+  const indexOfFirstPost = indexOfLastPost - postsPerPage;
+  const currentPosts = myEvents.slice(indexOfFirstPost, indexOfLastPost);
+
+  // Change page
+  const paginate = pageNumber => setCurrentPage(pageNumber);
 
   const ProfileForm = () => {
     return (
@@ -54,40 +68,21 @@ const Profile = props => {
       </div>
       <div>
         <h2>My Events</h2>
-        <EventCard
-          id="dwkm45s"
-          key="1"
-          name="Ebent 233"
-          location="some location"
-          date="2010-23-2"
-        />
-        <EventCard
-          id="swf45"
-          key="2"
-          name="Ebent 233"
-          location="some location"
-          date="2010-23-2"
-        />
-        <EventCard
-          id="swdwf245"
-          key="3"
-          name="Ebent 233"
-          location="some location"
-          date="2010-23-2"
-        />
-        <EventCard
-          id="dwwDD45"
-          key="4"
-          name="Ebent 233"
-          location="some location"
-          date="2010-23-2"
-        />
-        <EventCard
-          id="dawdGTh4J"
-          key="5"
-          name="Ebent 233"
-          location="some location"
-          date="2010-23-2"
+        {currentPosts.map(event => {
+          return (
+            <EventCard
+              id={event.id}
+              key={event.name}
+              name={event.name}
+              location={event.location}
+              date={event.date}
+            />
+          );
+        })}
+        <Pagination
+          postsPerPage={postsPerPage}
+          totalPosts={myEvents.length}
+          paginate={paginate}
         />
       </div>
     </div>

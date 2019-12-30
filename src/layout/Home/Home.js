@@ -9,11 +9,21 @@ import EventCard from "../../components/EventCard/EventCard";
 import { FormContext } from "../../context/FormContext";
 import "./Home.scss";
 import { tempEvents } from "./Data/TempData";
+import Pagination from "../../components/Pagination/Pagination";
 
 const HomeLayout = props => {
   const setform = useContext(FormContext)[1];
 
   const events = useState(tempEvents)[0];
+  const [currentPage, setCurrentPage] = useState(1);
+  const [postsPerPage] = useState(5);
+
+  const indexOfLastPost = currentPage * postsPerPage;
+  const indexOfFirstPost = indexOfLastPost - postsPerPage;
+  const currentPosts = tempEvents.slice(indexOfFirstPost, indexOfLastPost);
+
+  // Change page
+  const paginate = pageNumber => setCurrentPage(pageNumber);
 
   const newEventForm = () => {
     return (
@@ -42,7 +52,7 @@ const HomeLayout = props => {
       </Link>
       <div>
         <h2>Public Events</h2>
-        {events.map(event => {
+        {currentPosts.map(event => {
           return (
             <EventCard
               id={event.id}
@@ -53,6 +63,11 @@ const HomeLayout = props => {
             />
           );
         })}
+        <Pagination
+          postsPerPage={postsPerPage}
+          totalPosts={events.length}
+          paginate={paginate}
+        />
       </div>
     </div>
   );
