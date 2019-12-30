@@ -8,15 +8,14 @@ import { membersOfTheEvent, requestsFoThisEvent } from "./Data/TempData";
 import UserTile from "../../../components/UserTile/UserTile";
 import Button from "../../../components/button/Button";
 
-const Members = ({ openModal }) => {
+const Members = () => {
   const [members, setMembers] = useState(membersOfTheEvent);
   const [requests, setrequests] = useState(requestsFoThisEvent);
 
   const setform = useContext(FormContext)[1];
 
   const openModalToInviteUser = () => {
-    setform({ renderForm: inviteUser() });
-    openModal();
+    setform({ show: true, renderForm: inviteUser() });
   };
 
   return (

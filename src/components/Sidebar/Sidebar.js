@@ -1,11 +1,24 @@
-import React from "react";
+import React, { useState } from "react";
 import PropTypes from "prop-types";
 import SideBarItem from "./SideBarItem/SdeBarItem";
+import IconButton from "../button/IconButton";
 import "./SideBar.scss";
 
 const Sidebar = ({ navlinks, classes, beforeLink }) => {
+  const [showNavBar, setShowNavBar] = useState({ show: false });
+
+  const toggleNavBarHandler = () => {
+    setShowNavBar({ show: !showNavBar.show });
+  };
+  const hideNavBarHandler = () => {
+    setShowNavBar({ show: false });
+  };
   return (
-    <div className={classes}>
+    // <div className={`${classes} ${showNavBar.show ? }`}>
+    <div className={`${classes} ${showNavBar.show ? "show" : ""}`}>
+      <IconButton clicked={toggleNavBarHandler} iconClass="fas fa-bars">
+        X
+      </IconButton>
       {navlinks.map(navLink => {
         const tempBeforeLink = beforeLink !== undefined ? beforeLink : "";
         return (
@@ -14,6 +27,7 @@ const Sidebar = ({ navlinks, classes, beforeLink }) => {
             name={navLink.navLink}
             icon={navLink.iconClass}
             beforeLink={tempBeforeLink}
+            mobileNavBarHandler={hideNavBarHandler}
           >
             {navLink.navLink}
           </SideBarItem>

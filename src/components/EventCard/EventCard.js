@@ -21,7 +21,7 @@ const EventCard = ({ id, name, date, location }) => {
             {location}
           </span>
         </div>
-        <i className="fas fa-arrow-circle-right" />
+        <i className="fas fa-arrow-circle-right big-cirlcel" />
       </div>
     </Link>
   );

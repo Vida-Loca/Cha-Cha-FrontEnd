@@ -14,7 +14,7 @@ import {
 } from "./FormsToBeRendered/FormsToBeRendered";
 import { FormContext } from "../../context/FormContext";
 
-const SupplyCategory = ({ openModal, supCont }) => {
+const SupplyCategory = ({ supCont }) => {
   const [supplyContainer, setsupplyContainer] = useState({
     ...supCont,
     showMore: false
@@ -22,14 +22,12 @@ const SupplyCategory = ({ openModal, supCont }) => {
   const setform = useContext(FormContext)[1];
 
   const openModalEditSupply = userId => {
-    setform({ renderForm: editSupplyForm() });
+    setform({ show: true, renderForm: editSupplyForm() });
     console.log(userId);
-    openModal();
   };
 
   const openModalAddSupply = () => {
-    setform({ renderForm: addSupplyForm() });
-    openModal();
+    setform({ show: true, renderForm: addSupplyForm() });
   };
 
   const showMoreHandler = () => {
@@ -87,8 +85,6 @@ const SupplyCategory = ({ openModal, supCont }) => {
 };
 
 SupplyCategory.propTypes = {
-  // eslint-disable-next-line react/require-default-props
-  openModal: PropTypes.func,
   // eslint-disable-next-line react/require-default-props
   supCont: PropTypes.shape({
     Category: PropTypes.string.isRequired,
