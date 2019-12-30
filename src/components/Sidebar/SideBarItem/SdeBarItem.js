@@ -3,9 +3,22 @@ import PropTypes from "prop-types";
 import { NavLink } from "react-router-dom";
 import "./SideBarItem.scss";
 
-const SideBarItem = ({ name, icon, children, beforeLink }) => {
+const SideBarItem = ({
+  name,
+  icon,
+  children,
+  beforeLink,
+  mobileNavBarHandler
+}) => {
+  const testFun = () => {
+    console.log("jak");
+  };
   return (
-    <NavLink to={`${beforeLink}/${name.toLowerCase()}`} className="SideBarItem">
+    <NavLink
+      to={`${beforeLink}/${name.toLowerCase()}`}
+      className="SideBarItem"
+      onClick={() => mobileNavBarHandler()}
+    >
       <i className={icon} />
       {children}
     </NavLink>
@@ -14,14 +27,16 @@ const SideBarItem = ({ name, icon, children, beforeLink }) => {
 
 SideBarItem.defaultProps = {
   icon: "fab fa-bandcamp",
-  beforeLink: "/"
+  beforeLink: "/",
+  mobileNavBarHandler: () => {}
 };
 
 SideBarItem.propTypes = {
   name: PropTypes.string.isRequired,
   icon: PropTypes.string,
   beforeLink: PropTypes.string,
-  children: PropTypes.node.isRequired
+  children: PropTypes.node.isRequired,
+  mobileNavBarHandler: PropTypes.func
 };
 
 export default SideBarItem;

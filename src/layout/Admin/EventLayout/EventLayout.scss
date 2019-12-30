@@ -1,5 +1,9 @@
+@import "../../../globalStyles/globalVariabels.scss";
 .Users {
   display: grid;
-  grid-template-columns: 1fr 1fr;
+  grid-template-columns: 1fr;
   grid-column-gap: 1rem;
+  @include breaking-point-1 {
+    grid-template-columns: 1fr 1fr;
+  }
 }
