@@ -4,6 +4,7 @@ import Modal from "../components/Modal/Modal";
 import TextInput from "../components/Inputs/TextInput/TextInput";
 import Form from "../components/Form/Form";
 import { FormContext } from "../context/FormContext";
+import { authenticationService } from "../Authentication/service";
 
 const OpeningPageLayout = props => {
   const [changedForm, setChangedForm] = useContext(FormContext);
@@ -25,13 +26,11 @@ const OpeningPageLayout = props => {
     setChangedForm({ ...changedForm, show: false });
   };
   const openLogIn = () => {
-    // showModal();
     setChangedForm({ ...changedForm, show: true });
     seNewState({ ...newState, chooseForm: true });
   };
 
   const openRegister = () => {
-    // showModal();
     setChangedForm({ ...changedForm, show: true });
     seNewState({ ...newState, chooseForm: false });
   };
@@ -56,6 +55,24 @@ const OpeningPageLayout = props => {
     });
   };
 
+  const registerHandler = event => {
+    event.preventDefault();
+    authenticationService.register(newState.registerData);
+    console.log("-----", newState.registerData);
+  };
+
+  const loginHandler = event => {
+    event.preventDefault();
+    authenticationService.login(newState.loginData);
+    console.log("-----", newState.loginData);
+    localStorage.setItem("currentUser", "tesToken");
+  };
+
+  const logoutHandler = event => {
+    event.preventDefault();
+    authenticationService.logout();
+  };
+
   const loginFrom = () => {
     return (
       <Form>
@@ -70,7 +87,9 @@ const OpeningPageLayout = props => {
           name="password"
         />
 
-        <Button classes="btn-blueGradient btn-md">Log In</Button>
+        <Button clicked={loginHandler} classes="btn-blueGradient btn-md">
+          Log In
+        </Button>
       </Form>
     );
   };
@@ -97,7 +116,9 @@ const OpeningPageLayout = props => {
           );
         })}
 
-        <Button classes="btn-blueGradient btn-md">Submit</Button>
+        <Button clicked={logoutHandler} classes="btn-blueGradient btn-md">
+          Submit
+        </Button>
       </Form>
     );
   };
