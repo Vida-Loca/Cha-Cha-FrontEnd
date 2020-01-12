@@ -4,10 +4,12 @@ import Modal from "../components/Modal/Modal";
 import TextInput from "../components/Inputs/TextInput/TextInput";
 import Form from "../components/Form/Form";
 import { FormContext } from "../context/FormContext";
+import { UserContext } from "../context/UserContext";
 import { authenticationService } from "../Authentication/service";
 
 const OpeningPageLayout = props => {
   const [changedForm, setChangedForm] = useContext(FormContext);
+  const [user, setUser] = useContext(UserContext);
 
   const [newState, seNewState] = useState({
     chooseForm: false,
@@ -15,9 +17,9 @@ const OpeningPageLayout = props => {
     registerData: {
       username: "",
       password: "",
-      password2: "",
+      matchingPassword: "",
       name: "",
-      lastname: "",
+      surname: "",
       email: ""
     }
   });
@@ -57,15 +59,30 @@ const OpeningPageLayout = props => {
 
   const registerHandler = event => {
     event.preventDefault();
-    authenticationService.register(newState.registerData);
-    console.log("-----", newState.registerData);
+    authenticationService.register(newState.registerData).then(
+      result => {
+        setChangedForm({ ...changedForm, show: false });
+        console.log(result); // "Stuff worked!"
+      },
+      err => {
+        console.log(err); // Error: "It broke"
+      }
+    );
   };
 
   const loginHandler = event => {
     event.preventDefault();
-    authenticationService.login(newState.loginData);
-    console.log("-----", newState.loginData);
-    localStorage.setItem("currentUser", "tesToken");
+    authenticationService.login(newState.loginData).then(
+      result => {
+        setUser({ isLoggedIn: true, break: true });
+        setChangedForm({ ...changedForm, show: false });
+        console.log(result); // "Stuff worked!"
+      },
+      err => {
+        setUser({ isLoggedIn: false, break: true });
+        console.log(err); // Error: "It broke"
+      }
+    );
   };
 
   const logoutHandler = event => {
@@ -98,9 +115,9 @@ const OpeningPageLayout = props => {
     const data = [
       { placeholder: "username", name: "username" },
       { placeholder: "password", name: "password" },
-      { placeholder: "repeat rassword", name: "password2" },
+      { placeholder: "repeat rassword", name: "matchingPassword" },
       { placeholder: "name", name: "name" },
-      { placeholder: "lastname", name: "lastname" },
+      { placeholder: "surname", name: "surname" },
       { placeholder: "e-mail", name: "email" }
     ];
     return (
@@ -116,7 +133,7 @@ const OpeningPageLayout = props => {
           );
         })}
 
-        <Button clicked={logoutHandler} classes="btn-blueGradient btn-md">
+        <Button clicked={registerHandler} classes="btn-blueGradient btn-md">
           Submit
         </Button>
       </Form>

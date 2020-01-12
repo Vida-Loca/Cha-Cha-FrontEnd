@@ -1,6 +1,5 @@
 import { BehaviorSubject } from "rxjs";
 import { handleResponse } from "../helper";
-import { UserContext } from "../../context/UserContext";
 
 // const currentUserSubject = new BehaviorSubject(
 //   JSON.parse(localStorage.getItem("currentUser"))
@@ -13,15 +12,13 @@ function login(data) {
     body: JSON.stringify(data)
   };
 
-  return fetch(`http://localhost:8080/register`, requestOptions)
+  return fetch(`http://localhost:8081/login`, requestOptions)
     .then(handleResponse)
     .then(user => {
       // store user details and jwt token in local storage to keep user logged in between page refreshes
-      localStorage.setItem("currentUser", JSON.stringify(user));
-      //   currentUserSubject.next(user);
+      localStorage.setItem("currentUser", JSON.stringify(user.token));
 
-      console.log(user);
-      //   return user;
+      return user;
     });
 }
 
@@ -32,11 +29,10 @@ const register = data => {
     body: JSON.stringify(data)
   };
 
-  fetch(`http://localhost:8080/register`, requestOptions)
+  return fetch(`http://localhost:8081/user/registration`, requestOptions)
     .then(handleResponse)
     .then(myJson => {
-      console.log(myJson);
-      //   return myJson;
+      return myJson;
     });
 };
 

@@ -1,6 +1,7 @@
 import React, { useContext, useState } from "react";
 import PropTypes from "prop-types";
 import { FormContext } from "../../context/FormContext";
+import { UserContext } from "../../context/UserContext";
 import Button from "../../components/button/Button";
 import TextInput from "../../components/Inputs/TextInput/TextInput";
 import Form from "../../components/Form/Form";
@@ -12,6 +13,7 @@ import "./Profile.scss";
 
 const Profile = props => {
   const setform = useContext(FormContext)[1];
+  const [user, setuser] = useContext(UserContext);
   const [myEvents] = useState(tempEvents);
 
   const [currentPage, setCurrentPage] = useState(1);
@@ -42,6 +44,10 @@ const Profile = props => {
     setform({ renderForm: ProfileForm(), show: true });
   };
 
+  const LogOut = () => {
+    setuser({ isLoggedIn: false, break: true });
+  };
+
   return (
     <div className="profileRootContainer">
       <div>
@@ -63,6 +69,9 @@ const Profile = props => {
           <div className="icon-span">
             <i className="fas fa-users" />
             <span>Friends 20</span>
+            <Button clicked={LogOut} classes="btn-sm btn-orangeGradient">
+              Log out
+            </Button>
           </div>
         </div>
       </div>
