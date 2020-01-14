@@ -2,6 +2,7 @@ import React, { useContext, useState } from "react";
 import PropTypes from "prop-types";
 import { FormContext } from "../../context/FormContext";
 import { UserContext } from "../../context/UserContext";
+import { authenticationService } from "../../Authentication/service";
 import Button from "../../components/button/Button";
 import TextInput from "../../components/Inputs/TextInput/TextInput";
 import Form from "../../components/Form/Form";
@@ -45,6 +46,7 @@ const Profile = props => {
   };
 
   const LogOut = () => {
+    authenticationService.logout();
     setuser({ isLoggedIn: false, break: true });
   };
 
