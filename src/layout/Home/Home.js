@@ -1,4 +1,4 @@
-import React, { useContext, useState } from "react";
+import React, { useContext, useState, useEffect } from "react";
 import { Link } from "react-router-dom";
 import PropTypes from "prop-types";
 import Button from "../../components/button/Button";
@@ -10,9 +10,20 @@ import { FormContext } from "../../context/FormContext";
 import "./Home.scss";
 import { tempEvents } from "./Data/TempData";
 import Pagination from "../../components/Pagination/Pagination";
+import Modal from "../../components/Modal/Modal";
 
 const HomeLayout = props => {
-  const setform = useContext(FormContext)[1];
+  useEffect(() => {
+    console.log("hello from effect");
+    return () => {
+      console.log("be bie");
+    };
+  }, []);
+
+  const [forms, setform] = useContext(FormContext);
+  // const [forms2, setform2] = useState({ show: false });
+
+  const [testState, setTest] = useState({ kek: "" });
 
   const events = useState(tempEvents)[0];
   const [currentPage, setCurrentPage] = useState(1);
@@ -25,11 +36,20 @@ const HomeLayout = props => {
   // Change page
   const paginate = pageNumber => setCurrentPage(pageNumber);
 
+  const onChangeHandler = event => {
+    console.log(event.target.value);
+    setTest({ kek: "lol" });
+  };
+
   const newEventForm = () => {
     return (
       <Form>
         <TextInput placeholder="name" name="name" />
-        <TextInput placeholder="location" name="location" />
+        <TextInput
+          onChange={onChangeHandler}
+          placeholder="location"
+          name="location"
+        />
         <DateInput placeholder="date" name="date" />
         <DateInput type="time" placeholder="time" name="time" />
         <Button to="/home" classes="btn-blueGradient btn-md">
@@ -43,8 +63,18 @@ const HomeLayout = props => {
     setform({ show: true, renderForm: newEventForm() });
   };
 
+  // const hideModal = () => {
+  //   setChangedForm({ ...changedForm, show: false });
+  // };
+  // const showModal = () => {
+  //   setform2({ show: true });
+  //   console.log(`it is ${forms2.show}`);
+  // };
+
   return (
     <div className="HomeLayout">
+      {/* <Modal show={forms2.show}>{newEventForm()}</Modal> */}
+
       <Link to="/">
         <Button clicked={insideHome} classes="btn-md btn-blueGradient">
           + Create Event

@@ -39,21 +39,21 @@ const MainLayout = () => {
     ]
   })[0];
 
-  const hideModal = () => {
-    setChangedForm({ ...changedForm, show: false });
-  };
-  const showModal = () => {
-    setChangedForm({ ...changedForm, show: true });
-  };
+  // const hideModal = () => {
+  //   setChangedForm({ ...changedForm, show: false });
+  // };
+  // const showModal = () => {
+  //   setChangedForm({ ...changedForm, show: true });
+  // };
   // const openNav = () => {
 
   // }
 
   return (
     <div className="MainLayout">
-      <Modal show={changedForm.show} modalClose={hideModal}>
+      {/* <Modal show={changedForm.show} modalClose={hideModal}>
         {changedForm.renderForm}
-      </Modal>
+      </Modal> */}
 
       <BrowserRouter>
         <Sidebar classes="SideBar-orange" navlinks={mainState.mainNav} />
@@ -63,11 +63,10 @@ const MainLayout = () => {
             <Route path="/home" exact render={() => <Home />} />
             <Route path="/profile" exact render={() => <Profile />} />
             <Route path="/admin" render={() => <Admin />} />
+
             <Route
               path="/event/:id"
-              render={({ match }) => (
-                <Event match={match} openModal={showModal} />
-              )}
+              render={({ match }) => <Event match={match} />}
             />
           </Switch>
         </div>

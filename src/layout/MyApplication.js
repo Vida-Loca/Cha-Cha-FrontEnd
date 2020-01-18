@@ -6,7 +6,7 @@ import MainLayout from "../layout/MainLayout";
 // eslint-disable-next-line react/prefer-stateless-function
 class MyApplication extends Component {
   state = {
-    isLoggedIn: false
+    isLoggedIn: true
   };
 
   componentDidUpdate() {
