@@ -1,8 +1,17 @@
-@import '../../globalStyles/globalVariabels.scss';
+@import "../../globalStyles/globalVariabels.scss";
 
 .icon-span {
   grid-column-start: 1;
   grid-column-end: 3;
+}
+.logout-btn {
+  grid-column-start: 1;
+  grid-column-end: 3;
+  display: flex;
+  justify-content: center;
+  button {
+    margin: 0 0.5rem;
+  }
 }
 .information {
   grid-gap: 1rem;
@@ -30,8 +39,12 @@
 }
 
 .username {
+  grid-column-start: 1;
+  grid-column-end: 3;
   font-weight: bold;
   text-align: end;
+  display: flex;
+  justify-content: center;
 }
 
 img {

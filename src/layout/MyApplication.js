@@ -1,7 +1,7 @@
 import React, { Component, useContext } from "react";
 import { UserContext } from "../context/UserContext";
 import OpeningLayout from "../layout/OpeningPageLayout";
-import MainLayout from "../layout/MainLayout";
+import MainLayout from "./MainLayout/MainLayout";
 
 // eslint-disable-next-line react/prefer-stateless-function
 class MyApplication extends Component {

@@ -12,8 +12,6 @@ class Event extends Component {
   }
 
   componentDidMount() {
-    console.log("hi");
-
     fetch("https://jsonplaceholder.typicode.com/users/1")
       .then(response => response.json())
       .then(json => this.setState({ eventName: json.name }));

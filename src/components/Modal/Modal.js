@@ -4,12 +4,12 @@ import Backdrop from "../Backdrop/Backdrop";
 import "./Modal.scss";
 
 const Modal = ({ show, modalClose, children }) => {
-  // useEffect(() => {
-  //   console.log("Mounted Modal");
-  //   return () => {
-  //     console.log("Un Mounted Modal");
-  //   };
-  // }, []);
+  useEffect(() => {
+    console.log("Mounted Modal");
+    return () => {
+      console.log("Un Mounted Modal");
+    };
+  }, []);
 
   return (
     <>

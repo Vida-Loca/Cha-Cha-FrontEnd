@@ -12,18 +12,15 @@ import { tempEvents } from "./Data/TempData";
 import Pagination from "../../components/Pagination/Pagination";
 import Modal from "../../components/Modal/Modal";
 
-const HomeLayout = props => {
-  useEffect(() => {
-    console.log("hello from effect");
-    return () => {
-      console.log("be bie");
-    };
-  }, []);
+const Home = props => {
+  // useEffect(() => {
+  //   console.log("hello from effect");
+  //   return () => {
+  //     console.log("be bie");
+  //   };
+  // }, []);
 
   const [forms, setform] = useContext(FormContext);
-  // const [forms2, setform2] = useState({ show: false });
-
-  const [testState, setTest] = useState({ kek: "" });
 
   const events = useState(tempEvents)[0];
   const [currentPage, setCurrentPage] = useState(1);
@@ -33,25 +30,37 @@ const HomeLayout = props => {
   const indexOfFirstPost = indexOfLastPost - postsPerPage;
   const currentPosts = tempEvents.slice(indexOfFirstPost, indexOfLastPost);
 
+  const [newEvent, setNewEvent] = useState({
+    name: "",
+    location: "",
+    date: "",
+    time: ""
+  });
+
   // Change page
   const paginate = pageNumber => setCurrentPage(pageNumber);
 
   const onChangeHandler = event => {
-    console.log(event.target.value);
-    setTest({ kek: "lol" });
+    setNewEvent({ ...newEvent, [`${event.target.name}`]: event.target.value });
+    console.log(newEvent);
   };
 
   const newEventForm = () => {
     return (
       <Form>
-        <TextInput placeholder="name" name="name" />
+        <TextInput onChange={onChangeHandler} placeholder="name" name="name" />
         <TextInput
           onChange={onChangeHandler}
           placeholder="location"
           name="location"
         />
-        <DateInput placeholder="date" name="date" />
-        <DateInput type="time" placeholder="time" name="time" />
+        <DateInput onChange={onChangeHandler} placeholder="date" name="date" />
+        <DateInput
+          onChange={onChangeHandler}
+          type="time"
+          placeholder="time"
+          name="time"
+        />
         <Button to="/home" classes="btn-blueGradient btn-md">
           apply
         </Button>
@@ -63,23 +72,21 @@ const HomeLayout = props => {
     setform({ show: true, renderForm: newEventForm() });
   };
 
-  // const hideModal = () => {
-  //   setChangedForm({ ...changedForm, show: false });
-  // };
-  // const showModal = () => {
-  //   setform2({ show: true });
-  //   console.log(`it is ${forms2.show}`);
-  // };
+  const hideModal = () => {
+    setform({ ...forms, show: false });
+  };
 
   return (
     <div className="HomeLayout">
-      {/* <Modal show={forms2.show}>{newEventForm()}</Modal> */}
+      <Modal show={forms.show} modalClose={hideModal}>
+        {newEventForm()}
+      </Modal>
 
-      <Link to="/">
+      <div>
         <Button clicked={insideHome} classes="btn-md btn-blueGradient">
           + Create Event
         </Button>
-      </Link>
+      </div>
       <div>
         <h2>Public Events</h2>
         {currentPosts.map(event => {
@@ -102,9 +109,9 @@ const HomeLayout = props => {
     </div>
   );
 };
-HomeLayout.propTypes = {
+Home.propTypes = {
   // eslint-disable-next-line react/require-default-props
   openModal: PropTypes.func
 };
 
-export default HomeLayout;
+export default Home;
