@@ -57,12 +57,12 @@ const SupplyCategory = ({ supCont }) => {
             }, 0)}
             <span> zl</span>
           </p>
-          <Button
+          {/* <Button
             clicked={openModalAddSupply}
             classes="btn-sm btn-orangeGradient"
           >
             <i className="fas fa-plus-circle" />
-          </Button>
+          </Button> */}
         </div>
         <ThreeDots />
       </div>

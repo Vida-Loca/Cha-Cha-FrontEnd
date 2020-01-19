@@ -1,3 +1,4 @@
+/* eslint-disable no-nested-ternary */
 import React, { useState } from "react";
 import PropTypes from "prop-types";
 import Avatar from "../Avatar/Avatar";
@@ -6,6 +7,7 @@ import Button from "../button/Button";
 import "./SupplyUserTile.scss";
 import Form from "../Form/Form";
 import TextInput from "../Inputs/TextInput/TextInput";
+import EditInput from "../Inputs/EditInput/EditInput";
 
 const SupplyUserTile = ({ user, supply, price }) => {
   const [tileSupply, setTileSuply] = useState({
@@ -49,13 +51,15 @@ const SupplyUserTile = ({ user, supply, price }) => {
                 {tileSupply.supply}
               </span>
             ) : (
-              <span>
-                <TextInput
+              <span className="editControlls">
+                <EditInput
+                  value={tileSupply.price}
                   onChange={onChangeHandler}
                   placeholder="Price"
                   name="price"
                 />
-                <TextInput
+                <EditInput
+                  value={tileSupply.supply}
                   onChange={onChangeHandler}
                   placeholder="Supply name"
                   name="supply"
@@ -72,7 +76,7 @@ const SupplyUserTile = ({ user, supply, price }) => {
             <Button clicked={editHandler} classes="btn-sm btn-orangeGradient">
               <i className="fas fa-times-circle" />
             </Button>
-            <Button classes="btn-sm btn-orangeGradient">
+            <Button classes="btn-sm btn-blueGradient">
               <i className="fas fa-check" />
             </Button>
           </div>

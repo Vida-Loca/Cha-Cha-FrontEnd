@@ -7,19 +7,48 @@ import { membersOfTheEvent, requestsFoThisEvent } from "./Data/TempData";
 
 import UserTile from "../../../components/UserTile/UserTile";
 import Button from "../../../components/button/Button";
+import Modal from "../../../components/Modal/Modal";
+import Form from "../../../components/Form/Form";
+import TextInput from "../../../components/Inputs/TextInput/TextInput";
 
 const Members = () => {
   const [members, setMembers] = useState(membersOfTheEvent);
   const [requests, setrequests] = useState(requestsFoThisEvent);
 
-  const setform = useContext(FormContext)[1];
+  const [forms, setform] = useContext(FormContext);
+
+  const [findUser, setfindUser] = useState({ username: "" });
 
   const openModalToInviteUser = () => {
     setform({ show: true, renderForm: inviteUser() });
   };
+  const hideModal = () => {
+    setform({ ...forms, show: false });
+  };
+
+  const onChangeHandler = event => {
+    setfindUser({ ...findUser, [`${event.target.name}`]: event.target.value });
+    console.log(findUser);
+  };
+
+  const inviteUser = () => {
+    return (
+      <Form>
+        <TextInput
+          onChange={onChangeHandler}
+          placeholder="Username"
+          name="username"
+        />
+        <Button classes="btn-blueGradient btn-md">send and invite</Button>
+      </Form>
+    );
+  };
 
   return (
     <div className="MembersContainer">
+      <Modal show={forms.show} modalClose={hideModal}>
+        {inviteUser()}
+      </Modal>
       <Button clicked={openModalToInviteUser} classes="btn-blueGradient btn-md">
         + Invite User
       </Button>

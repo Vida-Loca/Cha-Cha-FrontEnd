@@ -11,14 +11,31 @@ import {
 import TempData from "./Data/TempData";
 
 import InfoSection from "../../../components/InfoSection/InfoSection";
+import EditInput from "../../../components/Inputs/EditInput/EditInput";
 
 const Location = () => {
   const setform = useContext(FormContext)[1];
 
-  const [location, setLocation] = useState(TempData);
+  // const [location, setLocation] = useState(TempData);
+  const [location, setLocation] = useState({
+    Address: {
+      city: "city",
+      street: "street",
+      number: "number",
+      posalcode: "postal-code",
+      edit: false
+    },
+    phonenumber: { field: "phonenumber", edit: false },
+    dateofevent: { field: "date", edit: false },
+    time: { field: "time", edit: false },
+    addidtionalInformation: { field: "aditional info", edit: false }
+  });
 
-  const openModalToEditAdress = () => {
-    setform({ show: true, renderForm: editAddress() });
+  const toggleEditForAdress = () => {
+    setLocation({
+      ...location,
+      Address: { ...location.Address, edit: !location.Address.edit }
+    });
   };
   const openModalToEditPhoneNumber = () => {
     setform({ show: true, renderForm: editPhoneNumber() });
@@ -30,6 +47,17 @@ const Location = () => {
     setform({ show: true, renderForm: editAttitionalInformation() });
   };
 
+  const onChangeHandlerAdress = event => {
+    setLocation({
+      ...location,
+      Address: {
+        ...location.Address,
+        [`${event.target.name}`]: event.target.value
+      }
+    });
+    console.log(location.Address);
+  };
+
   return (
     <div className="LocationBody">
       <div className="info">
@@ -39,24 +67,74 @@ const Location = () => {
           alt=""
         />
         <div className="TextInfo">
-          <InfoSection
-            label="Address"
-            content={`${location.Address.City}, ${location.Address.Street}, ${location.Address.HouseNumber}/${location.Address.ApartmentNumber}`}
-            clickedEditForm={openModalToEditAdress}
-          />
+          <InfoSection label="Address" clickedEditForm={toggleEditForAdress} />
+          {location.Address.edit ? (
+            <div>
+              <EditInput
+                value={location.Address.city}
+                onChange={onChangeHandlerAdress}
+                placeholder="city"
+                name="city"
+              />
+              <EditInput
+                value={location.Address.street}
+                onChange={onChangeHandlerAdress}
+                placeholder="street"
+                name="street"
+              />
+              <EditInput
+                value={location.Address.number}
+                onChange={onChangeHandlerAdress}
+                placeholder="number"
+                name="number"
+              />
+              <EditInput
+                value={location.Address.posalcode}
+                onChange={onChangeHandlerAdress}
+                placeholder="posalcode"
+                name="posalcode"
+              />
+            </div>
+          ) : (
+            <div>
+              <p className="AdressField">
+                <strong>City:</strong>
+                {location.Address.city}
+              </p>
+              <p className="AdressField">
+                <strong>Street:</strong>
+                {location.Address.street}
+              </p>
+              <p className="AdressField">
+                <strong>Number:</strong>
+                {location.Address.number}
+              </p>
+              <p className="AdressField">
+                <strong>Postalcode:</strong>
+                {location.Address.posalcode}
+              </p>
+            </div>
+          )}
           <InfoSection
             label="Phone Number"
-            content={`${location.Contact}`}
+            content={location.phonenumber.field}
             clickedEditForm={openModalToEditPhoneNumber}
           />
           <InfoSection
             label="Date & Time"
-            content={`${location.Date}, ${location.Time}`}
             clickedEditForm={openModalToEditDateAndTtime}
           />
+          <p className="AdressField">
+            <strong>Date:</strong>
+            {location.dateofevent.field}
+          </p>
+          <p className="AdressField">
+            <strong>Time:</strong>
+            {location.time.field}
+          </p>
           <InfoSection
             label="Additional Information"
-            content={location.AdditionalInformation}
+            content={location.addidtionalInformation.field}
             clickedEditForm={openModalToAdditionalInformation}
           />
         </div>
