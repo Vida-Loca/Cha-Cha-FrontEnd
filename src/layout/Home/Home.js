@@ -14,6 +14,8 @@ import Modal from "../../components/Modal/Modal";
 import { userService } from "../../Authentication/service";
 
 const Home = props => {
+  const [events, setEvents] = useState([]);
+
   useEffect(() => {
     console.log("hello from effect");
     userService
@@ -22,42 +24,35 @@ const Home = props => {
         return body;
       })
       .then(res => {
-        console.log(res);
+        setEvents(res);
+        console.log(events);
       })
       .catch(err => {
         console.log(err);
       });
-    return () => {
-      console.log("be bie");
-    };
-  }, []);
+  });
 
   const [forms, setform] = useContext(FormContext);
 
-  const events = useState(tempEvents)[0];
+  // const events = useState(tempEvents)[0];
+
   const [currentPage, setCurrentPage] = useState(1);
   const [postsPerPage] = useState(5);
 
   const indexOfLastPost = currentPage * postsPerPage;
   const indexOfFirstPost = indexOfLastPost - postsPerPage;
   const currentPosts = tempEvents.slice(indexOfFirstPost, indexOfLastPost);
+  // const currentPosts2 = tempEvents.slice(indexOfFirstPost, indexOfLastPost);
 
   const [newEvent, setNewEvent] = useState({
     name: "",
-    location: "",
-    date: "",
-    time: ""
-  });
-
-  const [whatevent, setwhat] = useState({
-    name: "nowy 22",
-    startDate: "2020-01-31",
+    startDate: "",
     address: {
-      country: "Poland",
-      city: "Gdansk",
-      street: "Blotna",
-      postcode: "312-33",
-      number: "2"
+      country: "",
+      city: "",
+      street: "",
+      postcode: "",
+      number: ""
     }
   });
 
@@ -65,7 +60,7 @@ const Home = props => {
     event.preventDefault();
 
     userService
-      .createNewEvent(whatevent)
+      .createNewEvent(newEvent)
       .then(body => {
         return body;
       })
@@ -80,27 +75,60 @@ const Home = props => {
   // Change page
   const paginate = pageNumber => setCurrentPage(pageNumber);
 
-  const onChangeHandler = event => {
+  const onChangeHandlerEvent = event => {
     setNewEvent({ ...newEvent, [`${event.target.name}`]: event.target.value });
+    console.log(newEvent);
+  };
+  const onChangeHandlerAddress = event => {
+    setNewEvent({
+      ...newEvent,
+      address: {
+        ...newEvent.address,
+        [`${event.target.name}`]: event.target.value
+      }
+    });
     console.log(newEvent);
   };
 
   const newEventForm = () => {
     return (
       <Form>
-        <TextInput onChange={onChangeHandler} placeholder="name" name="name" />
         <TextInput
-          onChange={onChangeHandler}
-          placeholder="location"
-          name="location"
+          onChange={onChangeHandlerEvent}
+          placeholder="name"
+          name="name"
         />
-        <DateInput onChange={onChangeHandler} placeholder="date" name="date" />
         <DateInput
-          onChange={onChangeHandler}
-          type="time"
-          placeholder="time"
-          name="time"
+          onChange={onChangeHandlerEvent}
+          placeholder="Start Date"
+          name="startDate"
         />
+        <TextInput
+          onChange={onChangeHandlerAddress}
+          placeholder="country"
+          name="country"
+        />
+        <TextInput
+          onChange={onChangeHandlerAddress}
+          placeholder="city"
+          name="city"
+        />
+        <TextInput
+          onChange={onChangeHandlerAddress}
+          placeholder="street"
+          name="street"
+        />
+        <TextInput
+          onChange={onChangeHandlerAddress}
+          placeholder="postcode"
+          name="postcode"
+        />
+        <TextInput
+          onChange={onChangeHandlerAddress}
+          placeholder="number"
+          name="number"
+        />
+
         <Button clicked={createNewEvent} classes="btn-blueGradient btn-md">
           apply
         </Button>
