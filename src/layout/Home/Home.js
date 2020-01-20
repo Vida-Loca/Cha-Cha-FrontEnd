@@ -11,14 +11,26 @@ import "./Home.scss";
 import { tempEvents } from "./Data/TempData";
 import Pagination from "../../components/Pagination/Pagination";
 import Modal from "../../components/Modal/Modal";
+import { userService } from "../../Authentication/service";
 
 const Home = props => {
-  // useEffect(() => {
-  //   console.log("hello from effect");
-  //   return () => {
-  //     console.log("be bie");
-  //   };
-  // }, []);
+  useEffect(() => {
+    console.log("hello from effect");
+    userService
+      .getAllEvents()
+      .then(body => {
+        return body;
+      })
+      .then(res => {
+        console.log(res);
+      })
+      .catch(err => {
+        console.log(err);
+      });
+    return () => {
+      console.log("be bie");
+    };
+  }, []);
 
   const [forms, setform] = useContext(FormContext);
 
@@ -36,6 +48,34 @@ const Home = props => {
     date: "",
     time: ""
   });
+
+  const [whatevent, setwhat] = useState({
+    name: "nowy 22",
+    startDate: "2020-01-31",
+    address: {
+      country: "Poland",
+      city: "Gdansk",
+      street: "Blotna",
+      postcode: "312-33",
+      number: "2"
+    }
+  });
+
+  const createNewEvent = event => {
+    event.preventDefault();
+
+    userService
+      .createNewEvent(whatevent)
+      .then(body => {
+        return body;
+      })
+      .then(res => {
+        console.log(res);
+      })
+      .catch(err => {
+        console.log(err);
+      });
+  };
 
   // Change page
   const paginate = pageNumber => setCurrentPage(pageNumber);
@@ -61,7 +101,7 @@ const Home = props => {
           placeholder="time"
           name="time"
         />
-        <Button to="/home" classes="btn-blueGradient btn-md">
+        <Button clicked={createNewEvent} classes="btn-blueGradient btn-md">
           apply
         </Button>
       </Form>

@@ -4,7 +4,10 @@ export function authHeader() {
   // return authorization header with jwt token
   const currentUser = localStorage.getItem("currentUser");
   if (currentUser) {
-    return { Authorization: currentUser };
+    return {
+      "Content-Type": "application/json",
+      Authorization: currentUser.substring(1, currentUser.length - 1)
+    };
   }
   return {};
 }

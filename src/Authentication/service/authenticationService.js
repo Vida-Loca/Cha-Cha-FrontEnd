@@ -1,5 +1,9 @@
 import { handleResponse } from "../helper";
 
+const CurrentUser = () => {
+  return localStorage.getItem("currentUser");
+};
+
 function login(data) {
   const requestOptions = {
     method: "POST",
@@ -42,6 +46,7 @@ function logout() {
 
 // eslint-disable-next-line import/prefer-default-export
 export const authenticationService = {
+  CurrentUser,
   login,
   register,
   logout
