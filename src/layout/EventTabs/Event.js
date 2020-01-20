@@ -33,7 +33,7 @@ class Event extends Component {
         <Route
           path={`${this.props.match.path}/suplies`}
           exact
-          render={() => <Supply />}
+          render={({ id }) => <Supply id={this.props.match.params.id} />}
         />
         <Route
           path={`${this.props.match.path}/location`}

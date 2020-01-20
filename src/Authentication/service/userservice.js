@@ -50,6 +50,15 @@ const inviteUserTOEvent = (id, username) => {
   ).then(handleResponse);
 };
 
+const kickUserTOEvent = (id, userId) => {
+  const requestOptions = { method: "DELETE", headers: authHeader() };
+
+  return fetch(
+    `https://skibidi.herokuapp.com/event/${id}/user?userToDeleteId=${userId}`,
+    requestOptions
+  ).then(handleResponse);
+};
+
 function getAllEvents() {
   const requestOptions = { method: "GET", headers: authHeader() };
   return fetch(`https://skibidi.herokuapp.com/event`, requestOptions).then(
@@ -63,5 +72,6 @@ export const userService = {
   getCurrentUserInfo,
   getEventById,
   getAllUsersFromGivenEvent,
-  inviteUserTOEvent
+  inviteUserTOEvent,
+  kickUserTOEvent
 };

@@ -109,6 +109,8 @@ const Members = ({ id }) => {
         return member ? (
           <UserTile
             username={member.username}
+            userId={member.id}
+            eventId={id}
             buttonName="kick"
             buttonClass="btn-orangeGradient btn-sm"
             key={member.username}
