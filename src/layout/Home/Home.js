@@ -14,7 +14,7 @@ import Modal from "../../components/Modal/Modal";
 import { userService } from "../../Authentication/service";
 
 const Home = props => {
-  const [events, setEvents] = useState([]);
+  const [eventsList, setEventsList] = useState([]);
 
   useEffect(() => {
     console.log("hello from effect");
@@ -24,13 +24,16 @@ const Home = props => {
         return body;
       })
       .then(res => {
-        setEvents(res);
-        console.log(events);
+        setEventsList(res);
+        console.log(eventsList);
       })
       .catch(err => {
         console.log(err);
       });
-  });
+    return () => {
+      console.log("unoounted ");
+    };
+  }, []);
 
   const [forms, setform] = useContext(FormContext);
 
@@ -41,7 +44,7 @@ const Home = props => {
 
   const indexOfLastPost = currentPage * postsPerPage;
   const indexOfFirstPost = indexOfLastPost - postsPerPage;
-  const currentPosts = tempEvents.slice(indexOfFirstPost, indexOfLastPost);
+  const currentPosts = eventsList.slice(indexOfFirstPost, indexOfLastPost);
   // const currentPosts2 = tempEvents.slice(indexOfFirstPost, indexOfLastPost);
 
   const [newEvent, setNewEvent] = useState({
@@ -66,6 +69,7 @@ const Home = props => {
       })
       .then(res => {
         console.log(res);
+        setform({ ...forms, show: false });
       })
       .catch(err => {
         console.log(err);
@@ -160,17 +164,17 @@ const Home = props => {
         {currentPosts.map(event => {
           return (
             <EventCard
-              id={event.id}
-              key={event.name}
+              id={event.event_id}
+              key={event.event_id}
               name={event.name}
-              location={event.location}
-              date={event.date}
+              date={event.startDate}
+              location={`${event.address.city}, ${event.address.street}, ${event.address.number}, ${event.address.postcode}`}
             />
           );
         })}
         <Pagination
           postsPerPage={postsPerPage}
-          totalPosts={events.length}
+          totalPosts={eventsList.length}
           paginate={paginate}
         />
       </div>

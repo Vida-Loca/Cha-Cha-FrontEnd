@@ -14,16 +14,24 @@ const createNewEvent = data => {
   );
 };
 
-const getCurrentUserInfo = data => {
+const getCurrentUserInfo = () => {
   const requestOptions = {
-    method: "POST",
-    headers: authHeader(),
-    body: JSON.stringify(data)
+    method: "GET",
+    headers: authHeader()
   };
 
-  return fetch(`https://skibidi.herokuapp.com/event`, requestOptions).then(
-    handleResponse
-  );
+  return fetch(
+    `https://skibidi.herokuapp.com/currentUser`,
+    requestOptions
+  ).then(handleResponse);
+};
+
+const getEventById = id => {
+  const requestOptions = { method: "GET", headers: authHeader() };
+  return fetch(
+    `https://skibidi.herokuapp.com/event/${id}`,
+    requestOptions
+  ).then(handleResponse);
 };
 
 function getAllEvents() {
@@ -36,5 +44,6 @@ function getAllEvents() {
 export const userService = {
   createNewEvent,
   getAllEvents,
-  getCurrentUserInfo
+  getCurrentUserInfo,
+  getEventById
 };

@@ -29,7 +29,7 @@ const EventCard = ({ id, name, date, location }) => {
 
 EventCard.propTypes = {
   // eslint-disable-next-line react/require-default-props
-  id: PropTypes.string.isRequired,
+  id: PropTypes.number.isRequired,
   name: PropTypes.string.isRequired,
   date: PropTypes.string.isRequired,
   location: PropTypes.string.isRequired

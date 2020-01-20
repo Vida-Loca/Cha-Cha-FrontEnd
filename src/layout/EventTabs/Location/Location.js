@@ -1,4 +1,4 @@
-import React, { useState, useContext } from "react";
+import React, { useState, useContext, useEffect } from "react";
 
 import "./Location.scss";
 import { FormContext } from "../../../context/FormContext";
@@ -13,23 +13,54 @@ import TempData from "./Data/TempData";
 import InfoSection from "../../../components/InfoSection/InfoSection";
 import EditInput from "../../../components/Inputs/EditInput/EditInput";
 
-const Location = () => {
+import { userService } from "../../../Authentication/service";
+
+const Location = ({ id }) => {
+  const [location, setLocation] = useState({
+    Address: {
+      city: "",
+      street: "",
+      number: "",
+      postcode: "",
+      edit: false
+    },
+    phonenumber: { field: "", edit: false },
+    dateofevent: { field: "", edit: false },
+    time: { field: "", edit: false },
+    addidtionalInformation: { field: "", edit: false }
+  });
+
+  useEffect(() => {
+    console.log("hello from effect");
+    userService
+      .getEventById(id)
+      .then(body => {
+        return body;
+      })
+      .then(res => {
+        setLocation({
+          ...location,
+          Address: {
+            ...location.Address,
+            city: res.address.city,
+            street: res.address.street,
+            number: res.address.number,
+            postcode: res.address.postcode
+          }
+        });
+        console.log(res);
+      })
+      .catch(err => {
+        console.log(err);
+      });
+    return () => {
+      console.log("unoounted ");
+    };
+  }, []);
+
   const setform = useContext(FormContext)[1];
 
   // const [location, setLocation] = useState(TempData);
-  const [location, setLocation] = useState({
-    Address: {
-      city: "city",
-      street: "street",
-      number: "number",
-      posalcode: "postal-code",
-      edit: false
-    },
-    phonenumber: { field: "phonenumber", edit: false },
-    dateofevent: { field: "date", edit: false },
-    time: { field: "time", edit: false },
-    addidtionalInformation: { field: "aditional info", edit: false }
-  });
 
   const toggleEditForAdress = () => {
     setLocation({
@@ -89,10 +120,10 @@ const Location = () => {
                 name="number"
               />
               <EditInput
-                value={location.Address.posalcode}
+                value={location.Address.postcode}
                 onChange={onChangeHandlerAdress}
-                placeholder="posalcode"
-                name="posalcode"
+                placeholder="postcode"
+                name="postcode"
               />
             </div>
           ) : (
@@ -111,7 +142,7 @@ const Location = () => {
               </p>
               <p className="AdressField">
                 <strong>Postalcode:</strong>
-                {location.Address.posalcode}
+                {location.Address.postcode}
               </p>
             </div>
           )}
