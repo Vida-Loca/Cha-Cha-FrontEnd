@@ -34,6 +34,22 @@ const getEventById = id => {
   ).then(handleResponse);
 };
 
+const getAllUsersFromGivenEvent = id => {
+  const requestOptions = { method: "GET", headers: authHeader() };
+  return fetch(
+    `https://skibidi.herokuapp.com/event/${id}/user`,
+    requestOptions
+  ).then(handleResponse);
+};
+
+const inviteUserTOEvent = (id, username) => {
+  const requestOptions = { method: "POSt", headers: authHeader() };
+  return fetch(
+    `https://skibidi.herokuapp.com/event/${id}/user?username=${username}`,
+    requestOptions
+  ).then(handleResponse);
+};
+
 function getAllEvents() {
   const requestOptions = { method: "GET", headers: authHeader() };
   return fetch(`https://skibidi.herokuapp.com/event`, requestOptions).then(
@@ -45,5 +61,7 @@ export const userService = {
   createNewEvent,
   getAllEvents,
   getCurrentUserInfo,
-  getEventById
+  getEventById,
+  getAllUsersFromGivenEvent,
+  inviteUserTOEvent
 };

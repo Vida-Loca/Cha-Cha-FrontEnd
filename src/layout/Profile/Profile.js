@@ -1,4 +1,4 @@
-import React, { useContext, useState } from "react";
+import React, { useContext, useState, useEffect } from "react";
 import PropTypes from "prop-types";
 import { FormContext } from "../../context/FormContext";
 import { UserContext } from "../../context/UserContext";
@@ -10,10 +10,37 @@ import EventCard from "../../components/EventCard/EventCard";
 import Pagination from "../../components/Pagination/Pagination";
 import { tempEvents } from "./Data/TempData";
 import Modal from "../../components/Modal/Modal";
+import { userService } from "../../Authentication/service";
 
 import "./Profile.scss";
 
 const Profile = props => {
+  const [userInfo, setUserInfo] = useState({
+    username: "user",
+    name: "name",
+    surname: "surname",
+    email: "email@email.com"
+  });
+
+  useEffect(() => {
+    userService
+      .getCurrentUserInfo()
+      .then(body => {
+        return body;
+      })
+      .then(res => {
+        console.log(res);
+        setUserInfo(res);
+        // setEventsList(res);
+      })
+      .catch(err => {
+        console.log(err);
+      });
+    return () => {
+      console.log("unoounted ");
+    };
+  }, []);
+
   const [forms, setform] = useContext(FormContext);
   const setuser = useContext(UserContext)[1];
   const [myEvents] = useState(tempEvents);
@@ -26,13 +53,6 @@ const Profile = props => {
   const indexOfLastPost = currentPage * postsPerPage;
   const indexOfFirstPost = indexOfLastPost - postsPerPage;
   const currentPosts = myEvents.slice(indexOfFirstPost, indexOfLastPost);
-
-  const [userInfo, setUserInfo] = useState({
-    username: "user",
-    name: "name",
-    surname: "surname",
-    email: "email@email.com"
-  });
 
   const onChangeHandler = event => {
     setUserInfo({ ...userInfo, [`${event.target.name}`]: event.target.value });
@@ -113,14 +133,6 @@ const Profile = props => {
           <div className="icon-span">
             <i className="fas fa-calendar-alt" />
             <span>{userInfo.email}</span>
-          </div>
-          <div className="icon-span">
-            <i className="fas fa-calendar-alt" />
-            <span>joined 10-12-2009</span>
-          </div>
-          <div className="icon-span">
-            <i className="fas fa-users" />
-            <span>Friends 20</span>
           </div>
         </div>
       </div>

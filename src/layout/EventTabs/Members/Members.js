@@ -1,4 +1,4 @@
-import React, { useState, useContext } from "react";
+import React, { useState, useContext, useEffect } from "react";
 import PropTypes from "prop-types";
 import "./Members.scss";
 import { FormContext } from "../../../context/FormContext";
@@ -11,9 +11,30 @@ import Modal from "../../../components/Modal/Modal";
 import Form from "../../../components/Form/Form";
 import TextInput from "../../../components/Inputs/TextInput/TextInput";
 
-const Members = () => {
-  const [members, setMembers] = useState(membersOfTheEvent);
+import { userService } from "../../../Authentication/service";
+
+const Members = ({ id }) => {
+  const [members, setMembers] = useState([]);
   const [requests, setrequests] = useState(requestsFoThisEvent);
+
+  useEffect(() => {
+    userService
+      .getAllUsersFromGivenEvent(id)
+      .then(body => {
+        return body;
+      })
+      .then(res => {
+        console.log(res);
+        setMembers(res);
+        // setEventsList(res);
+      })
+      .catch(err => {
+        console.log(err);
+      });
+    return () => {
+      console.log("unoounted ");
+    };
+  }, []);
 
   const [forms, setform] = useContext(FormContext);
 
@@ -31,6 +52,23 @@ const Members = () => {
     console.log(findUser);
   };
 
+  const inviteUserPost = event => {
+    event.preventDefault();
+    userService
+      .inviteUserTOEvent(id, findUser.username)
+      .then(body => {
+        return body;
+      })
+      .then(res => {
+        console.log(res);
+        setform({ ...forms, show: false });
+        // setEventsList(res);
+      })
+      .catch(err => {
+        console.log(err);
+      });
+  };
+
   const inviteUser = () => {
     return (
       <Form>
@@ -39,7 +77,9 @@ const Members = () => {
           placeholder="Username"
           name="username"
         />
-        <Button classes="btn-blueGradient btn-md">send and invite</Button>
+        <Button clicked={inviteUserPost} classes="btn-blueGradient btn-md">
+          send and invite
+        </Button>
       </Form>
     );
   };
@@ -52,7 +92,7 @@ const Members = () => {
       <Button clicked={openModalToInviteUser} classes="btn-blueGradient btn-md">
         + Invite User
       </Button>
-      <h2>Pending requests ● {requests.length}</h2>
+      {/* <h2>Pending requests ● {requests.length}</h2>
       {requests.map(member => {
         return (
           <UserTile
@@ -62,18 +102,18 @@ const Members = () => {
             key={member.username}
           />
         );
-      })}
+      })} */}
 
       <h2>Members ● {members.length}</h2>
       {members.map(member => {
-        return (
+        return member ? (
           <UserTile
             username={member.username}
             buttonName="kick"
             buttonClass="btn-orangeGradient btn-sm"
             key={member.username}
           />
-        );
+        ) : null;
       })}
     </div>
   );
