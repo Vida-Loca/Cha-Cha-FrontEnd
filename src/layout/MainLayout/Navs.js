@@ -1,7 +1,13 @@
+import { userService } from "../../Authentication/service";
 export const mainNav = [
   { navLink: "Home", iconClass: "fas fa-home" },
   { navLink: "Profile", iconClass: "fas fa-user-alt" },
   { navLink: "Admin", iconClass: "fas fa-user-shield" }
+];
+
+export const mainNavNoAdmin = [
+  { navLink: "Home", iconClass: "fas fa-home" },
+  { navLink: "Profile", iconClass: "fas fa-user-alt" }
 ];
 
 export const adminNav = [

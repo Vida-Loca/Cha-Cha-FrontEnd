@@ -50,6 +50,7 @@ const Home = props => {
   const [newEvent, setNewEvent] = useState({
     name: "",
     startDate: "",
+    startTime: "",
     address: {
       country: "",
       city: "",
@@ -106,6 +107,12 @@ const Home = props => {
           onChange={onChangeHandlerEvent}
           placeholder="Start Date"
           name="startDate"
+        />
+        <DateInput
+          onChange={onChangeHandlerEvent}
+          type="time"
+          placeholder="Start Time"
+          name="startTime"
         />
         <TextInput
           onChange={onChangeHandlerAddress}

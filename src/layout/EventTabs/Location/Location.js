@@ -40,6 +40,12 @@ const Location = ({ id }) => {
       .then(res => {
         setLocation({
           ...location,
+          dateofevent: { field: res.startDate, edit: false },
+          time: { field: res.startTime, edit: false },
+          addidtionalInformation: {
+            field: res.additionalInformation,
+            edit: false
+          },
           Address: {
             ...location.Address,
             city: res.address.city,
@@ -86,7 +92,7 @@ const Location = ({ id }) => {
         [`${event.target.name}`]: event.target.value
       }
     });
-    console.log(location.Address);
+    console.log(location);
   };
 
   return (
@@ -146,11 +152,6 @@ const Location = ({ id }) => {
               </p>
             </div>
           )}
-          <InfoSection
-            label="Phone Number"
-            content={location.phonenumber.field}
-            clickedEditForm={openModalToEditPhoneNumber}
-          />
           <InfoSection
             label="Date & Time"
             clickedEditForm={openModalToEditDateAndTtime}

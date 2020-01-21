@@ -6,7 +6,14 @@ import "./UserTile.scss";
 
 import { userService } from "../../Authentication/service";
 
-const UserTile = ({ username, userId, buttonClass, buttonName, eventId }) => {
+const UserTile = ({
+  username,
+  userId,
+  buttonClass,
+  buttonName,
+  isAdmin,
+  eventId
+}) => {
   const kickUser = UserId => {
     userService
       .kickUserTOEvent(eventId, userId)
@@ -27,9 +34,11 @@ const UserTile = ({ username, userId, buttonClass, buttonName, eventId }) => {
         <Avatar imageLink="https://www.rd.com/wp-content/uploads/2017/09/01-shutterstock_476340928-Irina-Bg-1024x683.jpg" />
         <strong>{username}</strong>
       </div>
-      <Button clicked={() => kickUser(userId)} classes={buttonClass}>
-        {buttonName}
-      </Button>
+      {isAdmin ? (
+        <Button clicked={() => kickUser(userId)} classes={buttonClass}>
+          {buttonName}
+        </Button>
+      ) : null}
     </div>
   );
 };

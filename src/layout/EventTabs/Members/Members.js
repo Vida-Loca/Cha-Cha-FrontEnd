@@ -16,6 +16,7 @@ import { userService } from "../../../Authentication/service";
 const Members = ({ id }) => {
   const [members, setMembers] = useState([]);
   const [requests, setrequests] = useState(requestsFoThisEvent);
+  const [isUserAdmin, setUserAdmin] = useState({ isAdmin: false });
 
   useEffect(() => {
     userService
@@ -26,11 +27,28 @@ const Members = ({ id }) => {
       .then(res => {
         console.log(res);
         setMembers(res);
+      })
+      .catch(err => {
+        console.log(err);
+      });
+
+    userService
+      .isUserAdminOfGivenEvent(id)
+      .then(body => {
+        return body;
+      })
+      .then(res => {
+        console.log(res);
+        if (res.message == "true") {
+          setUserAdmin({ isAdmin: true });
+        }
+        // setMembers(res);
         // setEventsList(res);
       })
       .catch(err => {
         console.log(err);
       });
+
     return () => {
       console.log("unoounted ");
     };
@@ -111,6 +129,7 @@ const Members = ({ id }) => {
             username={member.username}
             userId={member.id}
             eventId={id}
+            isAdmin={isUserAdmin.isAdmin}
             buttonName="kick"
             buttonClass="btn-orangeGradient btn-sm"
             key={member.username}

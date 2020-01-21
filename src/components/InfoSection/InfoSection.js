@@ -16,7 +16,7 @@ const InfoSection = ({ label, content, clickedEditForm }) => {
 
 InfoSection.propTypes = {
   label: PropTypes.string.isRequired,
-  content: PropTypes.string.isRequired,
+  content: PropTypes.string,
   clickedEditForm: PropTypes.func.isRequired
 };
 

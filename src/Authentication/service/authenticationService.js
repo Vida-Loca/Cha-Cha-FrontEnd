@@ -28,10 +28,7 @@ const register = data => {
     body: JSON.stringify(data)
   };
 
-  return fetch(
-    `https://skibidi.herokuapp.com/user/registration`,
-    requestOptions
-  )
+  return fetch(`https://skibidi.herokuapp.com/registration`, requestOptions)
     .then(handleResponse)
     .then(myJson => {
       return myJson;

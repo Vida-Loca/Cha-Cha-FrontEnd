@@ -11,6 +11,7 @@ import Pagination from "../../components/Pagination/Pagination";
 import { tempEvents } from "./Data/TempData";
 import Modal from "../../components/Modal/Modal";
 import { userService } from "../../Authentication/service";
+import Avatar from "../../components/Avatar/Avatar";
 
 import "./Profile.scss";
 
@@ -21,6 +22,7 @@ const Profile = props => {
     surname: "surname",
     email: "email@email.com"
   });
+  const [myEvents, setMyEvent] = useState([]);
 
   useEffect(() => {
     userService
@@ -36,14 +38,24 @@ const Profile = props => {
       .catch(err => {
         console.log(err);
       });
-    return () => {
-      console.log("unoounted ");
-    };
+
+    userService
+      .getAllEventsOfCureentlyLogedInUser()
+      .then(body => {
+        return body;
+      })
+      .then(res => {
+        console.log(res);
+        setMyEvent(res);
+      })
+      .catch(err => {
+        console.log(err);
+      });
   }, []);
 
   const [forms, setform] = useContext(FormContext);
   const setuser = useContext(UserContext)[1];
-  const [myEvents] = useState(tempEvents);
+  // const [myEvents] = useState(tempEvents);
 
   const [status, setstatu] = useState({ kek: "" });
 
@@ -107,10 +119,11 @@ const Profile = props => {
         {ProfileForm()}
       </Modal>
       <div>
-        <img
+        <Avatar imageLink={userInfo.picUrl} />
+        {/* <img
           src="https://image.freepik.com/free-photo/portrait-white-man-isolated_53876-40306.jpg"
           alt=""
-        />
+        /> */}
         <div className="information">
           <span className="username">{`@${userInfo.username}`}</span>
 
@@ -123,32 +136,44 @@ const Profile = props => {
             </Button>
           </div>
           <div className="icon-span">
-            <i className="fas fa-calendar-alt" />
+            <i className="fas fa-address-card" />
             <span>{userInfo.name}</span>
           </div>
           <div className="icon-span">
-            <i className="fas fa-calendar-alt" />
+            <i className="fas fa-address-card" />
             <span>{userInfo.surname}</span>
           </div>
           <div className="icon-span">
-            <i className="fas fa-calendar-alt" />
+            <i className="fas fa-envelope" />
             <span>{userInfo.email}</span>
+          </div>
+          <div className="icon-span">
+            <i className="fas fa-calendar-alt" />
+            <span>{`Date Joined ${
+              userInfo.joined
+                ? userInfo.joined.substring(0, 10)
+                : "not specified"
+            }`}</span>
           </div>
         </div>
       </div>
       <div>
         <h2>My Events</h2>
-        {currentPosts.map(event => {
-          return (
-            <EventCard
-              id={event.id}
-              key={event.name}
-              name={event.name}
-              location={event.location}
-              date={event.date}
-            />
-          );
-        })}
+        {currentPosts === [] ? (
+          currentPosts.map(event => {
+            return (
+              <EventCard
+                id={event.event_id}
+                key={event.event_id}
+                name={event.name}
+                date={event.startDate}
+                location={`${event.address.city}, ${event.address.street}, ${event.address.number}, ${event.address.postcode}`}
+              />
+            );
+          })
+        ) : (
+          <h3>You have no events</h3>
+        )}
         <Pagination
           postsPerPage={postsPerPage}
           totalPosts={myEvents.length}

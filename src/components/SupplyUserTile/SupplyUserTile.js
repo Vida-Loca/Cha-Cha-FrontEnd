@@ -9,7 +9,7 @@ import Form from "../Form/Form";
 import TextInput from "../Inputs/TextInput/TextInput";
 import EditInput from "../Inputs/EditInput/EditInput";
 
-const SupplyUserTile = ({ user, supply, price }) => {
+const SupplyUserTile = ({ user, supply, price, picUrl }) => {
   const [tileSupply, setTileSuply] = useState({
     user: user,
     supply: supply,
@@ -36,18 +36,17 @@ const SupplyUserTile = ({ user, supply, price }) => {
     setEditState({ edit: !editState.edit });
   };
 
+  // const update
+
   return (
     <div className="OuterSupplyTile">
       <div className="UserTileBody">
         <div>
-          <Avatar imageLink="https://basicincome.org/wp-content/uploads/2018/12/profilepic.jpg" />
+          <Avatar imageLink={picUrl} />
           <span className="SuplyNameLabel">
             {!editState.edit ? (
               <span>
-                <strong>
-                  {tileSupply.price}
-                  zl -{" "}
-                </strong>
+                <strong>{`${tileSupply.price} Zł: `}</strong>
                 {tileSupply.supply}
               </span>
             ) : (
@@ -94,11 +93,16 @@ const SupplyUserTile = ({ user, supply, price }) => {
     </div>
   );
 };
+SupplyUserTile.defaultProps = {
+  picUrl:
+    "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTSLmktkJrArXh_zZVovazl5mb3lna9HXqPo7XvvviCSQAuru5C&s"
+};
 
 SupplyUserTile.propTypes = {
   user: PropTypes.string.isRequired,
   supply: PropTypes.string.isRequired,
-  price: PropTypes.number.isRequired
+  price: PropTypes.number.isRequired,
+  picUrl: PropTypes.string
 };
 
 export default SupplyUserTile;

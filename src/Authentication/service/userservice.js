@@ -14,16 +14,28 @@ const createNewEvent = data => {
   );
 };
 
+const addNewSuplyToEvent = (eventId, data) => {
+  const requestOptions = {
+    method: "POST",
+    headers: authHeader(),
+    body: JSON.stringify(data)
+  };
+
+  return fetch(
+    `https://skibidi.herokuapp.com/event/${eventId}/productNew`,
+    requestOptions
+  ).then(handleResponse);
+};
+
 const getCurrentUserInfo = () => {
   const requestOptions = {
     method: "GET",
     headers: authHeader()
   };
 
-  return fetch(
-    `https://skibidi.herokuapp.com/currentUser`,
-    requestOptions
-  ).then(handleResponse);
+  return fetch(`https://skibidi.herokuapp.com/user`, requestOptions).then(
+    handleResponse
+  );
 };
 
 const getEventById = id => {
@@ -34,10 +46,34 @@ const getEventById = id => {
   ).then(handleResponse);
 };
 
+const isUserAdminOfGivenEvent = id => {
+  const requestOptions = { method: "GET", headers: authHeader() };
+  return fetch(
+    `https://skibidi.herokuapp.com/event/${id}/isAdmin`,
+    requestOptions
+  ).then(handleResponse);
+};
+
+const isUserAdmin = () => {
+  const requestOptions = { method: "GET", headers: authHeader() };
+  return fetch(
+    `https://skibidi.herokuapp.com/user/isAdmin`,
+    requestOptions
+  ).then(handleResponse);
+};
+
 const getAllUsersFromGivenEvent = id => {
   const requestOptions = { method: "GET", headers: authHeader() };
   return fetch(
     `https://skibidi.herokuapp.com/event/${id}/user`,
+    requestOptions
+  ).then(handleResponse);
+};
+
+const getAllProductsFromGivenEvent = id => {
+  const requestOptions = { method: "GET", headers: authHeader() };
+  return fetch(
+    `https://skibidi.herokuapp.com/event/${id}/product`,
     requestOptions
   ).then(handleResponse);
 };
@@ -66,6 +102,13 @@ function getAllEvents() {
   );
 }
 
+function getAllEventsOfCureentlyLogedInUser() {
+  const requestOptions = { method: "GET", headers: authHeader() };
+  return fetch(`https://skibidi.herokuapp.com/user/event`, requestOptions).then(
+    handleResponse
+  );
+}
+
 export const userService = {
   createNewEvent,
   getAllEvents,
@@ -73,5 +116,10 @@ export const userService = {
   getEventById,
   getAllUsersFromGivenEvent,
   inviteUserTOEvent,
-  kickUserTOEvent
+  kickUserTOEvent,
+  addNewSuplyToEvent,
+  isUserAdminOfGivenEvent,
+  getAllProductsFromGivenEvent,
+  getAllEventsOfCureentlyLogedInUser,
+  isUserAdmin
 };
