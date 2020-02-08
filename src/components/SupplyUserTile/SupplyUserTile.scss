@@ -80,3 +80,9 @@
     margin-bottom: 0.5rem;
   }
 }
+
+.editControlls {
+  display: grid;
+  grid-template-columns: 1fr 4fr;
+  grid-column-gap: 2rem;
+}

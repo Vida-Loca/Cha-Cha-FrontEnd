@@ -52,17 +52,22 @@ const SupplyCategory = ({ supCont }) => {
 
         <div className="PriceAndAdd">
           <p className="PriceLabel">
-            {Object.keys(supplyContainer.supplies).reduce((previous, index) => {
-              return previous + supplyContainer.supplies[index].price;
-            }, 0)}
+            {Number(
+              Object.keys(supplyContainer.supplies).reduce(
+                (previous, index) => {
+                  return previous + supplyContainer.supplies[index].price;
+                },
+                0
+              )
+            ).toFixed(2)}
             <span> zl</span>
           </p>
-          <Button
+          {/* <Button
             clicked={openModalAddSupply}
             classes="btn-sm btn-orangeGradient"
           >
             <i className="fas fa-plus-circle" />
-          </Button>
+          </Button> */}
         </div>
         <ThreeDots />
       </div>
@@ -74,7 +79,8 @@ const SupplyCategory = ({ supCont }) => {
               user={sup.user}
               supply={sup.supply}
               price={sup.price}
-              key={sup.id}
+              key={`${sup.id}-${sup.supply}`}
+              picUrl={sup.picUrl}
               openModal={openModalEditSupply}
             />
           );
