@@ -1,7 +1,6 @@
 import React, { useState } from "react";
 import "./AdminEventTile.scss";
-import ThreeDots from "../ThreeDots/ThreeDots";
-import Button from "../button/Button";
+import { Button, IconButton } from "../Button/Index";
 
 const AdminEventTile = ({ id, name }) => {
   const [tileState, tileStateSet] = useState({ options: false });
@@ -12,7 +11,7 @@ const AdminEventTile = ({ id, name }) => {
   return (
     <div className="AdminUserTile">
       <span>{name}</span>
-      <ThreeDots clicked={changeOptions} />
+      <IconButton clicked={changeOptions} iconClass="fas fa-ellipsis-v" />
       {tileState.options ? (
         <div className="Osptions">
           <Button classes="btn-sm btn-blueGradient">

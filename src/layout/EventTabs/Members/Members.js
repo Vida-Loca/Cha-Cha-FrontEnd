@@ -1,53 +1,56 @@
 import React, { useState, useContext, useEffect } from "react";
 import PropTypes from "prop-types";
-import "./Members.scss";
+
 import { FormContext } from "../../../context/FormContext";
-import inviteUser from "./FormsToBeRendered/FormsToBeRendered";
 import { membersOfTheEvent, requestsFoThisEvent } from "./Data/TempData";
 
+import "./Members.scss";
+
+// import inviteUser from "./FormsToBeRendered/FormsToBeRendered";
+
 import UserTile from "../../../components/UserTile/UserTile";
-import Button from "../../../components/button/Button";
+import { Button } from "../../../components/Button/Index";
 import Modal from "../../../components/Modal/Modal";
 import Form from "../../../components/Form/Form";
-import TextInput from "../../../components/Inputs/TextInput/TextInput";
+import { TextInput } from "../../../components/Inputs/Index";
 
 import { userService } from "../../../Authentication/service";
 
 const Members = ({ id }) => {
-  const [members, setMembers] = useState([]);
-  const [requests, setrequests] = useState(requestsFoThisEvent);
-  const [isUserAdmin, setUserAdmin] = useState({ isAdmin: false });
+  // const [members, setMembers] = useState([]);
+  // const [requests, setrequests] = useState(requestsFoThisEvent);
+  const [isUserAdmin, setUserAdmin] = useState({ isAdmin: true });
 
   useEffect(() => {
-    userService
-      .getAllUsersFromGivenEvent(id)
-      .then(body => {
-        return body;
-      })
-      .then(res => {
-        console.log(res);
-        setMembers(res);
-      })
-      .catch(err => {
-        console.log(err);
-      });
+    //   userService
+    //     .getAllUsersFromGivenEvent(id)
+    //     .then(body => {
+    //       return body;
+    //     })
+    //     .then(res => {
+    //       console.log(res);
+    //       setMembers(res);
+    //     })
+    //     .catch(err => {
+    //       console.log(err);
+    //     });
 
-    userService
-      .isUserAdminOfGivenEvent(id)
-      .then(body => {
-        return body;
-      })
-      .then(res => {
-        console.log(res);
-        if (res.message == "true") {
-          setUserAdmin({ isAdmin: true });
-        }
-        // setMembers(res);
-        // setEventsList(res);
-      })
-      .catch(err => {
-        console.log(err);
-      });
+    //   userService
+    //     .isUserAdminOfGivenEvent(id)
+    //     .then(body => {
+    //       return body;
+    //     })
+    //     .then(res => {
+    //       console.log(res);
+    //       if (res.message == "true") {
+    //         setUserAdmin({ isAdmin: true });
+    //       }
+    //       // setMembers(res);
+    //       // setEventsList(res);
+    //     })
+    //     .catch(err => {
+    //       console.log(err);
+    //     });
 
     return () => {
       console.log("unoounted ");
@@ -58,9 +61,6 @@ const Members = ({ id }) => {
 
   const [findUser, setfindUser] = useState({ username: "" });
 
-  const openModalToInviteUser = () => {
-    setform({ show: true, renderForm: inviteUser() });
-  };
   const hideModal = () => {
     setform({ ...forms, show: false });
   };
@@ -102,6 +102,10 @@ const Members = ({ id }) => {
     );
   };
 
+  const openModalToInviteUser = () => {
+    setform({ show: true, renderForm: inviteUser() });
+  };
+
   return (
     <div className="MembersContainer">
       <Modal show={forms.show} modalClose={hideModal}>
@@ -110,8 +114,8 @@ const Members = ({ id }) => {
       <Button clicked={openModalToInviteUser} classes="btn-blueGradient btn-md">
         + Invite User
       </Button>
-      {/* <h2>Pending requests ● {requests.length}</h2>
-      {requests.map(member => {
+      <h2>{`Pending requests ● ${requestsFoThisEvent.length}`}</h2>
+      {requestsFoThisEvent.map(member => {
         return (
           <UserTile
             username={member.username}
@@ -120,10 +124,10 @@ const Members = ({ id }) => {
             key={member.username}
           />
         );
-      })} */}
+      })}
 
-      <h2>Members ● {members.length}</h2>
-      {members.map(member => {
+      <h2>{`Members ● ${membersOfTheEvent.length}`}</h2>
+      {membersOfTheEvent.map(member => {
         return member ? (
           <UserTile
             username={member.username}
@@ -140,12 +144,8 @@ const Members = ({ id }) => {
   );
 };
 
-Members.defaultProps = {
-  openModal: () => {}
-};
-
 Members.propTypes = {
-  openModal: PropTypes.func
+  id: PropTypes.string.isRequired
 };
 
 export default Members;

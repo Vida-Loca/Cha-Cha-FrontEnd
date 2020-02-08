@@ -1,6 +1,6 @@
 import React from "react";
-import Button from "../../button/Button";
-import TextInput from "../../Inputs/TextInput/TextInput";
+import { Button } from "../../Button/Index";
+import { TextInput } from "../../Inputs/Index";
 import Form from "../../Form/Form";
 
 export const editSupplyForm = () => {

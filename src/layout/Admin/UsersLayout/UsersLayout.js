@@ -3,7 +3,7 @@ import AdminUserTile from "../../../components/AdminUserTile/AdminUserTile";
 import { tempUsers } from "./Data/TempData";
 import "./UserLayout.scss";
 
-const UsersLayout = ({ openModal }) => {
+const UsersLayout = () => {
   const [users, setUsers] = useState(tempUsers);
   return (
     <div className="Users">
@@ -12,7 +12,6 @@ const UsersLayout = ({ openModal }) => {
           <AdminUserTile
             key={user.id}
             id={user.id}
-            openModal={openModal}
             name={user.name}
             image={user.image}
           />

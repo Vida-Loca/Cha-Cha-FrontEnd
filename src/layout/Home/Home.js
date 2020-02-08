@@ -1,19 +1,19 @@
 import React, { useContext, useState, useEffect } from "react";
-import { Link } from "react-router-dom";
-import PropTypes from "prop-types";
-import Button from "../../components/button/Button";
-import TextInput from "../../components/Inputs/TextInput/TextInput";
-import DateInput from "../../components/Inputs/DateInput/DateInput";
-import Form from "../../components/Form/Form";
-import EventCard from "../../components/EventCard/EventCard";
+
 import { FormContext } from "../../context/FormContext";
-import "./Home.scss";
 import { tempEvents } from "./Data/TempData";
-import Pagination from "../../components/Pagination/Pagination";
-import Modal from "../../components/Modal/Modal";
 import { userService } from "../../Authentication/service";
 
-const Home = props => {
+import "./Home.scss";
+
+import { Button } from "../../components/Button/Index";
+import { TextInput, DateInput } from "../../components/Inputs/Index";
+import Form from "../../components/Form/Form";
+import EventCard from "../../components/EventCard/EventCard";
+import Pagination from "../../components/Pagination/Pagination";
+import Modal from "../../components/Modal/Modal";
+
+const Home = () => {
   const [eventsList, setEventsList] = useState([]);
 
   useEffect(() => {
@@ -33,7 +33,7 @@ const Home = props => {
     return () => {
       console.log("unoounted ");
     };
-  }, []);
+  }, [eventsList]);
 
   const [forms, setform] = useContext(FormContext);
 
@@ -44,7 +44,7 @@ const Home = props => {
 
   const indexOfLastPost = currentPage * postsPerPage;
   const indexOfFirstPost = indexOfLastPost - postsPerPage;
-  const currentPosts = eventsList.slice(indexOfFirstPost, indexOfLastPost);
+  const currentPosts = tempEvents.slice(indexOfFirstPost, indexOfLastPost);
   // const currentPosts2 = tempEvents.slice(indexOfFirstPost, indexOfLastPost);
 
   const [newEvent, setNewEvent] = useState({
@@ -181,16 +181,12 @@ const Home = props => {
         })}
         <Pagination
           postsPerPage={postsPerPage}
-          totalPosts={eventsList.length}
+          totalPosts={tempEvents.length}
           paginate={paginate}
         />
       </div>
     </div>
   );
-};
-Home.propTypes = {
-  // eslint-disable-next-line react/require-default-props
-  openModal: PropTypes.func
 };
 
 export default Home;

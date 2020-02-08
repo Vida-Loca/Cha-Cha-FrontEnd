@@ -1,44 +1,35 @@
-import React, { Component, useContext } from "react";
-import { UserContext } from "../context/UserContext";
-import OpeningLayout from "../layout/OpeningPageLayout";
+import React, { useState, useContext, useEffect } from "react";
+// import { UserContext } from "../context/UserContext";
+import SplashScreen from "./SplashScreen/SplashScreen";
 import MainLayout from "./MainLayout/MainLayout";
-import { authenticationService } from "../Authentication/service";
+// import { authenticationService } from "../Authentication/service";
 
-// eslint-disable-next-line react/prefer-stateless-function
-class MyApplication extends Component {
-  state = {
-    isLoggedIn: false
-  };
+const MyApplication = () => {
+  const [isLoggedIn, setLoggedIn] = useState(true);
+  // const [isUser, setUser] = useState(true);
 
-  componentDidUpdate() {
-    var [user, setuser] = this.context;
-    // console.log(user);
-    if (user.break) {
-      const currentU = authenticationService.CurrentUser();
-      setuser({ ...user, break: false });
-      if (currentU != null || user.isLoggedIn) {
-        this.setState({
-          isLoggedIn: true
-        });
-      } else {
-        this.setState({
-          isLoggedIn: false
-        });
-      }
+  // useEffect(() => {
+  //   if (isUser.break) {
+  //     const currentU = authenticationService.CurrentUser();
+  //     setUser({ ...isUser, break: false });
+  //     if (currentU != null || isUser.isLoggedIn) {
+  //       setLoggedIn({
+  //         isLoggedIn: true
+  //       });
+  //     } else {
+  //       setLoggedIn({
+  //         isLoggedIn: false
+  //       });
+  //     }
+  //   }
+  //   return () => {
+  //     console.log("unoounted ");
+  //   };
+  // }, []);
 
-      console.log("changed");
-    }
+  return (
+    <div className="App">{isLoggedIn ? <MainLayout /> : <SplashScreen />}</div>
+  );
+};
 
-    /* perform a side-effect at mount using the value of UserContext */
-  }
-
-  render() {
-    return (
-      <div className="App">
-        {this.state.isLoggedIn ? <MainLayout /> : <OpeningLayout />}
-      </div>
-    );
-  }
-}
-MyApplication.contextType = UserContext;
 export default MyApplication;

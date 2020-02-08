@@ -1,7 +1,7 @@
 import React, { useState } from "react";
 import PropTypes from "prop-types";
 import SideBarItem from "./SideBarItem/SdeBarItem";
-import IconButton from "../button/IconButton";
+import { IconButton } from "../Button/Index";
 import "./SideBar.scss";
 
 const Sidebar = ({ navlinks, classes, beforeLink }) => {
@@ -14,7 +14,6 @@ const Sidebar = ({ navlinks, classes, beforeLink }) => {
     setShowNavBar({ show: false });
   };
   return (
-    // <div className={`${classes} ${showNavBar.show ? }`}>
     <div className={`${classes} ${showNavBar.show ? "show" : ""}`}>
       <IconButton clicked={toggleNavBarHandler} iconClass="fas fa-bars">
         X
@@ -36,12 +35,15 @@ const Sidebar = ({ navlinks, classes, beforeLink }) => {
     </div>
   );
 };
+Sidebar.defaultProps = {
+  classes: "",
+  beforeLink: ""
+};
 
 Sidebar.propTypes = {
-  navlinks: PropTypes.array.isRequired,
-  // eslint-disable-next-line react/require-default-props
+  navlinks: PropTypes.node.isRequired,
   classes: PropTypes.string,
-  eventId: PropTypes.string
+  beforeLink: PropTypes.string
 };
 
 export default Sidebar;

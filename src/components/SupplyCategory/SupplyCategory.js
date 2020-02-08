@@ -3,10 +3,9 @@ import PropTypes from "prop-types";
 
 import "./SupplyCategory.scss";
 
-import Button from "../button/Button";
+import { Button, IconButton } from "../Button/Index";
 import ShowMoreButton from "../ShowMoreButton/ShowMoreButton";
 import SupplyUserTile from "../SupplyUserTile/SupplyUserTile";
-import ThreeDots from "../ThreeDots/ThreeDots";
 
 import {
   editSupplyForm,
@@ -69,7 +68,7 @@ const SupplyCategory = ({ supCont }) => {
             <i className="fas fa-plus-circle" />
           </Button> */}
         </div>
-        <ThreeDots />
+        <IconButton iconClass="fas fa-ellipsis-v" />
       </div>
 
       <div className="SupplyBody">

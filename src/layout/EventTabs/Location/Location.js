@@ -1,19 +1,19 @@
 import React, { useState, useContext, useEffect } from "react";
-
-import "./Location.scss";
+import PropTypes from "prop-types";
 import { FormContext } from "../../../context/FormContext";
+import { userService } from "../../../Authentication/service";
 import {
   editAddress,
   editPhoneNumber,
   editDateAndTime,
   editAttitionalInformation
 } from "./FormsToBeRendered/FormsToBeRendered";
-import TempData from "./Data/TempData";
+// import TempData from "./Data/TempData";
+
+import "./Location.scss";
 
 import InfoSection from "../../../components/InfoSection/InfoSection";
-import EditInput from "../../../components/Inputs/EditInput/EditInput";
-
-import { userService } from "../../../Authentication/service";
+import { EditInput } from "../../../components/Inputs/Index";
 
 const Location = ({ id }) => {
   const [location, setLocation] = useState({
@@ -62,7 +62,7 @@ const Location = ({ id }) => {
     return () => {
       console.log("unoounted ");
     };
-  }, []);
+  }, [id, location]);
 
   const setform = useContext(FormContext)[1];
 
@@ -173,6 +173,10 @@ const Location = ({ id }) => {
       </div>
     </div>
   );
+};
+
+Location.propTypes = {
+  id: PropTypes.string.isRequired
 };
 
 export default Location;

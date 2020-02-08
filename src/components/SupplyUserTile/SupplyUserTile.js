@@ -2,12 +2,10 @@
 import React, { useState } from "react";
 import PropTypes from "prop-types";
 import Avatar from "../Avatar/Avatar";
-import ThreeDots from "../ThreeDots/ThreeDots";
-import Button from "../button/Button";
+import { Button, IconButton } from "../Button/Index";
 import "./SupplyUserTile.scss";
 import Form from "../Form/Form";
-import TextInput from "../Inputs/TextInput/TextInput";
-import EditInput from "../Inputs/EditInput/EditInput";
+import { TextInput, EditInput } from "../Inputs/Index";
 
 const SupplyUserTile = ({ user, supply, price, picUrl }) => {
   const [tileSupply, setTileSuply] = useState({
@@ -67,7 +65,7 @@ const SupplyUserTile = ({ user, supply, price, picUrl }) => {
             )}
           </span>
         </div>
-        <ThreeDots clicked={changeOptions} />
+        <IconButton clicked={changeOptions} iconClass="fas fa-ellipsis-v" />
       </div>
       {tileState.options ? (
         editState.edit ? (

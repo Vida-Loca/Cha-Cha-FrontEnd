@@ -1,22 +1,17 @@
-/* eslint-disable no-loop-func */
 import React, { useState, useContext, useEffect } from "react";
 import PropTypes from "prop-types";
 
-import "./Supply.scss";
-
+import { userService } from "../../../Authentication/service";
 import { FormContext } from "../../../context/FormContext";
 // import { newSupplyContainerForm } from "./FormsToBeRendered/FormsToBeRendered";
 
-import SupplyContainers from "./Data/TempData";
+import "./Supply.scss";
 
-import Button from "../../../components/button/Button";
-import TextInput from "../../../components/Inputs/TextInput/TextInput";
+import { Button } from "../../../components/Button/Index";
+import { TextInput } from "../../../components/Inputs/Index";
 import Form from "../../../components/Form/Form";
-
 import SupplyCategory from "../../../components/SupplyCategory/SupplyCategory";
 import Modal from "../../../components/Modal/Modal";
-
-import { userService } from "../../../Authentication/service";
 
 import products from "./Data/RealTempData";
 
@@ -30,22 +25,22 @@ const Supply = ({ id }) => {
   // });
 
   const createSetOfCategories = array => {
-    var newArray = [];
+    const newArray = [];
 
-    var ListOfCategories = [];
-    array.map(catgory => {
+    const ListOfCategories = [];
+    array.forEach(catgory => {
       ListOfCategories.push(catgory.productCategory.name);
     });
 
     const uniqCategory = [...new Set(ListOfCategories)];
 
-    uniqCategory.map(cate => {
-      var tempObject = { Category: cate, supplies: [] };
+    uniqCategory.forEach(cate => {
+      const tempObject = { Category: cate, supplies: [] };
 
-      for (let i = 0; i < array.length; i++) {
-        var tempSupply = {};
+      for (let i = 0; i < array.length; i += 1) {
+        let tempSupply = {};
         if (cate === array[i].productCategory.name) {
-          array[i].userCards.map(user => {
+          array[i].userCards.forEach(user => {
             tempSupply = {
               id: user.eventUser.user.id,
               supply: array[i].name,
@@ -65,29 +60,29 @@ const Supply = ({ id }) => {
   };
 
   useEffect(() => {
-    console.log("mounted");
+    // console.log("mounted");
     // console.log(productsTemp);
-    // setsupply2(createSetOfCategories(productsTemp));
+    setsupply2(createSetOfCategories(productsTemp));
     // console.log(supplyList2);
 
-    userService
-      .getAllProductsFromGivenEvent(id)
-      .then(body => {
-        return body;
-      })
-      .then(res => {
-        console.log(res);
-        // setform({ ...forms, show: false });
-        setsupply2(createSetOfCategories(res));
-        console.log(supplyList2);
-      })
-      .catch(err => {
-        console.log(err);
-      });
+    // userService
+    //   .getAllProductsFromGivenEvent(id)
+    //   .then(body => {
+    //     return body;
+    //   })
+    //   .then(res => {
+    //     console.log(res);
+    //     // setform({ ...forms, show: false });
+    //     setsupply2(createSetOfCategories(res));
+    //     console.log(supplyList2);
+    //   })
+    //   .catch(err => {
+    //     console.log(err);
+    //   });
     return () => {
       console.log("unmounted");
     };
-  }, []);
+  }, [productsTemp]);
 
   const [forms, setform] = useContext(FormContext);
 
@@ -172,8 +167,7 @@ const Supply = ({ id }) => {
 };
 
 Supply.propTypes = {
-  // eslint-disable-next-line react/require-default-props
-  openModal: PropTypes.func
+  id: PropTypes.string.isRequired
 };
 
 export default Supply;

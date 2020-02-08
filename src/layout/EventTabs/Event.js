@@ -1,53 +1,61 @@
-import React, { Component } from "react";
+import React, { useState, useEffect } from "react";
 import { Route } from "react-router-dom";
+import PropTypes from "prop-types";
+
+import "./Event.scss";
+
+// import { userService } from "../../Authentication/service";
+
 import Supply from "./Supply/Supply";
 import Location from "./Location/Location";
 import Members from "./Members/Members";
-import "./Event.scss";
-import { userService } from "../../Authentication/service";
 
-class Event extends Component {
-  constructor(props) {
-    super(props);
-    this.state = { eventName: "" };
-  }
+const Event = ({ eventId, eventPath }) => {
+  const [eventName, setEventName] = useState("");
 
-  componentDidMount() {
-    userService
-      .getEventById(this.props.match.params.id)
-      .then(body => {
-        return body;
-      })
-      .then(res => {
-        this.setState({ eventName: res.name });
-      })
-      .catch(err => {
-        console.log(err);
-      });
-  }
+  useEffect(() => {
+    //   userService
+    //     .getEventById(this.props.eventId)
+    //     .then(body => {
+    //       return body;
+    //     })
+    //     .then(res => {
+    //       setEventName(res.name );
+    //     })
+    //     .catch(err => {
+    //       console.log(err);
+    //     });
+    return () => {
+      console.log("unmounted");
+    };
+  }, []);
 
-  render() {
-    return (
-      <div>
-        <h1 className="EventName">{this.state.eventName}</h1>
-        <Route
-          path={`${this.props.match.path}/suplies`}
-          exact
-          render={({ id }) => <Supply id={this.props.match.params.id} />}
-        />
-        <Route
-          path={`${this.props.match.path}/location`}
-          exact
-          render={({ id }) => <Location id={this.props.match.params.id} />}
-        />
-        <Route
-          path={`${this.props.match.path}/members`}
-          exact
-          render={({ id }) => <Members id={this.props.match.params.id} />}
-        />
-      </div>
-    );
-  }
-}
+  return (
+    <div>
+      <h1 className="EventName">{eventName}</h1>
+      <Route
+        path={`${eventPath}/suplies`}
+        exact
+        render={() => <Supply id={eventId} />}
+      />
+      <Route
+        path={`${eventPath}/location`}
+        exact
+        render={() => <Location id={eventId} />}
+      />
+      <Route
+        path={`${eventPath}/members`}
+        exact
+        render={() => <Members id={eventId} />}
+      />
+    </div>
+  );
+};
+
+Event.propTypes = {
+  // eslint-disable-next-line react/require-default-props
+  eventId: PropTypes.string.isRequired,
+  eventPath: PropTypes.string.isRequired
+};
 
 export default Event;

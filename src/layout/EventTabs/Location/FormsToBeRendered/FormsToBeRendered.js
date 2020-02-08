@@ -1,7 +1,7 @@
 import React from "react";
 import Form from "../../../../components/Form/Form";
-import TextInput from "../../../../components/Inputs/TextInput/TextInput";
-import Button from "../../../../components/button/Button";
+import { TextInput } from "../../../../components/Inputs/Index";
+import { Button } from "../../../../components/Button/Index";
 
 const createForm = (formData, buttonName) => {
   return (

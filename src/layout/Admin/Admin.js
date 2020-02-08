@@ -1,6 +1,6 @@
-import React, { useState } from "react";
+import React from "react";
 import "./Admin.scss";
-import { BrowserRouter, Route, Redirect } from "react-router-dom";
+import { Route, Redirect } from "react-router-dom";
 
 import UserLayout from "./UsersLayout/UsersLayout";
 import EventLayout from "./EventLayout/EventLayout";

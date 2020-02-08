@@ -1,7 +1,7 @@
 import React from "react";
-import TextInput from "../../../../components/Inputs/TextInput/TextInput";
+import { TextInput } from "../../../../components/Inputs/Index";
 import Form from "../../../../components/Form/Form";
-import Button from "../../../../components/button/Button";
+import { Button } from "../../../../components/Button/Index";
 
 export const newSupplyContainerForm = () => {
   return (

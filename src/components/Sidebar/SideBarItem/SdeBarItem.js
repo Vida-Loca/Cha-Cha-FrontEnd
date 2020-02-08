@@ -10,9 +10,6 @@ const SideBarItem = ({
   beforeLink,
   mobileNavBarHandler
 }) => {
-  const testFun = () => {
-    console.log("jak");
-  };
   return (
     <NavLink
       to={`${beforeLink}/${name.toLowerCase()}`}

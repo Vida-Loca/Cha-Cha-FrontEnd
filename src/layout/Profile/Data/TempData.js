@@ -1,93 +1,62 @@
 export const tempEvents = [
   {
-    id: "ab3bdek3nfklNN",
+    event_id: 1,
     name: "event 1",
-    time: "2:30PM",
-    date: "10-12-2019",
-    location: "Gdansk, Oliwskiego 25"
+    startTime: "2:30",
+    startDate: "10-12-2019",
+    address: {
+      city: "Gdansk",
+      street: "Oliwska",
+      number: "45",
+      postcode: "45-546"
+    }
   },
   {
-    id: "dwdjJ7nd&md",
+    event_id: 2,
     name: "event 2",
-    time: "2:30PM",
-    date: "10-12-2019",
-    location: "Gdansk, Oliwskiego 25"
+    startTime: "2:30",
+    startDate: "10-12-2019",
+    address: {
+      city: "Gdansk",
+      street: "Oliwska",
+      number: "45",
+      postcode: "45-546"
+    }
   },
   {
-    id: "dwdadaw8M",
+    event_id: 3,
     name: "event 3",
-    time: "2:30PM",
-    date: "10-12-2019",
-    location: "Gdansk, Oliwskiego 25"
+    startTime: "2:30",
+    startDate: "10-12-2019",
+    address: {
+      city: "Gdansk",
+      street: "Oliwska",
+      number: "45",
+      postcode: "45-546"
+    }
   },
   {
-    id: "dwYU68n77",
+    event_id: 4,
     name: "event 4",
-    time: "2:30PM",
-    date: "10-12-2019",
-    location: "Gdansk, Oliwskiego 25"
+    startTime: "2:30",
+    startDate: "10-12-2019",
+    address: {
+      city: "Gdansk",
+      street: "Oliwska",
+      number: "45",
+      postcode: "45-546"
+    }
   },
   {
-    id: "dwdKN&&666s",
+    event_id: 5,
     name: "event 5",
-    time: "2:30PM",
-    date: "10-12-2019",
-    location: "Gdansk, Oliwskiego 25"
-  },
-  {
-    id: "dwdw34Hss",
-    name: "event 6",
-    time: "2:30PM",
-    date: "10-12-2019",
-    location: "Gdansk, Oliwskiego 25"
-  },
-  {
-    id: "55gfht",
-    name: "event 7",
-    time: "2:30PM",
-    date: "10-12-2019",
-    location: "Gdansk, Oliwskiego 25"
-  },
-  {
-    id: "gd55555",
-    name: "event 8",
-    time: "2:30PM",
-    date: "10-12-2019",
-    location: "Gdansk, Oliwskiego 25"
-  },
-  {
-    id: "t4dg5",
-    name: "event 9",
-    time: "2:30PM",
-    date: "10-12-2019",
-    location: "Gdansk, Oliwskiego 25"
-  },
-  {
-    id: "gdgdrg67",
-    name: "event 10",
-    time: "2:30PM",
-    date: "10-12-2019",
-    location: "Gdansk, Oliwskiego 25"
-  },
-  {
-    id: "wr356",
-    name: "event 11",
-    time: "2:30PM",
-    date: "10-12-2019",
-    location: "Gdansk, Oliwskiego 25"
-  },
-  {
-    id: "34fff",
-    name: "event 12",
-    time: "2:30PM",
-    date: "10-12-2019",
-    location: "Gdansk, Oliwskiego 25"
-  },
-  {
-    id: "fdf444",
-    name: "event 13",
-    time: "2:30PM",
-    date: "10-12-2019",
-    location: "Gdansk, Oliwskiego 25"
+    startTime: "2:30",
+    startDate: "10-12-2019",
+    address: {
+      city: "Gdansk",
+      street: "Oliwska",
+      number: "45",
+      postcode: "45-546"
+    }
   }
 ];

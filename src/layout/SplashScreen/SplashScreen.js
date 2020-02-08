@@ -1,13 +1,13 @@
 import React, { useState, useContext } from "react";
-import Button from "../components/button/Button";
-import Modal from "../components/Modal/Modal";
-import TextInput from "../components/Inputs/TextInput/TextInput";
-import Form from "../components/Form/Form";
-import { FormContext } from "../context/FormContext";
-import { UserContext } from "../context/UserContext";
-import { authenticationService } from "../Authentication/service";
+import { Button } from "../../components/Button/Index";
+import Modal from "../../components/Modal/Modal";
+import { TextInput } from "../../components/Inputs/Index";
+import Form from "../../components/Form/Form";
+import { FormContext } from "../../context/FormContext";
+import { UserContext } from "../../context/UserContext";
+import { authenticationService } from "../../Authentication/service";
 
-const OpeningPageLayout = props => {
+const SplashScreen = props => {
   const [changedForm, setChangedForm] = useContext(FormContext);
   const [user, setUser] = useContext(UserContext);
 
@@ -159,4 +159,4 @@ const OpeningPageLayout = props => {
   );
 };
 
-export default OpeningPageLayout;
+export default SplashScreen;

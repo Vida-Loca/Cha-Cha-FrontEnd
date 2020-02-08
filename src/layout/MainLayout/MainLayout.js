@@ -1,17 +1,16 @@
 import React, { useState, useEffect } from "react";
 import { Switch, BrowserRouter, Route, Redirect } from "react-router-dom";
-import Sidebar from "../../components/Sidebar/Sidebar";
-import Modal from "../../components/Modal/Modal";
-import { FormContext } from "../../context/FormContext";
-import Button from "../../components/button/Button";
+import { mainNav, adminNav, eventNav, mainNavNoAdmin } from "./Navs";
+import { userService } from "../../Authentication/service";
 
+import "./Layout.scss";
+
+import Sidebar from "../../components/Sidebar/Sidebar";
 import Home from "../Home/Home";
 import Profile from "../Profile/Profile";
 import Admin from "../Admin/Admin";
 import Event from "../EventTabs/Event";
-import TestComp from "../../testComponent/TestComp";
-import { mainNav, adminNav, eventNav, mainNavNoAdmin } from "./Navs";
-import { userService } from "../../Authentication/service";
+
 // isUserAdmin
 const MainLayout = () => {
   const [isUserAdmin, setUserAdmin] = useState(false);
@@ -52,7 +51,9 @@ const MainLayout = () => {
 
             <Route
               path="/event/:id"
-              render={({ match }) => <Event match={match} />}
+              render={({ match }) => (
+                <Event eventId={match.params.id} eventPath={match.path} />
+              )}
             />
           </Switch>
         </div>
@@ -62,7 +63,6 @@ const MainLayout = () => {
             <Sidebar
               beforeLink={`/event/${match.params.id}`}
               classes="SideBar-darkBlue"
-              navName="EventNav"
               navlinks={eventNav}
             />
           )}
@@ -74,7 +74,6 @@ const MainLayout = () => {
               <Sidebar
                 beforeLink="/admin"
                 classes="SideBar-darkBlue"
-                navName="EventNav"
                 navlinks={adminNav}
               />
             )}

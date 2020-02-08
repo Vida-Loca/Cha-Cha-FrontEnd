@@ -1,5 +1,5 @@
 import React from "react";
-import "./globalStyles/App.scss";
+import "./style/App.scss";
 import MyApplication from "./layout/MyApplication";
 import { FormProvider } from "./context/FormContext";
 import { UserProvider } from "./context/UserContext";
