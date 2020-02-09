@@ -1,8 +1,8 @@
 import React, { useState } from "react";
 import "./AdminUserTile.scss";
-import Avatar from "../Avatar/Avatar";
+import Avatar from "../Avatar";
 
-import { Button, IconButton } from "../Button/Index";
+import { Button, IconButton } from "../Button";
 
 const AdminUserTile = ({ id, image, name }) => {
   const [tileState, tileStateSet] = useState({ options: false });

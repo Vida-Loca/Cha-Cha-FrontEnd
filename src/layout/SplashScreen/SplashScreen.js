@@ -1,15 +1,14 @@
 import React, { useState, useContext } from "react";
-import { Button } from "../../components/Button/Index";
-import Modal from "../../components/Modal/Modal";
-import { TextInput } from "../../components/Inputs/Index";
-import Form from "../../components/Form/Form";
+import { Button } from "../../components/Button";
+import Modal from "../../components/Modal";
+import { TextInput } from "../../components/Inputs";
 import { FormContext } from "../../context/FormContext";
 import { UserContext } from "../../context/UserContext";
 import { authenticationService } from "../../Authentication/service";
 
-const SplashScreen = props => {
+const SplashScreen = () => {
   const [changedForm, setChangedForm] = useContext(FormContext);
-  const [user, setUser] = useContext(UserContext);
+  const setUser = useContext(UserContext)[1];
 
   const [newState, seNewState] = useState({
     chooseForm: false,
@@ -85,14 +84,14 @@ const SplashScreen = props => {
     );
   };
 
-  const logoutHandler = event => {
-    event.preventDefault();
-    authenticationService.logout();
-  };
+  // const logoutHandler = event => {
+  //   event.preventDefault();
+  //   authenticationService.logout();
+  // };
 
   const loginFrom = () => {
     return (
-      <Form>
+      <div>
         <TextInput
           onChange={handleLoginChange}
           placeholder="username"
@@ -107,7 +106,7 @@ const SplashScreen = props => {
         <Button clicked={loginHandler} classes="btn-blueGradient btn-md">
           Log In
         </Button>
-      </Form>
+      </div>
     );
   };
 
@@ -121,7 +120,7 @@ const SplashScreen = props => {
       { placeholder: "e-mail", name: "email" }
     ];
     return (
-      <Form>
+      <div>
         {data.map(inputs => {
           return (
             <TextInput
@@ -136,7 +135,7 @@ const SplashScreen = props => {
         <Button clicked={registerHandler} classes="btn-blueGradient btn-md">
           Submit
         </Button>
-      </Form>
+      </div>
     );
   };
 

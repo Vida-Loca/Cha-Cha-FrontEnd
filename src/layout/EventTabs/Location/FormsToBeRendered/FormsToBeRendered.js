@@ -1,11 +1,10 @@
 import React from "react";
-import Form from "../../../../components/Form/Form";
-import { TextInput } from "../../../../components/Inputs/Index";
-import { Button } from "../../../../components/Button/Index";
+import { TextInput } from "../../../../components/Inputs";
+import { Button } from "../../../../components/Button";
 
 const createForm = (formData, buttonName) => {
   return (
-    <Form>
+    <div>
       {formData.map(obj => {
         return (
           <TextInput
@@ -16,7 +15,7 @@ const createForm = (formData, buttonName) => {
         );
       })}
       <Button classes="btn-blueGradient btn-md">{buttonName}</Button>
-    </Form>
+    </div>
   );
 };
 

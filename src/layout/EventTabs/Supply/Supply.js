@@ -7,16 +7,15 @@ import { FormContext } from "../../../context/FormContext";
 
 import "./Supply.scss";
 
-import { Button } from "../../../components/Button/Index";
-import { TextInput } from "../../../components/Inputs/Index";
-import Form from "../../../components/Form/Form";
-import SupplyCategory from "../../../components/SupplyCategory/SupplyCategory";
-import Modal from "../../../components/Modal/Modal";
+import { Button } from "../../../components/Button";
+import { TextInput } from "../../../components/Inputs";
+import SupplyCategory from "../../../components/ProductCategory";
+import Modal from "../../../components/Modal";
 
 import products from "./Data/RealTempData";
 
 const Supply = ({ id }) => {
-  const [productsTemp, setProducts] = useState(products);
+  const productsTemp = useState(products)[0];
 
   const [supplyList2, setsupply2] = useState([]);
 
@@ -121,7 +120,7 @@ const Supply = ({ id }) => {
 
   const newSupplyContainerForm = () => {
     return (
-      <Form>
+      <div>
         <TextInput
           onChange={onChangeHandler}
           placeholder="Supply name"
@@ -141,7 +140,7 @@ const Supply = ({ id }) => {
         <Button clicked={addNewProduct} classes="btn-blueGradient btn-md">
           apply
         </Button>
-      </Form>
+      </div>
     );
   };
 

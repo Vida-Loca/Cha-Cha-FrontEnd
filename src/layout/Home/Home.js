@@ -6,12 +6,11 @@ import { userService } from "../../Authentication/service";
 
 import "./Home.scss";
 
-import { Button } from "../../components/Button/Index";
-import { TextInput, DateInput } from "../../components/Inputs/Index";
-import Form from "../../components/Form/Form";
-import EventCard from "../../components/EventCard/EventCard";
+import { Button } from "../../components/Button";
+import { TextInput, DateInput } from "../../components/Inputs";
+import EventCard from "../../components/EventCard";
 import Pagination from "../../components/Pagination/Pagination";
-import Modal from "../../components/Modal/Modal";
+import Modal from "../../components/Modal";
 
 const Home = () => {
   const [eventsList, setEventsList] = useState([]);
@@ -97,7 +96,7 @@ const Home = () => {
 
   const newEventForm = () => {
     return (
-      <Form>
+      <div>
         <TextInput
           onChange={onChangeHandlerEvent}
           placeholder="name"
@@ -143,7 +142,7 @@ const Home = () => {
         <Button clicked={createNewEvent} classes="btn-blueGradient btn-md">
           apply
         </Button>
-      </Form>
+      </div>
     );
   };
 

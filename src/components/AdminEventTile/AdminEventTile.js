@@ -1,6 +1,6 @@
 import React, { useState } from "react";
 import "./AdminEventTile.scss";
-import { Button, IconButton } from "../Button/Index";
+import { Button, IconButton } from "../Button";
 
 const AdminEventTile = ({ id, name }) => {
   const [tileState, tileStateSet] = useState({ options: false });

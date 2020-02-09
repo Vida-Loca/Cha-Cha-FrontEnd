@@ -1,17 +1,16 @@
 /* eslint-disable no-nested-ternary */
 import React, { useState } from "react";
 import PropTypes from "prop-types";
-import Avatar from "../Avatar/Avatar";
-import { Button, IconButton } from "../Button/Index";
-import "./SupplyUserTile.scss";
-import Form from "../Form/Form";
-import { TextInput, EditInput } from "../Inputs/Index";
+import Avatar from "../../Avatar";
+import { Button, IconButton } from "../../Button";
+import "./ProductCard.scss";
+import { EditInput } from "../../Inputs";
 
-const SupplyUserTile = ({ user, supply, price, picUrl }) => {
+const ProductCard = ({ user, supply, price, picUrl }) => {
   const [tileSupply, setTileSuply] = useState({
-    user: user,
-    supply: supply,
-    price: price
+    user,
+    supply,
+    price
   });
 
   const [editState, setEditState] = useState({ edit: false });
@@ -91,16 +90,16 @@ const SupplyUserTile = ({ user, supply, price, picUrl }) => {
     </div>
   );
 };
-SupplyUserTile.defaultProps = {
+ProductCard.defaultProps = {
   picUrl:
     "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTSLmktkJrArXh_zZVovazl5mb3lna9HXqPo7XvvviCSQAuru5C&s"
 };
 
-SupplyUserTile.propTypes = {
+ProductCard.propTypes = {
   user: PropTypes.string.isRequired,
   supply: PropTypes.string.isRequired,
   price: PropTypes.number.isRequired,
   picUrl: PropTypes.string
 };
 
-export default SupplyUserTile;
+export default ProductCard;

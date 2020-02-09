@@ -25,7 +25,7 @@ const SideBarItem = ({
 SideBarItem.defaultProps = {
   icon: "fab fa-bandcamp",
   beforeLink: "/",
-  mobileNavBarHandler: () => {}
+  mobileNavBarHandler: null
 };
 
 SideBarItem.propTypes = {

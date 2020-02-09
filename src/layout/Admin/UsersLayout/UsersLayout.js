@@ -4,7 +4,7 @@ import { tempUsers } from "./Data/TempData";
 import "./UserLayout.scss";
 
 const UsersLayout = () => {
-  const [users, setUsers] = useState(tempUsers);
+  const users = useState(tempUsers)[0];
   return (
     <div className="Users">
       {users.map(user => {

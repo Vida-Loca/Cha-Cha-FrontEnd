@@ -1,6 +1,6 @@
 import React from "react";
 import PropTypes from "prop-types";
-import { IconButton } from "../Button/Index";
+import { IconButton } from "../Button";
 
 const InfoSection = ({ label, content, clickedEditForm }) => {
   return (

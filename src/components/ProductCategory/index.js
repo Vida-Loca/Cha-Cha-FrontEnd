@@ -1,32 +1,22 @@
 import React, { useContext, useState } from "react";
 import PropTypes from "prop-types";
 
-import "./SupplyCategory.scss";
+import "./ProductCategory.scss";
 
-import { Button, IconButton } from "../Button/Index";
-import ShowMoreButton from "../ShowMoreButton/ShowMoreButton";
-import SupplyUserTile from "../SupplyUserTile/SupplyUserTile";
+import { ShowMore, Button } from "../Button";
+import ProductCard from "./ProductCard";
 
-import {
-  editSupplyForm,
-  addSupplyForm
-} from "./FormsToBeRendered/FormsToBeRendered";
 import { FormContext } from "../../context/FormContext";
 
-const SupplyCategory = ({ supCont }) => {
+const ProductCategory = ({ supCont }) => {
   const [supplyContainer, setsupplyContainer] = useState({
     ...supCont,
     showMore: false
   });
   const setform = useContext(FormContext)[1];
 
-  const openModalEditSupply = userId => {
-    setform({ show: true, renderForm: editSupplyForm() });
-    console.log(userId);
-  };
-
   const openModalAddSupply = () => {
-    setform({ show: true, renderForm: addSupplyForm() });
+    setform({ show: true, renderForm: "" });
   };
 
   const showMoreHandler = () => {
@@ -44,7 +34,7 @@ const SupplyCategory = ({ supCont }) => {
     >
       <div className="SupplyHeader">
         <p className="CategoryLabel">{supplyContainer.Category}</p>
-        <ShowMoreButton
+        <ShowMore
           showState={supplyContainer.showMore}
           clicked={() => showMoreHandler()}
         />
@@ -61,26 +51,24 @@ const SupplyCategory = ({ supCont }) => {
             ).toFixed(2)}
             <span> zl</span>
           </p>
-          {/* <Button
+          <Button
             clicked={openModalAddSupply}
             classes="btn-sm btn-orangeGradient"
           >
             <i className="fas fa-plus-circle" />
-          </Button> */}
+          </Button>
         </div>
-        <IconButton iconClass="fas fa-ellipsis-v" />
       </div>
 
       <div className="SupplyBody">
         {supplyContainer.supplies.map(sup => {
           return (
-            <SupplyUserTile
+            <ProductCard
               user={sup.user}
               supply={sup.supply}
               price={sup.price}
               key={`${sup.id}-${sup.supply}`}
               picUrl={sup.picUrl}
-              openModal={openModalEditSupply}
             />
           );
         })}
@@ -89,7 +77,7 @@ const SupplyCategory = ({ supCont }) => {
   );
 };
 
-SupplyCategory.propTypes = {
+ProductCategory.propTypes = {
   // eslint-disable-next-line react/require-default-props
   supCont: PropTypes.shape({
     Category: PropTypes.string.isRequired,
@@ -97,4 +85,4 @@ SupplyCategory.propTypes = {
   })
 };
 
-export default SupplyCategory;
+export default ProductCategory;

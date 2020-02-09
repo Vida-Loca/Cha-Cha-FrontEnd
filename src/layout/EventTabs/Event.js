@@ -11,7 +11,7 @@ import Location from "./Location/Location";
 import Members from "./Members/Members";
 
 const Event = ({ eventId, eventPath }) => {
-  const [eventName, setEventName] = useState("");
+  const eventName = useState("")[0];
 
   useEffect(() => {
     //   userService
@@ -53,7 +53,6 @@ const Event = ({ eventId, eventPath }) => {
 };
 
 Event.propTypes = {
-  // eslint-disable-next-line react/require-default-props
   eventId: PropTypes.string.isRequired,
   eventPath: PropTypes.string.isRequired
 };

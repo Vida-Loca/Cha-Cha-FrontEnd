@@ -1,11 +1,10 @@
 import React from "react";
-import { TextInput } from "../../../../components/Inputs/Index";
-import Form from "../../../../components/Form/Form";
-import { Button } from "../../../../components/Button/Index";
+import { TextInput } from "../../../../components/Inputs";
+import { Button } from "../../../../components/Button";
 
 export const newSupplyContainerForm = () => {
   return (
-    <Form>
+    <div>
       <TextInput
         onChange={onChangeHandler}
         placeholder="Supply name"
@@ -23,7 +22,7 @@ export const newSupplyContainerForm = () => {
         name="productCategory"
       />
       <Button classes="btn-blueGradient btn-md">apply</Button>
-    </Form>
+    </div>
   );
 };
 
@@ -34,7 +33,7 @@ export const editSupplyForm = ({ onChangeHandler }) => {
     { name: "price", placeholder: "Price" }
   ];
   return (
-    <Form>
+    <div>
       {data.map(TxtInput => {
         return (
           <TextInput
@@ -45,7 +44,7 @@ export const editSupplyForm = ({ onChangeHandler }) => {
         );
       })}
       <Button classes="btn-blueGradient btn-md">apply</Button>
-    </Form>
+    </div>
   );
 };
 export const addSupplyForm = () => {
@@ -55,7 +54,7 @@ export const addSupplyForm = () => {
     { name: "price", placeholder: "Price" }
   ];
   return (
-    <Form>
+    <div>
       {data.map(TxtInput => {
         return (
           <TextInput
@@ -66,6 +65,6 @@ export const addSupplyForm = () => {
         );
       })}
       <Button classes="btn-blueGradient btn-md">apply</Button>
-    </Form>
+    </div>
   );
 };

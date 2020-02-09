@@ -1,7 +1,7 @@
 import React, { useState } from "react";
 import PropTypes from "prop-types";
-import SideBarItem from "./SideBarItem/SdeBarItem";
-import { IconButton } from "../Button/Index";
+import SideBarItem from "./SideBarItem";
+import { IconButton } from "../Button";
 import "./SideBar.scss";
 
 const Sidebar = ({ navlinks, classes, beforeLink }) => {
@@ -41,7 +41,7 @@ Sidebar.defaultProps = {
 };
 
 Sidebar.propTypes = {
-  navlinks: PropTypes.node.isRequired,
+  navlinks: PropTypes.arrayOf(String).isRequired,
   classes: PropTypes.string,
   beforeLink: PropTypes.string
 };

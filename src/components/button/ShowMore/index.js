@@ -1,6 +1,6 @@
 import React from "react";
 import PropTypes from "prop-types";
-import "./ShowMoreButton.scss";
+import "./ShowMore.scss";
 
 const ShowMoreButton = ({ clicked, showState }) => {
   return (
@@ -17,7 +17,7 @@ const ShowMoreButton = ({ clicked, showState }) => {
 };
 
 ShowMoreButton.defaultProps = {
-  clicked: () => {}
+  clicked: null
 };
 
 ShowMoreButton.propTypes = {

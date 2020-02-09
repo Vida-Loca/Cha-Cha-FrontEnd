@@ -8,18 +8,17 @@ import "./Members.scss";
 
 // import inviteUser from "./FormsToBeRendered/FormsToBeRendered";
 
-import UserTile from "../../../components/UserTile/UserTile";
-import { Button } from "../../../components/Button/Index";
-import Modal from "../../../components/Modal/Modal";
-import Form from "../../../components/Form/Form";
-import { TextInput } from "../../../components/Inputs/Index";
+import UserCard from "../../../components/UserCard";
+import { Button } from "../../../components/Button";
+import Modal from "../../../components/Modal";
+import { TextInput } from "../../../components/Inputs";
 
 import { userService } from "../../../Authentication/service";
 
 const Members = ({ id }) => {
   // const [members, setMembers] = useState([]);
   // const [requests, setrequests] = useState(requestsFoThisEvent);
-  const [isUserAdmin, setUserAdmin] = useState({ isAdmin: true });
+  const isUserAdmin = useState(true)[0];
 
   useEffect(() => {
     //   userService
@@ -89,7 +88,7 @@ const Members = ({ id }) => {
 
   const inviteUser = () => {
     return (
-      <Form>
+      <div>
         <TextInput
           onChange={onChangeHandler}
           placeholder="Username"
@@ -98,7 +97,7 @@ const Members = ({ id }) => {
         <Button clicked={inviteUserPost} classes="btn-blueGradient btn-md">
           send and invite
         </Button>
-      </Form>
+      </div>
     );
   };
 
@@ -117,27 +116,26 @@ const Members = ({ id }) => {
       <h2>{`Pending requests ● ${requestsFoThisEvent.length}`}</h2>
       {requestsFoThisEvent.map(member => {
         return (
-          <UserTile
-            username={member.username}
-            buttonName="accept"
-            buttonClass="btn-blueGradient btn-sm"
+          <UserCard
             key={member.username}
-          />
+            username={member.username}
+            showControlls={isUserAdmin}
+          >
+            <Button classes="btn-blueGradient btn-sm">accept</Button>
+          </UserCard>
         );
       })}
 
       <h2>{`Members ● ${membersOfTheEvent.length}`}</h2>
       {membersOfTheEvent.map(member => {
         return member ? (
-          <UserTile
-            username={member.username}
-            userId={member.id}
-            eventId={id}
-            isAdmin={isUserAdmin.isAdmin}
-            buttonName="kick"
-            buttonClass="btn-orangeGradient btn-sm"
+          <UserCard
             key={member.username}
-          />
+            username={member.username}
+            showControlls={isUserAdmin}
+          >
+            <Button classes="btn-orangeGradient btn-sm">kick</Button>
+          </UserCard>
         ) : null;
       })}
     </div>

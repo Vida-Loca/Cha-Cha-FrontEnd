@@ -8,14 +8,13 @@ import { authenticationService } from "../../Authentication/service";
 import { tempEvents } from "./Data/TempData";
 import "./Profile.scss";
 
-import { Button } from "../../components/Button/Index";
-import { TextInput } from "../../components/Inputs/Index";
-import Form from "../../components/Form/Form";
-import EventCard from "../../components/EventCard/EventCard";
+import { Button } from "../../components/Button";
+import { TextInput } from "../../components/Inputs";
+import EventCard from "../../components/EventCard";
 import Pagination from "../../components/Pagination/Pagination";
 
-import Modal from "../../components/Modal/Modal";
-import Avatar from "../../components/Avatar/Avatar";
+import Modal from "../../components/Modal";
+import Avatar from "../../components/Avatar";
 
 const Profile = () => {
   const [userInfo, setUserInfo] = useState({
@@ -23,6 +22,7 @@ const Profile = () => {
     name: "name",
     surname: "surname",
     email: "email@email.com"
+    // picUrl: null
   });
   // const [myEvents, setMyEvent] = useState([]);
 
@@ -78,7 +78,7 @@ const Profile = () => {
 
   const ProfileForm = () => {
     return (
-      <Form>
+      <div>
         <TextInput
           onChange={onChangeHandler}
           placeholder="username"
@@ -98,7 +98,7 @@ const Profile = () => {
         <Button to="/home" classes="btn-blueGradient btn-md">
           update
         </Button>
-      </Form>
+      </div>
     );
   };
 

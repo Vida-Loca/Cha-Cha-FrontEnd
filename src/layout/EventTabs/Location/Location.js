@@ -3,8 +3,6 @@ import PropTypes from "prop-types";
 import { FormContext } from "../../../context/FormContext";
 import { userService } from "../../../Authentication/service";
 import {
-  editAddress,
-  editPhoneNumber,
   editDateAndTime,
   editAttitionalInformation
 } from "./FormsToBeRendered/FormsToBeRendered";
@@ -13,7 +11,7 @@ import {
 import "./Location.scss";
 
 import InfoSection from "../../../components/InfoSection/InfoSection";
-import { EditInput } from "../../../components/Inputs/Index";
+import { EditInput } from "../../../components/Inputs";
 
 const Location = ({ id }) => {
   const [location, setLocation] = useState({
@@ -74,9 +72,9 @@ const Location = ({ id }) => {
       Address: { ...location.Address, edit: !location.Address.edit }
     });
   };
-  const openModalToEditPhoneNumber = () => {
-    setform({ show: true, renderForm: editPhoneNumber() });
-  };
+  // const openModalToEditPhoneNumber = () => {
+  //   setform({ show: true, renderForm: editPhoneNumber() });
+  // };
   const openModalToEditDateAndTtime = () => {
     setform({ show: true, renderForm: editDateAndTime() });
   };

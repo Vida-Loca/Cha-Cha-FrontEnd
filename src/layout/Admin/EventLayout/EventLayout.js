@@ -4,7 +4,7 @@ import { tempEvent } from "./Data/TempData";
 import "./EventLayout.scss";
 
 const EventLayout = () => {
-  const [events, setEvents] = useState(tempEvent);
+  const events = useState(tempEvent)[0];
   return (
     <div className="Users">
       {events.map(event => {
