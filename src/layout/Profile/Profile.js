@@ -11,7 +11,7 @@ import "./Profile.scss";
 import { Button } from "../../components/Button";
 import { TextInput } from "../../components/Inputs";
 import EventCard from "../../components/EventCard";
-import Pagination from "../../components/Pagination/Pagination";
+import Pagination from "../../components/Pagination";
 
 import Modal from "../../components/Modal";
 import Avatar from "../../components/Avatar";
@@ -62,19 +62,16 @@ const Profile = () => {
   // const [status, setstatu] = useState({ kek: "" });
 
   const [currentPage, setCurrentPage] = useState(1);
-  const [postsPerPage] = useState(5);
-
+  const postsPerPage = 5;
   const indexOfLastPost = currentPage * postsPerPage;
   const indexOfFirstPost = indexOfLastPost - postsPerPage;
   const currentPosts = tempEvents.slice(indexOfFirstPost, indexOfLastPost);
+  const paginate = pageNumber => setCurrentPage(pageNumber);
 
   const onChangeHandler = event => {
     setUserInfo({ ...userInfo, [`${event.target.name}`]: event.target.value });
     console.log(userInfo);
   };
-
-  // Change page
-  const paginate = pageNumber => setCurrentPage(pageNumber);
 
   const ProfileForm = () => {
     return (
@@ -167,7 +164,8 @@ const Profile = () => {
                 key={event.event_id}
                 name={event.name}
                 date={event.startDate}
-                location={`${event.address.city}, ${event.address.street}, ${event.address.number}, ${event.address.postcode}`}
+                location={event.address}
+                eventState={event.isComplete}
               />
             );
           })
@@ -175,6 +173,7 @@ const Profile = () => {
           <h3>You have no events</h3>
         )}
         <Pagination
+          currentPage={currentPage}
           postsPerPage={postsPerPage}
           totalPosts={tempEvents.length}
           paginate={paginate}

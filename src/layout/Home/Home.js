@@ -9,14 +9,13 @@ import "./Home.scss";
 import { Button } from "../../components/Button";
 import { TextInput, DateInput } from "../../components/Inputs";
 import EventCard from "../../components/EventCard";
-import Pagination from "../../components/Pagination/Pagination";
+import Pagination from "../../components/Pagination";
 import Modal from "../../components/Modal";
 
 const Home = () => {
   const [eventsList, setEventsList] = useState([]);
 
   useEffect(() => {
-    console.log("hello from effect");
     userService
       .getAllEvents()
       .then(body => {
@@ -29,22 +28,10 @@ const Home = () => {
       .catch(err => {
         console.log(err);
       });
-    return () => {
-      console.log("unoounted ");
-    };
+    return () => {};
   }, [eventsList]);
 
   const [forms, setform] = useContext(FormContext);
-
-  // const events = useState(tempEvents)[0];
-
-  const [currentPage, setCurrentPage] = useState(1);
-  const [postsPerPage] = useState(5);
-
-  const indexOfLastPost = currentPage * postsPerPage;
-  const indexOfFirstPost = indexOfLastPost - postsPerPage;
-  const currentPosts = tempEvents.slice(indexOfFirstPost, indexOfLastPost);
-  // const currentPosts2 = tempEvents.slice(indexOfFirstPost, indexOfLastPost);
 
   const [newEvent, setNewEvent] = useState({
     name: "",
@@ -58,6 +45,13 @@ const Home = () => {
       number: ""
     }
   });
+
+  const [currentPage, setCurrentPage] = useState(1);
+  const postsPerPage = 5;
+  const indexOfLastPost = currentPage * postsPerPage;
+  const indexOfFirstPost = indexOfLastPost - postsPerPage;
+  const currentPosts = tempEvents.slice(indexOfFirstPost, indexOfLastPost);
+  const paginate = pageNumber => setCurrentPage(pageNumber);
 
   const createNewEvent = event => {
     event.preventDefault();
@@ -75,9 +69,6 @@ const Home = () => {
         console.log(err);
       });
   };
-
-  // Change page
-  const paginate = pageNumber => setCurrentPage(pageNumber);
 
   const onChangeHandlerEvent = event => {
     setNewEvent({ ...newEvent, [`${event.target.name}`]: event.target.value });
@@ -165,24 +156,28 @@ const Home = () => {
           + Create Event
         </Button>
       </div>
-      <div>
-        <h2>Public Events</h2>
-        {currentPosts.map(event => {
-          return (
-            <EventCard
-              id={event.event_id}
-              key={event.event_id}
-              name={event.name}
-              date={event.startDate}
-              location={`${event.address.city}, ${event.address.street}, ${event.address.number}, ${event.address.postcode}`}
-            />
-          );
-        })}
-        <Pagination
-          postsPerPage={postsPerPage}
-          totalPosts={tempEvents.length}
-          paginate={paginate}
-        />
+      <div className="dashboard">
+        <div className="EventColumn">
+          <h2>Public Events</h2>
+          {currentPosts.map(event => {
+            return (
+              <EventCard
+                id={event.event_id}
+                key={event.event_id}
+                name={event.name}
+                date={event.startDate}
+                location={event.address}
+                eventState={event.isComplete}
+              />
+            );
+          })}
+          <Pagination
+            currentPage={currentPage}
+            postsPerPage={postsPerPage}
+            totalPosts={tempEvents.length}
+            paginate={paginate}
+          />
+        </div>
       </div>
     </div>
   );

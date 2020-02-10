@@ -3,12 +3,14 @@ import { Link } from "react-router-dom";
 import PropTypes from "prop-types";
 import "./EventCard.scss";
 
-const EventCard = ({ id, name, date, location }) => {
+const EventCard = ({ id, name, date, location, eventState }) => {
   return (
     <Link to={`/event/${id}/suplies`}>
-      <div className="Event-Card">
-        <div className="eventIcon">
-          <i className="fas fa-glass-cheers" />
+      <div className={eventState ? "Event-Card Event-Complete" : "Event-Card"}>
+        <div
+          className={eventState ? "eventIcon eventIcon-complete" : "eventIcon"}
+        >
+          <i className={eventState ? "fas fa-check" : "fas fa-sync-alt"} />
         </div>
         <div className="content">
           <h2>{name}</h2>
@@ -18,20 +20,24 @@ const EventCard = ({ id, name, date, location }) => {
           </span>
           <span>
             <i className="fas fa-map-marker-alt" />
-            {location}
+            {`${location.city}, ${location.street}, ${location.number}`}
           </span>
         </div>
-        <i className="fas fa-arrow-circle-right big-cirlcel" />
       </div>
     </Link>
   );
+};
+
+EventCard.defaultProps = {
+  eventState: false
 };
 
 EventCard.propTypes = {
   id: PropTypes.number.isRequired,
   name: PropTypes.string.isRequired,
   date: PropTypes.string.isRequired,
-  location: PropTypes.string.isRequired
+  location: PropTypes.string.isRequired,
+  eventState: PropTypes.bool
 };
 
 export default EventCard;

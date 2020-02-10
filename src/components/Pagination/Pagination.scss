@@ -1,6 +1,6 @@
 @import "../../style/globalVariabels.scss";
 .Pagination {
-  align-self: end;
+  margin-top: auto;
 
   & > button {
     background: lightgray;
@@ -14,5 +14,9 @@
       background: $main-orange;
       color: white;
     }
+  }
+  & > .active {
+    background: $main-orange;
+    color: white;
   }
 }
