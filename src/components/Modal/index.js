@@ -5,10 +5,7 @@ import "./Modal.scss";
 
 const Modal = ({ show, modalClose, children }) => {
   useEffect(() => {
-    console.log("Mounted Modal");
-    return () => {
-      console.log("Un Mounted Modal");
-    };
+    return () => {};
   }, []);
 
   return (

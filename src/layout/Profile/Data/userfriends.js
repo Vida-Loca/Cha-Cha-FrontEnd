@@ -23,22 +23,14 @@ export const tempFriends = [
 export const tempFriendsrequests = [
   {
     id: 1,
-    username: "kek"
+    username: "mojek"
   },
   {
     id: 2,
-    username: "Mek"
+    username: "Darko"
   },
   {
     id: 3,
-    username: "userek"
-  },
-  {
-    id: 4,
-    username: "Marko"
-  },
-  {
-    id: 5,
-    username: "Polo"
+    username: "fark"
   }
 ];

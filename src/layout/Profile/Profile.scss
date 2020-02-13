@@ -17,12 +17,16 @@
   @include breaking-point-1 {
     align-items: flex-start;
     margin-top: 0;
-    margin: 2rem 0 0 0;
+    margin: 0;
   }
   i {
     margin-right: 0.5rem;
   }
   .textInput {
+    width: 100%;
+  }
+  h3 {
+    margin: 0;
     width: 100%;
   }
 }

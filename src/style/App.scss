@@ -2,7 +2,7 @@
 
 html,
 body,
-.root {
+#root {
   margin: 0;
   padding: 0;
   height: 100%;
@@ -19,5 +19,5 @@ body {
   margin: 2% 2%;
   border-radius: $border-radius-md;
   display: block;
-  min-height: 700px;
+  min-height: 90%;
 }

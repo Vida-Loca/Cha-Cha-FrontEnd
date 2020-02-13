@@ -13,7 +13,7 @@ import Event from "../EventTabs/Event";
 
 // isUserAdmin
 const MainLayout = () => {
-  const [isUserAdmin, setUserAdmin] = useState(false);
+  const [isUserAdmin, setUserAdmin] = useState(true);
   useEffect(() => {
     userService
       .isUserAdmin()

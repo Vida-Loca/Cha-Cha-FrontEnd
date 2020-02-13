@@ -5,7 +5,7 @@ import "./EventCard.scss";
 
 const EventCard = ({ id, name, date, location, eventState }) => {
   return (
-    <Link to={`/event/${id}/suplies`}>
+    <Link to={`/event/${id}`}>
       <div className={eventState ? "Event-Card Event-Complete" : "Event-Card"}>
         <div
           className={eventState ? "eventIcon eventIcon-complete" : "eventIcon"}

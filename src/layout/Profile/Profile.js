@@ -6,7 +6,7 @@ import { authenticationService } from "../../Authentication/service";
 // import { userService } from "../../Authentication/service";
 
 import { tempEvents } from "./Data/TempData";
-import { tempFriends, tempFriendsrequests } from "./Data//userfriends";
+import { tempFriends, tempFriendsrequests } from "./Data/userfriends";
 import "./Profile.scss";
 
 import { IconButton, Button, EditButton } from "../../components/Button";
@@ -16,6 +16,7 @@ import PaginatedContainer from "../../components/PaginatedContainer";
 import Modal from "../../components/Modal";
 import Avatar from "../../components/Avatar";
 import UserCard from "../../components/UserCard";
+import ChangeAvatarContainer from "./ChangeAvatarContainer";
 
 const Profile = () => {
   const [userInfo, setUserInfo] = useState({
@@ -78,18 +79,13 @@ const Profile = () => {
     console.log(userInfo);
   };
 
-  // const FormToDisplay = null;
-  const changeAvatarForm = () => {
-    return (
-      <div>
-        <TextInput
-          onChange={onChangeHandler}
-          placeholder="avatarUrl"
-          name="URL"
-        />
-        <Button classes="btn-blueGradient btn-md">update</Button>
-      </div>
-    );
+  const hideModal = () => {
+    setform({ ...forms, show: false });
+  };
+
+  const LogOut = () => {
+    authenticationService.logout();
+    setuser({ isLoggedIn: false, break: true });
   };
 
   const listOfFriends = () => {
@@ -101,8 +97,8 @@ const Profile = () => {
           perPage={5}
           render={({ items }) =>
             items.map(ev => (
-              <UserCard username={ev.username} showControlls>
-                <Button classes="btn-blueGradient btn-sm">accept</Button>
+              <UserCard key={ev.username} username={ev.username} showControlls>
+                <Button classes="btn-orangeGradient btn-sm">remove</Button>
               </UserCard>
             ))
           }
@@ -113,7 +109,7 @@ const Profile = () => {
           perPage={5}
           render={({ items }) =>
             items.map(ev => (
-              <UserCard username={ev.username} showControlls>
+              <UserCard key={ev.username} username={ev.username} showControlls>
                 <Button classes="btn-blueGradient btn-sm">accept</Button>
               </UserCard>
             ))
@@ -122,34 +118,27 @@ const Profile = () => {
       </div>
     );
   };
-
-  const changeAvatar = () => {
-    setform({ renderForm: changeAvatarForm(), show: true });
-  };
-
-  const showFriends = () => {
+  const showFriendsInModal = () => {
     setform({ renderForm: listOfFriends(), show: true });
   };
 
-  const hideModal = () => {
-    setform({ ...forms, show: false });
-  };
-
-  const LogOut = () => {
-    authenticationService.logout();
-    setuser({ isLoggedIn: false, break: true });
+  const changeAvatarInModal = () => {
+    setform({ renderForm: <ChangeAvatarContainer />, show: true });
   };
 
   return (
     <div className="profileRootContainer">
       <Modal show={forms.show} modalClose={hideModal}>
-        {changeAvatarForm()}
+        {forms.renderForm}
       </Modal>
       <div className="ProfileCard">
         <div className="Avatar-section">
           <Avatar imageLink={userInfo.picUrl} />
           <div className="editBtn">
-            <IconButton clicked={changeAvatar} iconClass="fas fa-image" />
+            <IconButton
+              clicked={changeAvatarInModal}
+              iconClass="fas fa-image"
+            />
           </div>
           <span className="username">{`@${userInfo.username}`}</span>
           <Button clicked={LogOut} classes="btn-sm btn-orangeGradient">
@@ -158,6 +147,12 @@ const Profile = () => {
         </div>
 
         <div className="information-section">
+          <h3>Profile</h3>
+          <EditButton
+            options={editState}
+            activate={editHandler}
+            cancel={cancelEdit}
+          />
           {editState ? (
             <>
               <TextInput
@@ -210,15 +205,10 @@ const Profile = () => {
             size="input-sm"
             disabled
           />
-          <EditButton
-            options={editState}
-            activate={editHandler}
-            cancel={cancelEdit}
-          />
         </div>
       </div>
       <div>
-        <Button classes="btn-md btn-default" clicked={showFriends}>
+        <Button classes="btn-md btn-default" clicked={showFriendsInModal}>
           20 friends
         </Button>
       </div>

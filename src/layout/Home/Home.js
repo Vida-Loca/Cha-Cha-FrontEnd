@@ -15,21 +15,21 @@ import PaginatedContainer from "../../components/PaginatedContainer";
 const Home = () => {
   const [eventsList, setEventsList] = useState([]);
 
-  useEffect(() => {
-    userService
-      .getAllEvents()
-      .then(body => {
-        return body;
-      })
-      .then(res => {
-        setEventsList(res);
-        console.log(eventsList);
-      })
-      .catch(err => {
-        console.log(err);
-      });
-    return () => {};
-  }, [eventsList]);
+  // useEffect(() => {
+  //   userService
+  //     .getAllEvents()
+  //     .then(body => {
+  //       return body;
+  //     })
+  //     .then(res => {
+  //       setEventsList(res);
+  //       console.log(eventsList);
+  //     })
+  //     .catch(err => {
+  //       console.log(err);
+  //     });
+  //   return () => {};
+  // }, [eventsList]);
 
   const [forms, setform] = useContext(FormContext);
 

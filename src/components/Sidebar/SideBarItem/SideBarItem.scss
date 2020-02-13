@@ -13,10 +13,14 @@
   &:hover {
     background: white;
     color: black;
+    .fas {
+      color: black;
+    }
   }
 
   i {
     margin-right: 0.4rem;
+    color: black;
   }
 }
 
