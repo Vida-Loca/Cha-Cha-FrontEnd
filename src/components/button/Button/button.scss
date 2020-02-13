@@ -71,3 +71,36 @@
     color: $main-orange;
   }
 }
+
+.btn-default {
+  @extend %btn;
+  color: black;
+  background: $grey-2;
+
+  &:hover {
+    background: $grey-3;
+    color: white;
+  }
+}
+
+.btn-default-blue {
+  @extend %btn;
+  color: white;
+  background: $blue-gradient;
+
+  &:hover {
+    background: $main-blue-1;
+    color: $main-blue;
+  }
+}
+
+.btn-default-orange {
+  @extend %btn;
+  color: white;
+  background: $orange-gradient;
+
+  &:hover {
+    background: $main-orange-1;
+    color: $main-orange;
+  }
+}

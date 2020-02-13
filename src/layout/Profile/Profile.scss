@@ -4,38 +4,34 @@
   grid-column-start: 1;
   grid-column-end: 3;
 }
-.logout-btn {
-  grid-column-start: 1;
-  grid-column-end: 3;
+
+.information-section {
   display: flex;
-  justify-content: center;
-  button {
-    margin: 0 0.5rem;
-  }
-}
-.information {
-  grid-gap: 1rem;
-  display: grid;
-  grid-template-columns: 1fr 1fr;
+  flex-direction: column;
   justify-content: center;
   align-items: center;
-  & > div > button {
-    display: flex;
-    justify-content: flex-start;
+
+  max-width: 20rem;
+  margin: 2rem auto;
+
+  @include breaking-point-1 {
+    align-items: flex-start;
+    margin-top: 0;
+    margin: 2rem 0 0 0;
   }
   i {
     margin-right: 0.5rem;
+  }
+  .textInput {
+    width: 100%;
   }
 }
 
 .profileRootContainer {
   margin: 2rem 0;
   text-align: center;
-  display: grid;
-  grid-template-columns: 1fr;
-  @include breaking-point-2 {
-    grid-template-columns: 3fr 4fr;
-  }
+  display: flex;
+  flex-direction: column;
 }
 
 .username {
@@ -52,4 +48,80 @@ img {
   height: 10rem;
   object-fit: cover;
   border-radius: 70rem;
+  @include breaking-point-1 {
+    width: 12rem;
+    height: 12rem;
+  }
+}
+
+.ProfileCard {
+  display: grid;
+  grid-template-columns: 1fr;
+  grid-column-gap: 3rem;
+  margin-bottom: 3rem;
+  @include breaking-point-1 {
+    grid-template-columns: 1fr 1fr;
+  }
+}
+
+.Avatar-section {
+  justify-self: center;
+  display: flex;
+  flex-direction: column;
+  @include breaking-point-1 {
+    justify-self: flex-end;
+  }
+  & > .editBtn {
+    margin-top: -2.5rem;
+    margin-right: 1.75rem;
+    margin-bottom: 2rem;
+    display: flex;
+    justify-content: flex-end;
+    & > button {
+      background: rgba(255, 255, 255, 0.377);
+      padding: 0.2rem;
+      border-radius: 10rem;
+    }
+  }
+  .btn-orangeGradient {
+    margin-top: 0.5rem;
+  }
+}
+
+.event-section {
+  display: grid;
+  grid-template-columns: 1fr;
+  grid-column-gap: 2rem;
+  height: 100%;
+  max-width: 1000px;
+
+  @include breaking-point-1 {
+    margin: 0 auto;
+    grid-template-columns: 1fr 1fr;
+  }
+}
+
+.events {
+  height: 100%;
+  & > a {
+    width: 100rem;
+  }
+}
+
+.settings {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  width: 100%;
+  margin-top: 0.5rem;
+  margin-bottom: 0.5rem;
+  & > .edit-btn {
+    grid-column-start: 1;
+    grid-column-end: 3;
+  }
+  & > .cancel-btn {
+    border-radius: $border-radius-sm 0 0 $border-radius-sm;
+  }
+  & > .confirm-btn {
+    border-radius: 0 $border-radius-sm $border-radius-sm 0;
+  }
 }

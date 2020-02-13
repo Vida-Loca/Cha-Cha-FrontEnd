@@ -25,9 +25,7 @@ const Event = ({ eventId, eventPath }) => {
     //     .catch(err => {
     //       console.log(err);
     //     });
-    return () => {
-      console.log("unmounted");
-    };
+    return () => {};
   }, []);
 
   return (

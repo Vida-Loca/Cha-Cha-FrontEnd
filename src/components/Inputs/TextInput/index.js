@@ -2,10 +2,27 @@ import React from "react";
 import PropTypes from "prop-types";
 import "./TextInput.scss";
 
-const TextInput = ({ name, type, placeholder, onChange }) => {
+const TextInput = ({
+  name,
+  type,
+  placeholder,
+  onChange,
+  size,
+  classes,
+  disabled,
+  value
+}) => {
   return (
-    <div className="textInput">
-      <input type={type} name={name} id={name} onChange={onChange} required />
+    <div className={`textInput ${classes} ${size} `}>
+      <input
+        type={type}
+        name={name}
+        id={name}
+        onChange={onChange}
+        required
+        disabled={disabled}
+        value={value}
+      />
       <label htmlFor={name}>{placeholder}</label>
     </div>
   );
@@ -14,10 +31,18 @@ const TextInput = ({ name, type, placeholder, onChange }) => {
 TextInput.defaultProps = {
   placeholder: "",
   type: "text",
-  onChange: null
+  onChange: null,
+  size: "input-md",
+  classes: "",
+  disabled: false,
+  value: undefined
 };
 
 TextInput.propTypes = {
+  value: PropTypes.oneOfType([PropTypes.string, PropTypes.number]),
+  disabled: PropTypes.bool,
+  classes: PropTypes.string,
+  size: PropTypes.string,
   onChange: PropTypes.func,
   name: PropTypes.string.isRequired,
   type: PropTypes.oneOf(["text", "password", "number"]),

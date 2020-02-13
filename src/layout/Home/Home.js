@@ -9,8 +9,8 @@ import "./Home.scss";
 import { Button } from "../../components/Button";
 import { TextInput, DateInput } from "../../components/Inputs";
 import EventCard from "../../components/EventCard";
-import Pagination from "../../components/Pagination";
 import Modal from "../../components/Modal";
+import PaginatedContainer from "../../components/PaginatedContainer";
 
 const Home = () => {
   const [eventsList, setEventsList] = useState([]);
@@ -45,13 +45,6 @@ const Home = () => {
       number: ""
     }
   });
-
-  const [currentPage, setCurrentPage] = useState(1);
-  const postsPerPage = 5;
-  const indexOfLastPost = currentPage * postsPerPage;
-  const indexOfFirstPost = indexOfLastPost - postsPerPage;
-  const currentPosts = tempEvents.slice(indexOfFirstPost, indexOfLastPost);
-  const paginate = pageNumber => setCurrentPage(pageNumber);
 
   const createNewEvent = event => {
     event.preventDefault();
@@ -157,25 +150,22 @@ const Home = () => {
         </Button>
       </div>
       <div className="dashboard">
-        <div className="EventColumn">
-          <h2>Public Events</h2>
-          {currentPosts.map(event => {
-            return (
-              <EventCard
-                id={event.event_id}
-                key={event.event_id}
-                name={event.name}
-                date={event.startDate}
-                location={event.address}
-                eventState={event.isComplete}
-              />
-            );
-          })}
-          <Pagination
-            currentPage={currentPage}
-            postsPerPage={postsPerPage}
-            totalPosts={tempEvents.length}
-            paginate={paginate}
+        <div>
+          <PaginatedContainer
+            title="Public Events"
+            items={tempEvents}
+            render={({ items }) =>
+              items.map(ev => (
+                <EventCard
+                  id={ev.event_id}
+                  key={ev.event_id}
+                  name={ev.name}
+                  date={ev.startDate}
+                  location={ev.address}
+                  eventState={ev.isComplete}
+                />
+              ))
+            }
           />
         </div>
       </div>
