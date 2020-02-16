@@ -16,7 +16,7 @@ const Event = ({ eventId, eventPath }) => {
   //  * if not redirect to /:id page
   //  * else leave him be
   const eventName = useState("")[0];
-  const [hasAuthorization, setAuthorization] = useState(false);
+  const [hasAuthorization, setAuthorization] = useState(true);
 
   useEffect(() => {
     //   userService
@@ -58,7 +58,7 @@ const Event = ({ eventId, eventPath }) => {
           )}
         />
       ) : (
-        <div>
+        <>
           <Route
             path={`${eventPath}/suplies`}
             exact
@@ -74,7 +74,7 @@ const Event = ({ eventId, eventPath }) => {
             exact
             render={() => <Members id={eventId} />}
           />
-        </div>
+        </>
       )}
     </>
   );
