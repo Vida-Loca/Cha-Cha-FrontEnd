@@ -4,7 +4,7 @@ const products = [
     productCategory: {
       name: "DRINKS"
     },
-    name: "Fanta",
+    name: "Fanta marina elo kona morsanera fifa melona kololala",
     price: 3.2,
     userCards: [
       {

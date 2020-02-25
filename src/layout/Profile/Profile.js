@@ -13,7 +13,6 @@ import { IconButton, Button, EditButton } from "../../components/Button";
 import { TextInput } from "../../components/Inputs";
 import EventCard from "../../components/EventCard";
 import PaginatedContainer from "../../components/PaginatedContainer";
-import Modal from "../../components/Modal";
 import Avatar from "../../components/Avatar";
 import UserCard from "../../components/UserCard";
 import ChangeAvatarContainer from "./ChangeAvatarContainer";
@@ -79,10 +78,6 @@ const Profile = () => {
     console.log(userInfo);
   };
 
-  const hideModal = () => {
-    setform({ ...forms, show: false });
-  };
-
   const LogOut = () => {
     authenticationService.logout();
     setuser({ isLoggedIn: false, break: true });
@@ -128,9 +123,6 @@ const Profile = () => {
 
   return (
     <div className="profileRootContainer">
-      <Modal show={forms.show} modalClose={hideModal}>
-        {forms.renderForm}
-      </Modal>
       <div className="ProfileCard">
         <div className="Avatar-section">
           <Avatar imageLink={userInfo.picUrl} />
@@ -178,14 +170,14 @@ const Profile = () => {
                 disabled
                 value={userInfo.name}
                 placeholder="name"
-                name="name"
+                name="name-d"
                 size="input-sm"
               />
               <TextInput
                 disabled
                 value={userInfo.surname}
                 placeholder="surname"
-                name="surname"
+                name="surname-d"
                 size="input-sm"
               />
             </>

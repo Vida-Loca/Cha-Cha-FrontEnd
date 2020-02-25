@@ -2,23 +2,26 @@
 import React, { useState } from "react";
 import PropTypes from "prop-types";
 import Avatar from "../../Avatar";
-import { Button, IconButton } from "../../Button";
+import { Button, IconButton, EditButton } from "../../Button";
 import "./ProductCard.scss";
-import { EditInput } from "../../Inputs";
+import { TextInputNL } from "../../Inputs";
 
 const ProductCard = ({ user, supply, price, picUrl }) => {
   const [tileSupply, setTileSuply] = useState({
     user,
     supply,
-    price
+    price,
+    tempSupply: supply,
+    tempPrice: price
   });
 
-  const [editState, setEditState] = useState({ edit: false });
+  const [editState, setEditState] = useState(false);
+  const [deleteState, setDeleteState] = useState(false);
 
-  const [tileState, tileStateSet] = useState({ options: false });
+  const [tileState, tileStateSet] = useState(false);
 
   const changeOptions = () => {
-    tileStateSet({ options: !tileState.options });
+    tileStateSet(!tileState);
   };
 
   const onChangeHandler = event => {
@@ -29,8 +32,21 @@ const ProductCard = ({ user, supply, price, picUrl }) => {
     console.log(tileSupply);
   };
 
+  const deleteHandler = () => {
+    setDeleteState(!deleteState);
+  };
   const editHandler = () => {
-    setEditState({ edit: !editState.edit });
+    setEditState(!editState);
+  };
+
+  const cancelEdit = () => {
+    setEditState(false);
+    tileStateSet(false);
+    setTileSuply({
+      ...tileSupply,
+      supply: tileSupply.tempSupply,
+      price: tileSupply.tempPrice
+    });
   };
 
   // const update
@@ -39,54 +55,73 @@ const ProductCard = ({ user, supply, price, picUrl }) => {
     <div className="OuterSupplyTile">
       <div className="UserTileBody">
         <div>
-          <Avatar imageLink={picUrl} />
-          <span className="SuplyNameLabel">
-            {!editState.edit ? (
-              <span>
-                <strong>{`${tileSupply.price} Zł: `}</strong>
-                {tileSupply.supply}
-              </span>
-            ) : (
-              <span className="editControlls">
-                <EditInput
-                  value={tileSupply.price}
+          <Avatar />
+          <span className="product-info">
+            {!editState ? (
+              <>
+                <span>
+                  <span className="product-currency">PLN</span>
+                  <TextInputNL
+                    onChange={onChangeHandler}
+                    value={tileSupply.price}
+                    placeholder="price"
+                    name="price"
+                    size="input-sm"
+                    classes="product-price"
+                    disabled
+                  />
+                </span>
+
+                <TextInputNL
                   onChange={onChangeHandler}
-                  placeholder="Price"
-                  name="price"
-                />
-                <EditInput
                   value={tileSupply.supply}
-                  onChange={onChangeHandler}
-                  placeholder="Supply name"
+                  placeholder="supply"
                   name="supply"
+                  size="input-sm"
+                  disabled
                 />
-              </span>
+              </>
+            ) : (
+              <>
+                <span>
+                  <span className="product-currency">PLN</span>
+                  <TextInputNL
+                    onChange={onChangeHandler}
+                    value={tileSupply.price}
+                    placeholder="price"
+                    name="price"
+                    size="input-sm"
+                    classes="product-price"
+                  />
+                </span>
+                <TextInputNL
+                  onChange={onChangeHandler}
+                  value={tileSupply.supply}
+                  placeholder="supply"
+                  name="supply"
+                  size="input-sm"
+                />
+              </>
             )}
           </span>
         </div>
-        <IconButton clicked={changeOptions} iconClass="fas fa-ellipsis-v" />
-      </div>
-      {tileState.options ? (
-        editState.edit ? (
-          <div className="Options">
-            <Button clicked={editHandler} classes="btn-sm btn-orangeGradient">
-              <i className="fas fa-times-circle" />
-            </Button>
-            <Button classes="btn-sm btn-blueGradient">
-              <i className="fas fa-check" />
-            </Button>
+        {tileState ? (
+          <div>
+            <EditButton
+              options={deleteState}
+              activate={deleteHandler}
+              cancel={deleteHandler}
+            />
+            <EditButton
+              options={editState}
+              activate={editHandler}
+              cancel={cancelEdit}
+            />
           </div>
         ) : (
-          <div className="Options">
-            <Button clicked={editHandler} classes="btn-sm btn-blueGradient">
-              <i className="far fa-edit" />
-            </Button>
-            <Button classes="btn-sm btn-orangeGradient">
-              <i className="far fa-trash-alt" />
-            </Button>
-          </div>
-        )
-      ) : null}
+          <IconButton clicked={changeOptions} iconClass="fas fa-ellipsis-v" />
+        )}
+      </div>
     </div>
   );
 };

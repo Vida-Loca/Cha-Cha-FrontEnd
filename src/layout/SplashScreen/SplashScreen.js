@@ -1,150 +1,21 @@
 import React, { useState, useContext } from "react";
 import { Button } from "../../components/Button";
-import Modal from "../../components/Modal";
-import { TextInput } from "../../components/Inputs";
 import { FormContext } from "../../context/FormContext";
-import { UserContext } from "../../context/UserContext";
-import { authenticationService } from "../../Authentication/service";
+import { LoginFormContainer, RegisterFormContainer } from "./AuthFormContainer";
 
 const SplashScreen = () => {
-  const [changedForm, setChangedForm] = useContext(FormContext);
-  const setUser = useContext(UserContext)[1];
+  const setChangedForm = useContext(FormContext)[1];
 
-  const [newState, seNewState] = useState({
-    chooseForm: false,
-    loginData: { username: "", password: "" },
-    registerData: {
-      username: "",
-      password: "",
-      matchingPassword: "",
-      name: "",
-      surname: "",
-      email: ""
-    }
-  });
-
-  const hideModal = () => {
-    setChangedForm({ ...changedForm, show: false });
-  };
   const openLogIn = () => {
-    setChangedForm({ ...changedForm, show: true });
-    seNewState({ ...newState, chooseForm: true });
+    setChangedForm({ show: true, renderForm: <LoginFormContainer /> });
   };
 
   const openRegister = () => {
-    setChangedForm({ ...changedForm, show: true });
-    seNewState({ ...newState, chooseForm: false });
-  };
-
-  const handleLoginChange = event => {
-    seNewState({
-      ...newState,
-      loginData: {
-        ...newState.loginData,
-        [`${event.target.name}`]: event.target.value
-      }
-    });
-  };
-
-  const handleRegsterChange = event => {
-    seNewState({
-      ...newState,
-      registerData: {
-        ...newState.registerData,
-        [`${event.target.name}`]: event.target.value
-      }
-    });
-  };
-
-  const registerHandler = event => {
-    event.preventDefault();
-    authenticationService.register(newState.registerData).then(
-      result => {
-        setChangedForm({ ...changedForm, show: false });
-        console.log(result); // "Stuff worked!"
-      },
-      err => {
-        console.log(err); // Error: "It broke"
-      }
-    );
-  };
-
-  const loginHandler = event => {
-    event.preventDefault();
-    authenticationService.login(newState.loginData).then(
-      result => {
-        setUser({ isLoggedIn: true, break: true });
-        setChangedForm({ ...changedForm, show: false });
-        console.log(result); // "Stuff worked!"
-      },
-      err => {
-        setUser({ isLoggedIn: false, break: true });
-        console.log(err); // Error: "It broke"
-      }
-    );
-  };
-
-  // const logoutHandler = event => {
-  //   event.preventDefault();
-  //   authenticationService.logout();
-  // };
-
-  const loginFrom = () => {
-    return (
-      <div>
-        <TextInput
-          onChange={handleLoginChange}
-          placeholder="username"
-          name="username"
-        />
-        <TextInput
-          onChange={handleLoginChange}
-          placeholder="password"
-          name="password"
-        />
-
-        <Button clicked={loginHandler} classes="btn-blueGradient btn-md">
-          Log In
-        </Button>
-      </div>
-    );
-  };
-
-  const registerForm = () => {
-    const data = [
-      { placeholder: "username", name: "username" },
-      { placeholder: "password", name: "password" },
-      { placeholder: "repeat rassword", name: "matchingPassword" },
-      { placeholder: "name", name: "name" },
-      { placeholder: "surname", name: "surname" },
-      { placeholder: "e-mail", name: "email" }
-    ];
-    return (
-      <div>
-        {data.map(inputs => {
-          return (
-            <TextInput
-              onChange={handleRegsterChange}
-              placeholder={inputs.placeholder}
-              name={inputs.name}
-              key={inputs.name}
-            />
-          );
-        })}
-
-        <Button clicked={registerHandler} classes="btn-blueGradient btn-md">
-          Submit
-        </Button>
-      </div>
-    );
+    setChangedForm({ show: true, renderForm: <RegisterFormContainer /> });
   };
 
   return (
     <div className="FirstLayout">
-      <Modal show={changedForm.show} modalClose={hideModal}>
-        {newState.chooseForm ? loginFrom() : registerForm()}
-      </Modal>
-
       <div className="SignContent">
         <h1>Skibidi</h1>
         <Button clicked={openLogIn} classes="btn-blueGradient btn-lg">

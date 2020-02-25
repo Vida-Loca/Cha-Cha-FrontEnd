@@ -8,8 +8,7 @@ import "./Supply.scss";
 import createSetOfCategories from "./helper";
 
 import { Button } from "../../../components/Button";
-import SupplyCategory from "../../../components/ProductCategory";
-import Modal from "../../../components/Modal";
+import ProductCategory from "../../../components/ProductCategory";
 import PaginatedContainer from "../../../components/PaginatedContainer";
 import AddNewProductContainer from "./AddNewProductContainer";
 
@@ -47,7 +46,7 @@ const Supply = ({ id }) => {
     return () => {};
   }, [productsTemp]);
 
-  const [forms, setform] = useContext(FormContext);
+  const setform = useContext(FormContext)[1];
 
   const addNewProductModal = () => {
     setform({ renderForm: <AddNewProductContainer />, show: true });
@@ -68,15 +67,8 @@ const Supply = ({ id }) => {
   //     });
   // };
 
-  const hideModal = () => {
-    setform({ ...forms, show: false });
-  };
-
   return (
     <div className="SuplyBody">
-      <Modal show={forms.show} modalClose={hideModal}>
-        {forms.renderForm}
-      </Modal>
       <div className="buttonContainer">
         <Button classes="btn-md btn-blueGradient" clicked={addNewProductModal}>
           Add new supply +
@@ -88,7 +80,7 @@ const Supply = ({ id }) => {
         perPage={5}
         render={({ items }) =>
           items.map(supCont => (
-            <SupplyCategory supCont={supCont} key={supCont.Category} />
+            <ProductCategory supCont={supCont} key={supCont.Category} />
           ))
         }
       />

@@ -2,16 +2,13 @@ import React, { useState, useContext, useEffect } from "react";
 import PropTypes from "prop-types";
 import { FormContext } from "../../../context/FormContext";
 import { userService } from "../../../Authentication/service";
-import {
-  editDateAndTime,
-  editAttitionalInformation
-} from "./FormsToBeRendered/FormsToBeRendered";
+
 // import TempData from "./Data/TempData";
 
 import "./Location.scss";
 
 import InfoSection from "../../../components/InfoSection/InfoSection";
-import { EditInput } from "../../../components/Inputs";
+// import { TextInputNL } from "../../../components/Inputs";
 
 const Location = ({ id }) => {
   const [location, setLocation] = useState({
@@ -72,15 +69,6 @@ const Location = ({ id }) => {
       Address: { ...location.Address, edit: !location.Address.edit }
     });
   };
-  // const openModalToEditPhoneNumber = () => {
-  //   setform({ show: true, renderForm: editPhoneNumber() });
-  // };
-  const openModalToEditDateAndTtime = () => {
-    setform({ show: true, renderForm: editDateAndTime() });
-  };
-  const openModalToAdditionalInformation = () => {
-    setform({ show: true, renderForm: editAttitionalInformation() });
-  };
 
   const onChangeHandlerAdress = event => {
     setLocation({
@@ -105,7 +93,8 @@ const Location = ({ id }) => {
           <InfoSection label="Address" clickedEditForm={toggleEditForAdress} />
           {location.Address.edit ? (
             <div>
-              <EditInput
+              <p>test</p>
+              {/* <EditInput
                 value={location.Address.city}
                 onChange={onChangeHandlerAdress}
                 placeholder="city"
@@ -128,7 +117,7 @@ const Location = ({ id }) => {
                 onChange={onChangeHandlerAdress}
                 placeholder="postcode"
                 name="postcode"
-              />
+              /> */}
             </div>
           ) : (
             <div>
@@ -150,10 +139,7 @@ const Location = ({ id }) => {
               </p>
             </div>
           )}
-          <InfoSection
-            label="Date & Time"
-            clickedEditForm={openModalToEditDateAndTtime}
-          />
+          <InfoSection label="Date & Time" />
           <p className="AdressField">
             <strong>Date:</strong>
             {location.dateofevent.field}
@@ -165,7 +151,6 @@ const Location = ({ id }) => {
           <InfoSection
             label="Additional Information"
             content={location.addidtionalInformation.field}
-            clickedEditForm={openModalToAdditionalInformation}
           />
         </div>
       </div>

@@ -1,5 +1,5 @@
 import DateInput from "./DateInput";
 import TextInput from "./TextInput";
-import EditInput from "./EditInput";
+import TextInputNL from "./TextInputNL";
 
-export { DateInput, TextInput, EditInput };
+export { DateInput, TextInput, TextInputNL };

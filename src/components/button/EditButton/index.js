@@ -13,22 +13,25 @@ const EditButton = ({ activate, cancel, options }) => {
           >
             <span>
               <i className="fas fa-times-circle" />
-              cancel
+              {/* cancel */}
             </span>
           </Button>
           <Button classes="btn-sm btn-default-blue confirm-btn">
             <span>
               <i className="fas fa-check" />
-              confirm
+              {/* confirm */}
             </span>
           </Button>
         </>
       ) : (
         <>
-          <Button clicked={activate} classes="btn-sm btn-default edit-btn">
+          <Button
+            clicked={activate}
+            classes="btn-sm btn-default edit-btn options-main"
+          >
             <span>
               <i className="far fa-edit" />
-              edit
+              {/* edit */}
             </span>
           </Button>
         </>

@@ -33,12 +33,13 @@ const ProductCategory = ({ supCont }) => {
       }
     >
       <div className="SupplyHeader">
-        <p className="CategoryLabel">{supplyContainer.Category}</p>
-        <ShowMore
-          showState={supplyContainer.showMore}
-          clicked={() => showMoreHandler()}
-        />
-
+        <div className="label-button">
+          <p className="CategoryLabel">{supplyContainer.Category}</p>
+          <ShowMore
+            showState={supplyContainer.showMore}
+            clicked={() => showMoreHandler()}
+          />
+        </div>
         <div className="PriceAndAdd">
           <p className="PriceLabel">
             {Number(

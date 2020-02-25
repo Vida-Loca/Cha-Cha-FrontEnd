@@ -6,14 +6,11 @@ import { membersOfTheEvent, requestsFoThisEvent } from "./Data/TempData";
 
 import "./Members.scss";
 
-// import inviteUser from "./FormsToBeRendered/FormsToBeRendered";
-
 import UserCard from "../../../components/UserCard";
 import { Button } from "../../../components/Button";
-import Modal from "../../../components/Modal";
-import { TextInput } from "../../../components/Inputs";
 
-import { userService } from "../../../Authentication/service";
+// import { userService } from "../../../Authentication/service";
+import InviteUserFormContainer from "./InviteUserFormContainer";
 
 const Members = ({ id }) => {
   // const [members, setMembers] = useState([]);
@@ -56,60 +53,14 @@ const Members = ({ id }) => {
     };
   }, []);
 
-  const [forms, setform] = useContext(FormContext);
-
-  const [findUser, setfindUser] = useState({ username: "" });
-
-  const hideModal = () => {
-    setform({ ...forms, show: false });
-  };
-
-  const onChangeHandler = event => {
-    setfindUser({ ...findUser, [`${event.target.name}`]: event.target.value });
-    console.log(findUser);
-  };
-
-  const inviteUserPost = event => {
-    event.preventDefault();
-    userService
-      .inviteUserTOEvent(id, findUser.username)
-      .then(body => {
-        return body;
-      })
-      .then(res => {
-        console.log(res);
-        setform({ ...forms, show: false });
-        // setEventsList(res);
-      })
-      .catch(err => {
-        console.log(err);
-      });
-  };
-
-  const inviteUser = () => {
-    return (
-      <div>
-        <TextInput
-          onChange={onChangeHandler}
-          placeholder="Username"
-          name="username"
-        />
-        <Button clicked={inviteUserPost} classes="btn-blueGradient btn-md">
-          send and invite
-        </Button>
-      </div>
-    );
-  };
+  const setform = useContext(FormContext)[1];
 
   const openModalToInviteUser = () => {
-    setform({ show: true, renderForm: inviteUser() });
+    setform({ show: true, renderForm: <InviteUserFormContainer id={id} /> });
   };
 
   return (
     <div className="MembersContainer">
-      <Modal show={forms.show} modalClose={hideModal}>
-        {inviteUser()}
-      </Modal>
       <Button clicked={openModalToInviteUser} classes="btn-blueGradient btn-md">
         + Invite User
       </Button>
