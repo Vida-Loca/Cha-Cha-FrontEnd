@@ -1,0 +1,10 @@
+.MainPage {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  margin: 0 1rem;
+}
+.accept-decline-box > button {
+  margin: 0 0.5rem;
+}

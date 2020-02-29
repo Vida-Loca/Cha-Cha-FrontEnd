@@ -1,13 +1,14 @@
-@import "../../globalStyles/globalVariabels.scss";
+@import "../../style/globalVariabels.scss";
 
 .ModalContainer {
-  width: 95%;
-  height: 100%;
+  width: 100%;
+  height: 110%;
   position: absolute;
   display: none;
   justify-content: center;
   align-items: center;
   margin-top: -6rem;
+  left: 0;
 }
 
 .Modal {
@@ -28,5 +29,10 @@
   }
   @include breaking-point-2 {
     width: 30rem;
+  }
+
+  .form-btn {
+    width: 100%;
+    margin-top: 1rem;
   }
 }

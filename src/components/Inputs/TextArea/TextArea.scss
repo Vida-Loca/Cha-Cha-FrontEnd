@@ -1,0 +1,21 @@
+.resizable-ta {
+  box-sizing: border-box;
+  border: none;
+  resize: none;
+  font-size: 20px;
+  line-height: 24px;
+  overflow: auto;
+  height: auto;
+  padding: 8px;
+  background: transparent;
+  width: 100%;
+  font-family: "Montserrat", sans-serif;
+
+  &::placeholder {
+    color: gainsboro;
+  }
+
+  &:focus {
+    outline: none;
+  }
+}

@@ -1,6 +1,6 @@
 import React from "react";
 import PropTypes from "prop-types";
-import IconButton from "../button/IconButton";
+import { IconButton } from "../Button";
 
 const InfoSection = ({ label, content, clickedEditForm }) => {
   return (
@@ -16,7 +16,7 @@ const InfoSection = ({ label, content, clickedEditForm }) => {
 
 InfoSection.propTypes = {
   label: PropTypes.string.isRequired,
-  content: PropTypes.string.isRequired,
+  content: PropTypes.string,
   clickedEditForm: PropTypes.func.isRequired
 };
 

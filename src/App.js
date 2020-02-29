@@ -1,23 +1,17 @@
 import React from "react";
-import "./globalStyles/App.scss";
-import OpeningLayout from "./layout/OpeningPageLayout";
-import MainLayout from "./layout/MainLayout";
+import "./style/App.scss";
+import MyApplication from "./layout/MyApplication";
 import { FormProvider } from "./context/FormContext";
+import { UserProvider } from "./context/UserContext";
 
-class App extends React.Component {
-  state = {
-    isLoggedIn: true
-  };
-
-  render() {
-    return (
+const App = () => {
+  return (
+    <UserProvider>
       <FormProvider>
-        <div className="App">
-          {this.state.isLoggedIn ? <MainLayout /> : <OpeningLayout />}
-        </div>
+        <MyApplication />
       </FormProvider>
-    );
-  }
-}
+    </UserProvider>
+  );
+};
 
 export default App;

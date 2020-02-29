@@ -1,0 +1,25 @@
+.FirstLayout {
+  display: flex;
+  flex-direction: column;
+  text-align: center;
+  background: $dark-blue;
+  min-height: 700px;
+  border-radius: $border-radius-md;
+  margin-top: 2rem;
+}
+
+.SignContent {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  flex-direction: column;
+  height: 100%;
+  z-index: 500;
+  padding-top: 11rem;
+  h1 {
+    color: white;
+  }
+  button {
+    margin-top: 1rem;
+  }
+}

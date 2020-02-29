@@ -1,0 +1,28 @@
+@import "../../style/globalVariabels.scss";
+
+.UserTile {
+  background: $grey-1;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 0.3rem 0.5rem;
+  border-radius: $border-radius-sm;
+  margin: 0.2rem 0;
+  font-size: 0.9rem;
+
+  & > div:nth-child(1) {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+  }
+
+  img {
+    width: 2rem;
+    height: 2rem;
+    margin-right: 0.5rem;
+  }
+}
+
+.controlls > * {
+  margin: 0 0.3rem;
+}

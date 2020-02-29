@@ -1,102 +1,233 @@
-import React, { useContext } from "react";
-import PropTypes from "prop-types";
+import React, { useContext, useState } from "react";
+
 import { FormContext } from "../../context/FormContext";
-import Button from "../../components/button/Button";
-import TextInput from "../../components/Inputs/TextInput/TextInput";
-import Form from "../../components/Form/Form";
-import EventCard from "../../components/EventCard/EventCard";
+import { UserContext } from "../../context/UserContext";
+import { authenticationService } from "../../Authentication/service";
+// import { userService } from "../../Authentication/service";
+
+import { friends, friendsRequests, events } from "../../mockData";
 import "./Profile.scss";
 
-const Profile = props => {
-  const setform = useContext(FormContext)[1];
+import { IconButton, Button, EditButton } from "../../components/Button";
+import { TextInput } from "../../components/Inputs";
+import EventCard from "../../components/EventCard";
+import PaginatedContainer from "../../components/PaginatedContainer";
+import Avatar from "../../components/Avatar";
+import UserCard from "../../components/UserCard";
+import ChangeAvatarContainer from "./ChangeAvatarContainer";
 
-  const ProfileForm = () => {
-    return (
-      <Form>
-        <TextInput placeholder="name" name="name" />
-        <TextInput placeholder="surname" name="surname" />
-        <TextInput placeholder="email" name="email" />
-        <TextInput placeholder="password" name="password" />
-        <Button to="/home" classes="btn-blueGradient btn-md">
-          update
-        </Button>
-      </Form>
-    );
+const Profile = () => {
+  const [userInfo, setUserInfo] = useState({
+    username: "user",
+    name: "name",
+    surname: "surname",
+    email: "email@email.com",
+    tempName: "name",
+    teempSurname: "surname"
+    // picUrl: null
+  });
+  // const [myEvents, setMyEvent] = useState([]);
+
+  // useEffect(() => {
+  //   userService
+  //     .getCurrentUserInfo()
+  //     .then(body => {
+  //       return body;
+  //     })
+  //     .then(res => {
+  //       console.log(res);
+  //       setUserInfo(res);
+  //       // setEventsList(res);
+  //     })
+  //     .catch(err => {
+  //       console.log(err);
+  //     });
+
+  //   userService
+  //     .getAllEventsOfCureentlyLogedInUser()
+  //     .then(body => {
+  //       return body;
+  //     })
+  //     .then(res => {
+  //       console.log(res);
+  //       setMyEvent(res);
+  //     })
+  //     .catch(err => {
+  //       console.log(err);
+  //     });
+  // }, []);
+
+  const [forms, setform] = useContext(FormContext);
+  const setuser = useContext(UserContext)[1];
+  const [editState, setEdit] = useState(false);
+  const editHandler = () => {
+    setEdit(!editState);
+  };
+  const cancelEdit = () => {
+    setEdit(false);
+    setUserInfo({
+      ...userInfo,
+      name: userInfo.tempName,
+      surname: userInfo.teempSurname
+    });
   };
 
-  const insideProfile = () => {
-    setform({ renderForm: ProfileForm(), show: true });
+  const onChangeHandler = event => {
+    setUserInfo({ ...userInfo, [`${event.target.name}`]: event.target.value });
+    console.log(userInfo);
+  };
+
+  const LogOut = () => {
+    authenticationService.logout();
+    setuser({ isLoggedIn: false, break: true });
+  };
+
+  const listOfFriends = () => {
+    return (
+      <div>
+        <PaginatedContainer
+          title="Friends"
+          items={friends}
+          perPage={5}
+          render={({ items }) =>
+            items.map(ev => (
+              <UserCard key={ev.username} username={ev.username} showControlls>
+                <Button classes="btn-orangeGradient btn-sm">remove</Button>
+              </UserCard>
+            ))
+          }
+        />
+        <PaginatedContainer
+          title="Friend Requests"
+          items={friendsRequests}
+          perPage={5}
+          render={({ items }) =>
+            items.map(ev => (
+              <UserCard key={ev.username} username={ev.username} showControlls>
+                <Button classes="btn-blueGradient btn-sm">accept</Button>
+              </UserCard>
+            ))
+          }
+        />
+      </div>
+    );
+  };
+  const showFriendsInModal = () => {
+    setform({ renderForm: listOfFriends(), show: true });
+  };
+
+  const changeAvatarInModal = () => {
+    setform({ renderForm: <ChangeAvatarContainer />, show: true });
   };
 
   return (
     <div className="profileRootContainer">
-      <div>
-        <img
-          src="https://image.freepik.com/free-photo/portrait-white-man-isolated_53876-40306.jpg"
-          alt=""
-        />
-        <div className="information">
-          <span className="username">@Heylee</span>
-          <div>
-            <Button clicked={insideProfile} classes="btn-sm btn-blueGradient">
-              Edit Profile
-            </Button>
+      <div className="ProfileCard">
+        <div className="Avatar-section">
+          <Avatar imageLink={userInfo.picUrl} />
+          <div className="editBtn">
+            <IconButton
+              clicked={changeAvatarInModal}
+              iconClass="fas fa-image"
+            />
           </div>
-          <div className="icon-span">
-            <i className="fas fa-calendar-alt" />
-            <span>joined 10-12-2009</span>
-          </div>
-          <div className="icon-span">
-            <i className="fas fa-users" />
-            <span>Friends 20</span>
-          </div>
+          <span className="username">{`@${userInfo.username}`}</span>
+          <Button clicked={LogOut} classes="btn-sm btn-orangeGradient">
+            Log out
+          </Button>
+        </div>
+
+        <div className="information-section">
+          <h3>Profile</h3>
+          <EditButton
+            options={editState}
+            activate={editHandler}
+            cancel={cancelEdit}
+            tags
+            render={
+              <>
+                <i className="far fa-edit" />
+                Edit
+              </>
+            }
+          />
+          <TextInput
+            onChange={onChangeHandler}
+            value={userInfo.name}
+            placeholder="name"
+            name="name"
+            size="input-sm"
+            classes={editState ? "input-blue" : ""}
+            disabled={!editState}
+          />
+          <TextInput
+            onChange={onChangeHandler}
+            value={userInfo.surname}
+            placeholder="surname"
+            name="surname"
+            size="input-sm"
+            classes={editState ? "input-blue" : ""}
+            disabled={!editState}
+          />
+          <TextInput
+            value={userInfo.email}
+            placeholder="email"
+            name="email"
+            size="input-sm"
+            disabled
+          />
+          <TextInput
+            value={userInfo.joined}
+            placeholder="date joined"
+            name="datejoined"
+            size="input-sm"
+            disabled
+          />
         </div>
       </div>
       <div>
-        <h2>My Events</h2>
-        <EventCard
-          id="dwkm45s"
-          key="1"
-          name="Ebent 233"
-          location="some location"
-          date="2010-23-2"
+        <Button classes="btn-md btn-default" clicked={showFriendsInModal}>
+          20 friends
+        </Button>
+      </div>
+      <div className="event-section">
+        <PaginatedContainer
+          title="My Events"
+          items={events}
+          perPage={4}
+          render={({ items }) =>
+            items.map(ev => (
+              <EventCard
+                id={ev.event_id}
+                key={ev.event_id}
+                name={ev.name}
+                date={ev.startDate}
+                location={ev.address}
+                eventState={ev.isComplete}
+              />
+            ))
+          }
         />
-        <EventCard
-          id="swf45"
-          key="2"
-          name="Ebent 233"
-          location="some location"
-          date="2010-23-2"
-        />
-        <EventCard
-          id="swdwf245"
-          key="3"
-          name="Ebent 233"
-          location="some location"
-          date="2010-23-2"
-        />
-        <EventCard
-          id="dwwDD45"
-          key="4"
-          name="Ebent 233"
-          location="some location"
-          date="2010-23-2"
-        />
-        <EventCard
-          id="dawdGTh4J"
-          key="5"
-          name="Ebent 233"
-          location="some location"
-          date="2010-23-2"
+        <PaginatedContainer
+          title="Invitations"
+          items={events}
+          perPage={4}
+          render={({ items }) =>
+            items.map(ev => (
+              <EventCard
+                id={ev.event_id}
+                key={ev.event_id}
+                name={ev.name}
+                date={ev.startDate}
+                location={ev.address}
+                eventState={ev.isComplete}
+              />
+            ))
+          }
         />
       </div>
     </div>
   );
-};
-
-Profile.propTypes = {
-  // eslint-disable-next-line react/require-default-props
-  openModal: PropTypes.func
 };
 
 export default Profile;

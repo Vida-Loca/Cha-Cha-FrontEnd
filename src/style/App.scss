@@ -1,0 +1,23 @@
+@import "./globalVariabels.scss";
+
+html,
+body,
+#root {
+  margin: 0;
+  padding: 0;
+  height: 100%;
+  width: 100%;
+  font-family: "Montserrat", sans-serif;
+}
+
+body {
+  background: $main-blue;
+}
+
+.App {
+  background: white;
+  margin: 2% 2%;
+  border-radius: $border-radius-md;
+  display: block;
+  min-height: 90%;
+}

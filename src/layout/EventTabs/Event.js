@@ -1,46 +1,88 @@
-import React, { Component } from "react";
-import { Route } from "react-router-dom";
-import Supply from "./Supply/Supply";
-import Location from "./Location/Location";
-import Members from "./Members/Members";
+import React, { useState, useEffect } from "react";
+import { Route, Redirect } from "react-router-dom";
+import PropTypes from "prop-types";
+
 import "./Event.scss";
 
-class Event extends Component {
-  constructor(props) {
-    super(props);
-    this.state = { eventName: "" };
-  }
+// import { userService } from "../../Authentication/service";
 
-  componentDidMount() {
-    console.log("hi");
+import Supply from "./Supply";
+import Location from "./Location";
+import Members from "./Members";
+import MainPage from "./MainPage";
 
-    fetch("https://jsonplaceholder.typicode.com/users/1")
-      .then(response => response.json())
-      .then(json => this.setState({ eventName: json.name }));
-  }
+const Event = ({ eventId, eventPath }) => {
+  // check if user is a part of this event
+  //  * if not redirect to /:id page
+  //  * else leave him be
+  const eventName = useState("")[0];
+  const [hasAuthorization, setAuthorization] = useState(true);
 
-  render() {
-    return (
-      <div>
-        <h1 className="EventName">{this.state.eventName}</h1>
+  useEffect(() => {
+    //   userService
+    //     .getEventById(this.props.eventId)
+    //     .then(body => {
+    //       return body;
+    //     })
+    //     .then(res => {
+    //       setEventName(res.name );
+    //     })
+    //     .catch(err => {
+    //       console.log(err);
+    //     });
+    return () => {};
+  }, []);
+
+  return (
+    <>
+      <h1 className="EventName">{eventName}</h1>
+      <Route
+        path={`${eventPath}/`}
+        exact
+        render={() => (
+          <MainPage
+            isAuth={hasAuthorization}
+            eventPath={eventPath}
+            id={eventId}
+          />
+        )}
+      />
+      {!hasAuthorization ? (
         <Route
-          path={`${this.props.match.path}/suplies`}
+          path={`${eventPath}/*`}
           exact
-          render={() => <Supply />}
+          render={() => (
+            <Redirect
+              to={`${eventPath.substring(0, eventPath.length - 4)}/${eventId}`}
+            />
+          )}
         />
-        <Route
-          path={`${this.props.match.path}/location`}
-          exact
-          render={() => <Location />}
-        />
-        <Route
-          path={`${this.props.match.path}/members`}
-          exact
-          render={() => <Members />}
-        />
-      </div>
-    );
-  }
-}
+      ) : (
+        <>
+          <Route
+            path={`${eventPath}/suplies`}
+            exact
+            render={() => <Supply id={eventId} />}
+          />
+          <Route
+            path={`${eventPath}/location`}
+            exact
+            render={() => <Location id={eventId} />}
+          />
+          <Route
+            path={`${eventPath}/members`}
+            exact
+            render={() => <Members id={eventId} />}
+          />
+        </>
+      )}
+    </>
+  );
+};
+
+Event.propTypes = {
+  eventId: PropTypes.string.isRequired,
+  eventPath: PropTypes.string.isRequired
+};
 
 export default Event;

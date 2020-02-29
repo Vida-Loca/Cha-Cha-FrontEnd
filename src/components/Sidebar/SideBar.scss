@@ -1,4 +1,4 @@
-@import "../../globalStyles//globalVariabels.scss";
+@import "../../style/globalVariabels.scss";
 
 // @include breaking-point-2 {
 %SideBar {
@@ -17,6 +17,7 @@
   .fas {
     color: white;
   }
+
   @include mobile {
     top: 0;
     position: relative;

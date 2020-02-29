@@ -1,65 +1,71 @@
 import React, { useContext, useState } from "react";
-import { Link } from "react-router-dom";
-import PropTypes from "prop-types";
-import Button from "../../components/button/Button";
-import TextInput from "../../components/Inputs/TextInput/TextInput";
-import DateInput from "../../components/Inputs/DateInput/DateInput";
-import Form from "../../components/Form/Form";
-import EventCard from "../../components/EventCard/EventCard";
+
 import { FormContext } from "../../context/FormContext";
+
+import { events } from "../../mockData";
+// import { userService } from "../../Authentication/service";
+
 import "./Home.scss";
-import { tempEvents } from "./Data/TempData";
+import CreateEventContainer from "./CreateEventContainer";
 
-const HomeLayout = props => {
-  const setform = useContext(FormContext)[1];
+import { Button } from "../../components/Button";
+import EventCard from "../../components/EventCard";
+import PaginatedContainer from "../../components/PaginatedContainer";
 
-  const events = useState(tempEvents)[0];
+const Home = () => {
+  const [eventsList, setEventsList] = useState([]);
 
-  const newEventForm = () => {
-    return (
-      <Form>
-        <TextInput placeholder="name" name="name" />
-        <TextInput placeholder="location" name="location" />
-        <DateInput placeholder="date" name="date" />
-        <DateInput type="time" placeholder="time" name="time" />
-        <Button to="/home" classes="btn-blueGradient btn-md">
-          apply
-        </Button>
-      </Form>
-    );
-  };
+  // useEffect(() => {
+  //   userService
+  //     .getAllEvents()
+  //     .then(body => {
+  //       return body;
+  //     })
+  //     .then(res => {
+  //       setEventsList(res);
+  //       console.log(eventsList);
+  //     })
+  //     .catch(err => {
+  //       console.log(err);
+  //     });
+  //   return () => {};
+  // }, [eventsList]);
+
+  const [forms, setform] = useContext(FormContext);
 
   const insideHome = () => {
-    setform({ show: true, renderForm: newEventForm() });
+    setform({ show: true, renderForm: <CreateEventContainer /> });
   };
 
   return (
     <div className="HomeLayout">
-      <Link to="/">
+      <div>
         <Button clicked={insideHome} classes="btn-md btn-blueGradient">
           + Create Event
         </Button>
-      </Link>
-      <div>
-        <h2>Public Events</h2>
-        {events.map(event => {
-          return (
-            <EventCard
-              id={event.id}
-              key={event.name}
-              name={event.name}
-              location={event.location}
-              date={event.date}
-            />
-          );
-        })}
+      </div>
+      <div className="dashboard">
+        <div>
+          <PaginatedContainer
+            title="Public Events"
+            items={events}
+            render={({ items }) =>
+              items.map(ev => (
+                <EventCard
+                  id={ev.event_id}
+                  key={ev.event_id}
+                  name={ev.name}
+                  date={ev.startDate}
+                  location={ev.address}
+                  eventState={ev.isComplete}
+                />
+              ))
+            }
+          />
+        </div>
       </div>
     </div>
   );
 };
-HomeLayout.propTypes = {
-  // eslint-disable-next-line react/require-default-props
-  openModal: PropTypes.func
-};
 
-export default HomeLayout;
+export default Home;

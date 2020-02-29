@@ -1,8 +1,8 @@
 import React, { useState } from "react";
 import "./AdminUserTile.scss";
-import Avatar from "../Avatar/Avatar";
-import ThreeDots from "../ThreeDots/ThreeDots";
-import Button from "../button/Button";
+import Avatar from "../Avatar";
+
+import { Button, IconButton } from "../Button";
 
 const AdminUserTile = ({ id, image, name }) => {
   const [tileState, tileStateSet] = useState({ options: false });
@@ -14,7 +14,7 @@ const AdminUserTile = ({ id, image, name }) => {
     <div className="AdminUserTile">
       <Avatar imageLink={image} />
       <span>{name}</span>
-      <ThreeDots clicked={changeOptions} />
+      <IconButton clicked={changeOptions} iconClass="fas fa-ellipsis-v" />
       {tileState.options ? (
         <div className="Osptions">
           <Button classes="btn-sm btn-blueGradient">

@@ -1,4 +1,4 @@
-@import "../../../globalStyles//globalVariabels.scss";
+@import "../../../style/globalVariabels.scss";
 
 .infoSection {
   margin: 1rem 0;
@@ -31,5 +31,15 @@
     width: 20rem;
     height: 20rem;
     justify-self: flex-end;
+  }
+}
+.AdressField {
+  margin: 0;
+  padding: 0;
+  font-size: 1rem;
+  margin-bottom: 0.3rem;
+  strong {
+    margin-left: 1rem;
+    margin-right: 0.3rem;
   }
 }
