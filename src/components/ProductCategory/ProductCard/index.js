@@ -4,7 +4,7 @@ import PropTypes from "prop-types";
 import Avatar from "../../Avatar";
 import { Button, IconButton, EditButton } from "../../Button";
 import "./ProductCard.scss";
-import { TextInputNL } from "../../Inputs";
+import { TextInputNL, TextArea } from "../../Inputs";
 
 const ProductCard = ({ user, supply, price, picUrl }) => {
   const [tileSupply, setTileSuply] = useState({
@@ -39,6 +39,11 @@ const ProductCard = ({ user, supply, price, picUrl }) => {
     setEditState(!editState);
   };
 
+  const cancelDelete = () => {
+    setDeleteState(false);
+    tileStateSet(false);
+  };
+
   const cancelEdit = () => {
     setEditState(false);
     tileStateSet(false);
@@ -54,68 +59,41 @@ const ProductCard = ({ user, supply, price, picUrl }) => {
   return (
     <div className="OuterSupplyTile">
       <div className="UserTileBody">
-        <div>
-          <Avatar />
-          <span className="product-info">
-            {!editState ? (
-              <>
-                <span>
-                  <span className="product-currency">PLN</span>
-                  <TextInputNL
-                    onChange={onChangeHandler}
-                    value={tileSupply.price}
-                    placeholder="price"
-                    name="price"
-                    size="input-sm"
-                    classes="product-price"
-                    disabled
-                  />
-                </span>
-
-                <TextInputNL
-                  onChange={onChangeHandler}
-                  value={tileSupply.supply}
-                  placeholder="supply"
-                  name="supply"
-                  size="input-sm"
-                  disabled
-                />
-              </>
-            ) : (
-              <>
-                <span>
-                  <span className="product-currency">PLN</span>
-                  <TextInputNL
-                    onChange={onChangeHandler}
-                    value={tileSupply.price}
-                    placeholder="price"
-                    name="price"
-                    size="input-sm"
-                    classes="product-price"
-                  />
-                </span>
-                <TextInputNL
-                  onChange={onChangeHandler}
-                  value={tileSupply.supply}
-                  placeholder="supply"
-                  name="supply"
-                  size="input-sm"
-                />
-              </>
-            )}
+        <Avatar />
+        <span className="product-info">
+          <span>
+            <span className="product-currency">PLN</span>
+            <TextInputNL
+              onChange={onChangeHandler}
+              value={tileSupply.price}
+              placeholder="price"
+              name="price"
+              size="input-sm"
+              classes="product-price"
+              disabled={!editState}
+            />
           </span>
-        </div>
+          <TextArea
+            value={tileSupply.supply}
+            name="supply"
+            onChange={onChangeHandler}
+            disabled={!editState}
+          />
+        </span>
+
         {tileState ? (
           <div>
             <EditButton
               options={deleteState}
               activate={deleteHandler}
-              cancel={deleteHandler}
+              cancel={cancelDelete}
+              render={<i className="far fa-trash-alt" />}
             />
             <EditButton
               options={editState}
               activate={editHandler}
               cancel={cancelEdit}
+              render={<i className="far fa-edit" />}
             />
           </div>
         ) : (

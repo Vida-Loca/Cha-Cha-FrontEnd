@@ -3,7 +3,7 @@ import PropTypes from "prop-types";
 import { FormContext } from "../../../context/FormContext";
 import { userService } from "../../../Authentication/service";
 
-// import TempData from "./Data/TempData";
+import { eventLocation } from "../../../mockData";
 
 import "./Location.scss";
 

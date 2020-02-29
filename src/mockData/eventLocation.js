@@ -1,4 +1,4 @@
-const locationInfo = {
+const eventLocation = {
   Address: {
     City: "Gdansk",
     Street: "3-Maja",
@@ -12,4 +12,4 @@ const locationInfo = {
     "if bell doesnt work please knock or class our cellphones"
 };
 
-export default locationInfo;
+export default eventLocation;

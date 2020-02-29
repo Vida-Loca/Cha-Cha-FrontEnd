@@ -2,7 +2,7 @@ import React, { useState, useContext, useEffect } from "react";
 import PropTypes from "prop-types";
 
 import { FormContext } from "../../../context/FormContext";
-import { membersOfTheEvent, requestsFoThisEvent } from "./Data/TempData";
+import { membersOfTheEvent, requestsFoThisEvent } from "../../../mockData";
 
 import "./Members.scss";
 

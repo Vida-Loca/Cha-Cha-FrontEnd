@@ -5,6 +5,7 @@ import "./ProductCategory.scss";
 
 import { ShowMore, Button } from "../Button";
 import ProductCard from "./ProductCard";
+import AddNewProductContainer from "../../layout/EventTabs/Supply/AddNewProductContainer";
 
 import { FormContext } from "../../context/FormContext";
 
@@ -16,7 +17,10 @@ const ProductCategory = ({ supCont }) => {
   const setform = useContext(FormContext)[1];
 
   const openModalAddSupply = () => {
-    setform({ show: true, renderForm: "" });
+    setform({
+      show: true,
+      renderForm: <AddNewProductContainer category={supplyContainer.Category} />
+    });
   };
 
   const showMoreHandler = () => {

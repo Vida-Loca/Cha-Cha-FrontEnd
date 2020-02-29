@@ -1,4 +1,4 @@
-const products = [
+const eventProducts = [
   {
     id: 7,
     productCategory: {
@@ -76,7 +76,33 @@ const products = [
         }
       }
     ]
+  },
+  {
+    id: 14,
+    productCategory: {
+      name: "FOOD"
+    },
+    name: "Cheetos",
+    price: 23.24,
+    userCards: [
+      {
+        eventUser: {
+          id: 4,
+          user: {
+            id: 5,
+            username: "Darek",
+            name: "user",
+            surname: "korda",
+            picUrl:
+              "https://ip1.i.lithium.com/bc11ed461f47897972cbf9f7c36a56c702d44a20/68747470733a2f2f692e65626179696d672e636f6d2f30302f732f4e7a4977574459354e413d3d2f7a2f36516341414f5377526656637e5354552f245f372e4a5047",
+            joined: "2020-01-20T19:14:09.489888",
+            email: "ju.rekr98@gmail.com"
+          },
+          admin: true
+        }
+      }
+    ]
   }
 ];
 
-export default products;
+export default eventProducts;

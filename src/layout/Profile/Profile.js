@@ -5,8 +5,7 @@ import { UserContext } from "../../context/UserContext";
 import { authenticationService } from "../../Authentication/service";
 // import { userService } from "../../Authentication/service";
 
-import { tempEvents } from "./Data/TempData";
-import { tempFriends, tempFriendsrequests } from "./Data/userfriends";
+import { friends, friendsRequests, events } from "../../mockData";
 import "./Profile.scss";
 
 import { IconButton, Button, EditButton } from "../../components/Button";
@@ -88,7 +87,7 @@ const Profile = () => {
       <div>
         <PaginatedContainer
           title="Friends"
-          items={tempFriends}
+          items={friends}
           perPage={5}
           render={({ items }) =>
             items.map(ev => (
@@ -100,7 +99,7 @@ const Profile = () => {
         />
         <PaginatedContainer
           title="Friend Requests"
-          items={tempFriendsrequests}
+          items={friendsRequests}
           perPage={5}
           render={({ items }) =>
             items.map(ev => (
@@ -144,45 +143,32 @@ const Profile = () => {
             options={editState}
             activate={editHandler}
             cancel={cancelEdit}
+            tags
+            render={
+              <>
+                <i className="far fa-edit" />
+                Edit
+              </>
+            }
           />
-          {editState ? (
-            <>
-              <TextInput
-                onChange={onChangeHandler}
-                value={userInfo.name}
-                placeholder="name"
-                name="name"
-                size="input-sm"
-                classes="input-blue"
-              />
-              <TextInput
-                onChange={onChangeHandler}
-                value={userInfo.surname}
-                placeholder="surname"
-                name="surname"
-                size="input-sm"
-                classes="input-blue"
-              />
-            </>
-          ) : (
-            <>
-              <TextInput
-                disabled
-                value={userInfo.name}
-                placeholder="name"
-                name="name-d"
-                size="input-sm"
-              />
-              <TextInput
-                disabled
-                value={userInfo.surname}
-                placeholder="surname"
-                name="surname-d"
-                size="input-sm"
-              />
-            </>
-          )}
-
+          <TextInput
+            onChange={onChangeHandler}
+            value={userInfo.name}
+            placeholder="name"
+            name="name"
+            size="input-sm"
+            classes={editState ? "input-blue" : ""}
+            disabled={!editState}
+          />
+          <TextInput
+            onChange={onChangeHandler}
+            value={userInfo.surname}
+            placeholder="surname"
+            name="surname"
+            size="input-sm"
+            classes={editState ? "input-blue" : ""}
+            disabled={!editState}
+          />
           <TextInput
             value={userInfo.email}
             placeholder="email"
@@ -207,7 +193,7 @@ const Profile = () => {
       <div className="event-section">
         <PaginatedContainer
           title="My Events"
-          items={tempEvents}
+          items={events}
           perPage={4}
           render={({ items }) =>
             items.map(ev => (
@@ -224,7 +210,7 @@ const Profile = () => {
         />
         <PaginatedContainer
           title="Invitations"
-          items={tempEvents}
+          items={events}
           perPage={4}
           render={({ items }) =>
             items.map(ev => (

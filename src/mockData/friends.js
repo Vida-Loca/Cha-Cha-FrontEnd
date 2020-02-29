@@ -1,4 +1,4 @@
-export const tempFriends = [
+export const friends = [
   {
     id: 1,
     username: "kek"
@@ -20,7 +20,7 @@ export const tempFriends = [
     username: "Polo"
   }
 ];
-export const tempFriendsrequests = [
+export const friendsRequests = [
   {
     id: 1,
     username: "mojek"

@@ -1,10 +1,10 @@
 import React, { useState } from "react";
 import AdminEventTile from "../../../components/AdminEventTile/AdminEventTile";
-import { tempEvent } from "./Data/TempData";
+import { allEvents } from "../../../mockData";
 import "./EventLayout.scss";
 
 const EventLayout = () => {
-  const events = useState(tempEvent)[0];
+  const events = useState(allEvents)[0];
   return (
     <div className="Users">
       {events.map(event => {

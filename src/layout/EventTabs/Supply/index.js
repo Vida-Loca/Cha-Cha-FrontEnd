@@ -12,11 +12,9 @@ import ProductCategory from "../../../components/ProductCategory";
 import PaginatedContainer from "../../../components/PaginatedContainer";
 import AddNewProductContainer from "./AddNewProductContainer";
 
-import products from "./Data/RealTempData";
+import { eventProducts } from "../../../mockData";
 
 const Supply = ({ id }) => {
-  const productsTemp = useState(products)[0];
-
   const [supplyList2, setsupply2] = useState([]);
 
   // const [supplyList, setsupply] = useState({
@@ -26,7 +24,7 @@ const Supply = ({ id }) => {
   useEffect(() => {
     // console.log("mounted");
     // console.log(productsTemp);
-    setsupply2(createSetOfCategories(productsTemp));
+    setsupply2(createSetOfCategories(eventProducts));
     // console.log(supplyList2);
 
     // userService
@@ -44,7 +42,7 @@ const Supply = ({ id }) => {
     //     console.log(err);
     //   });
     return () => {};
-  }, [productsTemp]);
+  }, []);
 
   const setform = useContext(FormContext)[1];
 

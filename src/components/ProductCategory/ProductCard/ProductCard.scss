@@ -72,8 +72,25 @@
   .settings {
     height: 100%;
     width: 2rem;
-    .options-main {
-      grid-template-columns: 1fr;
+    grid-template-columns: 1fr;
+
+    .cancel-btn,
+    .confirm-btn {
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      padding: 0.3rem;
+      border-radius: 10rem;
+      transition: 0.5s width;
+      margin-left: 2.5rem;
+      width: 3rem;
+    }
+    .cancel-btn {
+      margin-top: -0.5rem;
+      border-radius: 0 0.75rem 0 0;
+    }
+    .confirm-btn {
+      border-radius: 0 0 0.75rem 0;
     }
   }
 }
@@ -101,6 +118,7 @@
   box-sizing: border-box;
   justify-content: flex-start;
   align-items: flex-start;
+  width: 100%;
   .product-currency {
     font-size: 0.7rem;
     margin-right: 0.2rem;

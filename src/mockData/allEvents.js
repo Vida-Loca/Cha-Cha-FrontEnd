@@ -1,4 +1,4 @@
-export const tempEvent = [
+const allEvents = [
   {
     id: "keke",
     name: "Event 1"
@@ -14,3 +14,4 @@ export const tempEvent = [
     name: "Event 3"
   }
 ];
+export default allEvents;

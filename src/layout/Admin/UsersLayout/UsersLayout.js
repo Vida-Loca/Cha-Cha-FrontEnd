@@ -1,10 +1,10 @@
 import React, { useState } from "react";
 import AdminUserTile from "../../../components/AdminUserTile/AdminUserTile";
-import { tempUsers } from "./Data/TempData";
+import { allUsers } from "../../../mockData";
 import "./UserLayout.scss";
 
 const UsersLayout = () => {
-  const users = useState(tempUsers)[0];
+  const users = useState(allUsers)[0];
   return (
     <div className="Users">
       {users.map(user => {

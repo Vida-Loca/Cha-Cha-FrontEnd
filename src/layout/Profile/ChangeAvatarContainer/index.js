@@ -12,15 +12,15 @@ const ChangeAvatar = () => {
     console.log(avatarUrl);
   };
   return (
-    <div>
+    <>
       <TextInput
         onChange={onChangeHandler}
         placeholder="avatarUrl"
         name="URL"
         classes="input-blue"
       />
-      <Button classes="btn-blueGradient btn-md">update</Button>
-    </div>
+      <Button classes="form-btn btn-blueGradient btn-md">update</Button>
+    </>
   );
 };
 

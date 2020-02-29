@@ -40,9 +40,13 @@ const InviteUserFormContainer = id => {
       <TextInput
         onChange={onChangeHandler}
         placeholder="Username"
+        classes="input-blue"
         name="username"
       />
-      <Button clicked={inviteUserPost} classes="btn-blueGradient btn-md">
+      <Button
+        clicked={inviteUserPost}
+        classes="form-btn btn-blueGradient btn-md"
+      >
         send and invite
       </Button>
     </div>

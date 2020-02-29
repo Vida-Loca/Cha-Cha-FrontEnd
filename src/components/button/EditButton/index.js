@@ -2,7 +2,7 @@ import React from "react";
 import PropTypes from "prop-types";
 import Button from "../Button";
 
-const EditButton = ({ activate, cancel, options }) => {
+const EditButton = ({ activate, cancel, options, tags, render }) => {
   return (
     <div className="settings">
       {options ? (
@@ -13,13 +13,13 @@ const EditButton = ({ activate, cancel, options }) => {
           >
             <span>
               <i className="fas fa-times-circle" />
-              {/* cancel */}
+              {tags ? "cancel" : ""}
             </span>
           </Button>
           <Button classes="btn-sm btn-default-blue confirm-btn">
             <span>
               <i className="fas fa-check" />
-              {/* confirm */}
+              {tags ? "confirm" : ""}
             </span>
           </Button>
         </>
@@ -29,10 +29,7 @@ const EditButton = ({ activate, cancel, options }) => {
             clicked={activate}
             classes="btn-sm btn-default edit-btn options-main"
           >
-            <span>
-              <i className="far fa-edit" />
-              {/* edit */}
-            </span>
+            {render}
           </Button>
         </>
       )}
@@ -41,10 +38,12 @@ const EditButton = ({ activate, cancel, options }) => {
 };
 
 EditButton.defaultProps = {
-  options: false
+  options: false,
+  tags: false
 };
 
 EditButton.propTypes = {
+  tags: PropTypes.bool,
   options: PropTypes.bool,
   activate: PropTypes.func.isRequired,
   cancel: PropTypes.func.isRequired

@@ -51,8 +51,9 @@ const CreateEventContainer = () => {
       });
   };
   return (
-    <div>
+    <>
       <TextInput
+        classes="input-blue"
         onChange={onChangeHandlerEvent}
         placeholder="name"
         name="name"
@@ -69,35 +70,43 @@ const CreateEventContainer = () => {
         name="startTime"
       />
       <TextInput
+        classes="input-blue"
         onChange={onChangeHandlerAddress}
         placeholder="country"
         name="country"
       />
       <TextInput
+        classes="input-blue"
         onChange={onChangeHandlerAddress}
         placeholder="city"
         name="city"
       />
       <TextInput
+        classes="input-blue"
         onChange={onChangeHandlerAddress}
         placeholder="street"
         name="street"
       />
       <TextInput
+        classes="input-blue"
         onChange={onChangeHandlerAddress}
         placeholder="postcode"
         name="postcode"
       />
       <TextInput
+        classes="input-blue"
         onChange={onChangeHandlerAddress}
         placeholder="number"
         name="number"
       />
 
-      <Button clicked={createNewEvent} classes="btn-blueGradient btn-md">
+      <Button
+        clicked={createNewEvent}
+        classes="form-btn btn-blueGradient btn-md"
+      >
         apply
       </Button>
-    </div>
+    </>
   );
 };
 

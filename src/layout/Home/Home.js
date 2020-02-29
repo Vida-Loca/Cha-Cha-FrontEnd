@@ -1,7 +1,8 @@
 import React, { useContext, useState } from "react";
 
 import { FormContext } from "../../context/FormContext";
-import { tempEvents } from "./Data/TempData";
+
+import { events } from "../../mockData";
 // import { userService } from "../../Authentication/service";
 
 import "./Home.scss";
@@ -47,7 +48,7 @@ const Home = () => {
         <div>
           <PaginatedContainer
             title="Public Events"
-            items={tempEvents}
+            items={events}
             render={({ items }) =>
               items.map(ev => (
                 <EventCard
