@@ -1,14 +1,13 @@
 const eventLocation = {
   Address: {
-    City: "Gdansk",
-    Street: "3-Maja",
-    HouseNumber: "34",
-    ApartmentNumber: "44"
+    city: "Gdansk",
+    street: "3-Maja",
+    number: "34",
+    postcode: "44-345"
   },
-  Contact: "784758933",
-  Date: "2019-12-31",
-  Time: "20:00",
-  AdditionalInformation:
+  dateofevent: "2019-12-31",
+  time: "20:00",
+  addidtionalInformation:
     "if bell doesnt work please knock or class our cellphones"
 };
 

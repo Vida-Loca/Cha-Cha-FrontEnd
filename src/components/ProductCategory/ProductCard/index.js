@@ -2,7 +2,7 @@
 import React, { useState } from "react";
 import PropTypes from "prop-types";
 import Avatar from "../../Avatar";
-import { Button, IconButton, EditButton } from "../../Button";
+import { IconButton, EditButton } from "../../Button";
 import "./ProductCard.scss";
 import { TextInputNL, TextArea } from "../../Inputs";
 
@@ -59,7 +59,7 @@ const ProductCard = ({ user, supply, price, picUrl }) => {
   return (
     <div className="OuterSupplyTile">
       <div className="UserTileBody">
-        <Avatar />
+        <Avatar title={tileSupply.user} />
         <span className="product-info">
           <span>
             <span className="product-currency">PLN</span>

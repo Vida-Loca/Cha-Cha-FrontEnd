@@ -63,13 +63,6 @@
   }
 }
 
-.SuplyBody {
-  display: flex;
-  flex-direction: column;
-  margin: 0 10%;
-  height: 80vh;
-}
-
 .hide {
   & > .SupplyBody {
     display: none;

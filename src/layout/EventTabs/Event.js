@@ -15,7 +15,7 @@ const Event = ({ eventId, eventPath }) => {
   // check if user is a part of this event
   //  * if not redirect to /:id page
   //  * else leave him be
-  const eventName = useState("")[0];
+  const eventName = useState("no name ")[0];
   const [hasAuthorization, setAuthorization] = useState(true);
 
   useEffect(() => {

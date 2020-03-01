@@ -8,6 +8,7 @@ import "./Members.scss";
 
 import UserCard from "../../../components/UserCard";
 import { Button } from "../../../components/Button";
+import PaginatedContainer from "../../../components/PaginatedContainer";
 
 // import { userService } from "../../../Authentication/service";
 import InviteUserFormContainer from "./InviteUserFormContainer";
@@ -64,31 +65,39 @@ const Members = ({ id }) => {
       <Button clicked={openModalToInviteUser} classes="btn-blueGradient btn-md">
         + Invite User
       </Button>
-      <h2>{`Pending requests ● ${requestsFoThisEvent.length}`}</h2>
-      {requestsFoThisEvent.map(member => {
-        return (
-          <UserCard
-            key={member.username}
-            username={member.username}
-            showControlls={isUserAdmin}
-          >
-            <Button classes="btn-blueGradient btn-sm">accept</Button>
-          </UserCard>
-        );
-      })}
+      <PaginatedContainer
+        title={`Pending requests ● ${requestsFoThisEvent.length}`}
+        items={requestsFoThisEvent}
+        perPage={4}
+        render={({ items }) =>
+          items.map(ev => (
+            <UserCard
+              key={ev.username}
+              username={ev.username}
+              showControlls={isUserAdmin}
+            >
+              <Button classes="btn-blueGradient btn-sm">accept</Button>
+            </UserCard>
+          ))
+        }
+      />
 
-      <h2>{`Members ● ${membersOfTheEvent.length}`}</h2>
-      {membersOfTheEvent.map(member => {
-        return member ? (
-          <UserCard
-            key={member.username}
-            username={member.username}
-            showControlls={isUserAdmin}
-          >
-            <Button classes="btn-orangeGradient btn-sm">kick</Button>
-          </UserCard>
-        ) : null;
-      })}
+      <PaginatedContainer
+        title={`Members ● ${membersOfTheEvent.length}`}
+        items={membersOfTheEvent}
+        perPage={3}
+        render={({ items }) =>
+          items.map(ev => (
+            <UserCard
+              key={ev.username}
+              username={ev.username}
+              showControlls={isUserAdmin}
+            >
+              <Button classes="btn-orangeGradient btn-sm">kick</Button>
+            </UserCard>
+          ))
+        }
+      />
     </div>
   );
 };

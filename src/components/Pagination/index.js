@@ -11,15 +11,17 @@ const Pagination = ({ postsPerPage, totalPosts, paginate, currentPage }) => {
 
   return (
     <div className="Pagination">
-      {pageNumbers.map(number => (
-        <button
-          className={currentPage === number ? "active" : ""}
-          key={number}
-          onClick={() => paginate(number)}
-        >
-          {number}
-        </button>
-      ))}
+      {pageNumbers.length > 1
+        ? pageNumbers.map(number => (
+            <button
+              className={currentPage === number ? "active" : ""}
+              key={number}
+              onClick={() => paginate(number)}
+            >
+              {number}
+            </button>
+          ))
+        : null}
     </div>
   );
 };

@@ -187,7 +187,7 @@ const Profile = () => {
       </div>
       <div>
         <Button classes="btn-md btn-default" clicked={showFriendsInModal}>
-          20 friends
+          {`friends • ${friends.length}`}
         </Button>
       </div>
       <div className="event-section">
