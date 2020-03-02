@@ -22,8 +22,6 @@ const TextInput = ({
         required
         disabled={disabled}
         value={value}
-        min={0}
-        max={1000}
       />
       <label htmlFor={name}>{placeholder}</label>
     </div>

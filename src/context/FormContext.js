@@ -4,7 +4,11 @@ export const FormContext = createContext();
 
 // eslint-disable-next-line react/prop-types
 export const FormProvider = ({ children }) => {
-  const [form, setform] = useState({ renderForm: "", show: false });
+  const [form, setform] = useState({
+    renderForm: "",
+    show: false,
+    message: ""
+  });
 
   return (
     <FormContext.Provider value={[form, setform]}>

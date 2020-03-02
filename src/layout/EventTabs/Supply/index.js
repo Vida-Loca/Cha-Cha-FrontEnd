@@ -44,10 +44,10 @@ const Supply = ({ id }) => {
     return () => {};
   }, []);
 
-  const setform = useContext(FormContext)[1];
+  const [forms, setform] = useContext(FormContext);
 
   const addNewProductModal = () => {
-    setform({ renderForm: <AddNewProductContainer />, show: true });
+    setform({ ...forms, renderForm: <AddNewProductContainer />, show: true });
   };
 
   // const addNewProduct = event => {

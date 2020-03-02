@@ -149,3 +149,16 @@
     }
   }
 }
+.input-red {
+  label {
+    color: $main-orange;
+  }
+  input {
+    border-color: $main-orange;
+    color: $main-orange;
+    &:focus {
+      background: $main-orange;
+      color: white;
+    }
+  }
+}
