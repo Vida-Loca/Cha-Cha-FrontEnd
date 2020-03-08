@@ -47,7 +47,7 @@
   }
   input {
     @extend %transition;
-    margin-top: 0.7rem;
+    // margin-top: 0.7rem;
     appearance: none;
     outline: none;
     background-color: none;
@@ -88,9 +88,27 @@
       }
     }
   }
+  .error-msg {
+    display: flex;
+    font-size: 0.7rem;
+    justify-content: center;
+    border-radius: 0 0 2rem 2rem;
+    margin-top: -20px;
+    padding-top: 20px;
+    transition: 0.3s all;
+    // padding: 0.2rem 0.3rem;
+    // border-radius: 0.2rem;
+    // font-style: italic;
+    // background: $grey-1;
+    // position: absolute;
+    // z-index: 999;
+    // margin-top: -1.5rem;
+  }
 }
 
 .input-md {
+  margin-top: 1rem;
+  height: 3rem;
   input {
     font-size: 15px;
     padding: 7px 11px;
@@ -114,6 +132,7 @@
 }
 
 .input-sm {
+  margin-top: 0.8rem;
   input {
     font-size: 13px;
     padding: 5px 9px;
@@ -148,8 +167,12 @@
       color: white;
     }
   }
+  .error-msg {
+    color: white;
+    background: $main-blue;
+  }
 }
-.input-red {
+.input-orange {
   label {
     color: $main-orange;
   }
@@ -160,5 +183,9 @@
       background: $main-orange;
       color: white;
     }
+  }
+  .error-msg {
+    color: rgb(235, 106, 0);
+    background: rgb(255, 236, 172);
   }
 }

@@ -11,7 +11,6 @@ const Modal = ({ show, modalClose, message, children }) => {
         style={{ display: show ? "flex" : "none" }}
       >
         <div className="modal" style={{ opacity: show ? "1" : "0" }}>
-          <div className="flash-message">{message}</div>
           {children}
         </div>
       </div>

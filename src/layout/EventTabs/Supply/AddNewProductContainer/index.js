@@ -9,9 +9,9 @@ const AddNewProductContainer = ({ category }) => {
   const [forms, setForms] = useContext(FormContext);
 
   const [product, setProduct] = useState({
-    name: { value: "", isValid: false, touched: false },
-    price: { value: "", isValid: false, touched: false },
-    productCategory: { value: "", isValid: false, touched: false }
+    name: { value: "", isValid: false, err: "", touched: false },
+    price: { value: "", isValid: false, err: "", touched: false },
+    productCategory: { value: "", isValid: false, err: "", touched: false }
   });
 
   const formProducts = useState([
@@ -35,7 +35,8 @@ const AddNewProductContainer = ({ category }) => {
         classes: "input-blue"
       },
       validation: {
-        required: true
+        required: true,
+        maxLength: 10
       }
     },
     {
@@ -53,17 +54,20 @@ const AddNewProductContainer = ({ category }) => {
   ])[0];
 
   const onChangeHandler = event => {
+    const validationResult = checkValidation(
+      event.target.value,
+      formProducts.find(x => x.name === event.target.name).validation
+    );
     setProduct({
       ...product,
       [`${event.target.name}`]: {
         value: event.target.value,
-        isValid: checkValidation(
-          event.target.value,
-          formProducts.find(x => x.name === event.target.name).validation
-        ),
+        isValid: validationResult[0],
+        err: validationResult[1],
         touched: true
       }
     });
+    console.log(product[event.target.name].err);
   };
 
   const sendData = () => {
@@ -75,8 +79,7 @@ const AddNewProductContainer = ({ category }) => {
       console.log("---- sending: ...");
     } else {
       setForms({
-        ...forms,
-        message: "input has characters that aren't allowed"
+        ...forms
       });
     }
   };
@@ -94,10 +97,10 @@ const AddNewProductContainer = ({ category }) => {
           }
           classes={
             product[el.name].touched ^ product[el.name].isValid
-              ? "input-red"
+              ? "input-orange"
               : el.config.classes
           }
-          // classes={el.isValid ? el.config.classes : "input-red"}
+          error={product[el.name].err[0]}
           disabled={!!category && el.config.disabled}
         />
       ))}

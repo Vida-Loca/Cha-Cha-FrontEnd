@@ -10,21 +10,26 @@ const TextInput = ({
   size,
   classes,
   disabled,
-  value
+  value,
+  error
 }) => {
   return (
-    <div className={`textInput ${classes} ${size} `}>
-      <input
-        type={type}
-        name={name}
-        id={name}
-        onChange={onChange}
-        required
-        disabled={disabled}
-        value={value}
-      />
-      <label htmlFor={name}>{placeholder}</label>
-    </div>
+    <>
+      <div className={`textInput ${classes} ${size} `}>
+        {/* <span className="error-msg">{error}</span> */}
+        <input
+          type={type}
+          name={name}
+          id={name}
+          onChange={onChange}
+          required
+          disabled={disabled}
+          value={value}
+        />
+        <label htmlFor={name}>{placeholder}</label>
+        <span className="error-msg">{error}</span>
+      </div>
+    </>
   );
 };
 
@@ -35,7 +40,8 @@ TextInput.defaultProps = {
   size: "input-md",
   classes: "",
   disabled: false,
-  value: undefined
+  value: undefined,
+  error: ""
 };
 
 TextInput.propTypes = {
@@ -46,7 +52,8 @@ TextInput.propTypes = {
   onChange: PropTypes.func,
   name: PropTypes.string.isRequired,
   type: PropTypes.oneOf(["text", "password", "number"]),
-  placeholder: PropTypes.string
+  placeholder: PropTypes.string,
+  error: PropTypes.string
 };
 
 export default TextInput;
