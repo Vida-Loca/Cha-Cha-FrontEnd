@@ -1,13 +1,11 @@
-import React, { useState, useContext } from "react";
+import React, { useState } from "react";
 import PropTypes from "prop-types";
 import { TextInput } from "../../../../components/Inputs";
 import { Button } from "../../../../components/Button";
 import checkValidation from "../../../../validation";
-import { FormContext } from "../../../../context/FormContext";
 
 const AddNewProductContainer = ({ category }) => {
-  const [forms, setForms] = useContext(FormContext);
-
+  const [isFormValid, setFormValid] = useState(false);
   const [product, setProduct] = useState({
     name: { value: "", isValid: false, err: "", touched: false },
     price: { value: "", isValid: false, err: "", touched: false },
@@ -67,20 +65,19 @@ const AddNewProductContainer = ({ category }) => {
         touched: true
       }
     });
-    console.log(product[event.target.name].err);
+    let testValidity = true;
+    for (let key in product) {
+      testValidity = product[key].isValid && testValidity;
+    }
+    setFormValid(testValidity);
+    console.log(isFormValid);
   };
 
   const sendData = () => {
-    let isFormValid = true;
-    for (let key in product) {
-      isFormValid = product[key].isValid && isFormValid;
-    }
     if (isFormValid) {
       console.log("---- sending: ...");
     } else {
-      setForms({
-        ...forms
-      });
+      console.log("-- not");
     }
   };
   return (
@@ -104,7 +101,11 @@ const AddNewProductContainer = ({ category }) => {
           disabled={!!category && el.config.disabled}
         />
       ))}
-      <Button clicked={sendData} classes="form-btn btn-blueGradient btn-md">
+      <Button
+        clicked={sendData}
+        classes="form-btn btn-blueGradient btn-md"
+        // dissabled={!isFormValid}
+      >
         Add
       </Button>
     </>

@@ -3,33 +3,51 @@ const checkValidation = (value, rules) => {
   let errors = [];
   //   required
   if (rules.required) {
-    isValid = value.trim() !== "" && isValid;
-    errors.push("can't be blank");
+    const rule = value.trim() !== "";
+    isValid = rule && isValid;
+    if (!rule) {
+      errors.push("can't be blank");
+    }
   }
   // min length
   if (rules.minLength) {
-    isValid = value.length >= rules.minLength && isValid;
-    errors.push(`must not be shorter than ${rules.minLength}`);
+    const rule = value.length >= rules.minLength;
+    isValid = rule && isValid;
+    if (!rule) {
+      errors.push(`must not be shorter than ${rules.minLength}`);
+    }
   }
   // max length
   if (rules.maxLength) {
-    isValid = value.length <= rules.maxLength && isValid;
-    errors.push(`must not be longer than ${rules.maxLength}`);
+    const rule = value.length <= rules.maxLength;
+    isValid = rule && isValid;
+    if (!rule) {
+      errors.push(`must not be longer than ${rules.maxLength}`);
+    }
   }
   // is string
   if (rules.string) {
-    isValid = /^([a-zA-Z]*)$/.test(value) && isValid;
-    errors.push("some characters are not allowed");
+    const rule = /^([a-zA-Z]*)$/.test(value);
+    isValid = rule && isValid;
+    if (!rule) {
+      errors.push("some characters are not allowed");
+    }
   }
   // is number
   if (rules.number) {
-    isValid = /^(\d*)$/.test(value) && isValid;
-    errors.push("must be a number");
+    const rule = /^(\d*)$/.test(value);
+    isValid = rule && isValid;
+    if (!rule) {
+      errors.push("must be a number");
+    }
   }
   // post code format
   if (rules.postcode) {
-    isValid = /^(\d{2}-\d{3})$/.test(value) && isValid;
-    errors.push("bad format - 00-000");
+    const rule = /^(\d{2}-\d{3})$/.test(value);
+    isValid = rule && isValid;
+    if (!rule) {
+      errors.push("bad format - 00-000");
+    }
   }
   errors = isValid ? [] : errors;
   return [isValid, errors];
