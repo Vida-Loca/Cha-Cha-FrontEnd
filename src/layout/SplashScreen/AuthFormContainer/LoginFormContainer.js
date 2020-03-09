@@ -32,16 +32,8 @@ const LoginFormContainer = () => {
   };
   return (
     <div>
-      <TextInput
-        onChange={onChangeHandler}
-        placeholder="username"
-        name="username"
-      />
-      <TextInput
-        onChange={onChangeHandler}
-        placeholder="password"
-        name="password"
-      />
+      <TextInput onChange={onChangeHandler} placeholder="username" name="username" />
+      <TextInput onChange={onChangeHandler} placeholder="password" name="password" />
 
       <Button clicked={loginHandler} classes="btn-blueGradient btn-md">
         Log In

@@ -27,9 +27,7 @@ const InviteUserFormContainer = id => {
       ...findUser,
       [`${event.target.name}`]: event.target.value
     });
-    const foundUsers = friends.filter(o =>
-      o.username.includes(findUser.username)
-    );
+    const foundUsers = friends.filter(o => o.username.includes(findUser.username));
     foundUsers.length !== 0 && findUser.username.length > 1
       ? setDislpayFreinds(foundUsers)
       : setDislpayFreinds(friends);
@@ -55,12 +53,7 @@ const InviteUserFormContainer = id => {
 
   return (
     <div className="invite-friends">
-      <TextInput
-        onChange={onChangeHandler}
-        placeholder="Username"
-        classes="input-blue"
-        name="username"
-      />
+      <TextInput onChange={onChangeHandler} placeholder="Username" classes="input-blue" name="username" />
       <PaginatedContainer
         title="Invite friends"
         items={dislpayFriends}

@@ -13,11 +13,7 @@ const Pagination = ({ postsPerPage, totalPosts, paginate, currentPage }) => {
     <div className="Pagination">
       {pageNumbers.length > 1
         ? pageNumbers.map(number => (
-            <button
-              className={currentPage === number ? "active" : ""}
-              key={number}
-              onClick={() => paginate(number)}
-            >
+            <button className={currentPage === number ? "active" : ""} key={number} onClick={() => paginate(number)}>
               {number}
             </button>
           ))

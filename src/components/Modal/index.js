@@ -6,10 +6,7 @@ import "./Modal.scss";
 const Modal = ({ show, modalClose, message, children }) => {
   return (
     <>
-      <div
-        className="modal-container"
-        style={{ display: show ? "flex" : "none" }}
-      >
+      <div className="modal-container" style={{ display: show ? "flex" : "none" }}>
         <div className="modal" style={{ opacity: show ? "1" : "0" }}>
           {children}
         </div>

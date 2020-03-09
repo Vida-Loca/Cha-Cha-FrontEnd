@@ -126,10 +126,7 @@ const Profile = () => {
         <div className="Avatar-section">
           <Avatar imageLink={userInfo.picUrl} />
           <div className="editBtn">
-            <IconButton
-              clicked={changeAvatarInModal}
-              iconClass="fas fa-image"
-            />
+            <IconButton clicked={changeAvatarInModal} iconClass="fas fa-image" />
           </div>
           <span className="username">{`@${userInfo.username}`}</span>
           <Button clicked={LogOut} classes="btn-sm btn-orangeGradient">
@@ -169,20 +166,8 @@ const Profile = () => {
             classes={editState ? "input-blue" : ""}
             disabled={!editState}
           />
-          <TextInput
-            value={userInfo.email}
-            placeholder="email"
-            name="email"
-            size="input-sm"
-            disabled
-          />
-          <TextInput
-            value={userInfo.joined}
-            placeholder="date joined"
-            name="datejoined"
-            size="input-sm"
-            disabled
-          />
+          <TextInput value={userInfo.email} placeholder="email" name="email" size="input-sm" disabled />
+          <TextInput value={userInfo.joined} placeholder="date joined" name="datejoined" size="input-sm" disabled />
         </div>
       </div>
       <div>

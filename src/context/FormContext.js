@@ -10,9 +10,5 @@ export const FormProvider = ({ children }) => {
     message: ""
   });
 
-  return (
-    <FormContext.Provider value={[form, setform]}>
-      {children}
-    </FormContext.Provider>
-  );
+  return <FormContext.Provider value={[form, setform]}>{children}</FormContext.Provider>;
 };

@@ -39,41 +39,19 @@ const Event = ({ eventId, eventPath }) => {
       <Route
         path={`${eventPath}/`}
         exact
-        render={() => (
-          <MainPage
-            isAuth={hasAuthorization}
-            eventPath={eventPath}
-            id={eventId}
-          />
-        )}
+        render={() => <MainPage isAuth={hasAuthorization} eventPath={eventPath} id={eventId} />}
       />
       {!hasAuthorization ? (
         <Route
           path={`${eventPath}/*`}
           exact
-          render={() => (
-            <Redirect
-              to={`${eventPath.substring(0, eventPath.length - 4)}/${eventId}`}
-            />
-          )}
+          render={() => <Redirect to={`${eventPath.substring(0, eventPath.length - 4)}/${eventId}`} />}
         />
       ) : (
         <>
-          <Route
-            path={`${eventPath}/suplies`}
-            exact
-            render={() => <Supply id={eventId} />}
-          />
-          <Route
-            path={`${eventPath}/location`}
-            exact
-            render={() => <Location id={eventId} />}
-          />
-          <Route
-            path={`${eventPath}/members`}
-            exact
-            render={() => <Members id={eventId} />}
-          />
+          <Route path={`${eventPath}/suplies`} exact render={() => <Supply id={eventId} />} />
+          <Route path={`${eventPath}/location`} exact render={() => <Location id={eventId} />} />
+          <Route path={`${eventPath}/members`} exact render={() => <Members id={eventId} />} />
         </>
       )}
     </>

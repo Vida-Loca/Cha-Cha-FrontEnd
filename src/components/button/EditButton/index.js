@@ -7,10 +7,7 @@ const EditButton = ({ activate, cancel, options, tags, render }) => {
     <div className="settings">
       {options ? (
         <>
-          <Button
-            clicked={cancel}
-            classes="btn-sm btn-default-orange cancel-btn"
-          >
+          <Button clicked={cancel} classes="btn-sm btn-default-orange cancel-btn">
             <span>
               <i className="fas fa-times-circle" />
               {tags ? "cancel" : ""}
@@ -25,10 +22,7 @@ const EditButton = ({ activate, cancel, options, tags, render }) => {
         </>
       ) : (
         <>
-          <Button
-            clicked={activate}
-            classes="btn-sm btn-default edit-btn options-main"
-          >
+          <Button clicked={activate} classes="btn-sm btn-default edit-btn options-main">
             {render}
           </Button>
         </>

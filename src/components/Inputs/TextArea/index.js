@@ -3,15 +3,7 @@ import PropTypes from "prop-types";
 import "./TextArea.scss";
 
 const TextArea = ({ name, onChange, disabled, value }) => {
-  return (
-    <textarea
-      onChange={onChange}
-      name={name}
-      disabled={disabled}
-      className="resizable-ta"
-      value={value}
-    />
-  );
+  return <textarea onChange={onChange} name={name} disabled={disabled} className="resizable-ta" value={value} />;
 };
 
 TextArea.defaultProps = {

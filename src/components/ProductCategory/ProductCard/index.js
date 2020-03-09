@@ -73,12 +73,7 @@ const ProductCard = ({ user, supply, price, picUrl }) => {
               disabled={!editState}
             />
           </span>
-          <TextArea
-            value={tileSupply.supply}
-            name="supply"
-            onChange={onChangeHandler}
-            disabled={!editState}
-          />
+          <TextArea value={tileSupply.supply} name="supply" onChange={onChangeHandler} disabled={!editState} />
         </span>
 
         {tileState ? (
@@ -104,8 +99,7 @@ const ProductCard = ({ user, supply, price, picUrl }) => {
   );
 };
 ProductCard.defaultProps = {
-  picUrl:
-    "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTSLmktkJrArXh_zZVovazl5mb3lna9HXqPo7XvvviCSQAuru5C&s"
+  picUrl: "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTSLmktkJrArXh_zZVovazl5mb3lna9HXqPo7XvvviCSQAuru5C&s"
 };
 
 ProductCard.propTypes = {

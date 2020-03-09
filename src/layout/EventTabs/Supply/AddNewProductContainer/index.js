@@ -89,14 +89,8 @@ const AddNewProductContainer = ({ category }) => {
           placeholder={el.config.placeholder}
           type={el.config.type}
           name={el.name}
-          value={
-            !!category && el.config.disabled ? category : product[el.name].value
-          }
-          classes={
-            product[el.name].touched ^ product[el.name].isValid
-              ? "input-orange"
-              : el.config.classes
-          }
+          value={!!category && el.config.disabled ? category : product[el.name].value}
+          classes={product[el.name].touched ^ product[el.name].isValid ? "input-orange" : el.config.classes}
           error={product[el.name].err[0]}
           disabled={!!category && el.config.disabled}
         />

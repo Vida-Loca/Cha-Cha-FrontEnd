@@ -71,11 +71,7 @@ const Members = ({ id }) => {
         perPage={4}
         render={({ items }) =>
           items.map(ev => (
-            <UserCard
-              key={ev.username}
-              username={ev.username}
-              showControlls={isUserAdmin}
-            >
+            <UserCard key={ev.username} username={ev.username} showControlls={isUserAdmin}>
               <Button classes="btn-blueGradient btn-sm">accept</Button>
             </UserCard>
           ))
@@ -88,11 +84,7 @@ const Members = ({ id }) => {
         perPage={3}
         render={({ items }) =>
           items.map(ev => (
-            <UserCard
-              key={ev.username}
-              username={ev.username}
-              showControlls={isUserAdmin}
-            >
+            <UserCard key={ev.username} username={ev.username} showControlls={isUserAdmin}>
               <Button classes="btn-orangeGradient btn-sm">kick</Button>
             </UserCard>
           ))

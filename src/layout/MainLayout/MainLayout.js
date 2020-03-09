@@ -10,6 +10,7 @@ import Home from "../Home/Home";
 import Profile from "../Profile/Profile";
 import Admin from "../Admin/Admin";
 import Event from "../EventTabs/Event";
+import NewEvent from "../NewEvent";
 
 // isUserAdmin
 const MainLayout = () => {
@@ -36,47 +37,31 @@ const MainLayout = () => {
   return (
     <div className="MainLayout">
       <BrowserRouter>
-        <Sidebar
-          classes="SideBar-orange"
-          navlinks={isUserAdmin ? mainNav : mainNavNoAdmin}
-        />
+        <Sidebar classes="SideBar-orange" navlinks={isUserAdmin ? mainNav : mainNavNoAdmin} />
         <div>
           <Switch>
             <Route path="/" exact render={() => <Redirect to="/home" />} />
             <Route path="/home" exact render={() => <Home />} />
             <Route path="/profile" exact render={() => <Profile />} />
-            {isUserAdmin ? (
-              <Route path="/admin" render={() => <Admin />} />
-            ) : null}
+            <Route path="/new/event" exact render={() => <NewEvent />} />
+            {isUserAdmin ? <Route path="/admin" render={() => <Admin />} /> : null}
 
             <Route
               path="/event/:id"
-              render={({ match }) => (
-                <Event eventId={match.params.id} eventPath={match.path} />
-              )}
+              render={({ match }) => <Event eventId={match.params.id} eventPath={match.path} />}
             />
           </Switch>
         </div>
         <Route
           path="/event/:id"
           render={({ match }) => (
-            <Sidebar
-              beforeLink={`/event/${match.params.id}`}
-              classes="SideBar-darkBlue"
-              navlinks={eventNav}
-            />
+            <Sidebar beforeLink={`/event/${match.params.id}`} classes="SideBar-darkBlue" navlinks={eventNav} />
           )}
         />
         {isUserAdmin ? (
           <Route
             path="/admin"
-            render={() => (
-              <Sidebar
-                beforeLink="/admin"
-                classes="SideBar-darkBlue"
-                navlinks={adminNav}
-              />
-            )}
+            render={() => <Sidebar beforeLink="/admin" classes="SideBar-darkBlue" navlinks={adminNav} />}
           />
         ) : null}
       </BrowserRouter>

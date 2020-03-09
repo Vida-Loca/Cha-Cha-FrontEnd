@@ -9,14 +9,7 @@ const Backdrop = ({ clicked }) => {
     }
   };
 
-  return (
-    <div
-      onClick={clicked}
-      role="presentation"
-      onKeyPress={handleKeyPress}
-      className="backdrop"
-    ></div>
-  );
+  return <div onClick={clicked} role="presentation" onKeyPress={handleKeyPress} className="backdrop"></div>;
 };
 
 Backdrop.propTypes = {

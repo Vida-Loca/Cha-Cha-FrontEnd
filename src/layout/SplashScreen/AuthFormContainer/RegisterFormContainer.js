@@ -49,12 +49,7 @@ const RegistrationFormContainer = () => {
     <div>
       {data.map(inputs => {
         return (
-          <TextInput
-            onChange={onChangeHandler}
-            placeholder={inputs.placeholder}
-            name={inputs.name}
-            key={inputs.name}
-          />
+          <TextInput onChange={onChangeHandler} placeholder={inputs.placeholder} name={inputs.name} key={inputs.name} />
         );
       })}
 

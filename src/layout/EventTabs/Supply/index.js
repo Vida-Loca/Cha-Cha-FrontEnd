@@ -76,11 +76,7 @@ const Supply = ({ id }) => {
         title="Product list"
         items={supplyList2}
         perPage={5}
-        render={({ items }) =>
-          items.map(supCont => (
-            <ProductCategory supCont={supCont} key={supCont.Category} />
-          ))
-        }
+        render={({ items }) => items.map(supCont => <ProductCategory supCont={supCont} key={supCont.Category} />)}
       />
     </div>
   );

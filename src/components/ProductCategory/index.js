@@ -29,37 +29,22 @@ const ProductCategory = ({ supCont }) => {
   };
 
   return (
-    <div
-      className={
-        supplyContainer.showMore
-          ? "CategoryContainer"
-          : "CategoryContainer hide"
-      }
-    >
+    <div className={supplyContainer.showMore ? "CategoryContainer" : "CategoryContainer hide"}>
       <div className="SupplyHeader">
         <div className="label-button">
           <p className="CategoryLabel">{supplyContainer.Category}</p>
-          <ShowMore
-            showState={supplyContainer.showMore}
-            clicked={() => showMoreHandler()}
-          />
+          <ShowMore showState={supplyContainer.showMore} clicked={() => showMoreHandler()} />
         </div>
         <div className="PriceAndAdd">
           <p className="PriceLabel">
             {Number(
-              Object.keys(supplyContainer.supplies).reduce(
-                (previous, index) => {
-                  return previous + supplyContainer.supplies[index].price;
-                },
-                0
-              )
+              Object.keys(supplyContainer.supplies).reduce((previous, index) => {
+                return previous + supplyContainer.supplies[index].price;
+              }, 0)
             ).toFixed(2)}
             <span> zl</span>
           </p>
-          <Button
-            clicked={openModalAddSupply}
-            classes="btn-sm btn-orangeGradient"
-          >
+          <Button clicked={openModalAddSupply} classes="btn-sm btn-orangeGradient">
             <i className="fas fa-plus-circle" />
           </Button>
         </div>

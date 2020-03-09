@@ -16,12 +16,7 @@ const PaginatedContainer = ({ render, items, perPage, title }) => {
       {title === "" ? null : <h2>{title}</h2>}
 
       {render({ items: currentPosts })}
-      <Pagination
-        currentPage={currentPage}
-        postsPerPage={perPage}
-        totalPosts={items.length}
-        paginate={paginate}
-      />
+      <Pagination currentPage={currentPage} postsPerPage={perPage} totalPosts={items.length} paginate={paginate} />
     </div>
   );
 };
