@@ -6,7 +6,6 @@ const TextInput = ({ name, type, placeholder, onChange, size, classes, disabled,
   return (
     <>
       <div className={`textInput ${classes} ${size} `}>
-        {/* <span className="error-msg">{error}</span> */}
         <input type={type} name={name} id={name} onChange={onChange} required disabled={disabled} value={value} />
         <label htmlFor={name}>{placeholder}</label>
         <span className="error-msg">{error}</span>

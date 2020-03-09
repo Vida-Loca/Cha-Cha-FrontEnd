@@ -27,10 +27,18 @@ const checkValidation = (value, rules) => {
   }
   // is string
   if (rules.string) {
-    const rule = /^([a-zA-Z]*)$/.test(value);
+    const rule = /^([a-zA-Z ]*)$/.test(value);
     isValid = rule && isValid;
     if (!rule) {
       errors.push("some characters are not allowed");
+    }
+  }
+  // no spaces
+  if (rules.string) {
+    const rule = /^([^ ]*)$/.test(value);
+    isValid = rule && isValid;
+    if (!rule) {
+      errors.push("spaces are not allowd");
     }
   }
   // is number

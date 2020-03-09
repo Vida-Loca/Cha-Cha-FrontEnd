@@ -50,6 +50,7 @@ const MainLayout = () => {
               path="/event/:id"
               render={({ match }) => <Event eventId={match.params.id} eventPath={match.path} />}
             />
+            <Redirect from="*" to="/home" />
           </Switch>
         </div>
         <Route

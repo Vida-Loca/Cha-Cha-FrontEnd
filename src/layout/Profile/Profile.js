@@ -14,18 +14,25 @@ import EventCard from "../../components/EventCard";
 import PaginatedContainer from "../../components/PaginatedContainer";
 import Avatar from "../../components/Avatar";
 import UserCard from "../../components/UserCard";
+import checkValidation from "../../validation";
 import ChangeAvatarContainer from "./ChangeAvatarContainer";
 
 const Profile = () => {
   const [userInfo, setUserInfo] = useState({
-    username: "user",
-    name: "name",
-    surname: "surname",
+    username: "username",
     email: "email@email.com",
+    datejoined: "2010-10-12"
+  });
+  const [editableUserInfo, setEditableUserInfo] = useState({
+    name: { value: "name", isValid: true, err: "" },
+    surname: { value: "surname", isValid: true, err: "" },
     tempName: "name",
     teempSurname: "surname"
-    // picUrl: null
   });
+
+  const [forms, setform] = useContext(FormContext);
+  const setuser = useContext(UserContext)[1];
+  const [editState, setEdit] = useState(false);
   // const [myEvents, setMyEvent] = useState([]);
 
   // useEffect(() => {
@@ -57,24 +64,68 @@ const Profile = () => {
   //     });
   // }, []);
 
-  const [forms, setform] = useContext(FormContext);
-  const setuser = useContext(UserContext)[1];
-  const [editState, setEdit] = useState(false);
+  const editableFormProfile = useState([
+    {
+      name: "name",
+      config: {
+        placeholder: "name"
+      },
+      validation: {
+        required: true,
+        string: true
+      }
+    },
+    {
+      name: "surname",
+      config: {
+        placeholder: "surname"
+      },
+      validation: {
+        required: true,
+        maxLength: 10
+      }
+    }
+  ])[0];
+  const FormProfile = useState([
+    {
+      name: "email",
+      config: {
+        placeholder: "e-mail"
+      }
+    },
+    {
+      name: "datejoined",
+      config: {
+        placeholder: "date joined"
+      }
+    }
+  ])[0];
+
   const editHandler = () => {
     setEdit(!editState);
   };
   const cancelEdit = () => {
     setEdit(false);
-    setUserInfo({
-      ...userInfo,
-      name: userInfo.tempName,
-      surname: userInfo.teempSurname
+    setEditableUserInfo({
+      ...editableUserInfo,
+      name: { ...editableUserInfo.name, value: editableUserInfo.tempName, err: [] },
+      surname: { ...editableUserInfo.surname, value: editableUserInfo.teempSurname, err: [] }
     });
   };
 
   const onChangeHandler = event => {
-    setUserInfo({ ...userInfo, [`${event.target.name}`]: event.target.value });
-    console.log(userInfo);
+    const validationResult = checkValidation(
+      event.target.value,
+      editableFormProfile.find(x => x.name === event.target.name).validation
+    );
+    setEditableUserInfo({
+      ...editableUserInfo,
+      [`${event.target.name}`]: {
+        value: event.target.value,
+        isValid: validationResult[0],
+        err: validationResult[1]
+      }
+    });
   };
 
   const LogOut = () => {
@@ -148,26 +199,30 @@ const Profile = () => {
               </>
             }
           />
-          <TextInput
-            onChange={onChangeHandler}
-            value={userInfo.name}
-            placeholder="name"
-            name="name"
-            size="input-sm"
-            classes={editState ? "input-blue" : ""}
-            disabled={!editState}
-          />
-          <TextInput
-            onChange={onChangeHandler}
-            value={userInfo.surname}
-            placeholder="surname"
-            name="surname"
-            size="input-sm"
-            classes={editState ? "input-blue" : ""}
-            disabled={!editState}
-          />
-          <TextInput value={userInfo.email} placeholder="email" name="email" size="input-sm" disabled />
-          <TextInput value={userInfo.joined} placeholder="date joined" name="datejoined" size="input-sm" disabled />
+          {editableFormProfile.map(el => (
+            <TextInput
+              key={el.name}
+              onChange={onChangeHandler}
+              placeholder={el.config.placeholder}
+              name={el.name}
+              value={editableUserInfo[el.name].value}
+              size="input-sm"
+              classes={editState && "input-blue"}
+              error={editableUserInfo[el.name].err[0]}
+              disabled={!editState}
+            />
+          ))}
+          {FormProfile.map(el => (
+            <TextInput
+              key={el.name}
+              onChange={onChangeHandler}
+              placeholder={el.config.placeholder}
+              name={el.name}
+              value={userInfo[el.name]}
+              size="input-sm"
+              disabled={true}
+            />
+          ))}
         </div>
       </div>
       <div>

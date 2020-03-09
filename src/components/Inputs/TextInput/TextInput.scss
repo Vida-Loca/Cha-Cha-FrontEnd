@@ -92,17 +92,10 @@
     display: flex;
     font-size: 0.7rem;
     justify-content: center;
-    border-radius: 0 0 2rem 2rem;
-    margin-top: -20px;
-    padding-top: 20px;
+
     transition: 0.3s all;
-    // padding: 0.2rem 0.3rem;
-    // border-radius: 0.2rem;
-    // font-style: italic;
-    // background: $grey-1;
-    // position: absolute;
-    // z-index: 999;
-    // margin-top: -1.5rem;
+    color: black;
+    background: rgb(214, 214, 214);
   }
 }
 
@@ -129,9 +122,15 @@
     font-size: 17px;
     padding: 10px 15px;
   }
+  .error-msg {
+    margin-top: -20px;
+    padding-top: 20px;
+    border-radius: 0 0 2rem 2rem;
+  }
 }
 
 .input-sm {
+  height: 2.5rem;
   margin-top: 0.8rem;
   input {
     font-size: 13px;
@@ -152,6 +151,11 @@
   label {
     padding: 15px 13px;
     font-size: 15px;
+  }
+  .error-msg {
+    margin-top: -12px;
+    padding-top: 11px;
+    border-radius: 0 0 2rem 2rem;
   }
 }
 
