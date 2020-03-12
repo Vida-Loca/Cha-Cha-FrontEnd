@@ -41,7 +41,7 @@ const NewEvent = () => {
       name: "startDate",
       config: {
         placeholder: "start date",
-        classes: "input-blue"
+        classes: "input-blue start-date"
       },
       validation: {
         required: true,
@@ -52,7 +52,7 @@ const NewEvent = () => {
       name: "startTime",
       config: {
         placeholder: "start time",
-        classes: "input-blue"
+        classes: "input-blue start-time"
       },
       validation: {
         required: true
@@ -116,9 +116,8 @@ const NewEvent = () => {
     {
       name: "number",
       config: {
-        placeholder: "apartment number",
+        placeholder: "house number",
         classes: "input-blue",
-        disabled: true
       },
       validation: {
         required: true

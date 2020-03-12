@@ -34,7 +34,7 @@ const checkValidation = (value, rules) => {
     }
   }
   // no spaces
-  if (rules.string) {
+  if (rules.spaces) {
     const rule = /^([^ ]*)$/.test(value);
     isValid = rule && isValid;
     if (!rule) {

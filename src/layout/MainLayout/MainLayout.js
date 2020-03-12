@@ -10,7 +10,6 @@ import Home from "../Home/Home";
 import Profile from "../Profile/Profile";
 import Admin from "../Admin/Admin";
 import Event from "../EventTabs/Event";
-import NewEvent from "../NewEvent";
 
 // isUserAdmin
 const MainLayout = () => {
@@ -43,7 +42,6 @@ const MainLayout = () => {
             <Route path="/" exact render={() => <Redirect to="/home" />} />
             <Route path="/home" exact render={() => <Home />} />
             <Route path="/profile" exact render={() => <Profile />} />
-            <Route path="/new/event" exact render={() => <NewEvent />} />
             {isUserAdmin ? <Route path="/admin" render={() => <Admin />} /> : null}
 
             <Route

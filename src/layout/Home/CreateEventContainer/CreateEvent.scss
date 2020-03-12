@@ -1,0 +1,14 @@
+@import "../../../style/globalVariabels.scss";
+
+.Create-Event-Container{
+    display: grid;
+    grid-template-columns: 50% 50%;
+    gap: 0.5rem;
+    &>.textInput:nth-child(1){
+        grid-area: 1 / 1 / 2 / 3;
+    }
+    &>.form-btn{
+        grid-column-start: 1;
+        grid-column-end: 3;
+    }
+}

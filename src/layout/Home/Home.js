@@ -1,12 +1,12 @@
 import React, { useContext, useState } from "react";
 import { Link } from "react-router-dom";
-// import { FormContext } from "../../context/FormContext";
+import { FormContext } from "../../context/FormContext";
 
 import { events } from "../../mockData";
 // import { userService } from "../../Authentication/service";
 
 import "./Home.scss";
-// import CreateEvent Container from "./CreateEventContainer";
+import CreateEventContainer from "./CreateEventContainer";
 
 import { Button } from "../../components/Button";
 import EventCard from "../../components/EventCard";
@@ -31,18 +31,16 @@ const Home = () => {
   //   return () => {};
   // }, [eventsList]);
 
-  // const [forms, setform] = useContext(FormContext);
+  const [forms, setform] = useContext(FormContext);
 
-  // const insideHome = () => {
-  //   setform({ show: true, renderForm: <CreateEventContainer /> });
-  // };
+  const insideHome = () => {
+    setform({ show: true, renderForm: <CreateEventContainer /> });
+  };
 
   return (
     <div className="HomeLayout">
       <div>
-        <Link to={`/new/event`}>
-          <Button classes="btn-md btn-blueGradient">+ Create Event</Button>
-        </Link>
+        <Button clicked={insideHome} classes="btn-md btn-blueGradient">+ Create Event</Button>
       </div>
       <div className="dashboard">
         <div>
