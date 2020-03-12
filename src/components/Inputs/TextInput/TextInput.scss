@@ -193,3 +193,36 @@
     background: rgb(255, 236, 172);
   }
 }
+
+.text-input-extra{
+  input{
+    color: transparent;
+    font-size: 15px;
+    padding: 7px 11px;
+
+    &:valid{
+      color: $main-blue;
+
+    }
+    &:focus{
+      color: white;
+
+    }
+
+    &:focus ~ label {
+      @include translate(0, -31px);
+    color: white;
+
+    }
+
+    &:valid ~ label {
+      @include transform(translate(5px, -31px) scale(0.6));
+      
+    }
+    &:disabled ~ label {
+      @include transform(translate(5px, -31px) scale(0.6));
+      text-transform: uppercase;
+      font-style: italic;
+    }
+  }
+}

@@ -190,18 +190,8 @@ const Location = ({ id }) => {
     <div className="LocationBody">
       <div className="info">
         <div className="Adress-info">
-          <EditButton
-            options={editState}
-            activate={editHandler}
-            cancel={cancelEdit}
-            tags
-            render={
-              <>
-                <i className="far fa-edit" />
-                Edit
-              </>
-            }
-          />
+          <EditButton options={editState} activate={editHandler} cancel={cancelEdit} tags
+            render={<> <i className="far fa-edit" />Edit</>} />
           {addressForm.map(el => (
             <TextInput
               key={el.name}
