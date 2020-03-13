@@ -3,7 +3,7 @@ import PropTypes from "prop-types";
 import Backdrop from "../Backdrop/Backdrop";
 import "./Modal.scss";
 
-const Modal = ({ show, modalClose, message, children }) => {
+const Modal = ({ show, modalClose, children }) => {
   return (
     <>
       <div className="modal-container" style={{ display: show ? "flex" : "none" }}>
@@ -23,7 +23,6 @@ Modal.defaultProps = {
 Modal.propTypes = {
   show: PropTypes.bool.isRequired,
   modalClose: PropTypes.func.isRequired,
-  message: PropTypes.string.isRequired,
   children: PropTypes.node
 };
 

@@ -8,7 +8,7 @@ import Modal from "../components/Modal";
 // import { authenticationService } from "../Authentication/service";
 
 const MyApplication = () => {
-  const isLoggedIn = useState(true)[0];
+  const isLoggedIn = useState(false)[0];
   // const [isUser, setUser] = useState(true);
 
   useEffect(() => {

@@ -3,6 +3,8 @@ import { Button } from "../../components/Button";
 import { FormContext } from "../../context/FormContext";
 import { LoginFormContainer, RegisterFormContainer } from "./AuthFormContainer";
 
+import "./SplashScreen.scss";
+
 const SplashScreen = () => {
   const setChangedForm = useContext(FormContext)[1];
 

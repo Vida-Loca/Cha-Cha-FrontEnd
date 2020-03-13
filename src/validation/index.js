@@ -57,6 +57,14 @@ const checkValidation = (value, rules) => {
       errors.push("bad format - 00-000");
     }
   }
+  // email format
+  if (rules.email) {
+    const rule = /\b[A-Za-z0-9._%+-]+@[A-Za-z0-9.-]+\.[A-Za-z]{2,}\b/.test(value);
+    isValid = rule && isValid;
+    if (!rule) {
+      errors.push("must be an email");
+    }
+  }
   errors = isValid ? [] : errors;
   return [isValid, errors];
 };

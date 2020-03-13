@@ -1,5 +1,5 @@
 import React, { useState, useContext } from "react";
-import { TextInput } from "../../../components/Inputs";
+import { TextInput, OptionsInput } from "../../../components/Inputs";
 import { Button } from "../../../components/Button";
 // import { userService } from "../../../Authentication/service";
 import checkValidation from "../../../validation";
@@ -60,18 +60,8 @@ const CreateEventContainer = () => {
       validation: {
         required: true
       }
-    },
-    {
-      name: "privacy",
-      config: {
-        type: 'text',
-        placeholder: "privacy",
-        classes: "input-blue"
-      },
-      validation: {
-        required: true
-      }
     }
+
   ])[0];
 
   const formAdress = useState([
@@ -161,6 +151,7 @@ const CreateEventContainer = () => {
         touched: true
       }
     });
+
     // let testValidity = true;
     // for (let key in newAddress) {
     //   testValidity = newAddress[key].isValid && testValidity;
@@ -195,6 +186,7 @@ const CreateEventContainer = () => {
           error={newAddress[el.name].err[0]}
         />
       ))}
+      <OptionsInput name="privacy" options={["private", "public", "friends"]} />
       <Button classes="form-btn btn-blueGradient btn-md">Create</Button>
     </div>
   );
