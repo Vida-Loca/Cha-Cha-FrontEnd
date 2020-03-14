@@ -16,7 +16,7 @@ const createSetOfCategories = array => {
       if (cate === array[i].productCategory.name) {
         array[i].userCards.forEach(user => {
           tempSupply = {
-            id: user.eventUser.user.id,
+            id: array[i].id,
             supply: array[i].name,
             userId: user.eventUser.user.id,
             user: user.eventUser.user.username,

@@ -32,7 +32,7 @@ TextInput.propTypes = {
   size: PropTypes.string,
   onChange: PropTypes.func,
   name: PropTypes.string.isRequired,
-  type: PropTypes.oneOf(["text", "password", "number"]),
+  type: PropTypes.string,
   placeholder: PropTypes.string,
   error: PropTypes.string
 };

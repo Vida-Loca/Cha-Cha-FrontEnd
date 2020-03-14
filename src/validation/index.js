@@ -65,6 +65,14 @@ const checkValidation = (value, rules) => {
       errors.push("must be an email");
     }
   }
+  // time format
+  if (rules.time) {
+    const rule = /[0-9]{2}:[0-9]{2}/.test(value);
+    isValid = rule && isValid;
+    if (!rule) {
+      errors.push("bad time format");
+    }
+  }
   errors = isValid ? [] : errors;
   return [isValid, errors];
 };

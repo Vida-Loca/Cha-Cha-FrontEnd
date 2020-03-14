@@ -5,7 +5,7 @@ import { UserContext } from "../../context/UserContext";
 import { authenticationService } from "../../Authentication/service";
 // import { userService } from "../../Authentication/service";
 
-import { friends, friendsRequests, events } from "../../mockData";
+import { events } from "../../mockData";
 import "./Profile.scss";
 
 import { IconButton, Button, EditButton } from "../../components/Button";
@@ -16,6 +16,7 @@ import Avatar from "../../components/Avatar";
 import UserCard from "../../components/UserCard";
 import checkValidation from "../../validation";
 import ChangeAvatarContainer from "./ChangeAvatarContainer";
+import FriendsList from "./FriendsList";
 
 const Profile = () => {
   const [userInfo, setUserInfo] = useState({
@@ -33,36 +34,7 @@ const Profile = () => {
   const [forms, setform] = useContext(FormContext);
   const setuser = useContext(UserContext)[1];
   const [editState, setEdit] = useState(false);
-  // const [myEvents, setMyEvent] = useState([]);
 
-  // useEffect(() => {
-  //   userService
-  //     .getCurrentUserInfo()
-  //     .then(body => {
-  //       return body;
-  //     })
-  //     .then(res => {
-  //       console.log(res);
-  //       setUserInfo(res);
-  //       // setEventsList(res);
-  //     })
-  //     .catch(err => {
-  //       console.log(err);
-  //     });
-
-  //   userService
-  //     .getAllEventsOfCureentlyLogedInUser()
-  //     .then(body => {
-  //       return body;
-  //     })
-  //     .then(res => {
-  //       console.log(res);
-  //       setMyEvent(res);
-  //     })
-  //     .catch(err => {
-  //       console.log(err);
-  //     });
-  // }, []);
 
   const editableFormProfile = useState([
     {
@@ -133,38 +105,23 @@ const Profile = () => {
     setuser({ isLoggedIn: false, break: true });
   };
 
-  const listOfFriends = () => {
-    return (
-      <div>
-        <PaginatedContainer
-          title="Friends"
-          items={friends}
-          perPage={5}
-          render={({ items }) =>
-            items.map(ev => (
-              <UserCard key={ev.username} username={ev.username} showControlls>
-                <Button classes="btn-orangeGradient btn-sm">remove</Button>
-              </UserCard>
-            ))
-          }
-        />
-        <PaginatedContainer
-          title="Friend Requests"
-          items={friendsRequests}
-          perPage={5}
-          render={({ items }) =>
-            items.map(ev => (
-              <UserCard key={ev.username} username={ev.username} showControlls>
-                <Button classes="btn-blueGradient btn-sm">accept</Button>
-              </UserCard>
-            ))
-          }
-        />
-      </div>
-    );
-  };
+  const submitUpdateProfile = () => {
+    if (editableUserInfo.name.isValid && editableUserInfo.surname.isValid) {
+      setTimeout(() => {
+        console.log({
+          name: editableUserInfo.name.value,
+          surname: editableUserInfo.surname.value,
+        })
+      }, 2000);
+    } else {
+      console.log("can't update profile")
+    }
+
+  }
+
+
   const showFriendsInModal = () => {
-    setform({ renderForm: listOfFriends(), show: true });
+    setform({ renderForm: <FriendsList />, show: true });
   };
 
   const changeAvatarInModal = () => {
@@ -191,6 +148,7 @@ const Profile = () => {
             options={editState}
             activate={editHandler}
             cancel={cancelEdit}
+            confirm={submitUpdateProfile}
             tags
             render={
               <>
@@ -207,7 +165,7 @@ const Profile = () => {
               name={el.name}
               value={editableUserInfo[el.name].value}
               size="input-sm"
-              classes={editState && "input-blue"}
+              classes={editState ? "input-blue" : ""}
               error={editableUserInfo[el.name].err[0]}
               disabled={!editState}
             />
@@ -227,7 +185,7 @@ const Profile = () => {
       </div>
       <div>
         <Button classes="btn-md btn-default" clicked={showFriendsInModal}>
-          {`friends • ${friends.length}`}
+          friends
         </Button>
       </div>
       <div className="event-section">

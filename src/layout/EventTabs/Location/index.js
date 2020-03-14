@@ -30,7 +30,8 @@ const Location = ({ id }) => {
     {
       name: "city",
       config: {
-        placeholder: "city"
+        placeholder: "city",
+        type: "text"
       },
       validation: {
         required: true,
@@ -40,7 +41,8 @@ const Location = ({ id }) => {
     {
       name: "street",
       config: {
-        placeholder: "street"
+        placeholder: "street",
+        type: "text"
       },
       validation: {
         required: true,
@@ -50,17 +52,20 @@ const Location = ({ id }) => {
     {
       name: "number",
       config: {
-        placeholder: "house number"
+        placeholder: "house number",
+        type: "number"
       },
       validation: {
         required: true,
+        number: true,
         maxLength: 10
       }
     },
     {
       name: "postcode",
       config: {
-        placeholder: "post code"
+        placeholder: "post code",
+        type: "text"
       },
       validation: {
         required: true,
@@ -72,7 +77,8 @@ const Location = ({ id }) => {
     {
       name: "dateofevent",
       config: {
-        placeholder: "date of event"
+        placeholder: "date of event",
+        type: "date"
       },
       validation: {
         required: true,
@@ -82,7 +88,8 @@ const Location = ({ id }) => {
     {
       name: "time",
       config: {
-        placeholder: "time"
+        placeholder: "time",
+        type: "time"
       },
       validation: {
         required: true,
@@ -107,33 +114,7 @@ const Location = ({ id }) => {
     });
     setTempAdress({ city: eventLocation.Address.city, street: eventLocation.Address.street, number: eventLocation.Address.number, postcode: eventLocation.Address.postcode })
 
-    // userService
-    //   .getEventById(id)
-    //   .then(body => {
-    //     return body;
-    //   })
-    //   .then(res => {
-    //     setLocation({
-    //       ...location,
-    //       dateofevent: { field: res.startDate, edit: false },
-    //       time: { field: res.startTime, edit: false },
-    //       addidtionalInformation: {
-    //         field: res.additionalInformation,
-    //         edit: false
-    //       },
-    //       Address: {
-    //         ...location.Address,
-    //         city: res.address.city,
-    //         street: res.address.street,
-    //         number: res.address.number,
-    //         postcode: res.address.postcode
-    //       }
-    //     });
-    //     console.log(res);
-    //   })
-    //   .catch(err => {
-    //     console.log(err);
-    //   });
+
     return () => { };
   }, []);
 
@@ -186,16 +167,44 @@ const Location = ({ id }) => {
     });
   };
 
+  const submitLocationChanges = () => {
+    if (locationInfo.dateofevent.isValid && locationInfo.time.isValid && locationInfo.addidtionalInformation.isValid &&
+      adress.city.isValid && adress.street.isValid && adress.number.isValid && adress.postcode.isValid) {
+
+      setTimeout(() => {
+        console.log("updating ...");
+        console.log({
+          dateofevent: locationInfo.dateofevent.value,
+          time: locationInfo.time.value,
+          addidtionalInformation: locationInfo.addidtionalInformation.value
+        })
+        console.log({
+          city: adress.city.value,
+          street: adress.street.value,
+          number: adress.number.value,
+          postcode: adress.postcode.value
+        })
+      }, 2000);
+
+
+    } else {
+      console.log("can't update")
+    }
+
+
+  }
+
   return (
     <div className="LocationBody">
       <div className="info">
         <div className="Adress-info">
-          <EditButton options={editState} activate={editHandler} cancel={cancelEdit} tags
+          <EditButton options={editState} activate={editHandler} cancel={cancelEdit} confirm={submitLocationChanges} tags
             render={<> <i className="far fa-edit" />Edit</>} />
           {addressForm.map(el => (
             <TextInput
               key={el.name}
               onChange={onChangeHandlerAddress}
+              type={el.config.type}
               placeholder={el.config.placeholder}
               name={el.name}
               value={adress[el.name].value}
@@ -209,6 +218,7 @@ const Location = ({ id }) => {
             <TextInput
               key={el.name}
               onChange={onChangeHandlerInfo}
+              type={el.config.type}
               placeholder={el.config.placeholder}
               name={el.name}
               value={locationInfo[el.name].value}

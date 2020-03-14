@@ -13,8 +13,8 @@ const LoginFormContainer = () => {
   const [changedForm, setChangedForm] = useContext(FormContext);
   const setUser = useContext(UserContext)[1];
   const [login, setLogin] = useState({
-    username: { value: "", isValid: false, err: [], touched: false },
-    password: { value: "", isValid: false, err: [], touched: false }
+    username: { value: "", isValid: true, err: [] },
+    password: { value: "", isValid: true, err: [] }
   });
 
   const loginForm = useState([
@@ -37,31 +37,41 @@ const LoginFormContainer = () => {
 
   ])[0];
 
+  const submitLogin = () => {
+    if (login.username.isValid && login.password.isValid) {
+      console.log("...loggin in");
+      console.log({
+        username: login.username.value,
+        password: login.password.value
+      })
+      setTimeout(() => {
+        if (false) {
+          console.log("logged in !")
+        } else {
+          setLogin({
+            ...login,
+            username: { value: "", isValid: false, err: ["bad username"] },
+            password: { value: "", isValid: false, err: ["bad password"] }
+          });
+        }
+      }, 3000)
+    } else {
+      console.log("nope")
+    }
+  }
+
   const onChangeHandler = event => {
     setLogin({
       ...login,
       [`${event.target.name}`]: { ...login[`${event.target.name}`], value: event.target.value }
     });
-    console.log(login);
   };
 
   const resetPasswordModal = () => {
     setChangedForm({ show: true, renderForm: <ResetPassword /> });
   }
 
-  const loginHandler = event => {
-    authenticationService.login(login).then(
-      result => {
-        setUser({ isLoggedIn: true, break: true });
-        setChangedForm({ ...changedForm, show: false });
-        console.log(result); // "Stuff worked!"
-      },
-      err => {
-        setUser({ isLoggedIn: false, break: true });
-        console.log(err); // Error: "It broke"
-      }
-    );
-  };
+
   return (
     <div>
       {loginForm.map(el => (
@@ -72,12 +82,12 @@ const LoginFormContainer = () => {
           type={el.config.type}
           name={el.name}
           value={login[el.name].value}
-          classes={login[el.name].touched ^ login[el.name].isValid ? "input-orange" : el.config.classes}
+          classes={login[el.name].isValid ? "input-blue" : "input-orange"}
           error={login[el.name].err[0]}
         />
       ))}
 
-      <Button clicked={loginHandler} classes="btn-blueGradient btn-md submit-btn">
+      <Button clicked={submitLogin} classes="btn-blueGradient btn-md submit-btn">
         Log In
       </Button>
       <Button clicked={resetPasswordModal} classes="btn-orangeGradient btn-sm reset-password-btn">Forgot password</Button>

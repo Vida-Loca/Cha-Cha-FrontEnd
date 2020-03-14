@@ -115,18 +115,30 @@ const RegistrationFormContainer = () => {
     });
   };
 
-  const registerHandler = event => {
-    event.preventDefault();
-    authenticationService.register(registration).then(
-      result => {
-        setChangedForm({ ...changedForm, show: false });
-        console.log(result); // "Stuff worked!"
-      },
-      err => {
-        console.log(err); // Error: "It broke"
-      }
-    );
-  };
+  const submitRegstartion = () => {
+    if (registration.username.isValid && registration.password.isValid &&
+      registration.matchingPassword.value === registration.password.value
+      && registration.name.isValid && registration.surname.isValid &&
+      registration.email.isValid) {
+
+      setTimeout(function () {
+        console.log("sending ...")
+        console.log({
+          username: registration.username.value,
+          password: registration.password.value,
+          matchingPassword: registration.matchingPassword.value,
+          name: registration.name.value,
+          surname: registration.surname.value,
+          emial: registration.email.value
+        })
+      }, 3000)
+
+    } else {
+      console.log("no no")
+    }
+  }
+
+
   return (
     <div>
       {registerForm.map(el => (
@@ -142,7 +154,7 @@ const RegistrationFormContainer = () => {
         />
       ))}
 
-      <Button clicked={registerHandler} classes="btn-blueGradient btn-md submit-btn">
+      <Button clicked={submitRegstartion} classes="btn-blueGradient btn-md submit-btn">
         Submit
       </Button>
     </div>

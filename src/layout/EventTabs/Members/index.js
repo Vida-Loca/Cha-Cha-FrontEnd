@@ -14,40 +14,10 @@ import PaginatedContainer from "../../../components/PaginatedContainer";
 import InviteUserFormContainer from "./InviteUserFormContainer";
 
 const Members = ({ id }) => {
-  // const [members, setMembers] = useState([]);
-  // const [requests, setrequests] = useState(requestsFoThisEvent);
   const isUserAdmin = useState(true)[0];
 
   useEffect(() => {
-    //   userService
-    //     .getAllUsersFromGivenEvent(id)
-    //     .then(body => {
-    //       return body;
-    //     })
-    //     .then(res => {
-    //       console.log(res);
-    //       setMembers(res);
-    //     })
-    //     .catch(err => {
-    //       console.log(err);
-    //     });
 
-    //   userService
-    //     .isUserAdminOfGivenEvent(id)
-    //     .then(body => {
-    //       return body;
-    //     })
-    //     .then(res => {
-    //       console.log(res);
-    //       if (res.message == "true") {
-    //         setUserAdmin({ isAdmin: true });
-    //       }
-    //       // setMembers(res);
-    //       // setEventsList(res);
-    //     })
-    //     .catch(err => {
-    //       console.log(err);
-    //     });
 
     return () => {
       console.log("unoounted ");
@@ -59,6 +29,18 @@ const Members = ({ id }) => {
   const openModalToInviteUser = () => {
     setform({ show: true, renderForm: <InviteUserFormContainer id={id} /> });
   };
+
+  const kickUsers = (username) => {
+    setTimeout(() => {
+      console.log(`kicking user ... ${username}`)
+    }, 2000);
+  }
+  const acceptUsers = (username) => {
+    setTimeout(() => {
+      console.log(`accepting user ... ${username}`)
+    }, 2000);
+  }
+
 
   return (
     <div className="MembersContainer">
@@ -72,7 +54,7 @@ const Members = ({ id }) => {
         render={({ items }) =>
           items.map(ev => (
             <UserCard key={ev.username} username={ev.username} showControlls={isUserAdmin}>
-              <Button classes="btn-blueGradient btn-sm">accept</Button>
+              <Button clicked={() => acceptUsers(ev.username)} classes="btn-blueGradient btn-sm">accept</Button>
             </UserCard>
           ))
         }
@@ -85,7 +67,7 @@ const Members = ({ id }) => {
         render={({ items }) =>
           items.map(ev => (
             <UserCard key={ev.username} username={ev.username} showControlls={isUserAdmin}>
-              <Button classes="btn-orangeGradient btn-sm">kick</Button>
+              <Button clicked={() => kickUsers(ev.username)} classes="btn-orangeGradient btn-sm">kick</Button>
             </UserCard>
           ))
         }

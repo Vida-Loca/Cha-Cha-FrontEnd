@@ -4,17 +4,15 @@ import { Button } from "../../../components/Button";
 // import { userService } from "../../../Authentication/service";
 import checkValidation from "../../../validation";
 import "./CreateEvent.scss";
-import { number } from "prop-types";
 
 const CreateEventContainer = () => {
 
 
-  // const [isFormValid, setFormValid] = useState(false);
   const [Information, setInformation] = useState({
     name: { value: "", isValid: false, err: "", touched: false },
     startDate: { value: "", isValid: false, err: "", touched: false },
     startTime: { value: "", isValid: false, err: "", touched: false },
-    privacy: { value: "", isValid: false, err: "", touched: false }
+    privacy: { value: "private", isValid: true, err: "", touched: true }
   });
   const [newAddress, setNewAddress] = useState({
     country: { value: "", isValid: false, err: "", touched: false },
@@ -58,7 +56,8 @@ const CreateEventContainer = () => {
         classes: "input-blue text-input-extra"
       },
       validation: {
-        required: true
+        required: true,
+        time: true
       }
     }
 
@@ -151,13 +150,46 @@ const CreateEventContainer = () => {
         touched: true
       }
     });
-
-    // let testValidity = true;
-    // for (let key in newAddress) {
-    //   testValidity = newAddress[key].isValid && testValidity;
-    // }
-    // setFormValid(testValidity);
   };
+
+  const onChangePrivacy = (event) => {
+    setInformation({
+      ...Information, [`${event.target.name}`]: {
+        value: event.target.value,
+        isValid: true,
+        err: [],
+        touched: true
+      }
+    })
+  }
+
+  const submitNewEvent = () => {
+
+    if (Information.name.isValid && Information.startDate.isValid &&
+      Information.startTime.isValid && Information.privacy.isValid &&
+      newAddress.country.isValid && newAddress.city.isValid &&
+      newAddress.street.isValid && newAddress.postcode.isValid &&
+      newAddress.number.isValid) {
+      setTimeout(() => {
+        console.log("sending data...");
+        console.log({
+          name: Information.name.value,
+          startDate: Information.startDate.value,
+          startTime: Information.startTime.value,
+          privacy: Information.privacy.value,
+          Address: {
+            country: newAddress.country.value,
+            city: newAddress.city.value,
+            street: newAddress.street.value,
+            postcode: newAddress.postcode.value,
+            number: newAddress.number.value,
+          }
+        });
+      }, 3000);
+    } else {
+      console.log("something went wrong")
+    }
+  }
 
 
   return (
@@ -186,8 +218,8 @@ const CreateEventContainer = () => {
           error={newAddress[el.name].err[0]}
         />
       ))}
-      <OptionsInput name="privacy" options={["private", "public", "friends"]} />
-      <Button classes="form-btn btn-blueGradient btn-md">Create</Button>
+      <OptionsInput onChange={onChangePrivacy} value={Information.privacy.value} name="privacy" options={["private", "public", "friends"]} />
+      <Button clicked={submitNewEvent} classes="form-btn btn-blueGradient btn-md">Create</Button>
     </div>
   );
 };

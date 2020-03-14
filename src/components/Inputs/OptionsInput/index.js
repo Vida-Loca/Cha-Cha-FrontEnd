@@ -2,22 +2,24 @@ import React from "react";
 import PropTypes from "prop-types";
 import "./OptionsInput.scss";
 
-const OptionsInput = ({ options, name, disabled }) => {
+const OptionsInput = ({ options, name, disabled, onChange, value }) => {
     return (
         <div className="options-input input-md">
-            <select name={name} disabled={disabled}>
+            <select value={value} onChange={onChange} name={name} disabled={disabled}>
                 {options.map(el => {
-                    return (<option value={el}>{el}</option>)
+                    return (<option key={el} value={el}>{el}</option>)
                 })}
             </select>
         </div>)
 }
 OptionsInput.defaultProps = {
-    disabled: false
+    disabled: false,
+    onChange: () => { }
 }
 
 OptionsInput.propTypes = {
-    options: PropTypes.objectOf(Array).isRequired,
+    onChange: PropTypes.func,
+    options: PropTypes.array.isRequired,
     name: PropTypes.string.isRequired,
     disabled: PropTypes.bool
 }

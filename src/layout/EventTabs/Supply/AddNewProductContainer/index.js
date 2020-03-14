@@ -5,7 +5,6 @@ import { Button } from "../../../../components/Button";
 import checkValidation from "../../../../validation";
 
 const AddNewProductContainer = ({ category }) => {
-  const [isFormValid, setFormValid] = useState(false);
   const [product, setProduct] = useState({
     name: { value: "", isValid: false, err: "", touched: false },
     price: { value: "", isValid: false, err: "", touched: false },
@@ -65,21 +64,24 @@ const AddNewProductContainer = ({ category }) => {
         touched: true
       }
     });
-    let testValidity = true;
-    for (let key in product) {
-      testValidity = product[key].isValid && testValidity;
-    }
-    setFormValid(testValidity);
-    console.log(isFormValid);
+
   };
 
-  const sendData = () => {
-    if (isFormValid) {
-      console.log("---- sending: ...");
+  const submitProduct = () => {
+    const chosenCategory = !!category ? category : product.productCategory.value;
+    if (product.name.isValid && product.price.isValid && (product.productCategory.isValid || !!category)) {
+      setTimeout(() => {
+        console.log({
+          name: product.name.value,
+          price: product.price.value,
+          productCategory: chosenCategory
+        });
+      }, 2000);
     } else {
-      console.log("-- not");
+      console.log("some fields are not valid");
     }
-  };
+  }
+
   return (
     <>
       {formProducts.map(el => (
@@ -96,9 +98,8 @@ const AddNewProductContainer = ({ category }) => {
         />
       ))}
       <Button
-        clicked={sendData}
+        clicked={submitProduct}
         classes="form-btn btn-blueGradient btn-md"
-        // dissabled={!isFormValid}
       >
         Add
       </Button>

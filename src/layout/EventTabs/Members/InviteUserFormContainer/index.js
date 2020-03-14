@@ -19,7 +19,7 @@ const InviteUserFormContainer = id => {
 
   useEffect(() => {
     setDislpayFreinds(friends);
-    return () => {};
+    return () => { };
   }, []);
 
   const onChangeHandler = event => {
@@ -51,6 +51,12 @@ const InviteUserFormContainer = id => {
       });
   };
 
+  const sendInvitation = (username) => {
+    setTimeout(() => {
+      console.log(`sendding request to ... ${username}`)
+    }, 2000);
+  }
+
   return (
     <div className="invite-friends">
       <TextInput onChange={onChangeHandler} placeholder="Username" classes="input-blue" name="username" />
@@ -61,7 +67,7 @@ const InviteUserFormContainer = id => {
         render={({ items }) =>
           items.map(ev => (
             <UserCard key={ev.username} username={ev.username} showControlls>
-              <Button classes="btn-blueGradient btn-sm">invite</Button>
+              <Button clicked={() => sendInvitation(ev.username)} classes="btn-blueGradient btn-sm">invite</Button>
             </UserCard>
           ))
         }

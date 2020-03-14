@@ -9,8 +9,18 @@ const ChangeAvatar = () => {
       ...avatarUrl,
       [`${event.target.name}`]: event.target.value
     });
-    console.log(avatarUrl);
   };
+
+  const changeAvatar = () => {
+    if (avatarUrl.URL.length > 5) {
+      setTimeout(() => {
+        console.log("changing avatar")
+      }, 2000);
+    } else {
+      console.log("can't change avatar")
+    }
+  }
+
   return (
     <>
       <TextInput
@@ -19,7 +29,7 @@ const ChangeAvatar = () => {
         name="URL"
         classes="input-blue"
       />
-      <Button classes="form-btn btn-blueGradient btn-md">update</Button>
+      <Button clicked={changeAvatar} classes="form-btn btn-blueGradient btn-md">update</Button>
     </>
   );
 };

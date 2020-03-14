@@ -54,10 +54,11 @@ const ProductCategory = ({ supCont }) => {
         {supplyContainer.supplies.map(sup => {
           return (
             <ProductCard
+              id={sup.id}
               user={sup.user}
               supply={sup.supply}
               price={sup.price}
-              key={`${sup.id}-${sup.supply}`}
+              key={sup.id}
               picUrl={sup.picUrl}
             />
           );
