@@ -4,12 +4,14 @@ import { Button } from "../../../components/Button";
 import { authenticationService } from "../../../Authentication/service";
 import { FormContext } from "../../../context/FormContext";
 import { UserContext } from "../../../context/UserContext";
-
+import Spinner from "../../../components/Spinner";
 import ResetPassword from "./resetPassword";
 
 import "./authStyle.scss";
 
 const LoginFormContainer = () => {
+  const [sendingDataSpinner, setSendingDataSpinner] = useState(false);
+
   const [changedForm, setChangedForm] = useContext(FormContext);
   const setUser = useContext(UserContext)[1];
   const [login, setLogin] = useState({
@@ -39,6 +41,7 @@ const LoginFormContainer = () => {
 
   const submitLogin = () => {
     if (login.username.isValid && login.password.isValid) {
+      setSendingDataSpinner(true);
       console.log("...loggin in");
       console.log({
         username: login.username.value,
@@ -54,6 +57,7 @@ const LoginFormContainer = () => {
             password: { value: "", isValid: false, err: ["bad password"] }
           });
         }
+        setSendingDataSpinner(false);
       }, 3000)
     } else {
       console.log("nope")
@@ -87,9 +91,11 @@ const LoginFormContainer = () => {
         />
       ))}
 
-      <Button clicked={submitLogin} classes="btn-blueGradient btn-md submit-btn">
-        Log In
-      </Button>
+
+      {sendingDataSpinner
+        ? <Spinner classes={"spinner-container-h-sm"} size={"spinner-sm"} />
+        : <Button clicked={submitLogin} classes="btn-blueGradient btn-md submit-btn">Log In</Button>
+      }
       <Button clicked={resetPasswordModal} classes="btn-orangeGradient btn-sm reset-password-btn">Forgot password</Button>
     </div>
   );

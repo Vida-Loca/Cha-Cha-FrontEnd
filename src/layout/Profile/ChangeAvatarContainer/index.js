@@ -37,7 +37,6 @@ const ChangeAvatar = () => {
       {sendingDataSpinner
         ? <Spinner classes={"spinner-container-h-sm"} size={"spinner-sm"} />
         : <Button clicked={changeAvatar} classes="form-btn btn-blueGradient btn-md">update</Button>
-
       }
     </>
   );

@@ -1,9 +1,11 @@
 import React, { useState } from "react";
 import { TextInput } from "../../../components/Inputs";
 import { Button } from "../../../components/Button";
+import Spinner from "../../../components/Spinner";
 import checkValidation from "../../../validation";
 
 const ResetPassword = () => {
+    const [sendingDataSpinner, setSendingDataSpinner] = useState(false);
     const [resetPass, setResetPass] = useState(false);
     const [email, setEmail] = useState({ value: "", isValid: false, touched: false, err: [] })
 
@@ -21,16 +23,16 @@ const ResetPassword = () => {
     };
     const submitResetPassword = () => {
         if (email.isValid) {
-            setTimeout(function () {
+            setSendingDataSpinner(true);
+            setTimeout(() => {
                 setResetPass(!resetPass);
                 console.log("sending reset pass request ...");
                 console.log({ email: email })
+                setSendingDataSpinner(false);
             }, 3000)
         } else {
             console.log("emial is not valid")
         }
-
-
 
     }
     return (<div>
@@ -46,10 +48,11 @@ const ResetPassword = () => {
                     error={email.err[0]}
 
                 />
+                {sendingDataSpinner
+                    ? <Spinner classes={"spinner-container-h-sm"} size={"spinner-sm"} />
+                    : <Button clicked={submitResetPassword} classes="btn-blueGradient btn-md submit-btn">Submit</Button>
+                }
 
-                <Button clicked={submitResetPassword} classes="btn-blueGradient btn-md submit-btn">
-                    Submit
-                </Button>
             </>
         }
 

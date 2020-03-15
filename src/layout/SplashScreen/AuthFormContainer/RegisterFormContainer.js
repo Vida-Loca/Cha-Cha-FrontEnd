@@ -1,13 +1,15 @@
 import React, { useState, useContext } from "react";
 import { TextInput } from "../../../components/Inputs";
 import { Button } from "../../../components/Button";
-import { authenticationService } from "../../../Authentication/service";
-import { FormContext } from "../../../context/FormContext";
+// import { authenticationService } from "../../../Authentication/service";
+// import { FormContext } from "../../../context/FormContext";
 import { UserContext } from "../../../context/UserContext";
+import Spinner from "../../../components/Spinner";
 import checkValidation from "../../../validation";
 
 const RegistrationFormContainer = () => {
-  const [changedForm, setChangedForm] = useContext(FormContext);
+  const [sendingDataSpinner, setSendingDataSpinner] = useState(false);
+  // const [changedForm, setChangedForm] = useContext(FormContext);
   const setUser = useContext(UserContext)[1];
   const [registration, setRegistration] = useState({
     username: { value: "", isValid: false, err: [], touched: false },
@@ -120,7 +122,7 @@ const RegistrationFormContainer = () => {
       registration.matchingPassword.value === registration.password.value
       && registration.name.isValid && registration.surname.isValid &&
       registration.email.isValid) {
-
+      setSendingDataSpinner(true);
       setTimeout(function () {
         console.log("sending ...")
         console.log({
@@ -131,6 +133,7 @@ const RegistrationFormContainer = () => {
           surname: registration.surname.value,
           emial: registration.email.value
         })
+        setSendingDataSpinner(false);
       }, 3000)
 
     } else {
@@ -153,10 +156,11 @@ const RegistrationFormContainer = () => {
           error={registration[el.name].err[0]}
         />
       ))}
+      {sendingDataSpinner
+        ? <Spinner classes={"spinner-container-h-sm"} size={"spinner-sm"} />
+        : <Button clicked={submitRegstartion} classes="btn-blueGradient btn-md submit-btn">Register</Button>
+      }
 
-      <Button clicked={submitRegstartion} classes="btn-blueGradient btn-md submit-btn">
-        Submit
-      </Button>
     </div>
   );
 };
