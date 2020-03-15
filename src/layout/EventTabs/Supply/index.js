@@ -13,19 +13,20 @@ import PaginatedContainer from "../../../components/PaginatedContainer";
 import AddNewProductContainer from "./AddNewProductContainer";
 
 import { eventProducts } from "../../../mockData";
+import Spinner from "../../../components/Spinner";
 
 const Supply = ({ id }) => {
 
   let __isMounted = false
 
-  const [productList, setProduct] = useState([]);
+  const [productList, setProduct] = useState({ products: [], spinner: true });
 
 
   useEffect(() => {
     __isMounted = true;
     setTimeout(() => {
       if (__isMounted) {
-        setProduct(createSetOfCategories(eventProducts));
+        setProduct({ products: createSetOfCategories(eventProducts), spinner: false });
       }
 
     }, 1000);
@@ -49,12 +50,18 @@ const Supply = ({ id }) => {
           Add new supply +
         </Button>
       </div>
+
       <PaginatedContainer
         title="Product list"
-        items={productList}
+        items={productList.products}
         perPage={5}
-        render={({ items }) => items.map(supCont => <ProductCategory supCont={supCont} key={supCont.Category} />)}
+        render={
+          productList.spinner
+            ? (() => <Spinner />)
+            : (({ items }) => items.map(supCont => <ProductCategory supCont={supCont} key={supCont.Category} />))
+        }
       />
+
     </div>
   );
 };

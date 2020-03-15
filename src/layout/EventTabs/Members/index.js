@@ -12,6 +12,7 @@ import PaginatedContainer from "../../../components/PaginatedContainer";
 
 // import { userService } from "../../../Authentication/service";
 import InviteUserFormContainer from "./InviteUserFormContainer";
+import Spinner from "../../../components/Spinner";
 
 const Members = ({ id }) => {
   let __isMounted = false
@@ -19,16 +20,16 @@ const Members = ({ id }) => {
   const isUserAdmin = useState(true)[0];
 
   const setform = useContext(FormContext)[1];
-  const [eventMemebers, seEventMemebers] = useState([]);
-  const [eventRequests, seEventRequests] = useState([]);
+  const [eventMemebers, seEventMemebers] = useState({ members: [], spinner: true });
+  const [eventRequests, seEventRequests] = useState({ members: [], spinner: true });
 
   useEffect(() => {
     __isMounted = true;
 
     setTimeout(() => {
       if (__isMounted) {
-        seEventMemebers(membersOfTheEvent);
-        seEventRequests(requestsFoThisEvent);
+        seEventMemebers({ members: membersOfTheEvent, spinner: false });
+        seEventRequests({ members: requestsFoThisEvent, spinner: false });
       }
 
     }, 1000);
@@ -59,28 +60,34 @@ const Members = ({ id }) => {
         + Invite User
       </Button>
       <PaginatedContainer
-        title={`Pending requests ● ${eventMemebers.length}`}
-        items={eventMemebers}
+        title={`Pending requests ● ${eventMemebers.members.length}`}
+        items={eventMemebers.members}
         perPage={4}
-        render={({ items }) =>
-          items.map(ev => (
-            <UserCard key={ev.username} username={ev.username} showControlls={isUserAdmin}>
-              <Button clicked={() => acceptUsers(ev.username)} classes="btn-blueGradient btn-sm">accept</Button>
-            </UserCard>
-          ))
+        render={
+          eventMemebers.spinner
+            ? () => <Spinner />
+            : ({ items }) =>
+              items.map(ev => (
+                <UserCard key={ev.username} username={ev.username} showControlls={isUserAdmin}>
+                  <Button clicked={() => acceptUsers(ev.username)} classes="btn-blueGradient btn-sm">accept</Button>
+                </UserCard>
+              ))
         }
       />
 
       <PaginatedContainer
-        title={`Members ● ${eventRequests.length}`}
-        items={eventRequests}
+        title={`Members ● ${eventRequests.members.length}`}
+        items={eventRequests.members}
         perPage={3}
-        render={({ items }) =>
-          items.map(ev => (
-            <UserCard key={ev.username} username={ev.username} showControlls={isUserAdmin}>
-              <Button clicked={() => kickUsers(ev.username)} classes="btn-orangeGradient btn-sm">kick</Button>
-            </UserCard>
-          ))
+        render={
+          eventRequests.spinner
+            ? () => <Spinner />
+            : ({ items }) =>
+              items.map(ev => (
+                <UserCard key={ev.username} username={ev.username} showControlls={isUserAdmin}>
+                  <Button clicked={() => kickUsers(ev.username)} classes="btn-orangeGradient btn-sm">kick</Button>
+                </UserCard>
+              ))
         }
       />
     </div>
