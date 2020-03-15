@@ -3,8 +3,13 @@ import PropTypes from "prop-types";
 import { TextInput } from "../../../../components/Inputs";
 import { Button } from "../../../../components/Button";
 import checkValidation from "../../../../validation";
+import Spinner from "../../../../components/Spinner";
+
 
 const AddNewProductContainer = ({ category }) => {
+
+  let [sendingDataSpinner, setSendingDataSpinner] = useState(false);
+
   const [product, setProduct] = useState({
     name: { value: "", isValid: false, err: "", touched: false },
     price: { value: "", isValid: false, err: "", touched: false },
@@ -70,12 +75,14 @@ const AddNewProductContainer = ({ category }) => {
   const submitProduct = () => {
     const chosenCategory = !!category ? category : product.productCategory.value;
     if (product.name.isValid && product.price.isValid && (product.productCategory.isValid || !!category)) {
+      setSendingDataSpinner(true);
       setTimeout(() => {
         console.log({
           name: product.name.value,
           price: product.price.value,
           productCategory: chosenCategory
         });
+        setSendingDataSpinner(false);
       }, 2000);
     } else {
       console.log("some fields are not valid");
@@ -97,12 +104,11 @@ const AddNewProductContainer = ({ category }) => {
           disabled={!!category && el.config.disabled}
         />
       ))}
-      <Button
-        clicked={submitProduct}
-        classes="form-btn btn-blueGradient btn-md"
-      >
-        Add
-      </Button>
+
+      {sendingDataSpinner
+        ? <Spinner classes={"spinner-container-h-sm"} size={"spinner-sm"} />
+        : <Button clicked={submitProduct} classes="form-btn btn-blueGradient btn-md"> Add</Button>
+      }
     </>
   );
 };

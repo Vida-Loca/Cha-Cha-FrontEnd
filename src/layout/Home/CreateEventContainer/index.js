@@ -4,9 +4,11 @@ import { Button } from "../../../components/Button";
 // import { userService } from "../../../Authentication/service";
 import checkValidation from "../../../validation";
 import "./CreateEvent.scss";
+import Spinner from "../../../components/Spinner";
 
 const CreateEventContainer = () => {
 
+  const [sendingDataSpinner, setSendingDataSpinner] = useState(false);
 
   const [Information, setInformation] = useState({
     name: { value: "", isValid: false, err: "", touched: false },
@@ -170,6 +172,7 @@ const CreateEventContainer = () => {
       newAddress.country.isValid && newAddress.city.isValid &&
       newAddress.street.isValid && newAddress.postcode.isValid &&
       newAddress.number.isValid) {
+      setSendingDataSpinner(true);
       setTimeout(() => {
         console.log("sending data...");
         console.log({
@@ -185,6 +188,7 @@ const CreateEventContainer = () => {
             number: newAddress.number.value,
           }
         });
+        setSendingDataSpinner(false);
       }, 3000);
     } else {
       console.log("something went wrong")
@@ -219,7 +223,10 @@ const CreateEventContainer = () => {
         />
       ))}
       <OptionsInput onChange={onChangePrivacy} value={Information.privacy.value} name="privacy" options={["private", "public", "friends"]} />
-      <Button clicked={submitNewEvent} classes="form-btn btn-blueGradient btn-md">Create</Button>
+      {sendingDataSpinner
+        ? <Spinner classes={"spinner-container-h-sm"} size={"spinner-sm"} />
+        : <Button clicked={submitNewEvent} classes="form-btn btn-blueGradient btn-md">Create </Button>
+      }
     </div>
   );
 };
