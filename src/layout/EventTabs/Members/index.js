@@ -8,87 +8,81 @@ import "./Members.scss";
 
 import UserCard from "../../../components/UserCard";
 import { Button } from "../../../components/Button";
+import PaginatedContainer from "../../../components/PaginatedContainer";
 
 // import { userService } from "../../../Authentication/service";
 import InviteUserFormContainer from "./InviteUserFormContainer";
 
 const Members = ({ id }) => {
-  // const [members, setMembers] = useState([]);
-  // const [requests, setrequests] = useState(requestsFoThisEvent);
+  let __isMounted = false
+
   const isUserAdmin = useState(true)[0];
 
+  const setform = useContext(FormContext)[1];
+  const [eventMemebers, seEventMemebers] = useState([]);
+  const [eventRequests, seEventRequests] = useState([]);
+
   useEffect(() => {
-    //   userService
-    //     .getAllUsersFromGivenEvent(id)
-    //     .then(body => {
-    //       return body;
-    //     })
-    //     .then(res => {
-    //       console.log(res);
-    //       setMembers(res);
-    //     })
-    //     .catch(err => {
-    //       console.log(err);
-    //     });
+    __isMounted = true;
 
-    //   userService
-    //     .isUserAdminOfGivenEvent(id)
-    //     .then(body => {
-    //       return body;
-    //     })
-    //     .then(res => {
-    //       console.log(res);
-    //       if (res.message == "true") {
-    //         setUserAdmin({ isAdmin: true });
-    //       }
-    //       // setMembers(res);
-    //       // setEventsList(res);
-    //     })
-    //     .catch(err => {
-    //       console.log(err);
-    //     });
+    setTimeout(() => {
+      if (__isMounted) {
+        seEventMemebers(membersOfTheEvent);
+        seEventRequests(requestsFoThisEvent);
+      }
 
+    }, 1000);
     return () => {
-      console.log("unoounted ");
+      __isMounted = false;
     };
   }, []);
-
-  const setform = useContext(FormContext)[1];
 
   const openModalToInviteUser = () => {
     setform({ show: true, renderForm: <InviteUserFormContainer id={id} /> });
   };
+
+  const kickUsers = (username) => {
+    setTimeout(() => {
+      console.log(`kicking user ... ${username}`)
+    }, 2000);
+  }
+  const acceptUsers = (username) => {
+    setTimeout(() => {
+      console.log(`accepting user ... ${username}`)
+    }, 2000);
+  }
+
 
   return (
     <div className="MembersContainer">
       <Button clicked={openModalToInviteUser} classes="btn-blueGradient btn-md">
         + Invite User
       </Button>
-      <h2>{`Pending requests ● ${requestsFoThisEvent.length}`}</h2>
-      {requestsFoThisEvent.map(member => {
-        return (
-          <UserCard
-            key={member.username}
-            username={member.username}
-            showControlls={isUserAdmin}
-          >
-            <Button classes="btn-blueGradient btn-sm">accept</Button>
-          </UserCard>
-        );
-      })}
+      <PaginatedContainer
+        title={`Pending requests ● ${eventMemebers.length}`}
+        items={eventMemebers}
+        perPage={4}
+        render={({ items }) =>
+          items.map(ev => (
+            <UserCard key={ev.username} username={ev.username} showControlls={isUserAdmin}>
+              <Button clicked={() => acceptUsers(ev.username)} classes="btn-blueGradient btn-sm">accept</Button>
+            </UserCard>
+          ))
+        }
+      />
 
-      <h2>{`Members ● ${membersOfTheEvent.length}`}</h2>
-      {membersOfTheEvent.map(member => {
-        return member ? (
-          <UserCard
-            key={member.username}
-            username={member.username}
-            showControlls={isUserAdmin}
-          >
-            <Button classes="btn-orangeGradient btn-sm">kick</Button>
-          </UserCard>
-        ) : null;
-      })}
+      <PaginatedContainer
+        title={`Members ● ${eventRequests.length}`}
+        items={eventRequests}
+        perPage={3}
+        render={({ items }) =>
+          items.map(ev => (
+            <UserCard key={ev.username} username={ev.username} showControlls={isUserAdmin}>
+              <Button clicked={() => kickUsers(ev.username)} classes="btn-orangeGradient btn-sm">kick</Button>
+            </UserCard>
+          ))
+        }
+      />
     </div>
   );
 };

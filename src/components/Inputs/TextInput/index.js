@@ -2,31 +2,15 @@ import React from "react";
 import PropTypes from "prop-types";
 import "./TextInput.scss";
 
-const TextInput = ({
-  name,
-  type,
-  placeholder,
-  onChange,
-  size,
-  classes,
-  disabled,
-  value
-}) => {
+const TextInput = ({ name, type, placeholder, onChange, size, classes, disabled, value, error }) => {
   return (
-    <div className={`textInput ${classes} ${size} `}>
-      <input
-        type={type}
-        name={name}
-        id={name}
-        onChange={onChange}
-        required
-        disabled={disabled}
-        value={value}
-        min={0}
-        max={1000}
-      />
-      <label htmlFor={name}>{placeholder}</label>
-    </div>
+    <>
+      <div className={`textInput ${classes} ${size} `}>
+        <input type={type} name={name} id={name} onChange={onChange} required disabled={disabled} value={value} />
+        <label htmlFor={name}>{placeholder}</label>
+        <span className="error-msg">{error}</span>
+      </div>
+    </>
   );
 };
 
@@ -37,7 +21,8 @@ TextInput.defaultProps = {
   size: "input-md",
   classes: "",
   disabled: false,
-  value: undefined
+  value: undefined,
+  error: ""
 };
 
 TextInput.propTypes = {
@@ -47,8 +32,9 @@ TextInput.propTypes = {
   size: PropTypes.string,
   onChange: PropTypes.func,
   name: PropTypes.string.isRequired,
-  type: PropTypes.oneOf(["text", "password", "number"]),
-  placeholder: PropTypes.string
+  type: PropTypes.string,
+  placeholder: PropTypes.string,
+  error: PropTypes.string
 };
 
 export default TextInput;

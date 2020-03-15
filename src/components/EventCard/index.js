@@ -7,9 +7,7 @@ const EventCard = ({ id, name, date, location, eventState }) => {
   return (
     <Link to={`/event/${id}`}>
       <div className={eventState ? "Event-Card Event-Complete" : "Event-Card"}>
-        <div
-          className={eventState ? "eventIcon eventIcon-complete" : "eventIcon"}
-        >
+        <div className={eventState ? "eventIcon eventIcon-complete" : "eventIcon"}>
           <i className={eventState ? "fas fa-check" : "fas fa-sync-alt"} />
         </div>
         <div className="content">

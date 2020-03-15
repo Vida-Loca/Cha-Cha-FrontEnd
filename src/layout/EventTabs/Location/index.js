@@ -1,158 +1,247 @@
-import React, { useState, useContext, useEffect } from "react";
+import React, { useState, useEffect } from "react";
 import PropTypes from "prop-types";
-import { FormContext } from "../../../context/FormContext";
-import { userService } from "../../../Authentication/service";
+// import { userService } from "../../../Authentication/service";
 
 import { eventLocation } from "../../../mockData";
+import { TextInput } from "../../../components/Inputs";
+import { EditButton } from "../../../components/Button";
+import checkValidation from "../../../validation";
 
 import "./Location.scss";
 
-import InfoSection from "../../../components/InfoSection/InfoSection";
-// import { TextInputNL } from "../../../components/Inputs";
 
 const Location = ({ id }) => {
-  const [location, setLocation] = useState({
-    Address: {
-      city: "",
-      street: "",
-      number: "",
-      postcode: "",
-      edit: false
-    },
-    phonenumber: { field: "", edit: false },
-    dateofevent: { field: "", edit: false },
-    time: { field: "", edit: false },
-    addidtionalInformation: { field: "", edit: false }
+  let __isMounted = false
+
+  const [locationInfo, setLocationInfo] = useState({
+    dateofevent: { value: "", isValid: true, err: [] },
+    time: { value: "00:00", isValid: true, err: [] },
+    addidtionalInformation: { value: "Loading...", isValid: true, err: [] }
   });
+  const [tempLocationInfo, setTempLocationInfo] = useState({ dateofevent: "", time: "Loading...", addidtionalInformation: "Loading..." });
+  const [adress, setAddress] = useState({
+    city: { value: "Loading...", isValid: true, err: [] },
+    street: { value: "Loading...", isValid: true, err: [] },
+    number: { value: "0", isValid: true, err: [] },
+    postcode: { value: "Loading...", isValid: true, err: [] }
+  });
+  const [tempAdress, setTempAdress] = useState({ city: "Loading...", street: "Loading...", number: "0", postcode: "Loading..." });
+  const [editState, setEdit] = useState(false);
+
+  const addressForm = useState([
+    {
+      name: "city",
+      config: {
+        placeholder: "city",
+        type: "text"
+      },
+      validation: {
+        required: true,
+        string: true
+      }
+    },
+    {
+      name: "street",
+      config: {
+        placeholder: "street",
+        type: "text"
+      },
+      validation: {
+        required: true,
+        maxLength: 10
+      }
+    },
+    {
+      name: "number",
+      config: {
+        placeholder: "house number",
+        type: "number"
+      },
+      validation: {
+        required: true,
+        number: true,
+        maxLength: 10
+      }
+    },
+    {
+      name: "postcode",
+      config: {
+        placeholder: "post code",
+        type: "text"
+      },
+      validation: {
+        required: true,
+        maxLength: 10
+      }
+    }
+  ])[0];
+  const locationInfoForm = useState([
+    {
+      name: "dateofevent",
+      config: {
+        placeholder: "date of event",
+        type: "date"
+      },
+      validation: {
+        required: true,
+        maxLength: 10
+      }
+    },
+    {
+      name: "time",
+      config: {
+        placeholder: "time",
+        type: "time"
+      },
+      validation: {
+        required: true,
+        maxLength: 10
+      }
+    }
+  ])[0];
 
   useEffect(() => {
-    console.log("hello from effect");
-    userService
-      .getEventById(id)
-      .then(body => {
-        return body;
-      })
-      .then(res => {
-        setLocation({
-          ...location,
-          dateofevent: { field: res.startDate, edit: false },
-          time: { field: res.startTime, edit: false },
-          addidtionalInformation: {
-            field: res.additionalInformation,
-            edit: false
-          },
-          Address: {
-            ...location.Address,
-            city: res.address.city,
-            street: res.address.street,
-            number: res.address.number,
-            postcode: res.address.postcode
-          }
+    __isMounted = true;
+    setTimeout(() => {
+      if (__isMounted) {
+        setLocationInfo({
+          dateofevent: { ...locationInfo.dateofevent, value: eventLocation.dateofevent },
+          time: { ...locationInfo.time, value: eventLocation.time },
+          addidtionalInformation: { ...locationInfo.addidtionalInformation, value: eventLocation.addidtionalInformation }
         });
-        console.log(res);
-      })
-      .catch(err => {
-        console.log(err);
-      });
+        setTempLocationInfo({ dateofevent: eventLocation.dateofevent, time: eventLocation.time, addidtionalInformation: eventLocation.addidtionalInformation })
+
+        setAddress({
+          city: { ...adress.city, value: eventLocation.Address.city },
+          street: { ...adress.street, value: eventLocation.Address.street },
+          number: { ...adress.street, value: eventLocation.Address.number },
+          postcode: { ...adress.postcode, value: eventLocation.Address.postcode }
+        });
+        setTempAdress({ city: eventLocation.Address.city, street: eventLocation.Address.street, number: eventLocation.Address.number, postcode: eventLocation.Address.postcode })
+      }
+
+    }, 2000);
     return () => {
-      console.log("unoounted ");
+      __isMounted = false;
     };
-  }, [id, location]);
+  }, []);
 
-  const setform = useContext(FormContext)[1];
-
-  // const [location, setLocation] = useState(TempData);
-
-  const toggleEditForAdress = () => {
-    setLocation({
-      ...location,
-      Address: { ...location.Address, edit: !location.Address.edit }
+  const editHandler = () => {
+    setEdit(!editState);
+  };
+  const cancelEdit = () => {
+    setEdit(false);
+    setAddress({
+      city: { ...adress.city, value: tempAdress.city },
+      street: { ...adress.street, value: tempAdress.street },
+      number: { ...adress.street, value: tempAdress.number },
+      postcode: { ...adress.postcode, value: tempAdress.postcode }
+    });
+    setLocationInfo({
+      dateofevent: { ...locationInfo.dateofevent, value: tempLocationInfo.dateofevent },
+      time: { ...locationInfo.time, value: tempLocationInfo.time },
+      addidtionalInformation: { ...locationInfo.addidtionalInformation, value: tempLocationInfo.addidtionalInformation }
     });
   };
 
-  const onChangeHandlerAdress = event => {
-    setLocation({
-      ...location,
-      Address: {
-        ...location.Address,
-        [`${event.target.name}`]: event.target.value
+  const onChangeHandlerAddress = event => {
+    const validationResult = checkValidation(
+      event.target.value,
+      addressForm.find(x => x.name === event.target.name).validation
+    );
+    setAddress({
+      ...adress,
+      [`${event.target.name}`]: {
+        ...adress[`${event.target.name}`],
+        value: event.target.value,
+        isValid: validationResult[0],
+        err: validationResult[1]
       }
     });
-    console.log(location);
   };
+  const onChangeHandlerInfo = event => {
+    const validationResult = checkValidation(
+      event.target.value,
+      locationInfoForm.find(x => x.name === event.target.name).validation
+    );
+    setLocationInfo({
+      ...locationInfo,
+      [`${event.target.name}`]: {
+        ...locationInfo[`${event.target.name}`],
+        value: event.target.value,
+        isValid: validationResult[0],
+        err: validationResult[1]
+      }
+    });
+  };
+
+  const submitLocationChanges = () => {
+    if (locationInfo.dateofevent.isValid && locationInfo.time.isValid && locationInfo.addidtionalInformation.isValid &&
+      adress.city.isValid && adress.street.isValid && adress.number.isValid && adress.postcode.isValid) {
+
+      setTimeout(() => {
+        console.log("updating ...");
+        console.log({
+          dateofevent: locationInfo.dateofevent.value,
+          time: locationInfo.time.value,
+          addidtionalInformation: locationInfo.addidtionalInformation.value
+        })
+        console.log({
+          city: adress.city.value,
+          street: adress.street.value,
+          number: adress.number.value,
+          postcode: adress.postcode.value
+        })
+      }, 2000);
+
+
+    } else {
+      console.log("can't update")
+    }
+
+
+  }
 
   return (
     <div className="LocationBody">
       <div className="info">
+        <div className="Adress-info">
+          <EditButton options={editState} activate={editHandler} cancel={cancelEdit} confirm={submitLocationChanges} tags
+            render={<> <i className="far fa-edit" />Edit</>} />
+          {addressForm.map(el => (
+            <TextInput
+              key={el.name}
+              onChange={onChangeHandlerAddress}
+              type={el.config.type}
+              placeholder={el.config.placeholder}
+              name={el.name}
+              value={adress[el.name].value}
+              size="input-sm"
+              classes={editState ? "input-blue" : ""}
+              error={adress[el.name].err[0]}
+              disabled={!editState}
+            />
+          ))}
+          {locationInfoForm.map(el => (
+            <TextInput
+              key={el.name}
+              onChange={onChangeHandlerInfo}
+              type={el.config.type}
+              placeholder={el.config.placeholder}
+              name={el.name}
+              value={locationInfo[el.name].value}
+              size="input-sm"
+              classes={editState ? "input-blue" : ""}
+              error={locationInfo[el.name].err[0]}
+              disabled={!editState}
+            />
+          ))}
+        </div>
         <img
           className="Map"
           src="https://techupdatess.com/wp-content/uploads/2019/05/google-maps-speed-cams.jpg"
           alt=""
         />
-        <div className="TextInfo">
-          <InfoSection label="Address" clickedEditForm={toggleEditForAdress} />
-          {location.Address.edit ? (
-            <div>
-              <p>test</p>
-              {/* <EditInput
-                value={location.Address.city}
-                onChange={onChangeHandlerAdress}
-                placeholder="city"
-                name="city"
-              />
-              <EditInput
-                value={location.Address.street}
-                onChange={onChangeHandlerAdress}
-                placeholder="street"
-                name="street"
-              />
-              <EditInput
-                value={location.Address.number}
-                onChange={onChangeHandlerAdress}
-                placeholder="number"
-                name="number"
-              />
-              <EditInput
-                value={location.Address.postcode}
-                onChange={onChangeHandlerAdress}
-                placeholder="postcode"
-                name="postcode"
-              /> */}
-            </div>
-          ) : (
-            <div>
-              <p className="AdressField">
-                <strong>City:</strong>
-                {location.Address.city}
-              </p>
-              <p className="AdressField">
-                <strong>Street:</strong>
-                {location.Address.street}
-              </p>
-              <p className="AdressField">
-                <strong>Number:</strong>
-                {location.Address.number}
-              </p>
-              <p className="AdressField">
-                <strong>Postalcode:</strong>
-                {location.Address.postcode}
-              </p>
-            </div>
-          )}
-          <InfoSection label="Date & Time" />
-          <p className="AdressField">
-            <strong>Date:</strong>
-            {location.dateofevent.field}
-          </p>
-          <p className="AdressField">
-            <strong>Time:</strong>
-            {location.time.field}
-          </p>
-          <InfoSection
-            label="Additional Information"
-            content={location.addidtionalInformation.field}
-          />
-        </div>
       </div>
     </div>
   );

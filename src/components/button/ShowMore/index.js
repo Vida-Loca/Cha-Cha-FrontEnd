@@ -5,13 +5,7 @@ import "./ShowMore.scss";
 const ShowMoreButton = ({ clicked, showState }) => {
   return (
     <button onClick={clicked}>
-      <i
-        className={
-          showState
-            ? "fas fa-angle-right rotateArrow showMoreArrow"
-            : "fas fa-angle-right showMoreArrow"
-        }
-      />
+      <i className={showState ? "fas fa-angle-right rotateArrow showMoreArrow" : "fas fa-angle-right showMoreArrow"} />
     </button>
   );
 };

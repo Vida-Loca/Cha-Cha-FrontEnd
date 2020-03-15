@@ -1,6 +1,5 @@
 import React, { useState, useEffect, useContext } from "react";
 // import { UserContext } from "../context/UserContext";
-import { UserContext } from "../context/UserContext";
 import { FormContext } from "../context/FormContext";
 
 import SplashScreen from "./SplashScreen/SplashScreen";
@@ -31,12 +30,12 @@ const MyApplication = () => {
   const [forms, setform] = useContext(FormContext);
 
   const hideModal = () => {
-    setform({ ...forms, show: false });
+    setform({ ...forms, show: false, message: "" });
   };
 
   return (
     <div className="App">
-      <Modal show={forms.show} modalClose={hideModal}>
+      <Modal show={forms.show} modalClose={hideModal} message={forms.message}>
         {forms.renderForm}
       </Modal>
       {isLoggedIn ? <MainLayout /> : <SplashScreen />}

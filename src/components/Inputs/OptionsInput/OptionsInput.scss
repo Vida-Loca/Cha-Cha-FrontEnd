@@ -1,0 +1,57 @@
+@import "../../../style/globalVariabels.scss";
+.options-input {
+    position: relative;
+    padding: 5px 0;
+    
+  
+    &:first-of-type {
+      padding-top: 0;
+    }
+  
+    &:last-of-type {
+      padding-bottom: 0;
+    }
+  
+
+    select {
+      font-family: "Montserrat", sans-serif;
+      font-size: 17px;
+      // margin-top: 0.7rem;
+      appearance: none;
+      outline: none;
+      background-color: none;
+      border: 1px solid $main-blue;
+      // line-height: 0;
+  
+      width: 100%;
+      display: block;
+      box-sizing: border-box;
+      border-radius: $border-radius-md;
+      color: $main-blue;
+      font-weight: 100;
+      letter-spacing: 0.01em;
+      position: relative;
+      z-index: 1;
+      height: 2.1rem;
+      padding: 0 1rem;
+  
+      &:focus {
+        outline: none;
+        background: $main-blue;
+        color: white;
+      }
+  
+
+      &:disabled {
+        background: rgb(245, 245, 245);
+        & ~ label {
+          text-transform: uppercase;
+          font-style: italic;
+        }
+      }
+    }
+
+}
+
+
+

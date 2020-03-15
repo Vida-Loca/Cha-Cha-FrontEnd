@@ -15,55 +15,32 @@ import AddNewProductContainer from "./AddNewProductContainer";
 import { eventProducts } from "../../../mockData";
 
 const Supply = ({ id }) => {
-  const [supplyList2, setsupply2] = useState([]);
 
-  // const [supplyList, setsupply] = useState({
-  //   SupplyContainers
-  // });
+  let __isMounted = false
+
+  const [productList, setProduct] = useState([]);
+
 
   useEffect(() => {
-    // console.log("mounted");
-    // console.log(productsTemp);
-    setsupply2(createSetOfCategories(eventProducts));
-    // console.log(supplyList2);
+    __isMounted = true;
+    setTimeout(() => {
+      if (__isMounted) {
+        setProduct(createSetOfCategories(eventProducts));
+      }
 
-    // userService
-    //   .getAllProductsFromGivenEvent(id)
-    //   .then(body => {
-    //     return body;
-    //   })
-    //   .then(res => {
-    //     console.log(res);
-    //     // setform({ ...forms, show: false });
-    //     setsupply2(createSetOfCategories(res));
-    //     console.log(supplyList2);
-    //   })
-    //   .catch(err => {
-    //     console.log(err);
-    //   });
-    return () => {};
+    }, 1000);
+
+    return () => {
+      __isMounted = false;
+    };
   }, []);
 
-  const setform = useContext(FormContext)[1];
+  const [forms, setform] = useContext(FormContext);
 
   const addNewProductModal = () => {
-    setform({ renderForm: <AddNewProductContainer />, show: true });
+    setform({ ...forms, renderForm: <AddNewProductContainer />, show: true });
   };
 
-  // const addNewProduct = event => {
-  //   event.preventDefault();
-  //   userService
-  //     .addNewSuplyToEvent(id, newEvent)
-  //     .then(body => {
-  //       return body;
-  //     })
-  //     .then(res => {
-  //       console.log(res);
-  //     })
-  //     .catch(err => {
-  //       console.log(err);
-  //     });
-  // };
 
   return (
     <div className="SuplyBody">
@@ -74,13 +51,9 @@ const Supply = ({ id }) => {
       </div>
       <PaginatedContainer
         title="Product list"
-        items={supplyList2}
+        items={productList}
         perPage={5}
-        render={({ items }) =>
-          items.map(supCont => (
-            <ProductCategory supCont={supCont} key={supCont.Category} />
-          ))
-        }
+        render={({ items }) => items.map(supCont => <ProductCategory supCont={supCont} key={supCont.Category} />)}
       />
     </div>
   );

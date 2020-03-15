@@ -2,15 +2,16 @@
 import React, { useState } from "react";
 import PropTypes from "prop-types";
 import Avatar from "../../Avatar";
-import { Button, IconButton, EditButton } from "../../Button";
+import { IconButton, EditButton } from "../../Button";
 import "./ProductCard.scss";
 import { TextInputNL, TextArea } from "../../Inputs";
 
-const ProductCard = ({ user, supply, price, picUrl }) => {
+const ProductCard = ({ id, user, supply, price, picUrl }) => {
   const [tileSupply, setTileSuply] = useState({
     user,
     supply,
-    price,
+    price: String(price),
+    picUrl,
     tempSupply: supply,
     tempPrice: price
   });
@@ -24,13 +25,23 @@ const ProductCard = ({ user, supply, price, picUrl }) => {
     tileStateSet(!tileState);
   };
 
-  const onChangeHandler = event => {
-    setTileSuply({
-      ...tileSupply,
-      [`${event.target.name}`]: event.target.value
-    });
-    console.log(tileSupply);
-  };
+  const onChangeHandlerPrice = event => {
+    if (event.target.value.length < 20) {
+      setTileSuply({
+        ...tileSupply,
+        [`${event.target.name}`]: event.target.value
+      });
+    };
+  }
+  const onChangeHandlerDescription = event => {
+    if (event.target.value.length < 250) {
+      setTileSuply({
+        ...tileSupply,
+        [`${event.target.name}`]: event.target.value
+      });
+    };
+  }
+
 
   const deleteHandler = () => {
     setDeleteState(!deleteState);
@@ -54,17 +65,35 @@ const ProductCard = ({ user, supply, price, picUrl }) => {
     });
   };
 
-  // const update
+  const deletingProduct = () => {
+    console.log(`deleting product with id: ${id}`)
+  }
+
+  const updatingProduct = () => {
+    if (tileSupply.supply.length > 0 && tileSupply.price.length > 0 && !isNaN(tileSupply.price)) {
+      setTimeout(() => {
+        console.log(`updating product with id: ${id}`)
+        console.log({
+          price: tileSupply.price,
+          supply: tileSupply.supply
+        })
+
+      }, 2000);
+    } else {
+      console.log("can't be updatted")
+    }
+
+  }
 
   return (
     <div className="OuterSupplyTile">
       <div className="UserTileBody">
-        <Avatar />
+        <Avatar title={tileSupply.user} imageLink={tileSupply.picUrl} />
         <span className="product-info">
           <span>
             <span className="product-currency">PLN</span>
             <TextInputNL
-              onChange={onChangeHandler}
+              onChange={onChangeHandlerPrice}
               value={tileSupply.price}
               placeholder="price"
               name="price"
@@ -73,12 +102,7 @@ const ProductCard = ({ user, supply, price, picUrl }) => {
               disabled={!editState}
             />
           </span>
-          <TextArea
-            value={tileSupply.supply}
-            name="supply"
-            onChange={onChangeHandler}
-            disabled={!editState}
-          />
+          <TextArea value={tileSupply.supply} name="supply" onChange={onChangeHandlerDescription} disabled={!editState} />
         </span>
 
         {tileState ? (
@@ -88,27 +112,29 @@ const ProductCard = ({ user, supply, price, picUrl }) => {
               activate={deleteHandler}
               cancel={cancelDelete}
               render={<i className="far fa-trash-alt" />}
+              confirm={deletingProduct}
             />
             <EditButton
               options={editState}
               activate={editHandler}
               cancel={cancelEdit}
               render={<i className="far fa-edit" />}
+              confirm={updatingProduct}
             />
           </div>
         ) : (
-          <IconButton clicked={changeOptions} iconClass="fas fa-ellipsis-v" />
-        )}
+            <IconButton clicked={changeOptions} iconClass="fas fa-ellipsis-v" />
+          )}
       </div>
     </div>
   );
 };
 ProductCard.defaultProps = {
-  picUrl:
-    "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTSLmktkJrArXh_zZVovazl5mb3lna9HXqPo7XvvviCSQAuru5C&s"
+  picUrl: "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTSLmktkJrArXh_zZVovazl5mb3lna9HXqPo7XvvviCSQAuru5C&s"
 };
 
 ProductCard.propTypes = {
+  id: PropTypes.number.isRequired,
   user: PropTypes.string.isRequired,
   supply: PropTypes.string.isRequired,
   price: PropTypes.number.isRequired,

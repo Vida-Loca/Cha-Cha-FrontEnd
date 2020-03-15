@@ -3,19 +3,9 @@ import PropTypes from "prop-types";
 import { NavLink } from "react-router-dom";
 import "./SideBarItem.scss";
 
-const SideBarItem = ({
-  name,
-  icon,
-  children,
-  beforeLink,
-  mobileNavBarHandler
-}) => {
+const SideBarItem = ({ name, icon, children, beforeLink, mobileNavBarHandler }) => {
   return (
-    <NavLink
-      to={`${beforeLink}/${name.toLowerCase()}`}
-      className="SideBarItem"
-      onClick={() => mobileNavBarHandler()}
-    >
+    <NavLink to={`${beforeLink}/${name.toLowerCase()}`} className="SideBarItem" onClick={() => mobileNavBarHandler()}>
       <i className={icon} />
       {children}
     </NavLink>

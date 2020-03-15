@@ -1,112 +1,226 @@
 import React, { useState, useContext } from "react";
-import { DateInput, TextInput } from "../../../components/Inputs";
+import { TextInput, OptionsInput } from "../../../components/Inputs";
 import { Button } from "../../../components/Button";
-import { FormContext } from "../../../context/FormContext";
-import { userService } from "../../../Authentication/service";
+// import { userService } from "../../../Authentication/service";
+import checkValidation from "../../../validation";
+import "./CreateEvent.scss";
 
 const CreateEventContainer = () => {
-  const [forms, setform] = useContext(FormContext);
 
-  const [newEvent, setNewEvent] = useState({
-    name: "",
-    startDate: "",
-    startTime: "",
-    address: {
-      country: "",
-      city: "",
-      street: "",
-      postcode: "",
-      number: ""
-    }
+
+  const [Information, setInformation] = useState({
+    name: { value: "", isValid: false, err: "", touched: false },
+    startDate: { value: "", isValid: false, err: "", touched: false },
+    startTime: { value: "", isValid: false, err: "", touched: false },
+    privacy: { value: "private", isValid: true, err: "", touched: true }
   });
+  const [newAddress, setNewAddress] = useState({
+    country: { value: "", isValid: false, err: "", touched: false },
+    city: { value: "", isValid: false, err: "", touched: false },
+    street: { value: "", isValid: false, err: "", touched: false },
+    postcode: { value: "", isValid: false, err: "", touched: false },
+    number: { value: "", isValid: false, err: "", touched: false }
+  });
+
+  const formInfo = useState([
+    {
+      name: "name",
+      config: {
+        type: 'text',
+        placeholder: "event name",
+        classes: "input-blue"
+      },
+      validation: {
+        required: true,
+        string: true,
+        minLength: 5,
+        maxLength: 25,
+      }
+    },
+    {
+      name: "startDate",
+      config: {
+        type: 'date',
+        placeholder: "start date",
+        classes: "input-blue text-input-extra"
+      },
+      validation: {
+        required: true
+      }
+    },
+    {
+      name: "startTime",
+      config: {
+        type: 'time',
+        placeholder: "start time",
+        classes: "input-blue text-input-extra"
+      },
+      validation: {
+        required: true,
+        time: true
+      }
+    }
+
+  ])[0];
+
+  const formAdress = useState([
+    {
+      name: "country",
+      config: {
+        placeholder: "coutnry",
+        classes: "input-blue"
+      },
+      validation: {
+        required: true,
+        string: true
+      }
+    },
+    {
+      name: "city",
+      config: {
+        placeholder: "city",
+        classes: "input-blue"
+      },
+      validation: {
+        required: true,
+        string: true,
+      }
+    },
+    {
+      name: "street",
+      config: {
+        placeholder: "street",
+        classes: "input-blue"
+      },
+      validation: {
+        required: true,
+        string: true
+      }
+    },
+    {
+      name: "postcode",
+      config: {
+        placeholder: "post code",
+        classes: "input-blue"
+      },
+      validation: {
+        required: true,
+        postcode: true
+      }
+    },
+    {
+      name: "number",
+      config: {
+        type: "number",
+        placeholder: "house",
+        classes: "input-blue",
+        disabled: true
+      },
+      validation: {
+        required: true
+      }
+    }
+  ])[0];
   const onChangeHandlerEvent = event => {
-    setNewEvent({ ...newEvent, [`${event.target.name}`]: event.target.value });
-    console.log(newEvent);
-  };
-  const onChangeHandlerAddress = event => {
-    setNewEvent({
-      ...newEvent,
-      address: {
-        ...newEvent.address,
-        [`${event.target.name}`]: event.target.value
+    const validationResult = checkValidation(
+      event.target.value,
+      formInfo.find(x => x.name === event.target.name).validation
+    );
+    setInformation({
+      ...Information,
+      [`${event.target.name}`]: {
+        value: event.target.value,
+        isValid: validationResult[0],
+        err: validationResult[1],
+        touched: true
       }
     });
-    console.log(newEvent);
+  };
+  const onChangeHandlerAddress = event => {
+    const validationResult = checkValidation(
+      event.target.value,
+      formAdress.find(x => x.name === event.target.name).validation
+    );
+    setNewAddress({
+      ...newAddress,
+      [`${event.target.name}`]: {
+        value: event.target.value,
+        isValid: validationResult[0],
+        err: validationResult[1],
+        touched: true
+      }
+    });
   };
 
-  const createNewEvent = event => {
-    event.preventDefault();
+  const onChangePrivacy = (event) => {
+    setInformation({
+      ...Information, [`${event.target.name}`]: {
+        value: event.target.value,
+        isValid: true,
+        err: [],
+        touched: true
+      }
+    })
+  }
 
-    userService
-      .createNewEvent(newEvent)
-      .then(body => {
-        return body;
-      })
-      .then(res => {
-        console.log(res);
-        setform({ ...forms, show: false });
-      })
-      .catch(err => {
-        console.log(err);
-      });
-  };
+  const submitNewEvent = () => {
+
+    if (Information.name.isValid && Information.startDate.isValid &&
+      Information.startTime.isValid && Information.privacy.isValid &&
+      newAddress.country.isValid && newAddress.city.isValid &&
+      newAddress.street.isValid && newAddress.postcode.isValid &&
+      newAddress.number.isValid) {
+      setTimeout(() => {
+        console.log("sending data...");
+        console.log({
+          name: Information.name.value,
+          startDate: Information.startDate.value,
+          startTime: Information.startTime.value,
+          privacy: Information.privacy.value,
+          Address: {
+            country: newAddress.country.value,
+            city: newAddress.city.value,
+            street: newAddress.street.value,
+            postcode: newAddress.postcode.value,
+            number: newAddress.number.value,
+          }
+        });
+      }, 3000);
+    } else {
+      console.log("something went wrong")
+    }
+  }
+
+
   return (
-    <>
-      <TextInput
-        classes="input-blue"
-        onChange={onChangeHandlerEvent}
-        placeholder="name"
-        name="name"
-      />
-      <DateInput
-        onChange={onChangeHandlerEvent}
-        placeholder="Start Date"
-        name="startDate"
-      />
-      <DateInput
-        onChange={onChangeHandlerEvent}
-        type="time"
-        placeholder="Start Time"
-        name="startTime"
-      />
-      <TextInput
-        classes="input-blue"
-        onChange={onChangeHandlerAddress}
-        placeholder="country"
-        name="country"
-      />
-      <TextInput
-        classes="input-blue"
-        onChange={onChangeHandlerAddress}
-        placeholder="city"
-        name="city"
-      />
-      <TextInput
-        classes="input-blue"
-        onChange={onChangeHandlerAddress}
-        placeholder="street"
-        name="street"
-      />
-      <TextInput
-        classes="input-blue"
-        onChange={onChangeHandlerAddress}
-        placeholder="postcode"
-        name="postcode"
-      />
-      <TextInput
-        classes="input-blue"
-        onChange={onChangeHandlerAddress}
-        placeholder="number"
-        name="number"
-      />
-
-      <Button
-        clicked={createNewEvent}
-        classes="form-btn btn-blueGradient btn-md"
-      >
-        apply
-      </Button>
-    </>
+    <div className="Create-Event-Container">
+      {formInfo.map(el => (
+        <TextInput
+          onChange={onChangeHandlerEvent}
+          key={el.name}
+          placeholder={el.config.placeholder}
+          type={el.config.type}
+          name={el.name}
+          value={Information[el.name].value}
+          classes={Information[el.name].touched ^ Information[el.name].isValid ? "input-orange" : el.config.classes}
+          error={Information[el.name].err[0]}
+        />
+      ))}
+      {formAdress.map(el => (
+        <TextInput
+          onChange={onChangeHandlerAddress}
+          key={el.name}
+          placeholder={el.config.placeholder}
+          type={el.config.type}
+          name={el.name}
+          value={newAddress[el.name].value}
+          classes={newAddress[el.name].touched ^ newAddress[el.name].isValid ? "input-orange" : el.config.classes}
+          error={newAddress[el.name].err[0]}
+        />
+      ))}
+      <OptionsInput onChange={onChangePrivacy} value={Information.privacy.value} name="privacy" options={["private", "public", "friends"]} />
+      <Button clicked={submitNewEvent} classes="form-btn btn-blueGradient btn-md">Create</Button>
+    </div>
   );
 };
 

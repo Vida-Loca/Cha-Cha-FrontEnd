@@ -4,17 +4,10 @@ import Backdrop from "../Backdrop/Backdrop";
 import "./Modal.scss";
 
 const Modal = ({ show, modalClose, children }) => {
-  useEffect(() => {
-    return () => {};
-  }, []);
-
   return (
     <>
-      <div
-        className="ModalContainer"
-        style={{ display: show ? "flex" : "none" }}
-      >
-        <div className="Modal" style={{ opacity: show ? "1" : "0" }}>
+      <div className="modal-container" style={{ display: show ? "flex" : "none" }}>
+        <div className="modal" style={{ opacity: show ? "1" : "0" }}>
           {children}
         </div>
       </div>
@@ -23,7 +16,7 @@ const Modal = ({ show, modalClose, children }) => {
   );
 };
 
-Modal.defaultPoprs = {
+Modal.defaultProps = {
   children: ""
 };
 

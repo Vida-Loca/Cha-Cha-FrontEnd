@@ -4,61 +4,157 @@ import { Button } from "../../../components/Button";
 import { authenticationService } from "../../../Authentication/service";
 import { FormContext } from "../../../context/FormContext";
 import { UserContext } from "../../../context/UserContext";
+import checkValidation from "../../../validation";
 
 const RegistrationFormContainer = () => {
   const [changedForm, setChangedForm] = useContext(FormContext);
   const setUser = useContext(UserContext)[1];
   const [registration, setRegistration] = useState({
-    username: "",
-    password: "",
-    matchingPassword: "",
-    name: "",
-    surname: "",
-    email: ""
+    username: { value: "", isValid: false, err: [], touched: false },
+    password: { value: "", isValid: false, err: [], touched: false },
+    matchingPassword: { value: "", isValid: false, err: [], touched: false },
+    name: { value: "", isValid: false, err: [], touched: false },
+    surname: { value: "", isValid: false, err: [], touched: false },
+    email: { value: "", isValid: false, err: [], touched: false }
   });
 
-  const data = [
-    { placeholder: "username", name: "username" },
-    { placeholder: "password", name: "password" },
-    { placeholder: "repeat rassword", name: "matchingPassword" },
-    { placeholder: "name", name: "name" },
-    { placeholder: "surname", name: "surname" },
-    { placeholder: "e-mail", name: "email" }
-  ];
+  const registerForm = useState([
+    {
+      name: "username",
+      config: {
+        type: 'text',
+        placeholder: "username",
+        classes: "input-blue"
+      },
+      validation: {
+        required: true,
+        string: true,
+        minLength: 3,
+        maxLength: 25,
+        spaces: true
+      }
+    },
+    {
+      name: "password",
+      config: {
+        type: 'text',
+        placeholder: "password",
+        classes: "input-blue"
+      },
+      validation: {
+        required: true,
+        spaces: true,
+        minLength: 8,
+        maxLength: 25,
+      }
+    },
+    {
+      name: "matchingPassword",
+      config: {
+        type: 'text',
+        placeholder: "retype password",
+        classes: "input-blue"
+      },
+      validation: {
+        required: true,
+      }
+    },
+    {
+      name: "name",
+      config: {
+        type: 'text',
+        placeholder: "name",
+        classes: "input-blue"
+      },
+      validation: {
+        required: true,
+        string: true,
+        maxLength: 35,
+      }
+    },
+    {
+      name: "surname",
+      config: {
+        type: 'text',
+        placeholder: "surname",
+        classes: "input-blue"
+      },
+      validation: {
+        required: true,
+        string: true,
+        maxLength: 35,
+      }
+    },
+    {
+      name: "email",
+      config: {
+        type: 'text',
+        placeholder: "email",
+        classes: "input-blue"
+      },
+      validation: {
+        required: true,
+        email: true
+      }
+    }
+
+  ])[0];
   const onChangeHandler = event => {
+    const validationResult = checkValidation(
+      event.target.value,
+      registerForm.find(x => x.name === event.target.name).validation
+    );
     setRegistration({
       ...registration,
-      [`${event.target.name}`]: event.target.value
+      [`${event.target.name}`]: {
+        value: event.target.value,
+        isValid: validationResult[0],
+        err: validationResult[1],
+        touched: true
+      }
     });
-    console.log(registration);
   };
 
-  const registerHandler = event => {
-    event.preventDefault();
-    authenticationService.register(registration).then(
-      result => {
-        setChangedForm({ ...changedForm, show: false });
-        console.log(result); // "Stuff worked!"
-      },
-      err => {
-        console.log(err); // Error: "It broke"
-      }
-    );
-  };
+  const submitRegstartion = () => {
+    if (registration.username.isValid && registration.password.isValid &&
+      registration.matchingPassword.value === registration.password.value
+      && registration.name.isValid && registration.surname.isValid &&
+      registration.email.isValid) {
+
+      setTimeout(function () {
+        console.log("sending ...")
+        console.log({
+          username: registration.username.value,
+          password: registration.password.value,
+          matchingPassword: registration.matchingPassword.value,
+          name: registration.name.value,
+          surname: registration.surname.value,
+          emial: registration.email.value
+        })
+      }, 3000)
+
+    } else {
+      console.log("no no")
+    }
+  }
+
+
   return (
     <div>
-      {data.map(inputs => {
-        return (
-          <TextInput
-            onChange={onChangeHandler}
-            placeholder={inputs.placeholder}
-            name={inputs.name}
-            key={inputs.name}
-          />
-        );
-      })}
+      {registerForm.map(el => (
+        <TextInput
+          onChange={onChangeHandler}
+          key={el.name}
+          placeholder={el.config.placeholder}
+          type={el.config.type}
+          name={el.name}
+          value={registration[el.name].value}
+          classes={registration[el.name].touched ^ registration[el.name].isValid ? "input-orange" : el.config.classes}
+          error={registration[el.name].err[0]}
+        />
+      ))}
 
-      <Button clicked={registerHandler} classes="btn-blueGradient btn-md">
+      <Button clicked={submitRegstartion} classes="btn-blueGradient btn-md submit-btn">
         Submit
       </Button>
     </div>

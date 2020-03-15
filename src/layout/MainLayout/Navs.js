@@ -26,5 +26,9 @@ export const eventNav = [
   {
     navLink: "Members",
     iconClass: "fas fa-users"
+  },
+  {
+    navLink: "Settings",
+    iconClass: "fas fa-cog"
   }
 ];

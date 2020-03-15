@@ -1,11 +1,11 @@
-import React, { useContext, useState } from "react";
+import React, { useContext, useState, useEffect } from "react";
 
 import { FormContext } from "../../context/FormContext";
 import { UserContext } from "../../context/UserContext";
 import { authenticationService } from "../../Authentication/service";
 // import { userService } from "../../Authentication/service";
 
-import { friends, friendsRequests, events } from "../../mockData";
+import { events } from "../../mockData";
 import "./Profile.scss";
 
 import { IconButton, Button, EditButton } from "../../components/Button";
@@ -13,68 +13,126 @@ import { TextInput } from "../../components/Inputs";
 import EventCard from "../../components/EventCard";
 import PaginatedContainer from "../../components/PaginatedContainer";
 import Avatar from "../../components/Avatar";
-import UserCard from "../../components/UserCard";
+import checkValidation from "../../validation";
 import ChangeAvatarContainer from "./ChangeAvatarContainer";
+import FriendsList from "./FriendsList";
+
+import { loggedInUser } from "../../mockData";
 
 const Profile = () => {
+  let __isMounted = false
+
   const [userInfo, setUserInfo] = useState({
-    username: "user",
-    name: "name",
-    surname: "surname",
-    email: "email@email.com",
-    tempName: "name",
-    teempSurname: "surname"
-    // picUrl: null
+    username: "Loading ...",
+    email: "Loading ...",
+    datejoined: "Loading ...",
+    avatarUrl: ""
   });
-  // const [myEvents, setMyEvent] = useState([]);
+  const [editableUserInfo, setEditableUserInfo] = useState({
+    name: { value: "Loading ...", isValid: true, err: "" },
+    surname: { value: "Loading ...", isValid: true, err: "" },
+    tempName: "Loading ...",
+    tempSurname: "Loading ..."
+  });
 
-  // useEffect(() => {
-  //   userService
-  //     .getCurrentUserInfo()
-  //     .then(body => {
-  //       return body;
-  //     })
-  //     .then(res => {
-  //       console.log(res);
-  //       setUserInfo(res);
-  //       // setEventsList(res);
-  //     })
-  //     .catch(err => {
-  //       console.log(err);
-  //     });
+  const [myEvents, setMyEvents] = useState([]);
+  const [invitations, setInvitations] = useState([]);
 
-  //   userService
-  //     .getAllEventsOfCureentlyLogedInUser()
-  //     .then(body => {
-  //       return body;
-  //     })
-  //     .then(res => {
-  //       console.log(res);
-  //       setMyEvent(res);
-  //     })
-  //     .catch(err => {
-  //       console.log(err);
-  //     });
-  // }, []);
-
-  const [forms, setform] = useContext(FormContext);
+  const setform = useContext(FormContext)[1];
   const setuser = useContext(UserContext)[1];
   const [editState, setEdit] = useState(false);
+
+
+  useEffect(() => {
+    __isMounted = true;
+    setTimeout(() => {
+      if (__isMounted) {
+        setUserInfo({
+          username: loggedInUser.username,
+          email: loggedInUser.email,
+          datejoined: loggedInUser.joined.substring(0, 10),
+          avatarUrl: loggedInUser.picUrl
+        })
+
+        setEditableUserInfo({
+          name: { value: loggedInUser.name, isValid: true, err: "" },
+          surname: { value: loggedInUser.surname, isValid: true, err: "" },
+          tempName: loggedInUser.name,
+          tempSurname: loggedInUser.surname
+        })
+
+        setMyEvents(events);
+        setInvitations(events);
+      }
+
+    }, 1000);
+    return () => {
+      __isMounted = false;
+    };
+  }, []);
+
+  const editableFormProfile = useState([
+    {
+      name: "name",
+      config: {
+        placeholder: "name"
+      },
+      validation: {
+        required: true,
+        string: true
+      }
+    },
+    {
+      name: "surname",
+      config: {
+        placeholder: "surname"
+      },
+      validation: {
+        required: true,
+        maxLength: 10
+      }
+    }
+  ])[0];
+  const FormProfile = useState([
+    {
+      name: "email",
+      config: {
+        placeholder: "e-mail"
+      }
+    },
+    {
+      name: "datejoined",
+      config: {
+        placeholder: "date joined"
+      }
+    }
+  ])[0];
+
   const editHandler = () => {
     setEdit(!editState);
   };
   const cancelEdit = () => {
     setEdit(false);
-    setUserInfo({
-      ...userInfo,
-      name: userInfo.tempName,
-      surname: userInfo.teempSurname
+    setEditableUserInfo({
+      ...editableUserInfo,
+      name: { ...editableUserInfo.name, value: editableUserInfo.tempName, err: [] },
+      surname: { ...editableUserInfo.surname, value: editableUserInfo.tempSurname, err: [] }
     });
   };
 
   const onChangeHandler = event => {
-    setUserInfo({ ...userInfo, [`${event.target.name}`]: event.target.value });
-    console.log(userInfo);
+    const validationResult = checkValidation(
+      event.target.value,
+      editableFormProfile.find(x => x.name === event.target.name).validation
+    );
+    setEditableUserInfo({
+      ...editableUserInfo,
+      [`${event.target.name}`]: {
+        value: event.target.value,
+        isValid: validationResult[0],
+        err: validationResult[1]
+      }
+    });
   };
 
   const LogOut = () => {
@@ -82,38 +140,23 @@ const Profile = () => {
     setuser({ isLoggedIn: false, break: true });
   };
 
-  const listOfFriends = () => {
-    return (
-      <div>
-        <PaginatedContainer
-          title="Friends"
-          items={friends}
-          perPage={5}
-          render={({ items }) =>
-            items.map(ev => (
-              <UserCard key={ev.username} username={ev.username} showControlls>
-                <Button classes="btn-orangeGradient btn-sm">remove</Button>
-              </UserCard>
-            ))
-          }
-        />
-        <PaginatedContainer
-          title="Friend Requests"
-          items={friendsRequests}
-          perPage={5}
-          render={({ items }) =>
-            items.map(ev => (
-              <UserCard key={ev.username} username={ev.username} showControlls>
-                <Button classes="btn-blueGradient btn-sm">accept</Button>
-              </UserCard>
-            ))
-          }
-        />
-      </div>
-    );
-  };
+  const submitUpdateProfile = () => {
+    if (editableUserInfo.name.isValid && editableUserInfo.surname.isValid) {
+      setTimeout(() => {
+        console.log({
+          name: editableUserInfo.name.value,
+          surname: editableUserInfo.surname.value,
+        })
+      }, 2000);
+    } else {
+      console.log("can't update profile")
+    }
+
+  }
+
+
   const showFriendsInModal = () => {
-    setform({ renderForm: listOfFriends(), show: true });
+    setform({ renderForm: <FriendsList />, show: true });
   };
 
   const changeAvatarInModal = () => {
@@ -124,12 +167,9 @@ const Profile = () => {
     <div className="profileRootContainer">
       <div className="ProfileCard">
         <div className="Avatar-section">
-          <Avatar imageLink={userInfo.picUrl} />
+          <Avatar imageLink={userInfo.avatarUrl} />
           <div className="editBtn">
-            <IconButton
-              clicked={changeAvatarInModal}
-              iconClass="fas fa-image"
-            />
+            <IconButton clicked={changeAvatarInModal} iconClass="fas fa-image" />
           </div>
           <span className="username">{`@${userInfo.username}`}</span>
           <Button clicked={LogOut} classes="btn-sm btn-orangeGradient">
@@ -143,6 +183,7 @@ const Profile = () => {
             options={editState}
             activate={editHandler}
             cancel={cancelEdit}
+            confirm={submitUpdateProfile}
             tags
             render={
               <>
@@ -151,49 +192,41 @@ const Profile = () => {
               </>
             }
           />
-          <TextInput
-            onChange={onChangeHandler}
-            value={userInfo.name}
-            placeholder="name"
-            name="name"
-            size="input-sm"
-            classes={editState ? "input-blue" : ""}
-            disabled={!editState}
-          />
-          <TextInput
-            onChange={onChangeHandler}
-            value={userInfo.surname}
-            placeholder="surname"
-            name="surname"
-            size="input-sm"
-            classes={editState ? "input-blue" : ""}
-            disabled={!editState}
-          />
-          <TextInput
-            value={userInfo.email}
-            placeholder="email"
-            name="email"
-            size="input-sm"
-            disabled
-          />
-          <TextInput
-            value={userInfo.joined}
-            placeholder="date joined"
-            name="datejoined"
-            size="input-sm"
-            disabled
-          />
+          {editableFormProfile.map(el => (
+            <TextInput
+              key={el.name}
+              onChange={onChangeHandler}
+              placeholder={el.config.placeholder}
+              name={el.name}
+              value={editableUserInfo[el.name].value}
+              size="input-sm"
+              classes={editState ? "input-blue" : ""}
+              error={editableUserInfo[el.name].err[0]}
+              disabled={!editState}
+            />
+          ))}
+          {FormProfile.map(el => (
+            <TextInput
+              key={el.name}
+              onChange={onChangeHandler}
+              placeholder={el.config.placeholder}
+              name={el.name}
+              value={userInfo[el.name]}
+              size="input-sm"
+              disabled={true}
+            />
+          ))}
         </div>
       </div>
       <div>
         <Button classes="btn-md btn-default" clicked={showFriendsInModal}>
-          20 friends
+          friends
         </Button>
       </div>
       <div className="event-section">
         <PaginatedContainer
           title="My Events"
-          items={events}
+          items={myEvents}
           perPage={4}
           render={({ items }) =>
             items.map(ev => (
@@ -210,7 +243,7 @@ const Profile = () => {
         />
         <PaginatedContainer
           title="Invitations"
-          items={events}
+          items={invitations}
           perPage={4}
           render={({ items }) =>
             items.map(ev => (

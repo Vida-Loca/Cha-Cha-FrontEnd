@@ -15,7 +15,7 @@ const Event = ({ eventId, eventPath }) => {
   // check if user is a part of this event
   //  * if not redirect to /:id page
   //  * else leave him be
-  const eventName = useState("")[0];
+  const eventName = useState("no name ")[0];
   const [hasAuthorization, setAuthorization] = useState(true);
 
   useEffect(() => {
@@ -39,41 +39,19 @@ const Event = ({ eventId, eventPath }) => {
       <Route
         path={`${eventPath}/`}
         exact
-        render={() => (
-          <MainPage
-            isAuth={hasAuthorization}
-            eventPath={eventPath}
-            id={eventId}
-          />
-        )}
+        render={() => <MainPage isAuth={hasAuthorization} eventPath={eventPath} id={eventId} />}
       />
       {!hasAuthorization ? (
         <Route
           path={`${eventPath}/*`}
           exact
-          render={() => (
-            <Redirect
-              to={`${eventPath.substring(0, eventPath.length - 4)}/${eventId}`}
-            />
-          )}
+          render={() => <Redirect to={`${eventPath.substring(0, eventPath.length - 4)}/${eventId}`} />}
         />
       ) : (
         <>
-          <Route
-            path={`${eventPath}/suplies`}
-            exact
-            render={() => <Supply id={eventId} />}
-          />
-          <Route
-            path={`${eventPath}/location`}
-            exact
-            render={() => <Location id={eventId} />}
-          />
-          <Route
-            path={`${eventPath}/members`}
-            exact
-            render={() => <Members id={eventId} />}
-          />
+          <Route path={`${eventPath}/suplies`} exact render={() => <Supply id={eventId} />} />
+          <Route path={`${eventPath}/location`} exact render={() => <Location id={eventId} />} />
+          <Route path={`${eventPath}/members`} exact render={() => <Members id={eventId} />} />
         </>
       )}
     </>

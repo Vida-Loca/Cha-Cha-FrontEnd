@@ -2,15 +2,7 @@ import React from "react";
 import PropTypes from "prop-types";
 import "./EditInput.scss";
 
-const TextInputNL = ({
-  name,
-  type,
-  onChange,
-  size,
-  disabled,
-  value,
-  classes
-}) => {
+const TextInputNL = ({ name, type, onChange, size, disabled, value, classes }) => {
   const inputWidth = { width: `${value.length * 0.65}rem` };
   return (
     <input
