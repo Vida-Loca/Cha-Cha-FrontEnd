@@ -15,16 +15,24 @@ import AddNewProductContainer from "./AddNewProductContainer";
 import { eventProducts } from "../../../mockData";
 
 const Supply = ({ id }) => {
+
+  let __isMounted = false
+
   const [productList, setProduct] = useState([]);
 
 
   useEffect(() => {
+    __isMounted = true;
     setTimeout(() => {
-      setProduct(createSetOfCategories(eventProducts));
+      if (__isMounted) {
+        setProduct(createSetOfCategories(eventProducts));
+      }
 
     }, 1000);
 
-    return () => { };
+    return () => {
+      __isMounted = false;
+    };
   }, []);
 
   const [forms, setform] = useContext(FormContext);

@@ -15,15 +15,22 @@ import EventCard from "../../components/EventCard";
 import PaginatedContainer from "../../components/PaginatedContainer";
 
 const Home = () => {
+  let __isMounted = false
+
   const [publicEventsList, setPublicEventsList] = useState([]);
   const [friendsEventsList, setFriendsEventsList] = useState([]);
 
   useEffect(() => {
+    __isMounted = true;
     setTimeout(() => {
-      setPublicEventsList(events);
-      setFriendsEventsList(events);
+      if (__isMounted) {
+        setPublicEventsList(events);
+        setFriendsEventsList(events);
+      }
     }, 1000);
-
+    return () => {
+      __isMounted = false;
+    };
   }, []);
 
   const [forms, setform] = useContext(FormContext);

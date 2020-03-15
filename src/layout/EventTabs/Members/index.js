@@ -14,6 +14,8 @@ import PaginatedContainer from "../../../components/PaginatedContainer";
 import InviteUserFormContainer from "./InviteUserFormContainer";
 
 const Members = ({ id }) => {
+  let __isMounted = false
+
   const isUserAdmin = useState(true)[0];
 
   const setform = useContext(FormContext)[1];
@@ -21,12 +23,18 @@ const Members = ({ id }) => {
   const [eventRequests, seEventRequests] = useState([]);
 
   useEffect(() => {
+    __isMounted = true;
 
     setTimeout(() => {
-      seEventMemebers(membersOfTheEvent);
-      seEventRequests(requestsFoThisEvent);
-    }, 1000);
+      if (__isMounted) {
+        seEventMemebers(membersOfTheEvent);
+        seEventRequests(requestsFoThisEvent);
+      }
 
+    }, 1000);
+    return () => {
+      __isMounted = false;
+    };
   }, []);
 
   const openModalToInviteUser = () => {

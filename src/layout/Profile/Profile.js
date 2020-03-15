@@ -20,6 +20,8 @@ import FriendsList from "./FriendsList";
 import { loggedInUser } from "../../mockData";
 
 const Profile = () => {
+  let __isMounted = false
+
   const [userInfo, setUserInfo] = useState({
     username: "Loading ...",
     email: "Loading ...",
@@ -42,26 +44,31 @@ const Profile = () => {
 
 
   useEffect(() => {
+    __isMounted = true;
     setTimeout(() => {
-      setUserInfo({
-        username: loggedInUser.username,
-        email: loggedInUser.email,
-        datejoined: loggedInUser.joined.substring(0, 10),
-        avatarUrl: loggedInUser.picUrl
-      })
+      if (__isMounted) {
+        setUserInfo({
+          username: loggedInUser.username,
+          email: loggedInUser.email,
+          datejoined: loggedInUser.joined.substring(0, 10),
+          avatarUrl: loggedInUser.picUrl
+        })
 
-      setEditableUserInfo({
-        name: { value: loggedInUser.name, isValid: true, err: "" },
-        surname: { value: loggedInUser.surname, isValid: true, err: "" },
-        tempName: loggedInUser.name,
-        tempSurname: loggedInUser.surname
-      })
+        setEditableUserInfo({
+          name: { value: loggedInUser.name, isValid: true, err: "" },
+          surname: { value: loggedInUser.surname, isValid: true, err: "" },
+          tempName: loggedInUser.name,
+          tempSurname: loggedInUser.surname
+        })
 
-      setMyEvents(events);
-      setInvitations(events);
+        setMyEvents(events);
+        setInvitations(events);
+      }
 
     }, 1000);
-
+    return () => {
+      __isMounted = false;
+    };
   }, []);
 
   const editableFormProfile = useState([

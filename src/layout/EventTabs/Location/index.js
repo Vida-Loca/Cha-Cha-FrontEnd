@@ -11,6 +11,8 @@ import "./Location.scss";
 
 
 const Location = ({ id }) => {
+  let __isMounted = false
+
   const [locationInfo, setLocationInfo] = useState({
     dateofevent: { value: "", isValid: true, err: [] },
     time: { value: "00:00", isValid: true, err: [] },
@@ -99,26 +101,29 @@ const Location = ({ id }) => {
   ])[0];
 
   useEffect(() => {
+    __isMounted = true;
     setTimeout(() => {
+      if (__isMounted) {
+        setLocationInfo({
+          dateofevent: { ...locationInfo.dateofevent, value: eventLocation.dateofevent },
+          time: { ...locationInfo.time, value: eventLocation.time },
+          addidtionalInformation: { ...locationInfo.addidtionalInformation, value: eventLocation.addidtionalInformation }
+        });
+        setTempLocationInfo({ dateofevent: eventLocation.dateofevent, time: eventLocation.time, addidtionalInformation: eventLocation.addidtionalInformation })
 
-      setLocationInfo({
-        dateofevent: { ...locationInfo.dateofevent, value: eventLocation.dateofevent },
-        time: { ...locationInfo.time, value: eventLocation.time },
-        addidtionalInformation: { ...locationInfo.addidtionalInformation, value: eventLocation.addidtionalInformation }
-      });
-      setTempLocationInfo({ dateofevent: eventLocation.dateofevent, time: eventLocation.time, addidtionalInformation: eventLocation.addidtionalInformation })
-
-      setAddress({
-        city: { ...adress.city, value: eventLocation.Address.city },
-        street: { ...adress.street, value: eventLocation.Address.street },
-        number: { ...adress.street, value: eventLocation.Address.number },
-        postcode: { ...adress.postcode, value: eventLocation.Address.postcode }
-      });
-      setTempAdress({ city: eventLocation.Address.city, street: eventLocation.Address.street, number: eventLocation.Address.number, postcode: eventLocation.Address.postcode })
-
+        setAddress({
+          city: { ...adress.city, value: eventLocation.Address.city },
+          street: { ...adress.street, value: eventLocation.Address.street },
+          number: { ...adress.street, value: eventLocation.Address.number },
+          postcode: { ...adress.postcode, value: eventLocation.Address.postcode }
+        });
+        setTempAdress({ city: eventLocation.Address.city, street: eventLocation.Address.street, number: eventLocation.Address.number, postcode: eventLocation.Address.postcode })
+      }
 
     }, 2000);
-    return () => { };
+    return () => {
+      __isMounted = false;
+    };
   }, []);
 
   const editHandler = () => {

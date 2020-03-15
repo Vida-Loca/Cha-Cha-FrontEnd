@@ -5,16 +5,21 @@ import { Button } from "../../../components/Button";
 import { friends, friendsRequests } from "../../../mockData";
 
 const FriendsList = () => {
-
+    let __isMounted = false
     const [friendList, setFriendList] = useState([])
     const [friendRequests, setFriendRequests] = useState([])
 
     useEffect(() => {
+        __isMounted = true;
         setTimeout(() => {
-            setFriendList(friends);
-            setFriendRequests(friendsRequests);
+            if (__isMounted) {
+                setFriendList(friends);
+                setFriendRequests(friendsRequests);
+            }
         }, 1000);
-
+        return () => {
+            __isMounted = false;
+        };
     }, []);
 
     const removeFromFriendsList = (username) => {
