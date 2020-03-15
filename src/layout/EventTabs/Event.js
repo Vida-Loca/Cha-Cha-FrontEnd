@@ -19,18 +19,8 @@ const Event = ({ eventId, eventPath }) => {
   const [hasAuthorization, setAuthorization] = useState(true);
 
   useEffect(() => {
-    //   userService
-    //     .getEventById(this.props.eventId)
-    //     .then(body => {
-    //       return body;
-    //     })
-    //     .then(res => {
-    //       setEventName(res.name );
-    //     })
-    //     .catch(err => {
-    //       console.log(err);
-    //     });
-    return () => {};
+
+    return () => { };
   }, []);
 
   return (
@@ -48,12 +38,12 @@ const Event = ({ eventId, eventPath }) => {
           render={() => <Redirect to={`${eventPath.substring(0, eventPath.length - 4)}/${eventId}`} />}
         />
       ) : (
-        <>
-          <Route path={`${eventPath}/suplies`} exact render={() => <Supply id={eventId} />} />
-          <Route path={`${eventPath}/location`} exact render={() => <Location id={eventId} />} />
-          <Route path={`${eventPath}/members`} exact render={() => <Members id={eventId} />} />
-        </>
-      )}
+          <>
+            <Route path={`${eventPath}/suplies`} exact render={() => <Supply id={eventId} />} />
+            <Route path={`${eventPath}/location`} exact render={() => <Location id={eventId} />} />
+            <Route path={`${eventPath}/members`} exact render={() => <Members id={eventId} />} />
+          </>
+        )}
     </>
   );
 };
