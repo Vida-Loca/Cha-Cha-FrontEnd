@@ -16,6 +16,7 @@ import Avatar from "../../components/Avatar";
 import checkValidation from "../../validation";
 import ChangeAvatarContainer from "./ChangeAvatarContainer";
 import FriendsList from "./FriendsList";
+import Spinner from "../../components/Spinner";
 
 import { loggedInUser } from "../../mockData";
 
@@ -35,8 +36,8 @@ const Profile = () => {
     tempSurname: "Loading ..."
   });
 
-  const [myEvents, setMyEvents] = useState([]);
-  const [invitations, setInvitations] = useState([]);
+  const [myEvents, setMyEvents] = useState({ events: [], spinner: true });
+  const [invitations, setInvitations] = useState({ invitations: [], spinner: true });
 
   const setform = useContext(FormContext)[1];
   const setuser = useContext(UserContext)[1];
@@ -61,8 +62,8 @@ const Profile = () => {
           tempSurname: loggedInUser.surname
         })
 
-        setMyEvents(events);
-        setInvitations(events);
+        setMyEvents({ events: events, spinner: false });
+        setInvitations({ invitations: events, spinner: false });
       }
 
     }, 1000);
@@ -226,36 +227,42 @@ const Profile = () => {
       <div className="event-section">
         <PaginatedContainer
           title="My Events"
-          items={myEvents}
+          items={myEvents.events}
           perPage={4}
-          render={({ items }) =>
-            items.map(ev => (
-              <EventCard
-                id={ev.event_id}
-                key={ev.event_id}
-                name={ev.name}
-                date={ev.startDate}
-                location={ev.address}
-                eventState={ev.isComplete}
-              />
-            ))
+          render={
+            myEvents.spinner
+              ? () => <Spinner />
+              : ({ items }) =>
+                items.map(ev => (
+                  <EventCard
+                    id={ev.event_id}
+                    key={ev.event_id}
+                    name={ev.name}
+                    date={ev.startDate}
+                    location={ev.address}
+                    eventState={ev.isComplete}
+                  />
+                ))
           }
         />
         <PaginatedContainer
           title="Invitations"
-          items={invitations}
+          items={invitations.invitations}
           perPage={4}
-          render={({ items }) =>
-            items.map(ev => (
-              <EventCard
-                id={ev.event_id}
-                key={ev.event_id}
-                name={ev.name}
-                date={ev.startDate}
-                location={ev.address}
-                eventState={ev.isComplete}
-              />
-            ))
+          render={
+            invitations.spinner
+              ? () => <Spinner />
+              : ({ items }) =>
+                items.map(ev => (
+                  <EventCard
+                    id={ev.event_id}
+                    key={ev.event_id}
+                    name={ev.name}
+                    date={ev.startDate}
+                    location={ev.address}
+                    eventState={ev.isComplete}
+                  />
+                ))
           }
         />
       </div>

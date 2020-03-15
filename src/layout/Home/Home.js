@@ -1,5 +1,4 @@
 import React, { useContext, useState, useEffect } from "react";
-import { Link } from "react-router-dom";
 import { FormContext } from "../../context/FormContext";
 
 import { events } from "../../mockData";
@@ -10,22 +9,22 @@ import CreateEventContainer from "./CreateEventContainer";
 import SearchFriends from "./FriendsSearch";
 
 import { Button } from "../../components/Button";
-import { TextInput } from "../../components/Inputs";
 import EventCard from "../../components/EventCard";
 import PaginatedContainer from "../../components/PaginatedContainer";
+import Spinner from "../../components/Spinner";
 
 const Home = () => {
   let __isMounted = false
 
-  const [publicEventsList, setPublicEventsList] = useState([]);
-  const [friendsEventsList, setFriendsEventsList] = useState([]);
+  const [publicEventsList, setPublicEventsList] = useState({ events: [], spinner: true });
+  const [friendsEventsList, setFriendsEventsList] = useState({ events: [], spinner: true });
 
   useEffect(() => {
     __isMounted = true;
     setTimeout(() => {
       if (__isMounted) {
-        setPublicEventsList(events);
-        setFriendsEventsList(events);
+        setPublicEventsList({ events: events, spinner: false });
+        setFriendsEventsList({ events: events, spinner: false });
       }
     }, 1000);
     return () => {
@@ -33,7 +32,7 @@ const Home = () => {
     };
   }, []);
 
-  const [forms, setform] = useContext(FormContext);
+  const setform = useContext(FormContext)[1];
   const createNewEventModal = () => {
     setform({ show: true, renderForm: <CreateEventContainer /> });
   };
@@ -49,37 +48,46 @@ const Home = () => {
         <Button clicked={friendSearchModal} classes="btn-md btn-orangeGradient">Look for friends</Button>
       </div>
 
+
+
       <div className="dashboard">
+
         <PaginatedContainer
           title="Public Events"
-          items={publicEventsList}
-          render={({ items }) =>
-            items.map(ev => (
-              <EventCard
-                id={ev.event_id}
-                key={ev.event_id}
-                name={ev.name}
-                date={ev.startDate}
-                location={ev.address}
-                eventState={ev.isComplete}
-              />
-            ))
+          items={publicEventsList.events}
+          render={
+            publicEventsList.spinner
+              ? () => <Spinner />
+              : ({ items }) =>
+                items.map(ev => (
+                  <EventCard
+                    id={ev.event_id}
+                    key={ev.event_id}
+                    name={ev.name}
+                    date={ev.startDate}
+                    location={ev.address}
+                    eventState={ev.isComplete}
+                  />
+                ))
           }
         />
         <PaginatedContainer
           title="Friend's Events"
-          items={friendsEventsList}
-          render={({ items }) =>
-            items.map(ev => (
-              <EventCard
-                id={ev.event_id}
-                key={ev.event_id}
-                name={ev.name}
-                date={ev.startDate}
-                location={ev.address}
-                eventState={ev.isComplete}
-              />
-            ))
+          items={friendsEventsList.events}
+          render={
+            friendsEventsList.spinner
+              ? () => <Spinner />
+              : ({ items }) =>
+                items.map(ev => (
+                  <EventCard
+                    id={ev.event_id}
+                    key={ev.event_id}
+                    name={ev.name}
+                    date={ev.startDate}
+                    location={ev.address}
+                    eventState={ev.isComplete}
+                  />
+                ))
           }
         />
       </div>
