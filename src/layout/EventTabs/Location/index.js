@@ -1,4 +1,4 @@
-import React, { useState, useContext, useEffect } from "react";
+import React, { useState, useEffect } from "react";
 import PropTypes from "prop-types";
 // import { userService } from "../../../Authentication/service";
 
@@ -13,17 +13,17 @@ import "./Location.scss";
 const Location = ({ id }) => {
   const [locationInfo, setLocationInfo] = useState({
     dateofevent: { value: "", isValid: true, err: [] },
-    time: { value: "", isValid: true, err: [] },
-    addidtionalInformation: { value: "", isValid: true, err: [] }
+    time: { value: "00:00", isValid: true, err: [] },
+    addidtionalInformation: { value: "Loading...", isValid: true, err: [] }
   });
-  const [tempLocationInfo, setTempLocationInfo] = useState({ dateofevent: "", time: "", addidtionalInformation: "" });
+  const [tempLocationInfo, setTempLocationInfo] = useState({ dateofevent: "", time: "Loading...", addidtionalInformation: "Loading..." });
   const [adress, setAddress] = useState({
-    city: { value: "", isValid: true, err: [] },
-    street: { value: "", isValid: true, err: [] },
-    number: { value: "", isValid: true, err: [] },
-    postcode: { value: "", isValid: true, err: [] }
+    city: { value: "Loading...", isValid: true, err: [] },
+    street: { value: "Loading...", isValid: true, err: [] },
+    number: { value: "0", isValid: true, err: [] },
+    postcode: { value: "Loading...", isValid: true, err: [] }
   });
-  const [tempAdress, setTempAdress] = useState({ city: "", street: "", number: "", postcode: "" });
+  const [tempAdress, setTempAdress] = useState({ city: "Loading...", street: "Loading...", number: "0", postcode: "Loading..." });
   const [editState, setEdit] = useState(false);
 
   const addressForm = useState([
@@ -99,22 +99,25 @@ const Location = ({ id }) => {
   ])[0];
 
   useEffect(() => {
-    setLocationInfo({
-      dateofevent: { ...locationInfo.dateofevent, value: eventLocation.dateofevent },
-      time: { ...locationInfo.time, value: eventLocation.time },
-      addidtionalInformation: { ...locationInfo.addidtionalInformation, value: eventLocation.addidtionalInformation }
-    });
-    setTempLocationInfo({ dateofevent: eventLocation.dateofevent, time: eventLocation.time, addidtionalInformation: eventLocation.addidtionalInformation })
+    setTimeout(() => {
 
-    setAddress({
-      city: { ...adress.city, value: eventLocation.Address.city },
-      street: { ...adress.street, value: eventLocation.Address.street },
-      number: { ...adress.street, value: eventLocation.Address.number },
-      postcode: { ...adress.postcode, value: eventLocation.Address.postcode }
-    });
-    setTempAdress({ city: eventLocation.Address.city, street: eventLocation.Address.street, number: eventLocation.Address.number, postcode: eventLocation.Address.postcode })
+      setLocationInfo({
+        dateofevent: { ...locationInfo.dateofevent, value: eventLocation.dateofevent },
+        time: { ...locationInfo.time, value: eventLocation.time },
+        addidtionalInformation: { ...locationInfo.addidtionalInformation, value: eventLocation.addidtionalInformation }
+      });
+      setTempLocationInfo({ dateofevent: eventLocation.dateofevent, time: eventLocation.time, addidtionalInformation: eventLocation.addidtionalInformation })
+
+      setAddress({
+        city: { ...adress.city, value: eventLocation.Address.city },
+        street: { ...adress.street, value: eventLocation.Address.street },
+        number: { ...adress.street, value: eventLocation.Address.number },
+        postcode: { ...adress.postcode, value: eventLocation.Address.postcode }
+      });
+      setTempAdress({ city: eventLocation.Address.city, street: eventLocation.Address.street, number: eventLocation.Address.number, postcode: eventLocation.Address.postcode })
 
 
+    }, 2000);
     return () => { };
   }, []);
 

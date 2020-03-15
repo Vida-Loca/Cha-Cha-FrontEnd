@@ -1,10 +1,21 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import PaginatedContainer from "../../../components/PaginatedContainer";
 import UserCard from "../../../components/UserCard";
 import { Button } from "../../../components/Button";
 import { friends, friendsRequests } from "../../../mockData";
 
 const FriendsList = () => {
+
+    const [friendList, setFriendList] = useState([])
+    const [friendRequests, setFriendRequests] = useState([])
+
+    useEffect(() => {
+        setTimeout(() => {
+            setFriendList(friends);
+            setFriendRequests(friendsRequests);
+        }, 1000);
+
+    }, []);
 
     const removeFromFriendsList = (username) => {
         console.log(`removing from friends list ${username}`)
@@ -20,11 +31,11 @@ const FriendsList = () => {
         <div>
             <PaginatedContainer
                 title="Friends"
-                items={friends}
+                items={friendList}
                 perPage={5}
                 render={({ items }) =>
                     items.map(ev => (
-                        <UserCard key={ev.username} username={ev.username} showControlls>
+                        <UserCard key={ev.username} username={ev.username} imageUrl={ev.avatarUrl} showControlls>
                             <Button clicked={() => removeFromFriendsList(ev.username)} classes="btn-orangeGradient btn-sm">
                                 <i className="fas fa-user-minus" />
                             </Button>
@@ -34,11 +45,11 @@ const FriendsList = () => {
             />
             <PaginatedContainer
                 title="Friend Requests"
-                items={friendsRequests}
+                items={friendRequests}
                 perPage={5}
                 render={({ items }) =>
                     items.map(ev => (
-                        <UserCard key={ev.username} username={ev.username} showControlls>
+                        <UserCard key={ev.username} username={ev.username} imageUrl={ev.avatarUrl} showControlls>
                             <Button clicked={() => ignoreRequestFriendsList(ev.username)} classes="btn-orangeGradient btn-sm">
                                 <i className="fas fa-user-times" />
                             </Button>

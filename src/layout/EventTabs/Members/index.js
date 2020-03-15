@@ -16,15 +16,18 @@ import InviteUserFormContainer from "./InviteUserFormContainer";
 const Members = ({ id }) => {
   const isUserAdmin = useState(true)[0];
 
+  const setform = useContext(FormContext)[1];
+  const [eventMemebers, seEventMemebers] = useState([]);
+  const [eventRequests, seEventRequests] = useState([]);
+
   useEffect(() => {
 
+    setTimeout(() => {
+      seEventMemebers(membersOfTheEvent);
+      seEventRequests(requestsFoThisEvent);
+    }, 1000);
 
-    return () => {
-      console.log("unoounted ");
-    };
   }, []);
-
-  const setform = useContext(FormContext)[1];
 
   const openModalToInviteUser = () => {
     setform({ show: true, renderForm: <InviteUserFormContainer id={id} /> });
@@ -48,8 +51,8 @@ const Members = ({ id }) => {
         + Invite User
       </Button>
       <PaginatedContainer
-        title={`Pending requests ● ${requestsFoThisEvent.length}`}
-        items={requestsFoThisEvent}
+        title={`Pending requests ● ${eventMemebers.length}`}
+        items={eventMemebers}
         perPage={4}
         render={({ items }) =>
           items.map(ev => (
@@ -61,8 +64,8 @@ const Members = ({ id }) => {
       />
 
       <PaginatedContainer
-        title={`Members ● ${membersOfTheEvent.length}`}
-        items={membersOfTheEvent}
+        title={`Members ● ${eventRequests.length}`}
+        items={eventRequests}
         perPage={3}
         render={({ items }) =>
           items.map(ev => (

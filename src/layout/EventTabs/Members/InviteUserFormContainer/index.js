@@ -9,7 +9,6 @@ import { friends } from "../../../../mockData";
 
 import "./inviteFriends.scss";
 
-// import { UserContext } from "../../../../context/UserContext";
 
 const InviteUserFormContainer = id => {
   const [forms, setForm] = useContext(FormContext);
@@ -18,7 +17,9 @@ const InviteUserFormContainer = id => {
   const [dislpayFriends, setDislpayFreinds] = useState([]);
 
   useEffect(() => {
-    setDislpayFreinds(friends);
+    setTimeout(() => {
+      setDislpayFreinds(friends);
+    }, 1000);
     return () => { };
   }, []);
 

@@ -1,4 +1,4 @@
-import React, { useContext, useState } from "react";
+import React, { useContext, useState, useEffect } from "react";
 
 import { FormContext } from "../../context/FormContext";
 import { UserContext } from "../../context/UserContext";
@@ -13,28 +13,56 @@ import { TextInput } from "../../components/Inputs";
 import EventCard from "../../components/EventCard";
 import PaginatedContainer from "../../components/PaginatedContainer";
 import Avatar from "../../components/Avatar";
-import UserCard from "../../components/UserCard";
 import checkValidation from "../../validation";
 import ChangeAvatarContainer from "./ChangeAvatarContainer";
 import FriendsList from "./FriendsList";
 
+import { loggedInUser } from "../../mockData";
+
 const Profile = () => {
   const [userInfo, setUserInfo] = useState({
-    username: "username",
-    email: "email@email.com",
-    datejoined: "2010-10-12"
+    username: "Loading ...",
+    email: "Loading ...",
+    datejoined: "Loading ...",
+    avatarUrl: ""
   });
   const [editableUserInfo, setEditableUserInfo] = useState({
-    name: { value: "name", isValid: true, err: "" },
-    surname: { value: "surname", isValid: true, err: "" },
-    tempName: "name",
-    teempSurname: "surname"
+    name: { value: "Loading ...", isValid: true, err: "" },
+    surname: { value: "Loading ...", isValid: true, err: "" },
+    tempName: "Loading ...",
+    tempSurname: "Loading ..."
   });
 
-  const [forms, setform] = useContext(FormContext);
+  const [myEvents, setMyEvents] = useState([]);
+  const [invitations, setInvitations] = useState([]);
+
+  const setform = useContext(FormContext)[1];
   const setuser = useContext(UserContext)[1];
   const [editState, setEdit] = useState(false);
 
+
+  useEffect(() => {
+    setTimeout(() => {
+      setUserInfo({
+        username: loggedInUser.username,
+        email: loggedInUser.email,
+        datejoined: loggedInUser.joined.substring(0, 10),
+        avatarUrl: loggedInUser.picUrl
+      })
+
+      setEditableUserInfo({
+        name: { value: loggedInUser.name, isValid: true, err: "" },
+        surname: { value: loggedInUser.surname, isValid: true, err: "" },
+        tempName: loggedInUser.name,
+        tempSurname: loggedInUser.surname
+      })
+
+      setMyEvents(events);
+      setInvitations(events);
+
+    }, 1000);
+
+  }, []);
 
   const editableFormProfile = useState([
     {
@@ -81,7 +109,7 @@ const Profile = () => {
     setEditableUserInfo({
       ...editableUserInfo,
       name: { ...editableUserInfo.name, value: editableUserInfo.tempName, err: [] },
-      surname: { ...editableUserInfo.surname, value: editableUserInfo.teempSurname, err: [] }
+      surname: { ...editableUserInfo.surname, value: editableUserInfo.tempSurname, err: [] }
     });
   };
 
@@ -132,7 +160,7 @@ const Profile = () => {
     <div className="profileRootContainer">
       <div className="ProfileCard">
         <div className="Avatar-section">
-          <Avatar imageLink={userInfo.picUrl} />
+          <Avatar imageLink={userInfo.avatarUrl} />
           <div className="editBtn">
             <IconButton clicked={changeAvatarInModal} iconClass="fas fa-image" />
           </div>
@@ -191,7 +219,7 @@ const Profile = () => {
       <div className="event-section">
         <PaginatedContainer
           title="My Events"
-          items={events}
+          items={myEvents}
           perPage={4}
           render={({ items }) =>
             items.map(ev => (
@@ -208,7 +236,7 @@ const Profile = () => {
         />
         <PaginatedContainer
           title="Invitations"
-          items={events}
+          items={invitations}
           perPage={4}
           render={({ items }) =>
             items.map(ev => (

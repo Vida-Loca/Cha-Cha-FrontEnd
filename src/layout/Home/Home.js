@@ -1,4 +1,4 @@
-import React, { useContext, useState } from "react";
+import React, { useContext, useState, useEffect } from "react";
 import { Link } from "react-router-dom";
 import { FormContext } from "../../context/FormContext";
 
@@ -15,23 +15,16 @@ import EventCard from "../../components/EventCard";
 import PaginatedContainer from "../../components/PaginatedContainer";
 
 const Home = () => {
-  const [eventsList, setEventsList] = useState([]);
+  const [publicEventsList, setPublicEventsList] = useState([]);
+  const [friendsEventsList, setFriendsEventsList] = useState([]);
 
-  // useEffect(() => {
-  //   userService
-  //     .getAllEvents()
-  //     .then(body => {
-  //       return body;
-  //     })
-  //     .then(res => {
-  //       setEventsList(res);
-  //       console.log(eventsList);
-  //     })
-  //     .catch(err => {
-  //       console.log(err);
-  //     });
-  //   return () => {};
-  // }, [eventsList]);
+  useEffect(() => {
+    setTimeout(() => {
+      setPublicEventsList(events);
+      setFriendsEventsList(events);
+    }, 1000);
+
+  }, []);
 
   const [forms, setform] = useContext(FormContext);
   const createNewEventModal = () => {
@@ -52,7 +45,7 @@ const Home = () => {
       <div className="dashboard">
         <PaginatedContainer
           title="Public Events"
-          items={events}
+          items={publicEventsList}
           render={({ items }) =>
             items.map(ev => (
               <EventCard
@@ -68,7 +61,7 @@ const Home = () => {
         />
         <PaginatedContainer
           title="Friend's Events"
-          items={events}
+          items={friendsEventsList}
           render={({ items }) =>
             items.map(ev => (
               <EventCard

@@ -5,6 +5,7 @@ import { friends, friendsRequests } from "./friends";
 import events from "./PublicEvents";
 import allEvents from "./allEvents";
 import allUsers from "./allUsers";
+import loggedInUser from "./LoggedInUser";
 
 export {
   friends,
@@ -15,5 +16,6 @@ export {
   eventProducts,
   events,
   allEvents,
-  allUsers
+  allUsers,
+  loggedInUser
 };
