@@ -10,6 +10,7 @@ import Supply from "./Supply";
 import Location from "./Location";
 import Members from "./Members";
 import MainPage from "./MainPage";
+import Settings from "./Settings";
 
 const Event = ({ eventId, eventPath }) => {
   // check if user is a part of this event
@@ -42,6 +43,7 @@ const Event = ({ eventId, eventPath }) => {
             <Route path={`${eventPath}/suplies`} exact render={() => <Supply id={eventId} />} />
             <Route path={`${eventPath}/location`} exact render={() => <Location id={eventId} />} />
             <Route path={`${eventPath}/members`} exact render={() => <Members id={eventId} />} />
+            <Route path={`${eventPath}/settings`} exact render={() => <Settings id={eventId} />} />
           </>
         )}
     </>
