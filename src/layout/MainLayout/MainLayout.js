@@ -37,7 +37,7 @@ const MainLayout = () => {
     <div className="MainLayout">
       <BrowserRouter>
         <Sidebar classes="SideBar-orange" navlinks={isUserAdmin ? mainNav : mainNavNoAdmin} />
-        <div>
+        <>
           <Switch>
             <Route path="/" exact render={() => <Redirect to="/home" />} />
             <Route path="/home" exact render={() => <Home />} />
@@ -50,7 +50,7 @@ const MainLayout = () => {
             />
             <Redirect from="*" to="/home" />
           </Switch>
-        </div>
+        </>
         <Route
           path="/event/:id"
           render={({ match }) => (
