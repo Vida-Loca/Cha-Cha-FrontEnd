@@ -21,7 +21,6 @@ import Spinner from "../../components/Spinner";
 import { loggedInUser } from "../../mockData";
 
 const Profile = () => {
-  let __isMounted = false
 
   const [userInfo, setUserInfo] = useState({
     username: "Loading ...",
@@ -39,13 +38,13 @@ const Profile = () => {
   const [myEvents, setMyEvents] = useState({ events: [], spinner: true });
   const [invitations, setInvitations] = useState({ invitations: [], spinner: true });
 
-  const setform = useContext(FormContext)[1];
-  const setuser = useContext(UserContext)[1];
+  const [, setform] = useContext(FormContext);
+  const [, setuser] = useContext(UserContext);
   const [editState, setEdit] = useState(false);
 
 
   useEffect(() => {
-    __isMounted = true;
+    let __isMounted = true;
     setTimeout(() => {
       if (__isMounted) {
         setUserInfo({
