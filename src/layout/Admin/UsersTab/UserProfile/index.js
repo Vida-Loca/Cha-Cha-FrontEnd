@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from "react";
-import Avatar from "../Avatar";
-import { Button, EditButton } from "../../components/Button";
-import { loggedInUser } from "../../mockData";
+import Avatar from "../../../../components/Avatar";
+import { Button, EditButton } from "../../../../components/Button";
+import { loggedInUser } from "../../../../mockData";
 
 
 const UserProfile = () => {
@@ -64,10 +64,10 @@ const UserProfile = () => {
                 confirm={deleteAccount}
                 tags
                 render={
-                    <>
-                        <i className="far fa-trash-alt" />
-                delete
-                    </>} />
+                    <><i className="far fa-trash-alt" />delete</>} />
+            <Button classes="btn-sm btn-orangeGradient">
+                promote to Admin
+          </Button>
         </div>)
 }
 

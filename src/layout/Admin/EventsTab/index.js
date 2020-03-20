@@ -33,6 +33,13 @@ const EventLayout = () => {
       [`${event.target.name}`]: event.target.value
     });
   };
+
+  const searchingEventsWithFilter = () => {
+    if (searchFilter.name.length > 0 || (searchFilter.startDate.length > 0 && searchFilter.endDate.length > 0)) {
+      console.log("searching by ...");
+      console.log(`name=${searchFilter.name}/startDate=${searchFilter.startDate}/endDate=${searchFilter.endDate}`)
+    }
+  }
   return (
     <div className="all-user-container">
       <div className="search-filters">
@@ -60,7 +67,7 @@ const EventLayout = () => {
           value={searchFilter.name}
           classes="input-blue search-bar"
         />
-        <Button classes="form-btn btn-blueGradient btn-sm search-btn">Search </Button>
+        <Button clicked={searchingEventsWithFilter} classes="form-btn btn-blueGradient btn-sm search-btn">Search </Button>
       </div>
       <PaginatedContainer
         title="All Events"

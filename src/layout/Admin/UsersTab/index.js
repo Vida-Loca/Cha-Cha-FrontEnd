@@ -7,7 +7,7 @@ import { TextInput } from "../../../components/Inputs";
 import PaginatedContainer from "../../../components/PaginatedContainer";
 import Spinner from "../../../components/Spinner";
 import UserCard from "../../../components/UserCard";
-import UserProfile from "../../../components/UserProfile";
+import UserProfile from "./UserProfile";
 import "./UserLayout.scss";
 
 const UsersLayout = () => {
