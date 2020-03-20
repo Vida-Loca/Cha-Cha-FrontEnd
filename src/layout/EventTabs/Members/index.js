@@ -19,7 +19,7 @@ const Members = ({ id }) => {
 
   const isUserAdmin = useState(true)[0];
 
-  const setform = useContext(FormContext)[1];
+  const [, setform] = useContext(FormContext);
   const [eventMemebers, seEventMemebers] = useState({ members: [], spinner: true });
   const [eventRequests, seEventRequests] = useState({ members: [], spinner: true });
 

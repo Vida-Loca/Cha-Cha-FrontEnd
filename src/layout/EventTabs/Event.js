@@ -25,7 +25,7 @@ const Event = ({ eventId, eventPath }) => {
   }, []);
 
   return (
-    <>
+    <div className="event-container">
       <h1 className="EventName">{eventName}</h1>
       <Route
         path={`${eventPath}/`}
@@ -46,7 +46,7 @@ const Event = ({ eventId, eventPath }) => {
             <Route path={`${eventPath}/settings`} exact render={() => <Settings id={eventId} />} />
           </>
         )}
-    </>
+    </div>
   );
 };
 

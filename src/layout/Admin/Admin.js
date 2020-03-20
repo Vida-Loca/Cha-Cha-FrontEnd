@@ -2,12 +2,12 @@ import React from "react";
 import "./Admin.scss";
 import { Route, Redirect } from "react-router-dom";
 
-import UserLayout from "./UsersLayout/UsersLayout";
-import EventLayout from "./EventLayout/EventLayout";
+import UserLayout from "./UsersTab";
+import EventLayout from "./EventsTab";
 
 const Admin = () => {
   return (
-    <div className="AdminLayoutBody">
+    <div className="admin-body">
       <Route
         path="/admin"
         exact
