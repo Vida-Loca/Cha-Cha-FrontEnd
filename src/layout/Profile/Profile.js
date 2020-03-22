@@ -8,7 +8,7 @@ import { authenticationService } from "../../Authentication/service";
 import { events } from "../../mockData";
 import "./Profile.scss";
 
-import { IconButton, Button, EditButton } from "../../components/Button";
+import { Button, EditButton } from "../../components/Button";
 import { TextInput } from "../../components/Inputs";
 import EventCard from "../../components/EventCard";
 import PaginatedContainer from "../../components/PaginatedContainer";
@@ -26,7 +26,7 @@ const Profile = () => {
     username: "Loading ...",
     email: "Loading ...",
     datejoined: "Loading ...",
-    avatarUrl: ""
+    avatarUrl: "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTSLmktkJrArXh_zZVovazl5mb3lna9HXqPo7XvvviCSQAuru5C&s"
   });
   const [editableUserInfo, setEditableUserInfo] = useState({
     name: { value: "Loading ...", isValid: true, err: "" },
@@ -164,15 +164,15 @@ const Profile = () => {
   };
 
   return (
-    <div className="profileRootContainer">
-      <div className="ProfileCard">
-        <div className="Avatar-section">
+    <div className="profile-container">
+      <div className="profile-card">
+        <div className="avatar-section">
           <Avatar imageLink={userInfo.avatarUrl} />
-          <div className="editBtn">
-            <IconButton clicked={changeAvatarInModal} iconClass="fas fa-image" />
+          <div className="edit-btn">
+            <Button clicked={changeAvatarInModal} classes="change-avatar-icon"><i className="fas fa-image" /></Button>
           </div>
           <span className="username">{`@${userInfo.username}`}</span>
-          <Button clicked={LogOut} classes="btn-sm btn-orangeGradient">
+          <Button clicked={LogOut} classes="btn-sm btn-orangeGradient logout">
             Log out
           </Button>
         </div>
@@ -218,7 +218,7 @@ const Profile = () => {
           ))}
         </div>
       </div>
-      <div>
+      <div className="friends-btn">
         <Button classes="btn-md btn-default" clicked={showFriendsInModal}>
           friends
         </Button>

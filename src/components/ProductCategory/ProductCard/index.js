@@ -2,7 +2,7 @@
 import React, { useState } from "react";
 import PropTypes from "prop-types";
 import Avatar from "../../Avatar";
-import { IconButton, EditButton } from "../../Button";
+import { Button, EditButton } from "../../Button";
 import "./ProductCard.scss";
 import { TextInputNL, TextArea } from "../../Inputs";
 
@@ -21,9 +21,7 @@ const ProductCard = ({ id, user, supply, price, picUrl }) => {
 
   const [tileState, tileStateSet] = useState(false);
 
-  const changeOptions = () => {
-    tileStateSet(!tileState);
-  };
+
 
   const onChangeHandlerPrice = event => {
     if (event.target.value.length < 20) {
@@ -42,6 +40,11 @@ const ProductCard = ({ id, user, supply, price, picUrl }) => {
     };
   }
 
+  const changeOptions = () => {
+    tileStateSet(!tileState);
+    setDeleteState(false);
+    setEditState(false);
+  };
 
   const deleteHandler = () => {
     setDeleteState(!deleteState);
@@ -86,11 +89,35 @@ const ProductCard = ({ id, user, supply, price, picUrl }) => {
   }
 
   return (
-    <div className="OuterSupplyTile">
-      <div className="UserTileBody">
+    <>
+      <div className="product-card-container tooltip">
+        {/* <span className={editState ? "tooltiptext tooltiptext-active" : "tooltiptext"}> */}
+        {tileState && (
+          <span className="tooltiptext">
+            {!editState &&
+              <EditButton
+                options={deleteState}
+                activate={deleteHandler}
+                cancel={cancelDelete}
+                render={<i className="far fa-trash-alt" />}
+                confirm={deletingProduct}
+              />}
+
+            {!deleteState &&
+              <EditButton
+                options={editState}
+                activate={editHandler}
+                cancel={cancelEdit}
+                render={<i className="far fa-edit" />}
+                confirm={updatingProduct}
+              />}
+
+          </span>
+        )}
+
         <Avatar title={tileSupply.user} imageLink={tileSupply.picUrl} />
         <span className="product-info">
-          <span>
+          <span className="price-container">
             <span className="product-currency">PLN</span>
             <TextInputNL
               onChange={onChangeHandlerPrice}
@@ -104,29 +131,12 @@ const ProductCard = ({ id, user, supply, price, picUrl }) => {
           </span>
           <TextArea value={tileSupply.supply} name="supply" onChange={onChangeHandlerDescription} disabled={!editState} />
         </span>
-
-        {tileState ? (
-          <div>
-            <EditButton
-              options={deleteState}
-              activate={deleteHandler}
-              cancel={cancelDelete}
-              render={<i className="far fa-trash-alt" />}
-              confirm={deletingProduct}
-            />
-            <EditButton
-              options={editState}
-              activate={editHandler}
-              cancel={cancelEdit}
-              render={<i className="far fa-edit" />}
-              confirm={updatingProduct}
-            />
-          </div>
-        ) : (
-            <IconButton clicked={changeOptions} iconClass="fas fa-ellipsis-v" />
-          )}
+        <Button classes="options-btn" clicked={changeOptions}>
+          {tileState ? <i className="fas fa-times" /> : <i className="fas fa-ellipsis-v" />}
+        </Button>
       </div>
-    </div>
+    </>
+
   );
 };
 ProductCard.defaultProps = {

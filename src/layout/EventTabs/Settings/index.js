@@ -1,4 +1,6 @@
 import React, { useState, useEffect } from "react";
+import { Redirect } from "react-router-dom";
+
 import { OptionsInput } from "../../../components/Inputs";
 import { Button, EditButton } from "../../../components/Button";
 import Spinner from "../../../components/Spinner";
@@ -14,11 +16,13 @@ const Settings = ({ id }) => {
 
     const [editState, setEdit] = useState(false);
 
+    const [deleted, setDeleted] = useState(false);
+
     const [settings, setSettings] = useState({
-        privacy: "private",
+        privacy: { value: "private", spinner: false },
+        currency: { value: "private", spinner: false },
         admins: { users: [], spinner: true },
-        users: { users: [], spinner: true },
-        currency: ""
+        users: { users: [], spinner: true }
     })
 
     useEffect(() => {
@@ -27,10 +31,10 @@ const Settings = ({ id }) => {
         setTimeout(() => {
             if (__isMounted) {
                 setSettings({
-                    privacy: "private",
+                    privacy: { value: "private", spinner: false },
                     admins: { users: membersOfTheEvent, spinner: false },
                     users: { users: requestsFoThisEvent, spinner: false },
-                    currency: "PLN"
+                    currency: { value: "PLN", spinner: false }
                 });
             }
 
@@ -51,10 +55,11 @@ const Settings = ({ id }) => {
         })
     }
 
-    const confirmEventDeletion = () => {
+    const confirmEventDeletion = ({ history }) => {
         setTimeout(() => {
             console.log("deleting")
             editHandler();
+            setDeleted(true);
         }, 2000);
     }
 
@@ -69,7 +74,20 @@ const Settings = ({ id }) => {
         }, 2000);
     }
 
-
+    const saveCurrencyChanges = () => {
+        setSettings({ ...settings, currency: { ...settings.currency, spinner: true } })
+        setTimeout(() => {
+            console.log(`currency changed to ${settings.currency.value} on event: ${id}`)
+            setSettings({ ...settings, currency: { ...settings.currency, spinner: false }, privacy: { ...settings.privacy, spinner: false } })
+        }, 2000);
+    }
+    const savePrivacyChanges = () => {
+        setSettings({ ...settings, privacy: { ...settings.privacy, spinner: true } })
+        setTimeout(() => {
+            console.log(`privacy changed to ${settings.privacy.value} on event: ${id}`)
+            setSettings({ ...settings, privacy: { ...settings.privacy, spinner: false }, currency: { ...settings.currency, spinner: false } })
+        }, 2000);
+    }
 
     var currencyCodes = [
         "AFN", "ALL", "AMD", "ANG", "AOA", "ARS", "AUD", "AWG", "AZN", "BAM",
@@ -89,39 +107,34 @@ const Settings = ({ id }) => {
         "UZS", "VEF", "VND", "VUV", "WST", "XAF", "XAG", "XAU", "XBA", "XBB", "XBC",
         "XBD", "XCD", "XDR", "XFU", "XOF", "XPD", "XPF", "XPT", "XTS", "XXX", "YER",
         "ZAR", "ZMW"];
-    // var currencyCodes = [
-    //     { country: "United States dollar", abrev: "USD" }, { country: "	European euro", abrev: "EUR" }, { country: "Australian dollar", abrev: "AUD" },
-    //     { country: "Armenian dram", abrev: "AMD" }, { country: "Belarusian ruble", abrev: "BYN" }, { country: "Canadian dollar", abrev: "CAD" },
-    //     { country: "Brazilian real", abrev: "BRL" }, { country: "Bulgarian lev", abrev: "BGN" }, { country: "Chinese Yuan Renminbi", abrev: "CNY" },
-    //     { country: "Czech koruna", abrev: "CZK" }, { country: "Danish krone", abrev: "DKK" }, { country: "Egyptian pound", abrev: "EGP" },
-    //     { country: "Georgian lari", abrev: "GEL" }, { country: "Indian rupee", abrev: "INR" }, { country: "Iranian rial", abrev: "IRR" },
-    //     { country: "Israeli new shekel", abrev: "ILS" }, { country: "Kazakhstani tenge", abrev: "KZT" }, { country: "Nigerian naira", abrev: "NGN" },
-    //     { country: "Japanese yen", abrev: "JPY" }, { country: "North Korean won", abrev: "KPW" }, { country: "Norwegian krone", abrev: "NOK" },
-    //     { country: "Polish zloty", abrev: "PLN" }, { country: "Russian ruble", abrev: "RUB" }, { country: "Romanian leu", abrev: "RON" },
-    //     { country: "Serbian dinar", abrev: "RSD" }, { country: "South Korean won", abrev: "KRW" }, { country: "Swiss franc", abrev: "CHF" },
-    //     { country: "Swedish krona", abrev: "SEK" }, { country: "Swedish krona", abrev: "UGX" }, { country: "Ukrainian hryvnia", abrev: "UAH" },
-    //     { country: "Pound sterling", abrev: "GBP" }, { country: "Venezuela", abrev: "VES" }, { country: "Uzbekistani som", abrev: "UZS" }];
 
     return (
         <div className="settings-container">
-
-            <div className="setting-box">
+            {deleted && <Redirect to="/" push={true} />}
+            <div className="privacy-box">
                 <div className="header-button">
                     <h2>Privacy</h2>
-                    <Button classes="btn-blueGradient btn-sm">Save changes</Button>
+                    {settings.privacy.spinner
+                        ? <Spinner />
+                        : <Button clicked={savePrivacyChanges} classes="btn-blueGradient btn-sm">Save changes</Button>
+                    }
+
                 </div>
-                <OptionsInput onChange={onChangeHandler} value={settings.privacy} name="privacy" options={["private", "public", "friends"]} />
+                <OptionsInput onChange={onChangeHandler} value={settings.privacy.value} name="privacy" options={["private", "public", "friends"]} />
 
             </div>
-            <div className="setting-box">
+            <div className="currency-box">
                 <div className="header-button">
                     <h2>Currency</h2>
-                    <Button classes="btn-blueGradient btn-sm">Save changes</Button>
+                    {settings.currency.spinner
+                        ? <Spinner />
+                        : <Button clicked={saveCurrencyChanges} classes="btn-blueGradient btn-sm">Save changes</Button>
+                    }
                 </div>
-                <OptionsInput onChange={onChangeHandler} value={settings.currency} name="currency" options={currencyCodes} />
+                <OptionsInput onChange={onChangeHandler} value={settings.currency.value} name="currency" options={currencyCodes} />
 
             </div>
-            <div className="setting-box">
+            <div className="delete-box">
                 <h2>Delete Event</h2>
                 <EditButton
                     options={editState}
@@ -132,7 +145,7 @@ const Settings = ({ id }) => {
                     render={
                         <><i className="far fa-trash-alt" />Delete</>} />
             </div>
-            <div className="setting-box">
+            <div className="admin-members-box">
                 <h2>Event Admins</h2>
                 <PaginatedContainer
                     title=""
@@ -144,7 +157,7 @@ const Settings = ({ id }) => {
                             : ({ items }) =>
                                 items.map(ev => (
                                     <UserCard key={ev.username} username={ev.username} showControlls={true}>
-                                        <Button clicked={() => demoteAdmin(ev.username)} classes="btn-orangeGradient btn-sm">demote</Button>
+                                        <Button clicked={() => demoteAdmin(ev.username)} classes="btn-secondary-orange-active btn-sm">demote</Button>
                                     </UserCard>
                                 ))} />
 
@@ -159,7 +172,7 @@ const Settings = ({ id }) => {
                             : ({ items }) =>
                                 items.map(ev => (
                                     <UserCard key={ev.username} username={ev.username} showControlls={true}>
-                                        <Button clicked={() => promoteToAdmin(ev.username)} classes="btn-blueGradient btn-sm">promote</Button>
+                                        <Button clicked={() => promoteToAdmin(ev.username)} classes="btn-secondary-orange btn-sm">promote</Button>
                                     </UserCard>
                                 ))} />
             </div>

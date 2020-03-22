@@ -1,13 +1,14 @@
 import React from "react";
-import "./Admin.scss";
 import { Route, Redirect } from "react-router-dom";
 
 import UserLayout from "./UsersTab";
 import EventLayout from "./EventsTab";
+import "./admin.scss";
+
 
 const Admin = () => {
   return (
-    <div className="admin-body">
+    <div className="admin-container">
       <Route
         path="/admin"
         exact

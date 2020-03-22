@@ -6,7 +6,7 @@ import "./Event.scss";
 
 // import { userService } from "../../Authentication/service";
 
-import Supply from "./Supply";
+import Products from "./Products";
 import Location from "./Location";
 import Members from "./Members";
 import MainPage from "./MainPage";
@@ -26,7 +26,7 @@ const Event = ({ eventId, eventPath }) => {
 
   return (
     <div className="event-container">
-      <h1 className="EventName">{eventName}</h1>
+      <h1 className="event-name">{eventName}</h1>
       <Route
         path={`${eventPath}/`}
         exact
@@ -34,13 +34,12 @@ const Event = ({ eventId, eventPath }) => {
       />
       {!hasAuthorization ? (
         <Route
-          path={`${eventPath}/*`}
-          exact
+          path={`${eventPath}/*`} exact
           render={() => <Redirect to={`${eventPath.substring(0, eventPath.length - 4)}/${eventId}`} />}
         />
       ) : (
           <>
-            <Route path={`${eventPath}/suplies`} exact render={() => <Supply id={eventId} />} />
+            <Route path={`${eventPath}/products`} exact render={() => <Products id={eventId} />} />
             <Route path={`${eventPath}/location`} exact render={() => <Location id={eventId} />} />
             <Route path={`${eventPath}/members`} exact render={() => <Members id={eventId} />} />
             <Route path={`${eventPath}/settings`} exact render={() => <Settings id={eventId} />} />

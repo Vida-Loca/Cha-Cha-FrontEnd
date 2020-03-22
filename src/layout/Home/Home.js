@@ -42,8 +42,8 @@ const Home = () => {
 
 
   return (
-    <div className="HomeLayout">
-      <div>
+    <div className="home-container">
+      <div className="buttons-container">
         <Button clicked={createNewEventModal} classes="btn-md btn-blueGradient">+ Create Event</Button>
         <Button clicked={friendSearchModal} classes="btn-md btn-orangeGradient">Look for friends</Button>
       </div>

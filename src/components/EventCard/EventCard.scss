@@ -5,12 +5,9 @@ a {
   margin: 0.5rem;
   transition: 0.5s all;
   max-width: 25rem;
-  // &:hover {
-  //   margin: 0.7rem 0.5rem;
-  // }
 }
 
-.Event-Card {
+.event-card {
   display: grid;
   cursor: pointer;
   grid-template-columns: 1fr;
@@ -33,14 +30,14 @@ a {
   }
 }
 
-.Event-Complete {
+.event-complete {
   background: $grey-1;
   &:hover {
     background: $grey-2;
   }
 }
 
-.eventIcon {
+.event-icon {
   background: $grey-6;
   border-radius: 50rem;
   margin: 0.5rem 1rem;
@@ -58,7 +55,7 @@ a {
   }
 }
 
-.eventIcon-complete {
+.event-icon-complete {
   background: $grey-3;
 }
 

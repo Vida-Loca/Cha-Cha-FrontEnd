@@ -55,7 +55,7 @@ const Members = ({ id }) => {
 
 
   return (
-    <div className="MembersContainer">
+    <div className="members-container">
       <Button clicked={openModalToInviteUser} classes="btn-blueGradient btn-md">
         + Invite User
       </Button>

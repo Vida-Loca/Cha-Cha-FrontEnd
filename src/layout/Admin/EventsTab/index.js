@@ -2,21 +2,20 @@ import React, { useState, useEffect } from "react";
 import { events } from "../../../mockData";
 
 import { Button } from "../../../components/Button";
-import { TextInput } from "../../../components/Inputs";
+import { SearchBar, TextInput } from "../../../components/Inputs";
 import EventCard from "../../../components/EventCard";
 import PaginatedContainer from "../../../components/PaginatedContainer";
 import Spinner from "../../../components/Spinner";
 import "./EventTab.scss";
 
 const EventLayout = () => {
-  let __isMounted = false
 
   const [publicEventsList, setPublicEventsList] = useState({ events: [], spinner: true });
 
   const [searchFilter, setSearchFilter] = useState({ startDate: "", endDate: "", name: "" });
 
   useEffect(() => {
-    __isMounted = true;
+    let __isMounted = true;
     setTimeout(() => {
       if (__isMounted) {
         setPublicEventsList({ events: events, spinner: false });
@@ -59,15 +58,14 @@ const EventLayout = () => {
           value={searchFilter.endDate}
           classes="input-blue text-input-extra date"
         />
-        <TextInput
+        <SearchBar
           onChange={onChangeHandler}
           placeholder="name"
-          type="text"
           name="name"
           value={searchFilter.name}
-          classes="input-blue search-bar"
+          clicked={searchingEventsWithFilter}
         />
-        <Button clicked={searchingEventsWithFilter} classes="form-btn btn-blueGradient btn-sm search-btn">Search </Button>
+
       </div>
       <PaginatedContainer
         title="All Events"

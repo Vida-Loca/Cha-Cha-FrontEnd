@@ -1,6 +1,6 @@
 @import "../../style/globalVariabels.scss";
 
-.CategoryContainer {
+.category-container {
   transition: all 0.2s;
   background: $grey-1;
   border-radius: $border-radius-md;
@@ -8,7 +8,7 @@
   margin: 0.5rem 1rem;
   animation: alertAnimation 5s ease-in-out;
 
-  .SupplyHeader {
+  .product-header {
     display: flex;
     flex-direction: column;
     justify-content: center;
@@ -31,7 +31,7 @@
     }
   }
 
-  .CategoryLabel {
+  .category-label {
     color: black;
     font-weight: bold;
     text-transform: uppercase;
@@ -39,7 +39,7 @@
   }
 }
 
-.PriceAndAdd {
+.price-and-add {
   display: flex;
   justify-content: flex-end;
   margin-bottom: 1rem;
@@ -52,7 +52,7 @@
     font-size: 1rem;
     margin-right: 0.7rem;
   }
-  .PriceLabel {
+  .price-label {
     background: white;
     color: $main-orange;
     font-weight: bold;
@@ -64,7 +64,7 @@
 }
 
 .hide {
-  & > .SupplyBody {
+  & > .product-collection {
     display: none;
   }
 }

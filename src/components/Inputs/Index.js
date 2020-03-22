@@ -1,7 +1,7 @@
 import TextInput from "./TextInput";
 import TextInputNL from "./TextInputNL";
 import TextArea from "./TextArea";
-import RadioInput from "./RadioInput";
+import SearchBar from "./SearchBar";
 import OptionsInput from "./OptionsInput";
 
-export { TextInput, TextInputNL, TextArea, RadioInput, OptionsInput };
+export { SearchBar, TextInput, TextInputNL, TextArea, OptionsInput };

@@ -12,7 +12,7 @@ const PaginatedContainer = ({ render, items, perPage, title }) => {
 
   const paginate = pageNumber => setCurrentPage(pageNumber);
   return (
-    <div className="EventColumn">
+    <div className="paginated-content-column">
       {title === "" ? null : <h2 className="pagination-title">{title}</h2>}
 
       {render({ items: currentPosts })}

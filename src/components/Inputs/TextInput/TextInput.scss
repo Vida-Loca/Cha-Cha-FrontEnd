@@ -19,7 +19,7 @@
   transform: $transforms;
 }
 
-.textInput {
+.text-input {
   position: relative;
   padding: 5px 0;
 
@@ -47,12 +47,10 @@
   }
   input {
     @extend %transition;
-    // margin-top: 0.7rem;
     appearance: none;
     outline: none;
     background-color: none;
     border: 1px solid $grey-6;
-    // line-height: 0;
 
     width: 100%;
     display: block;

@@ -4,7 +4,6 @@ import PropTypes from "prop-types";
 // import { userService } from "../../../Authentication/service";
 import { FormContext } from "../../../context/FormContext";
 
-import "./Supply.scss";
 import createSetOfCategories from "./helper";
 
 import { Button } from "../../../components/Button";
@@ -15,7 +14,9 @@ import AddNewProductContainer from "./AddNewProductContainer";
 import { eventProducts } from "../../../mockData";
 import Spinner from "../../../components/Spinner";
 
-const Supply = ({ id }) => {
+import "./Products.scss";
+
+const Products = ({ id }) => {
 
   let __isMounted = false
 
@@ -44,8 +45,8 @@ const Supply = ({ id }) => {
 
 
   return (
-    <div className="SuplyBody">
-      <div className="buttonContainer">
+    <div className="product-container">
+      <div className="button-container">
         <Button classes="btn-md btn-blueGradient" clicked={addNewProductModal}>
           Add new supply +
         </Button>
@@ -66,8 +67,8 @@ const Supply = ({ id }) => {
   );
 };
 
-Supply.propTypes = {
+Products.propTypes = {
   id: PropTypes.string.isRequired
 };
 
-export default Supply;
+export default Products;

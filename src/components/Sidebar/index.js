@@ -1,7 +1,7 @@
 import React, { useState } from "react";
 import PropTypes from "prop-types";
 import SideBarItem from "./SideBarItem";
-import { IconButton } from "../Button";
+import { Button } from "../Button";
 import "./SideBar.scss";
 
 const Sidebar = ({ navlinks, classes, beforeLink }) => {
@@ -15,9 +15,9 @@ const Sidebar = ({ navlinks, classes, beforeLink }) => {
   };
   return (
     <div className={`${classes} ${showNavBar.show ? "show" : ""}`}>
-      <IconButton clicked={toggleNavBarHandler} iconClass="fas fa-bars">
-        X
-      </IconButton>
+      <Button clicked={toggleNavBarHandler} >
+        <i className="fas fa-bars" />
+      </Button>
       {navlinks.map(navLink => {
         const tempBeforeLink = beforeLink !== undefined ? beforeLink : "";
         return (

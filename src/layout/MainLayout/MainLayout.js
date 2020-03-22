@@ -3,9 +3,10 @@ import { Switch, BrowserRouter, Route, Redirect } from "react-router-dom";
 import { mainNav, adminNav, eventNav, mainNavNoAdmin } from "./Navs";
 import { userService } from "../../Authentication/service";
 
+
 import "./Layout.scss";
 
-import Sidebar from "../../components/Sidebar/Sidebar";
+import Sidebar from "../../components/Sidebar";
 import Home from "../Home/Home";
 import Profile from "../Profile/Profile";
 import Admin from "../Admin/Admin";

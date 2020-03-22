@@ -5,7 +5,7 @@ import "./TextInput.scss";
 const TextInput = ({ name, type, placeholder, onChange, size, classes, disabled, value, error }) => {
   return (
     <>
-      <div className={`textInput ${classes} ${size} `}>
+      <div className={`text-input ${classes} ${size} `}>
         <input type={type} name={name} id={name} onChange={onChange} required disabled={disabled} value={value} />
         <label htmlFor={name}>{placeholder}</label>
         <span className="error-msg">{error}</span>

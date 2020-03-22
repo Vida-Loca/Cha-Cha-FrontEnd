@@ -8,14 +8,7 @@
   border-width: 0;
   outline: none;
 }
-.buttonIcon {
-  cursor: pointer;
-  color: black;
 
-  &:hover {
-    color: rgb(46, 46, 46);
-  }
-}
 
 .btn-sm {
   padding: 0.4rem 0.8rem;
@@ -52,7 +45,6 @@
   background: white;
 
   &:hover {
-    box-shadow: none;
     background: $blue-gradient;
     color: white;
     box-shadow: 0px 0px 5px $main-blue;
@@ -66,7 +58,6 @@
   box-shadow: 0px 0px 5px $main-orange;
 
   &:hover {
-    // box-shadow: none;
     background: white;
     color: $main-orange;
   }
@@ -102,5 +93,31 @@
   &:hover {
     background: $main-orange-1;
     color: $main-orange;
+  }
+}
+
+
+.btn-secondary-orange{
+  @extend %btn;
+  background: $grey-2;
+  border-radius: 50rem;
+  color: rgb(83, 83, 83);
+  box-shadow: inset 0 2px 5px #00000052;
+  &:hover{
+    box-shadow: inset 0 1px 2px #00000052;
+    color: orangered;
+  }
+}
+.btn-secondary-orange-active{
+  @extend %btn;
+  background: $orange-gradient;
+  border-radius: 50rem;
+  box-shadow: inset 0 2px 5px #fff78dd8;
+  color: white;
+  box-shadow: 0px 0px 6px $main-orange;
+  &:hover{
+    box-shadow: inset 0 1px 2px #ffd35acc;
+    color: white;
+    box-shadow: 0px 0px 2px $main-orange;
   }
 }
