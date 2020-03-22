@@ -26,20 +26,6 @@ const CreateEventContainer = () => {
 
   const formInfo = useState([
     {
-      name: "name",
-      config: {
-        type: 'text',
-        placeholder: "event name",
-        classes: "input-blue"
-      },
-      validation: {
-        required: true,
-        string: true,
-        minLength: 5,
-        maxLength: 25,
-      }
-    },
-    {
       name: "startDate",
       config: {
         type: 'date',
@@ -60,6 +46,20 @@ const CreateEventContainer = () => {
       validation: {
         required: true,
         time: true
+      }
+    },
+    {
+      name: "name",
+      config: {
+        type: 'text',
+        placeholder: "event name",
+        classes: "input-blue"
+      },
+      validation: {
+        required: true,
+        string: true,
+        minLength: 5,
+        maxLength: 25,
       }
     }
 
@@ -210,6 +210,7 @@ const CreateEventContainer = () => {
           error={Information[el.name].err[0]}
         />
       ))}
+      <OptionsInput onChange={onChangePrivacy} value={Information.privacy.value} name="privacy" options={["private", "public", "friends"]} />
       {formAdress.map(el => (
         <TextInput
           onChange={onChangeHandlerAddress}
@@ -222,7 +223,6 @@ const CreateEventContainer = () => {
           error={newAddress[el.name].err[0]}
         />
       ))}
-      <OptionsInput onChange={onChangePrivacy} value={Information.privacy.value} name="privacy" options={["private", "public", "friends"]} />
       {sendingDataSpinner
         ? <Spinner classes={"spinner-container-h-sm"} size={"spinner-sm"} />
         : <Button clicked={submitNewEvent} classes="form-btn btn-blueGradient btn-md">Create </Button>

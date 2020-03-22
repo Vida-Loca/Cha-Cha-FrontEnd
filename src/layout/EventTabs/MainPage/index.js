@@ -43,10 +43,10 @@ const MainPage = ({ eventPath, id, isAuth }) => {
   };
 
   return isAuth ? (
-    <Redirect to={`${eventPath.substring(0, eventPath.length - 4)}/${id}/suplies`} />
+    <Redirect to={`${eventPath.substring(0, eventPath.length - 4)}/${id}/products`} />
   ) : (
-    <div className="MainPage">{conditionalRender()}</div>
-  );
+      <div className="MainPage">{conditionalRender()}</div>
+    );
 };
 
 MainPage.propTypes = {

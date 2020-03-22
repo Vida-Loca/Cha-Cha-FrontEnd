@@ -3,12 +3,12 @@ import { FormContext } from "../../../context/FormContext";
 import { allUsers } from "../../../mockData";
 
 import { Button } from "../../../components/Button";
-import { TextInput } from "../../../components/Inputs";
+import { SearchBar, TextInput } from "../../../components/Inputs";
 import PaginatedContainer from "../../../components/PaginatedContainer";
 import Spinner from "../../../components/Spinner";
 import UserCard from "../../../components/UserCard";
 import UserProfile from "./UserProfile";
-import "./UserLayout.scss";
+import "./Users.scss";
 
 const UsersLayout = () => {
   const [findUser, setFindUser] = useState({ username: "" });
@@ -53,15 +53,13 @@ const UsersLayout = () => {
   return (
     <div className="user-container">
       <div className="search-filters">
-        <TextInput
+        <SearchBar
           onChange={onChangeHandler}
-          placeholder="username "
-          type="text"
+          placeholder="username"
           name="username"
           value={findUser.username}
-          classes="input-blue search-bar"
+          clicked={searchForGivenUsername}
         />
-        <Button clicked={searchForGivenUsername} classes="form-btn btn-blueGradient btn-sm search-btn">Search </Button>
       </div>
       <PaginatedContainer
         title={`Members ● ${eventMemebers.members.length}`}

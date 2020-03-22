@@ -1,6 +1,6 @@
 import React, { useEffect } from "react";
 import PropTypes from "prop-types";
-import Backdrop from "../Backdrop/Backdrop";
+import Backdrop from "../Backdrop";
 import "./Modal.scss";
 
 const Modal = ({ show, modalClose, children }) => {

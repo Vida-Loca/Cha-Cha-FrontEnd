@@ -5,7 +5,7 @@ import "./SideBarItem.scss";
 
 const SideBarItem = ({ name, icon, children, beforeLink, mobileNavBarHandler }) => {
   return (
-    <NavLink to={`${beforeLink}/${name.toLowerCase()}`} className="SideBarItem" onClick={() => mobileNavBarHandler()}>
+    <NavLink to={`${beforeLink}/${name.toLowerCase()}`} className="sidebar-item" onClick={() => mobileNavBarHandler()}>
       <i className={icon} />
       {children}
     </NavLink>

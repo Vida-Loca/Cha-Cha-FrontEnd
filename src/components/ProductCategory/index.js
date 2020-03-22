@@ -5,7 +5,7 @@ import "./ProductCategory.scss";
 
 import { ShowMore, Button } from "../Button";
 import ProductCard from "./ProductCard";
-import AddNewProductContainer from "../../layout/EventTabs/Supply/AddNewProductContainer";
+import AddNewProductContainer from "../../layout/EventTabs/Products/AddNewProductContainer";
 
 import { FormContext } from "../../context/FormContext";
 
@@ -29,14 +29,14 @@ const ProductCategory = ({ supCont }) => {
   };
 
   return (
-    <div className={supplyContainer.showMore ? "CategoryContainer" : "CategoryContainer hide"}>
-      <div className="SupplyHeader">
+    <div className={supplyContainer.showMore ? "category-container" : "category-container hide"}>
+      <div className="product-header">
         <div className="label-button">
-          <p className="CategoryLabel">{supplyContainer.Category}</p>
+          <p className="category-label">{supplyContainer.Category}</p>
           <ShowMore showState={supplyContainer.showMore} clicked={() => showMoreHandler()} />
         </div>
-        <div className="PriceAndAdd">
-          <p className="PriceLabel">
+        <div className="price-and-add">
+          <p className="price-label">
             {Number(
               Object.keys(supplyContainer.supplies).reduce((previous, index) => {
                 return previous + supplyContainer.supplies[index].price;
@@ -50,7 +50,7 @@ const ProductCategory = ({ supCont }) => {
         </div>
       </div>
 
-      <div className="SupplyBody">
+      <div className="product-collection">
         {supplyContainer.supplies.map(sup => {
           return (
             <ProductCard

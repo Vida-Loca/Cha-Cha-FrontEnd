@@ -28,7 +28,7 @@
     }
   }
   
-  .EventColumn{
+  .paginated-content-column{
     @include mobile {
       display: grid;
       grid-template-columns: 1fr 1fr;

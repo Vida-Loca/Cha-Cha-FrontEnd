@@ -16,7 +16,7 @@ export const adminNav = [
 
 export const eventNav = [
   {
-    navLink: "Suplies",
+    navLink: "Products",
     iconClass: "fas fa-box-open"
   },
   {

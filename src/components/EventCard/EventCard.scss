@@ -5,18 +5,15 @@ a {
   margin: 0.5rem;
   transition: 0.5s all;
   max-width: 25rem;
-  // &:hover {
-  //   margin: 0.7rem 0.5rem;
-  // }
 }
 
-.Event-Card {
+.event-card {
   display: grid;
   cursor: pointer;
   grid-template-columns: 1fr;
   justify-content: center;
   align-items: center;
-  background: $grey-4;
+  background: $grey-1;
   border-radius: $border-radius-md;
   text-align: center;
 
@@ -29,18 +26,30 @@ a {
   }
 
   &:hover {
-    background: $grey-5;
-  }
-}
-
-.Event-Complete {
-  background: $grey-1;
-  &:hover {
     background: $grey-2;
   }
 }
 
-.eventIcon {
+.event-complete {
+  background: rgb(255, 223, 162);
+  &:hover {
+    background: rgb(255, 210, 126);
+  }
+  .event-icon {
+    background: rgb(255, 182, 87);
+  }
+}
+.event-invite {
+  background: rgb(176, 219, 255);
+  &:hover {
+    background: rgb(158, 211, 255);
+  }
+  .event-icon {
+    background: rgb(123, 165, 255);
+  }
+}
+
+.event-icon {
   background: $grey-6;
   border-radius: 50rem;
   margin: 0.5rem 1rem;
@@ -58,7 +67,7 @@ a {
   }
 }
 
-.eventIcon-complete {
+.event-icon-complete {
   background: $grey-3;
 }
 
@@ -79,9 +88,13 @@ a {
   span {
     font-size: 0.8rem;
     margin: 0.1rem 0;
-    display: block;
     i {
       margin-right: 0.3rem;
     }
+  }
+  strong{
+    font-style: italic;
+    margin-left: 0.5rem;
+    font-size: 0.7rem;
   }
 }

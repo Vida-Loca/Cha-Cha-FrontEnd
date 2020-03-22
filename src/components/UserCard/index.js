@@ -5,7 +5,7 @@ import "./UserCard.scss";
 
 const UserCard = ({ username, imageUrl, showControlls, children }) => {
   return (
-    <div className="UserTile">
+    <div className="user-card-container">
       <div>
         <Avatar imageLink={imageUrl} />
         <strong>{username}</strong>

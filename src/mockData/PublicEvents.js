@@ -4,7 +4,7 @@ const events = [
     name: "event 1",
     startTime: "2:30",
     startDate: "10-12-2019",
-    isComplete: true,
+    eventState: "finished",
     address: {
       city: "Gdansk",
       street: "Oliwska",
@@ -17,7 +17,7 @@ const events = [
     name: "event 2",
     startTime: "2:30",
     startDate: "10-12-2019",
-    isComplete: true,
+    eventState: "finished",
     address: {
       city: "Gdansk",
       street: "Oliwska",
@@ -30,7 +30,7 @@ const events = [
     name: "event 3",
     startTime: "2:30",
     startDate: "10-12-2019",
-    isComplete: false,
+    eventState: "ongoing",
     address: {
       city: "Gdansk",
       street: "Oliwska",
@@ -43,7 +43,7 @@ const events = [
     name: "event 4",
     startTime: "2:30",
     startDate: "10-12-2019",
-    isComplete: false,
+    eventState: "ongoing",
     address: {
       city: "Gdansk",
       street: "Oliwska",
@@ -56,7 +56,7 @@ const events = [
     name: "event 5",
     startTime: "2:30",
     startDate: "10-12-2019",
-    isComplete: true,
+    eventState: "finished",
     address: {
       city: "Gdansk",
       street: "Oliwska",
@@ -69,7 +69,7 @@ const events = [
     name: "event 6",
     startTime: "2:30",
     startDate: "10-12-2019",
-    isComplete: false,
+    eventState: "ongoing",
     address: {
       city: "Gdansk",
       street: "Oliwska",
@@ -82,7 +82,7 @@ const events = [
     name: "event 7",
     startTime: "2:30",
     startDate: "10-12-2019",
-    isComplete: true,
+    eventState: "finished",
     address: {
       city: "Gdansk",
       street: "Oliwska",

@@ -42,8 +42,8 @@ const Home = () => {
 
 
   return (
-    <div className="HomeLayout">
-      <div>
+    <div className="home-container">
+      <div className="buttons-container">
         <Button clicked={createNewEventModal} classes="btn-md btn-blueGradient">+ Create Event</Button>
         <Button clicked={friendSearchModal} classes="btn-md btn-orangeGradient">Look for friends</Button>
       </div>
@@ -53,7 +53,7 @@ const Home = () => {
       <div className="dashboard">
 
         <PaginatedContainer
-          title="Public Events"
+          title={<span><i className="fas fa-door-open" /> {`Public Events`}</span>}
           items={publicEventsList.events}
           render={
             publicEventsList.spinner
@@ -66,13 +66,14 @@ const Home = () => {
                     name={ev.name}
                     date={ev.startDate}
                     location={ev.address}
-                    eventState={ev.isComplete}
+                    eventState={ev.eventState}
                   />
                 ))
           }
         />
         <PaginatedContainer
-          title="Friend's Events"
+          // title="Friend's Events"
+          title={<span><i className="fas fa-users" /> {`Friend's Events`}</span>}
           items={friendsEventsList.events}
           render={
             friendsEventsList.spinner
@@ -85,7 +86,7 @@ const Home = () => {
                     name={ev.name}
                     date={ev.startDate}
                     location={ev.address}
-                    eventState={ev.isComplete}
+                    eventState={ev.eventState}
                   />
                 ))
           }

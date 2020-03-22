@@ -19,17 +19,10 @@
   transform: $transforms;
 }
 
-.textInput {
+.text-input {
   position: relative;
   padding: 5px 0;
 
-  &:first-of-type {
-    padding-top: 0;
-  }
-
-  &:last-of-type {
-    padding-bottom: 0;
-  }
 
   label {
     @extend %transition;
@@ -47,12 +40,10 @@
   }
   input {
     @extend %transition;
-    // margin-top: 0.7rem;
     appearance: none;
     outline: none;
     background-color: none;
     border: 1px solid $grey-6;
-    // line-height: 0;
 
     width: 100%;
     display: block;
@@ -153,8 +144,8 @@
     font-size: 15px;
   }
   .error-msg {
-    margin-top: -12px;
-    padding-top: 11px;
+    margin-top: -15px;
+    padding-top: 13px;
     border-radius: 0 0 2rem 2rem;
   }
 }

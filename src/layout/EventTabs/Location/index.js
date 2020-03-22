@@ -15,8 +15,7 @@ const Location = ({ id }) => {
 
   const [locationInfo, setLocationInfo] = useState({
     dateofevent: { value: "", isValid: true, err: [] },
-    time: { value: "00:00", isValid: true, err: [] },
-    addidtionalInformation: { value: "Loading...", isValid: true, err: [] }
+    time: { value: "00:00", isValid: true, err: [] }
   });
   const [tempLocationInfo, setTempLocationInfo] = useState({ dateofevent: "", time: "Loading...", addidtionalInformation: "Loading..." });
   const [adress, setAddress] = useState({
@@ -107,9 +106,8 @@ const Location = ({ id }) => {
         setLocationInfo({
           dateofevent: { ...locationInfo.dateofevent, value: eventLocation.dateofevent },
           time: { ...locationInfo.time, value: eventLocation.time },
-          addidtionalInformation: { ...locationInfo.addidtionalInformation, value: eventLocation.addidtionalInformation }
         });
-        setTempLocationInfo({ dateofevent: eventLocation.dateofevent, time: eventLocation.time, addidtionalInformation: eventLocation.addidtionalInformation })
+        setTempLocationInfo({ dateofevent: eventLocation.dateofevent, time: eventLocation.time })
 
         setAddress({
           city: { ...adress.city, value: eventLocation.Address.city },
@@ -203,46 +201,44 @@ const Location = ({ id }) => {
   }
 
   return (
-    <div className="LocationBody">
-      <div className="info">
-        <div className="Adress-info">
-          <EditButton options={editState} activate={editHandler} cancel={cancelEdit} confirm={submitLocationChanges} tags
-            render={<> <i className="far fa-edit" />Edit</>} />
-          {addressForm.map(el => (
-            <TextInput
-              key={el.name}
-              onChange={onChangeHandlerAddress}
-              type={el.config.type}
-              placeholder={el.config.placeholder}
-              name={el.name}
-              value={adress[el.name].value}
-              size="input-sm"
-              classes={editState ? "input-blue" : ""}
-              error={adress[el.name].err[0]}
-              disabled={!editState}
-            />
-          ))}
-          {locationInfoForm.map(el => (
-            <TextInput
-              key={el.name}
-              onChange={onChangeHandlerInfo}
-              type={el.config.type}
-              placeholder={el.config.placeholder}
-              name={el.name}
-              value={locationInfo[el.name].value}
-              size="input-sm"
-              classes={editState ? "input-blue" : ""}
-              error={locationInfo[el.name].err[0]}
-              disabled={!editState}
-            />
-          ))}
-        </div>
-        <img
-          className="Map"
-          src="https://techupdatess.com/wp-content/uploads/2019/05/google-maps-speed-cams.jpg"
-          alt=""
-        />
+    <div className="location-container">
+      <div className="adress-info">
+        <EditButton options={editState} activate={editHandler} cancel={cancelEdit} confirm={submitLocationChanges} tags
+          render={<> <i className="far fa-edit" />Edit</>} />
+        {addressForm.map(el => (
+          <TextInput
+            key={el.name}
+            onChange={onChangeHandlerAddress}
+            type={el.config.type}
+            placeholder={el.config.placeholder}
+            name={el.name}
+            value={adress[el.name].value}
+            size="input-md"
+            classes={editState ? "input-blue" : ""}
+            error={adress[el.name].err[0]}
+            disabled={!editState}
+          />
+        ))}
+        {locationInfoForm.map(el => (
+          <TextInput
+            key={el.name}
+            onChange={onChangeHandlerInfo}
+            type={el.config.type}
+            placeholder={el.config.placeholder}
+            name={el.name}
+            value={locationInfo[el.name].value}
+            size="input-sm"
+            classes={editState ? "input-blue" : ""}
+            error={locationInfo[el.name].err[0]}
+            disabled={!editState}
+          />
+        ))}
       </div>
+      <img
+        className="location-map"
+        src="https://techupdatess.com/wp-content/uploads/2019/05/google-maps-speed-cams.jpg"
+        alt=""
+      />
     </div>
   );
 };

@@ -1,0 +1,60 @@
+@import "../../../../style/globalVariabels.scss";
+
+.user-profile-container{
+    grid-template-columns: repeat(1, 1fr);
+    display: grid;
+    @include breaking-point-1 {
+        grid-template-columns: repeat(2, 1fr);
+        gap: 1rem;
+      }
+    .user-profile{
+        display: flex;
+        flex-direction: column;
+
+        .avatar{
+            justify-self: center;
+            align-self: center;
+            width: 10rem;
+            height: 10rem;
+            margin-bottom: 0.5rem;
+        }
+
+        .promote-btn{
+            margin-top: 1.5rem;
+        }
+    }
+    .settings {
+        display: grid;
+        grid-template-columns: repeat(2, 1fr);
+        width: 100%;
+        margin: 0.5rem 0;
+        @include breaking-point-1 {
+            grid-column-start: 1;
+            grid-column-end: 3;
+          }
+        & > .edit-btn {
+          grid-column-start: 1;
+          grid-column-end: 3;
+          border-radius: 0.5rem;
+        }
+        & > .cancel-btn {
+          transition: color 0.2s, background 0.2s;
+          border-radius: 0.5rem 0 0 0.5rem;
+        }
+        & > .confirm-btn {
+          transition: color 0.2s, background 0.2s;
+          border-radius: 0 0.5rem 0.5rem 0;
+        }
+      }
+
+    .user-profile-info{
+        strong{
+            margin: 0;
+        }
+        p{
+            margin: 0;
+            margin-bottom: 0.5rem;
+        }
+    }
+   
+}

@@ -1,8 +1,9 @@
 import React from "react";
 import PropTypes from "prop-types";
+import "./avatar.scss";
 
 const Avatar = ({ imageLink, title }) => {
-  return <img title={title} src={imageLink} alt="AVATAR" />;
+  return <img className="avatar" title={title} src={imageLink} alt="AVATAR" />;
 };
 
 Avatar.defaultProps = {

@@ -4,17 +4,43 @@ import PropTypes from "prop-types";
 import "./EventCard.scss";
 
 const EventCard = ({ id, name, date, location, eventState }) => {
+
+  const iconState = () => {
+    switch (eventState) {
+      case "ongoing":
+        return "fas fa-sync-alt"
+      case "finished":
+        return "fas fa-check"
+      case "invite":
+        return "fas fa-envelope"
+      default:
+        return "";
+    }
+  }
+  const cardStyle = () => {
+    switch (eventState) {
+      case "ongoing":
+        return "event-card"
+      case "finished":
+        return "event-card event-complete"
+      case "invite":
+        return "event-card event-invite"
+      default:
+        return "";
+    }
+  }
   return (
     <Link to={`/event/${id}`}>
-      <div className={eventState ? "Event-Card Event-Complete" : "Event-Card"}>
-        <div className={eventState ? "eventIcon eventIcon-complete" : "eventIcon"}>
-          <i className={eventState ? "fas fa-check" : "fas fa-sync-alt"} />
+      <div className={cardStyle()}>
+        <div className={"event-icon event-icon-complete"}>
+          <i className={iconState()} />
         </div>
         <div className="content">
           <h2>{name}</h2>
-          <span>
+          <span className="date-cont">
             <i className="fas fa-calendar-alt" />
-            {date}
+            <span className="date">{date}</span>
+            <strong className="event-state">{eventState}</strong>
           </span>
           <span>
             <i className="fas fa-map-marker-alt" />
@@ -27,7 +53,7 @@ const EventCard = ({ id, name, date, location, eventState }) => {
 };
 
 EventCard.defaultProps = {
-  eventState: false
+  eventState: "ongoing"
 };
 
 EventCard.propTypes = {
@@ -35,7 +61,7 @@ EventCard.propTypes = {
   name: PropTypes.string.isRequired,
   date: PropTypes.string.isRequired,
   location: PropTypes.object.isRequired,
-  eventState: PropTypes.bool
+  eventState: PropTypes.oneOf(["ongoing", "finished", "invite"])
 };
 
 export default EventCard;
