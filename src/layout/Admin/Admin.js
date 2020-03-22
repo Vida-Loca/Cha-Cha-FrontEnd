@@ -3,7 +3,7 @@ import { Route, Redirect } from "react-router-dom";
 
 import UserLayout from "./UsersTab";
 import EventLayout from "./EventsTab";
-import "./admin.scss";
+import "./Admin.scss";
 
 
 const Admin = () => {
