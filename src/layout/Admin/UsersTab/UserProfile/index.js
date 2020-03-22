@@ -2,14 +2,14 @@ import React, { useState, useEffect } from "react";
 import Avatar from "../../../../components/Avatar";
 import { Button, EditButton } from "../../../../components/Button";
 import { loggedInUser } from "../../../../mockData";
-
+import "./UserProfile.scss";
 
 const UserProfile = () => {
     const [userInfo, setUserInfo] = useState({
         username: "Loading ...",
         email: "Loading ...",
         datejoined: "Loading ...",
-        avatarUrl: "",
+        avatarUrl: "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTSLmktkJrArXh_zZVovazl5mb3lna9HXqPo7XvvviCSQAuru5C&s",
         name: "Loading ...",
         surname: "Loading ..."
     });
@@ -44,7 +44,17 @@ const UserProfile = () => {
     }
     return (
         <div className="user-profile-container">
-            <Avatar imageLink={userInfo.avatarUrl} />
+            <div className="user-profile">
+                <Avatar imageLink={userInfo.avatarUrl} />
+                <EditButton
+                    options={editState}
+                    activate={editHandler}
+                    cancel={editHandler}
+                    confirm={deleteAccount}
+                    tags
+                    render={<><i className="far fa-trash-alt" />delete</>} />
+                <Button classes="btn-sm btn-orangeGradient">promote to Admin</Button>
+            </div>
             <div className="user-profile-info">
                 <strong>name:</strong>
                 <p>{userInfo.name}</p>
@@ -57,17 +67,7 @@ const UserProfile = () => {
                 <strong>date joined:</strong>
                 <p>{userInfo.datejoined}</p>
             </div>
-            <EditButton
-                options={editState}
-                activate={editHandler}
-                cancel={editHandler}
-                confirm={deleteAccount}
-                tags
-                render={
-                    <><i className="far fa-trash-alt" />delete</>} />
-            <Button classes="btn-sm btn-orangeGradient">
-                promote to Admin
-          </Button>
+
         </div>)
 }
 

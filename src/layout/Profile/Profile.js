@@ -5,7 +5,6 @@ import { UserContext } from "../../context/UserContext";
 import { authenticationService } from "../../Authentication/service";
 // import { userService } from "../../Authentication/service";
 
-import { events } from "../../mockData";
 import "./Profile.scss";
 
 import { Button, EditButton } from "../../components/Button";
@@ -18,7 +17,7 @@ import ChangeAvatarContainer from "./ChangeAvatarContainer";
 import FriendsList from "./FriendsList";
 import Spinner from "../../components/Spinner";
 
-import { loggedInUser } from "../../mockData";
+import { loggedInUser, events } from "../../mockData";
 
 const Profile = () => {
 
@@ -239,7 +238,7 @@ const Profile = () => {
                     name={ev.name}
                     date={ev.startDate}
                     location={ev.address}
-                    eventState={ev.isComplete}
+                    eventState={ev.eventState}
                   />
                 ))
           }
@@ -259,7 +258,7 @@ const Profile = () => {
                     name={ev.name}
                     date={ev.startDate}
                     location={ev.address}
-                    eventState={ev.isComplete}
+                    eventState="invite"
                   />
                 ))
           }

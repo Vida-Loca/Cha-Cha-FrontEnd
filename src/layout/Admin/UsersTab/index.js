@@ -8,7 +8,7 @@ import PaginatedContainer from "../../../components/PaginatedContainer";
 import Spinner from "../../../components/Spinner";
 import UserCard from "../../../components/UserCard";
 import UserProfile from "./UserProfile";
-import "./UserProfile.scss";
+import "./Users.scss";
 
 const UsersLayout = () => {
   const [findUser, setFindUser] = useState({ username: "" });

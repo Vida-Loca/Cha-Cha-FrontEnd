@@ -1,0 +1,47 @@
+.user-profile-container{
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 2rem;
+    .user-profile{
+        display: flex;
+        flex-direction: column;
+
+        .avatar{
+            width: 10rem;
+            height: 10rem;
+            margin-bottom: 0.5rem;
+        }
+        .settings {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            width: 100%;
+            margin-top: 0.5rem;
+            margin-bottom: 0.5rem;
+            & > .edit-btn {
+              grid-column-start: 1;
+              grid-column-end: 3;
+              border-radius: 0.5rem;
+            }
+            & > .cancel-btn {
+              transition: color 0.2s, background 0.2s;
+              border-radius: 0.5rem 0 0 0.5rem;
+            }
+            & > .confirm-btn {
+              transition: color 0.2s, background 0.2s;
+              border-radius: 0 0.5rem 0.5rem 0;
+            }
+          }
+
+    }
+
+    .user-profile-info{
+        strong{
+            margin: 0;
+        }
+        p{
+            margin: 0;
+            margin-bottom: 0.5rem;
+        }
+    }
+   
+}

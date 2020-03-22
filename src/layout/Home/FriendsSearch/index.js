@@ -1,5 +1,5 @@
 import React, { useState, useContext, useEffect } from "react";
-import { TextInput } from "../../../components/Inputs";
+import { SearchBar, TextInput } from "../../../components/Inputs";
 import { Button } from "../../../components/Button";
 // import { userService } from "../../../../Authentication/service";
 import PaginatedContainer from "../../../components/PaginatedContainer";
@@ -36,11 +36,15 @@ const SearchFriends = () => {
 
     return (
         <div className="invite-friends">
-            <TextInput onChange={onChangeHandler} placeholder="Username" classes="input-blue" name="username" />
-            <Button clicked={lookingForUsers} classes="btn-blueGradient btn-sm">search</Button>
-
+            <SearchBar
+                onChange={onChangeHandler}
+                placeholder="search ..."
+                name="username"
+                value={findUser.username}
+                clicked={lookingForUsers}
+            />
             <PaginatedContainer
-                title="Invite friends"
+                title=""
                 items={dislpayFriends}
                 perPage={5}
                 render={({ items }) =>

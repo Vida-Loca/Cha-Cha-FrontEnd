@@ -66,7 +66,7 @@ const Home = () => {
                     name={ev.name}
                     date={ev.startDate}
                     location={ev.address}
-                    eventState={ev.isComplete}
+                    eventState={ev.eventState}
                   />
                 ))
           }
@@ -85,7 +85,7 @@ const Home = () => {
                     name={ev.name}
                     date={ev.startDate}
                     location={ev.address}
-                    eventState={ev.isComplete}
+                    eventState={ev.eventState}
                   />
                 ))
           }
