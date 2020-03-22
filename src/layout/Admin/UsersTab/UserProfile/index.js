@@ -46,14 +46,8 @@ const UserProfile = () => {
         <div className="user-profile-container">
             <div className="user-profile">
                 <Avatar imageLink={userInfo.avatarUrl} />
-                <EditButton
-                    options={editState}
-                    activate={editHandler}
-                    cancel={editHandler}
-                    confirm={deleteAccount}
-                    tags
-                    render={<><i className="far fa-trash-alt" />delete</>} />
-                <Button classes="btn-sm btn-orangeGradient">promote to Admin</Button>
+
+                <Button classes="promote-btn btn-sm btn-orangeGradient">promote to Admin</Button>
             </div>
             <div className="user-profile-info">
                 <strong>name:</strong>
@@ -67,7 +61,13 @@ const UserProfile = () => {
                 <strong>date joined:</strong>
                 <p>{userInfo.datejoined}</p>
             </div>
-
+            <EditButton
+                options={editState}
+                activate={editHandler}
+                cancel={editHandler}
+                confirm={deleteAccount}
+                tags
+                render={<><i className="far fa-trash-alt" />delete</>} />
         </div>)
 }
 

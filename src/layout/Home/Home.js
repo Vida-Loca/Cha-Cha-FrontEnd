@@ -53,7 +53,7 @@ const Home = () => {
       <div className="dashboard">
 
         <PaginatedContainer
-          title="Public Events"
+          title={<span><i className="fas fa-door-open" /> {`Public Events`}</span>}
           items={publicEventsList.events}
           render={
             publicEventsList.spinner
@@ -72,7 +72,8 @@ const Home = () => {
           }
         />
         <PaginatedContainer
-          title="Friend's Events"
+          // title="Friend's Events"
+          title={<span><i className="fas fa-users" /> {`Friend's Events`}</span>}
           items={friendsEventsList.events}
           render={
             friendsEventsList.spinner
