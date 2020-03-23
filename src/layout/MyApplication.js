@@ -5,13 +5,14 @@ import { FormContext } from "../context/FormContext";
 import SplashScreen from "./SplashScreen/SplashScreen";
 import MainLayout from "./MainLayout/MainLayout";
 import Modal from "../components/Modal";
-// import { authenticationService } from "../Authentication/service";
+import { authenticationService } from "../Authentication/service";
 
 const MyApplication = () => {
-  const [isLoggedIn,] = useState(false);
+  const [isLoggedIn, setLoggedIn] = useState(false);
   // const [isUser, setUser] = useState(true);
 
   useEffect(() => {
+    authenticationService.currentUser.subscribe(x => setLoggedIn(!!x));
     //   if (isUser.break) {
     //     const currentU = authenticationService.CurrentUser();
     //     setUser({ ...isUser, break: false });

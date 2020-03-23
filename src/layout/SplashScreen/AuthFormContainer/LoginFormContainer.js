@@ -48,6 +48,7 @@ const LoginFormContainer = () => {
         password: login.password.value
       }).then(res => {
         console.log(res);
+        setChangedForm({ ...changedForm, show: false })
       }, err => {
         setLogin({
           ...login,

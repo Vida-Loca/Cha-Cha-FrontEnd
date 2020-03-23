@@ -13,3 +13,28 @@
 .center{
     text-align: center;
 }
+
+.registration-confirmation-container{
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    .fas{
+        font-size: 3rem;
+        color: orange;
+    }
+    h2::after{
+        margin-top: 0.5rem;
+        display: block;
+        content: "";
+        border: 1px solid black;
+    }
+    p{
+        // text-align: center;
+        .email{
+            color: rgb(0, 81, 255);
+            font-weight: bold;
+            font-style: italic;
+        }
+    }
+}

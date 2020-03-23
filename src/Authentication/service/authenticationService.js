@@ -1,10 +1,13 @@
 import { handleResponse } from "../helper";
+import { BehaviorSubject } from 'rxjs';
 
 const ServerURL = "http://localhost:8081";
 
-const CurrentUser = () => {
-  return localStorage.getItem("currentUser");
-};
+const currentUserSubject = new BehaviorSubject(JSON.parse(localStorage.getItem('currentUser')));
+
+// const CurrentUser = () => {
+//   return localStorage.getItem("currentUser");
+// };
 
 const login = data => {
   const requestOptions = {
@@ -17,27 +20,11 @@ const login = data => {
     .then(handleResponse)
     .then(user => {
       localStorage.setItem("currentUser", JSON.stringify(user.token));
+      currentUserSubject.next(user);
 
       return user;
     });
 }
-
-// const login = data => {
-//   const requestOptions = {
-//     method: "POST",
-//     headers: { "Content-Type": "application/json" },
-//     body: JSON.stringify(data)
-//   };
-
-//   return fetch(`${ServerURL}/login`, requestOptions)
-//     .then(res => res.json())
-//     .then(user => {
-//       if (user.token !== undefined) {
-//         localStorage.setItem("currentUser", JSON.stringify(user.token));
-//       }
-//       return user;
-//     });
-// }
 
 const register = data => {
   const requestOptions = {
@@ -55,13 +42,15 @@ const register = data => {
 const logout = () => {
   // remove user from local storage to log user out
   localStorage.removeItem("currentUser");
-  //   currentUserSubject.next(null);
+  currentUserSubject.next(null);
 }
 
 // eslint-disable-next-line import/prefer-default-export
 export const authenticationService = {
-  CurrentUser,
+  // CurrentUser,
   login,
   register,
-  logout
+  logout,
+  currentUser: currentUserSubject.asObservable(),
+  get currentUserValue() { return currentUserSubject.value }
 };
