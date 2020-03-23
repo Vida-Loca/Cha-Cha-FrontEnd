@@ -42,32 +42,28 @@ const LoginFormContainer = () => {
   const submitLogin = () => {
     if (login.username.isValid && login.password.isValid) {
       setSendingDataSpinner(true);
-      console.log("...loggin in");
-      console.log({
+
+      authenticationService.login({
         username: login.username.value,
         password: login.password.value
-      })
-      setTimeout(() => {
-        if (false) {
-          console.log("logged in !")
-        } else {
-          setLogin({
-            ...login,
-            username: { value: "", isValid: false, err: ["bad username"] },
-            password: { value: "", isValid: false, err: ["bad password"] }
-          });
-        }
-        setSendingDataSpinner(false);
-      }, 3000)
-    } else {
-      console.log("nope")
+      }).then(res => {
+        console.log(res);
+      }, err => {
+        setLogin({
+          ...login,
+          username: { value: "", isValid: false, err: ["bad username"] },
+          password: { value: "", isValid: false, err: ["bad password"] }
+        });
+      });
+      setSendingDataSpinner(false);
+
     }
   }
 
   const onChangeHandler = event => {
     setLogin({
       ...login,
-      [`${event.target.name}`]: { ...login[`${event.target.name}`], value: event.target.value }
+      [`${event.target.name}`]: { ...login[`${event.target.name}`], isValid: true, err: [], value: event.target.value }
     });
   };
 

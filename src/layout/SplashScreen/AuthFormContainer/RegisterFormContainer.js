@@ -1,7 +1,7 @@
 import React, { useState, useContext } from "react";
 import { TextInput } from "../../../components/Inputs";
 import { Button } from "../../../components/Button";
-// import { authenticationService } from "../../../Authentication/service";
+import { authenticationService } from "../../../Authentication/service";
 // import { FormContext } from "../../../context/FormContext";
 import { UserContext } from "../../../context/UserContext";
 import Spinner from "../../../components/Spinner";
@@ -10,7 +10,7 @@ import checkValidation from "../../../validation";
 const RegistrationFormContainer = () => {
   const [sendingDataSpinner, setSendingDataSpinner] = useState(false);
   // const [changedForm, setChangedForm] = useContext(FormContext);
-  const setUser = useContext(UserContext)[1];
+  // const [,setUser] = useContext(UserContext);
   const [registration, setRegistration] = useState({
     username: { value: "", isValid: false, err: [], touched: false },
     password: { value: "", isValid: false, err: [], touched: false },
@@ -123,23 +123,48 @@ const RegistrationFormContainer = () => {
       && registration.name.isValid && registration.surname.isValid &&
       registration.email.isValid) {
       setSendingDataSpinner(true);
-      setTimeout(function () {
-        console.log("sending ...")
-        console.log({
-          username: registration.username.value,
-          password: registration.password.value,
-          matchingPassword: registration.matchingPassword.value,
-          name: registration.name.value,
-          surname: registration.surname.value,
-          emial: registration.email.value
-        })
-        setSendingDataSpinner(false);
-      }, 3000)
 
+      authenticationService.register({
+        username: registration.username.value,
+        password: registration.password.value,
+        matchingPassword: registration.matchingPassword.value,
+        name: registration.name.value,
+        surname: registration.surname.value,
+        emial: registration.email.value,
+        picUrl: ""
+      }).then(res => {
+        console.log(res);
+      }, err => {
+        console.log(err);
+      });
+      setSendingDataSpinner(false);
     } else {
       console.log("no no")
     }
   }
+  // const submitRegstartion = () => {
+  //   if (registration.username.isValid && registration.password.isValid &&
+  //     registration.matchingPassword.value === registration.password.value
+  //     && registration.name.isValid && registration.surname.isValid &&
+  //     registration.email.isValid) {
+  //     setSendingDataSpinner(true);
+  //     setTimeout(function () {
+  //       console.log("sending ...")
+  //       console.log({
+  //         username: registration.username.value,
+  //         password: registration.password.value,
+  //         matchingPassword: registration.matchingPassword.value,
+  //         name: registration.name.value,
+  //         surname: registration.surname.value,
+  //         emial: registration.email.value
+  //       })
+  //       setSendingDataSpinner(false);
+  //     }, 3000)
+
+  //   } else {
+  //     console.log("no no")
+  //   }
+  // }
 
 
   return (

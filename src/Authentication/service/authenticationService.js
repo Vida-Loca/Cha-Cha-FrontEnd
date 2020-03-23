@@ -1,21 +1,22 @@
 import { handleResponse } from "../helper";
 
+const ServerURL = "http://localhost:8081";
+
 const CurrentUser = () => {
   return localStorage.getItem("currentUser");
 };
 
-function login(data) {
+const login = data => {
   const requestOptions = {
     method: "POST",
     headers: { "Content-Type": "application/json" },
     body: JSON.stringify(data)
   };
 
-  return fetch(`https://skibidi.herokuapp.com/login`, requestOptions)
+  return fetch(`${ServerURL}/login`, requestOptions)
     .then(handleResponse)
     .then(user => {
-      // store user details and jwt token in local storage to keep user logged in between page refreshes
-      localStorage.setItem("currentUser", JSON.stringify(user.token.substring(1, user.token.length - 1)));
+      localStorage.setItem("currentUser", JSON.stringify(user.token));
 
       return user;
     });
@@ -28,14 +29,13 @@ const register = data => {
     body: JSON.stringify(data)
   };
 
-  return fetch(`https://skibidi.herokuapp.com/registration`, requestOptions)
+  return fetch(`${ServerURL}/registration`, requestOptions)
     .then(handleResponse)
     .then(myJson => {
       return myJson;
     });
 };
-
-function logout() {
+const logout = () => {
   // remove user from local storage to log user out
   localStorage.removeItem("currentUser");
   //   currentUserSubject.next(null);
