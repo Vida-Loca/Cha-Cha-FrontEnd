@@ -22,6 +22,23 @@ const login = data => {
     });
 }
 
+// const login = data => {
+//   const requestOptions = {
+//     method: "POST",
+//     headers: { "Content-Type": "application/json" },
+//     body: JSON.stringify(data)
+//   };
+
+//   return fetch(`${ServerURL}/login`, requestOptions)
+//     .then(res => res.json())
+//     .then(user => {
+//       if (user.token !== undefined) {
+//         localStorage.setItem("currentUser", JSON.stringify(user.token));
+//       }
+//       return user;
+//     });
+// }
+
 const register = data => {
   const requestOptions = {
     method: "POST",

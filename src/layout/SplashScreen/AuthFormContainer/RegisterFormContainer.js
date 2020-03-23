@@ -126,17 +126,20 @@ const RegistrationFormContainer = () => {
 
       authenticationService.register({
         username: registration.username.value,
-        password: registration.password.value,
-        matchingPassword: registration.matchingPassword.value,
         name: registration.name.value,
         surname: registration.surname.value,
-        emial: registration.email.value,
+        email: registration.email.value,
+        password: registration.password.value,
+        matchingPassword: registration.matchingPassword.value,
         picUrl: ""
       }).then(res => {
         console.log(res);
+        console.log("no error");
       }, err => {
         console.log(err);
+        console.log("error")
       });
+
       setSendingDataSpinner(false);
     } else {
       console.log("no no")

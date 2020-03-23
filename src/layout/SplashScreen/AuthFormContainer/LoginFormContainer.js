@@ -51,8 +51,8 @@ const LoginFormContainer = () => {
       }, err => {
         setLogin({
           ...login,
-          username: { value: "", isValid: false, err: ["bad username"] },
-          password: { value: "", isValid: false, err: ["bad password"] }
+          username: { value: "", isValid: false, err: [err.username] },
+          password: { value: "", isValid: false, err: [err.password] }
         });
       });
       setSendingDataSpinner(false);
