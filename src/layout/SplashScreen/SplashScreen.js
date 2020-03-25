@@ -1,4 +1,4 @@
-import React, { useState, useContext } from "react";
+import React, { useContext } from "react";
 import { Button } from "../../components/Button";
 import { FormContext } from "../../context/FormContext";
 import { LoginFormContainer, RegisterFormContainer } from "./AuthFormContainer";
@@ -6,7 +6,7 @@ import { LoginFormContainer, RegisterFormContainer } from "./AuthFormContainer";
 import "./SplashScreen.scss";
 
 const SplashScreen = () => {
-  const setChangedForm = useContext(FormContext)[1];
+  const [, setChangedForm] = useContext(FormContext);
 
   const openLogIn = () => {
     setChangedForm({ show: true, renderForm: <LoginFormContainer /> });

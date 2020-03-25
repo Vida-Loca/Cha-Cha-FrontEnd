@@ -1,4 +1,4 @@
-export function authHeader() {
+export const authHeader = () => {
   const currentUser = localStorage.getItem("currentUser");
   if (currentUser) {
     return {
@@ -8,3 +8,4 @@ export function authHeader() {
   }
   return {};
 }
+

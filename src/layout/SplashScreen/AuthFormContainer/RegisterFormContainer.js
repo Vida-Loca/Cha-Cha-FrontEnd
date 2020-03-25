@@ -1,16 +1,18 @@
 import React, { useState, useContext } from "react";
 import { TextInput } from "../../../components/Inputs";
 import { Button } from "../../../components/Button";
-// import { authenticationService } from "../../../Authentication/service";
+import { authenticationService } from "../../../Authentication/service";
 // import { FormContext } from "../../../context/FormContext";
 import { UserContext } from "../../../context/UserContext";
 import Spinner from "../../../components/Spinner";
 import checkValidation from "../../../validation";
+import RegistrationComplete from "./RegistrationComplete";
 
 const RegistrationFormContainer = () => {
   const [sendingDataSpinner, setSendingDataSpinner] = useState(false);
   // const [changedForm, setChangedForm] = useContext(FormContext);
-  const setUser = useContext(UserContext)[1];
+  // const [,setUser] = useContext(UserContext);
+  const [registrationConfrimed, setRefistrationConfirm] = useState(false);
   const [registration, setRegistration] = useState({
     username: { value: "", isValid: false, err: [], touched: false },
     password: { value: "", isValid: false, err: [], touched: false },
@@ -123,43 +125,56 @@ const RegistrationFormContainer = () => {
       && registration.name.isValid && registration.surname.isValid &&
       registration.email.isValid) {
       setSendingDataSpinner(true);
-      setTimeout(function () {
-        console.log("sending ...")
-        console.log({
-          username: registration.username.value,
-          password: registration.password.value,
-          matchingPassword: registration.matchingPassword.value,
-          name: registration.name.value,
-          surname: registration.surname.value,
-          emial: registration.email.value
-        })
-        setSendingDataSpinner(false);
-      }, 3000)
+      authenticationService.register({
+        username: registration.username.value,
+        name: registration.name.value,
+        surname: registration.surname.value,
+        email: registration.email.value,
+        password: registration.password.value,
+        matchingPassword: registration.matchingPassword.value,
+        picUrl: ""
+      }).then(res => {
+        console.log(res);
+        console.log("smile");
 
-    } else {
-      console.log("no no")
+        setRefistrationConfirm(true);
+        setSendingDataSpinner(false);
+
+      }, err => {
+        console.log(err);
+        setSendingDataSpinner(false);
+        console.log("not")
+      });
+
     }
   }
 
 
+
   return (
     <div>
-      {registerForm.map(el => (
-        <TextInput
-          onChange={onChangeHandler}
-          key={el.name}
-          placeholder={el.config.placeholder}
-          type={el.config.type}
-          name={el.name}
-          value={registration[el.name].value}
-          classes={registration[el.name].touched ^ registration[el.name].isValid ? "input-orange" : el.config.classes}
-          error={registration[el.name].err[0]}
-        />
-      ))}
-      {sendingDataSpinner
-        ? <Spinner classes={"spinner-container-h-sm"} size={"spinner-sm"} />
-        : <Button clicked={submitRegstartion} classes="btn-blueGradient btn-md submit-btn">Register</Button>
-      }
+      {registrationConfrimed
+        ?
+        <RegistrationComplete email={registration.email.value} />
+        : <>
+          {registerForm.map(el => (
+            <TextInput
+              onChange={onChangeHandler}
+              key={el.name}
+              placeholder={el.config.placeholder}
+              type={el.config.type}
+              name={el.name}
+              value={registration[el.name].value}
+              classes={registration[el.name].touched ^ registration[el.name].isValid ? "input-orange" : el.config.classes}
+              error={registration[el.name].err[0]}
+            />
+          ))}
+          {sendingDataSpinner
+            ? <Spinner classes={"spinner-container-h-sm"} size={"spinner-sm"} />
+            : <Button clicked={submitRegstartion} classes="btn-blueGradient btn-md submit-btn">Register</Button>
+          }
+        </>}
+
 
     </div>
   );
