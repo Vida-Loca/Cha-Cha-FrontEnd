@@ -36,8 +36,20 @@ const changeAvatar = avatarUrl => {
 };
 
 
+const getAllUserEvents = () => {
+    const requestOptions = {
+        method: "GET",
+        headers: authHeader()
+    };
+
+    return fetch(`${serverURL}/user/event`, requestOptions).then(
+        handleResponse
+    );
+};
+
 export const profileService = {
     getCurrentUserInfo,
     changeAvatar,
-    isLoggedInUserAdmin
+    isLoggedInUserAdmin,
+    getAllUserEvents
 }

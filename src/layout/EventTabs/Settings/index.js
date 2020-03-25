@@ -7,6 +7,8 @@ import Spinner from "../../../components/Spinner";
 import UserCard from "../../../components/UserCard";
 import PaginatedContainer from "../../../components/PaginatedContainer";
 
+import { eventService } from "../../../Authentication/service";
+
 import { membersOfTheEvent, requestsFoThisEvent } from "../../../mockData";
 
 import "./settings.scss";
@@ -53,12 +55,17 @@ const Settings = ({ id }) => {
         })
     }
 
-    const confirmEventDeletion = ({ history }) => {
-        setTimeout(() => {
-            console.log("deleting")
-            editHandler();
-            setDeleted(true);
-        }, 2000);
+    const confirmEventDeletion = () => {
+        eventService.deleteEvent(id)
+            .then(res => {
+                console.log(res);
+                setDeleted(true);
+            })
+            .catch(err => {
+                console.log(err);
+                editHandler();
+            })
+
     }
 
     const promoteToAdmin = (username) => {

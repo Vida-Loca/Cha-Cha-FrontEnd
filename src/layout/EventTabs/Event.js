@@ -4,7 +4,7 @@ import PropTypes from "prop-types";
 
 import "./Event.scss";
 
-// import { userService } from "../../Authentication/service";
+import { eventService } from "../../Authentication/service";
 
 import Products from "./Products";
 import Location from "./Location";
@@ -16,12 +16,22 @@ const Event = ({ eventId, eventPath }) => {
   // check if user is a part of this event
   //  * if not redirect to /:id page
   //  * else leave him be
-  const eventName = useState("no name ")[0];
+  const [eventName, setEventName] = useState("Loading...");
   const [hasAuthorization,] = useState(true);
 
   useEffect(() => {
-
-    return () => { };
+    let __isMounted = true;
+    eventService.getEventByID(eventId)
+      .then(res => {
+        if (__isMounted) {
+          setEventName(res.name);
+        }
+      }).catch(err => {
+        console.log(err);
+      })
+    return () => {
+      __isMounted = false;
+    };
   }, []);
 
   return (

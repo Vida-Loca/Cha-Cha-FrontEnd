@@ -39,7 +39,7 @@ const EventCard = ({ id, name, date, location, eventState }) => {
           <h2>{name}</h2>
           <span className="date-cont">
             <i className="fas fa-calendar-alt" />
-            <span className="date">{date}</span>
+            <span className="date">{date.substring(0, 10)}</span>
             <strong className="event-state">{eventState}</strong>
           </span>
           <span>

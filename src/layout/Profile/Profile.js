@@ -1,7 +1,6 @@
 import React, { useContext, useState, useEffect } from "react";
 
 import { FormContext } from "../../context/FormContext";
-import { UserContext } from "../../context/UserContext";
 import { authenticationService, profileService } from "../../Authentication/service";
 
 import "./Profile.scss";
@@ -37,7 +36,6 @@ const Profile = () => {
   const [invitations, setInvitations] = useState({ invitations: [], spinner: true });
 
   const [, setform] = useContext(FormContext);
-  const [, setuser] = useContext(UserContext);
   const [editState, setEdit] = useState(false);
 
 
@@ -59,16 +57,22 @@ const Profile = () => {
           tempSurname: res.surname
         })
 
-        setMyEvents({ events: events, spinner: false });
-        setInvitations({ invitations: events, spinner: false });
       }
     }).catch(err => {
       console.log(err);
       console.log("sad face");
-
-      setMyEvents({ events: events, spinner: false });
-      setInvitations({ invitations: events, spinner: false });
     })
+
+    profileService.getAllUserEvents()
+      .then(res => {
+        setMyEvents({ events: res, spinner: false });
+      })
+      .catch(err => {
+        console.log(err);
+      });
+
+    // setMyEvents({ events: events, spinner: false });
+    setInvitations({ invitations: events, spinner: false });
     return () => {
       __isMounted = false;
     };
@@ -140,7 +144,6 @@ const Profile = () => {
 
   const LogOut = () => {
     authenticationService.logout();
-    setuser({ isLoggedIn: false, break: true });
   };
 
   const submitUpdateProfile = () => {

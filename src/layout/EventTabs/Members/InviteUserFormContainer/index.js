@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from "react";
 import { TextInput } from "../../../../components/Inputs";
 import { Button } from "../../../../components/Button";
-// import { userService } from "../../../../Authentication/service";
+import { userService } from "../../../../Authentication/service";
 // import { FormContext } from "../../../../context/FormContext";
 import PaginatedContainer from "../../../../components/PaginatedContainer";
 import UserCard from "../../../../components/UserCard";
@@ -18,6 +18,14 @@ const InviteUserFormContainer = id => {
   const [dislpayFriends, setDislpayFreinds] = useState({ friends: [], spinner: true });
 
   useEffect(() => {
+
+    userService.getAllUsers()
+      .then(res => {
+        console.log(res);
+      })
+      .catch(err => {
+        console.log(err);
+      });
     setTimeout(() => {
       setDislpayFreinds({ friends: friends, spinner: false });
     }, 1000);

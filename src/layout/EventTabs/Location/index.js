@@ -1,8 +1,8 @@
 import React, { useState, useEffect } from "react";
 import PropTypes from "prop-types";
-// import { userService } from "../../../Authentication/service";
+import { eventService } from "../../../Authentication/service";
 
-import { eventLocation } from "../../../mockData";
+// import { eventLocation } from "../../../mockData";
 import { TextInput } from "../../../components/Inputs";
 import { EditButton } from "../../../components/Button";
 import checkValidation from "../../../validation";
@@ -11,21 +11,35 @@ import "./Location.scss";
 
 
 const Location = ({ id }) => {
+
+  const [fetchedEvent, setFetchedEvent] = useState({});
   const [locationInfo, setLocationInfo] = useState({
     dateofevent: { value: "", isValid: true, err: [] },
     time: { value: "00:00", isValid: true, err: [] }
   });
   const [tempLocationInfo, setTempLocationInfo] = useState({ dateofevent: "", time: "Loading...", addidtionalInformation: "Loading..." });
   const [adress, setAddress] = useState({
+    country: { value: "Loading...", isValid: true, err: [] },
     city: { value: "Loading...", isValid: true, err: [] },
     street: { value: "Loading...", isValid: true, err: [] },
     number: { value: "0", isValid: true, err: [] },
     postcode: { value: "Loading...", isValid: true, err: [] }
   });
-  const [tempAdress, setTempAdress] = useState({ city: "Loading...", street: "Loading...", number: "0", postcode: "Loading..." });
+  const [tempAdress, setTempAdress] = useState({ country: "Loading....", city: "Loading...", street: "Loading...", number: "0", postcode: "Loading..." });
   const [editState, setEdit] = useState(false);
 
   const addressForm = useState([
+    {
+      name: "country",
+      config: {
+        placeholder: "country",
+        type: "text"
+      },
+      validation: {
+        required: true,
+        string: true
+      }
+    },
     {
       name: "city",
       config: {
@@ -99,24 +113,32 @@ const Location = ({ id }) => {
 
   useEffect(() => {
     let __isMounted = true;
-    setTimeout(() => {
-      if (__isMounted) {
-        setLocationInfo({
-          dateofevent: { ...locationInfo.dateofevent, value: eventLocation.dateofevent },
-          time: { ...locationInfo.time, value: eventLocation.time },
-        });
-        setTempLocationInfo({ dateofevent: eventLocation.dateofevent, time: eventLocation.time })
 
-        setAddress({
-          city: { ...adress.city, value: eventLocation.Address.city },
-          street: { ...adress.street, value: eventLocation.Address.street },
-          number: { ...adress.street, value: eventLocation.Address.number },
-          postcode: { ...adress.postcode, value: eventLocation.Address.postcode }
-        });
-        setTempAdress({ city: eventLocation.Address.city, street: eventLocation.Address.street, number: eventLocation.Address.number, postcode: eventLocation.Address.postcode })
-      }
+    eventService.getEventByID(id)
+      .then(res => {
+        if (__isMounted) {
+          setFetchedEvent(res);
 
-    }, 2000);
+          setLocationInfo({
+            dateofevent: { ...locationInfo.dateofevent, value: res.startTime.substring(0, 10) },
+            time: { ...locationInfo.time, value: res.startTime.substring(11, 16) },
+          });
+          setTempLocationInfo({ dateofevent: res.startTime.substring(0, 10), time: res.startTime.substring(11, 16) })
+
+          setAddress({
+            country: { ...adress.city, value: res.address.country },
+            city: { ...adress.city, value: res.address.city },
+            street: { ...adress.street, value: res.address.street },
+            number: { ...adress.street, value: res.address.number },
+            postcode: { ...adress.postcode, value: res.address.postcode }
+          });
+          setTempAdress({
+            country: res.address.country, city: res.address.city, street: res.address.street,
+            number: res.address.number, postcode: res.address.postcode
+          })
+        }
+      })
+
     return () => {
       __isMounted = false;
     };
@@ -128,6 +150,7 @@ const Location = ({ id }) => {
   const cancelEdit = () => {
     setEdit(false);
     setAddress({
+      country: { ...adress.country, value: tempAdress.country },
       city: { ...adress.city, value: tempAdress.city },
       street: { ...adress.street, value: tempAdress.street },
       number: { ...adress.street, value: tempAdress.number },
@@ -172,29 +195,28 @@ const Location = ({ id }) => {
   };
 
   const submitLocationChanges = () => {
-    if (locationInfo.dateofevent.isValid && locationInfo.time.isValid && locationInfo.addidtionalInformation.isValid &&
-      adress.city.isValid && adress.street.isValid && adress.number.isValid && adress.postcode.isValid) {
+    if (locationInfo.dateofevent.isValid && locationInfo.time.isValid && adress.city.isValid &&
+      adress.country.isValid && adress.street.isValid && adress.number.isValid && adress.postcode.isValid) {
 
-      setTimeout(() => {
-        console.log("updating ...");
-        console.log({
-          dateofevent: locationInfo.dateofevent.value,
-          time: locationInfo.time.value,
-          addidtionalInformation: locationInfo.addidtionalInformation.value
-        })
-        console.log({
+      eventService.updateEvent(id, {
+        ...fetchedEvent,
+        startTime: `${locationInfo.dateofevent.value}T${locationInfo.time.value}`,
+        address: {
+          country: adress.country.value,
           city: adress.city.value,
           street: adress.street.value,
           number: adress.number.value,
           postcode: adress.postcode.value
-        })
-      }, 2000);
+        }
+      }).then(res => {
+        console.log(res);
+        setEdit(false);
+      })
 
 
     } else {
       console.log("can't update")
     }
-
 
   }
 

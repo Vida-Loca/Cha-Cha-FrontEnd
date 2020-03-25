@@ -1,8 +1,8 @@
 import React, { useContext, useState, useEffect } from "react";
 import { FormContext } from "../../context/FormContext";
 
-import { events } from "../../mockData";
-// import { userService } from "../../Authentication/service";
+// import { events } from "../../mockData";
+import { eventService } from "../../Authentication/service";
 
 import "./Home.scss";
 import CreateEventContainer from "./CreateEventContainer";
@@ -19,12 +19,18 @@ const Home = () => {
 
   useEffect(() => {
     let __isMounted = true;
-    setTimeout(() => {
-      if (__isMounted) {
-        setPublicEventsList({ events: events, spinner: false });
-        setFriendsEventsList({ events: events, spinner: false });
-      }
-    }, 1000);
+    if (__isMounted) {
+      eventService.getAllEvents()
+        .then(res => {
+          setPublicEventsList({ events: res, spinner: false })
+        }).catch(err => console.log(err));
+
+
+      eventService.getAllEvents()
+        .then(res => {
+          setFriendsEventsList({ events: res, spinner: false })
+        }).catch(err => console.log(err));
+    }
     return () => {
       __isMounted = false;
     };
@@ -59,18 +65,17 @@ const Home = () => {
               : ({ items }) =>
                 items.map(ev => (
                   <EventCard
-                    id={ev.event_id}
-                    key={ev.event_id}
+                    id={ev.id}
+                    key={ev.id}
                     name={ev.name}
-                    date={ev.startDate}
+                    date={ev.startTime}
                     location={ev.address}
-                    eventState={ev.eventState}
+                    eventState="ongoing"
                   />
                 ))
           }
         />
         <PaginatedContainer
-          // title="Friend's Events"
           title={<span><i className="fas fa-users" /> {`Friend's Events`}</span>}
           items={friendsEventsList.events}
           render={
@@ -79,12 +84,12 @@ const Home = () => {
               : ({ items }) =>
                 items.map(ev => (
                   <EventCard
-                    id={ev.event_id}
-                    key={ev.event_id}
+                    id={ev.id}
+                    key={ev.id}
                     name={ev.name}
-                    date={ev.startDate}
+                    date={ev.startTime}
                     location={ev.address}
-                    eventState={ev.eventState}
+                    eventState="ongoing"
                   />
                 ))
           }
