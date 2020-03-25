@@ -3,7 +3,7 @@ import { FormContext } from "../../../context/FormContext";
 import { allUsers } from "../../../mockData";
 
 import { Button } from "../../../components/Button";
-import { SearchBar, TextInput } from "../../../components/Inputs";
+import { SearchBar } from "../../../components/Inputs";
 import PaginatedContainer from "../../../components/PaginatedContainer";
 import Spinner from "../../../components/Spinner";
 import UserCard from "../../../components/UserCard";

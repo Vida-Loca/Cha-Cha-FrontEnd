@@ -2,8 +2,7 @@ import React, { useContext, useState, useEffect } from "react";
 
 import { FormContext } from "../../context/FormContext";
 import { UserContext } from "../../context/UserContext";
-import { authenticationService } from "../../Authentication/service";
-// import { userService } from "../../Authentication/service";
+import { authenticationService, profileService } from "../../Authentication/service";
 
 import "./Profile.scss";
 
@@ -17,7 +16,7 @@ import ChangeAvatarContainer from "./ChangeAvatarContainer";
 import FriendsList from "./FriendsList";
 import Spinner from "../../components/Spinner";
 
-import { loggedInUser, events } from "../../mockData";
+import { events } from "../../mockData";
 
 const Profile = () => {
 
@@ -44,27 +43,32 @@ const Profile = () => {
 
   useEffect(() => {
     let __isMounted = true;
-    setTimeout(() => {
+    profileService.getCurrentUserInfo().then(res => {
       if (__isMounted) {
         setUserInfo({
-          username: loggedInUser.username,
-          email: loggedInUser.email,
-          datejoined: loggedInUser.joined.substring(0, 10),
-          avatarUrl: loggedInUser.picUrl
+          username: res.username,
+          email: res.email,
+          datejoined: res.joined.substring(0, 10),
+          avatarUrl: res.picUrl
         })
 
         setEditableUserInfo({
-          name: { value: loggedInUser.name, isValid: true, err: "" },
-          surname: { value: loggedInUser.surname, isValid: true, err: "" },
-          tempName: loggedInUser.name,
-          tempSurname: loggedInUser.surname
+          name: { value: res.name, isValid: true, err: "" },
+          surname: { value: res.surname, isValid: true, err: "" },
+          tempName: res.name,
+          tempSurname: res.surname
         })
 
         setMyEvents({ events: events, spinner: false });
         setInvitations({ invitations: events, spinner: false });
       }
+    }).catch(err => {
+      console.log(err);
+      console.log("sad face");
 
-    }, 1000);
+      setMyEvents({ events: events, spinner: false });
+      setInvitations({ invitations: events, spinner: false });
+    })
     return () => {
       __isMounted = false;
     };

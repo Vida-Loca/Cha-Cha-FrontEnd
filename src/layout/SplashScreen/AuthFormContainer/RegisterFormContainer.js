@@ -1,9 +1,8 @@
-import React, { useState, useContext } from "react";
+import React, { useState } from "react";
 import { TextInput } from "../../../components/Inputs";
 import { Button } from "../../../components/Button";
 import { authenticationService } from "../../../Authentication/service";
 // import { FormContext } from "../../../context/FormContext";
-import { UserContext } from "../../../context/UserContext";
 import Spinner from "../../../components/Spinner";
 import checkValidation from "../../../validation";
 import RegistrationComplete from "./RegistrationComplete";

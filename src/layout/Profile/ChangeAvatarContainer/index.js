@@ -2,6 +2,7 @@ import React, { useState } from "react";
 import { TextInput } from "../../../components/Inputs";
 import { Button } from "../../../components/Button";
 import Spinner from "../../../components/Spinner";
+import { profileService } from "../../../Authentication/service";
 
 const ChangeAvatar = () => {
   const [sendingDataSpinner, setSendingDataSpinner] = useState(false);
@@ -17,10 +18,17 @@ const ChangeAvatar = () => {
   const changeAvatar = () => {
     if (avatarUrl.URL.length > 5) {
       setSendingDataSpinner(true);
-      setTimeout(() => {
-        console.log("changing avatar")
-        setSendingDataSpinner(false);
-      }, 2000);
+
+      profileService.changeAvatar(avatarUrl.URL)
+        .then(res => {
+          setSendingDataSpinner(false)
+          console.log(res);
+        })
+        .then(err => {
+          console.log(err);
+          setSendingDataSpinner(false);
+        });
+
     } else {
       console.log("can't change avatar")
     }

@@ -1,10 +1,11 @@
-import React, { useState, useContext } from "react";
+import React, { useState } from "react";
 import { TextInput, OptionsInput } from "../../../components/Inputs";
 import { Button } from "../../../components/Button";
-// import { userService } from "../../../Authentication/service";
 import checkValidation from "../../../validation";
 import "./CreateEvent.scss";
 import Spinner from "../../../components/Spinner";
+
+import { eventService } from "../../../Authentication/service";
 
 const CreateEventContainer = () => {
 
@@ -173,23 +174,21 @@ const CreateEventContainer = () => {
       newAddress.street.isValid && newAddress.postcode.isValid &&
       newAddress.number.isValid) {
       setSendingDataSpinner(true);
-      setTimeout(() => {
-        console.log("sending data...");
-        console.log({
-          name: Information.name.value,
-          startDate: Information.startDate.value,
-          startTime: Information.startTime.value,
-          privacy: Information.privacy.value,
-          Address: {
-            country: newAddress.country.value,
-            city: newAddress.city.value,
-            street: newAddress.street.value,
-            postcode: newAddress.postcode.value,
-            number: newAddress.number.value,
-          }
-        });
-        setSendingDataSpinner(false);
-      }, 3000);
+
+      eventService.createEvent({
+        name: Information.name.value,
+        startTime: `${Information.startDate.value}T${Information.startTime.value}`,
+        address: {
+          country: newAddress.country.value,
+          city: newAddress.city.value,
+          street: newAddress.street.value,
+          postcode: newAddress.postcode.value,
+          number: newAddress.number.value
+
+        }
+      }).then(res => setSendingDataSpinner(false)).catch(err => setSendingDataSpinner(false));
+
+
     } else {
       console.log("something went wrong")
     }

@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from "react";
 import { Switch, BrowserRouter, Route, Redirect } from "react-router-dom";
 import { mainNav, adminNav, eventNav, mainNavNoAdmin } from "./Navs";
-import { userService } from "../../Authentication/service";
+import { profileService } from "../../Authentication/service";
 
 
 import "./Layout.scss";
@@ -12,22 +12,13 @@ import Profile from "../Profile/Profile";
 import Admin from "../Admin/Admin";
 import Event from "../EventTabs/Event";
 
-// isUserAdmin
 const MainLayout = () => {
-  const [isUserAdmin, setUserAdmin] = useState(true);
+  const [isUserAdmin, setUserAdmin] = useState(false);
   useEffect(() => {
-    userService
-      .isUserAdmin()
-      .then(body => {
-        return body;
-      })
+    profileService
+      .isLoggedInUserAdmin()
       .then(res => {
-        console.log(res);
-        if (res.message === "true") {
-          setUserAdmin(true);
-        }
-        // setUserInfo(res);
-        // setEventsList(res);
+        setUserAdmin(res);
       })
       .catch(err => {
         console.log(err);

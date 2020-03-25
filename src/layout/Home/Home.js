@@ -14,13 +14,11 @@ import PaginatedContainer from "../../components/PaginatedContainer";
 import Spinner from "../../components/Spinner";
 
 const Home = () => {
-  let __isMounted = false
-
   const [publicEventsList, setPublicEventsList] = useState({ events: [], spinner: true });
   const [friendsEventsList, setFriendsEventsList] = useState({ events: [], spinner: true });
 
   useEffect(() => {
-    __isMounted = true;
+    let __isMounted = true;
     setTimeout(() => {
       if (__isMounted) {
         setPublicEventsList({ events: events, spinner: false });

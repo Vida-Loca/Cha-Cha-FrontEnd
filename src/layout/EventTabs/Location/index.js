@@ -11,8 +11,6 @@ import "./Location.scss";
 
 
 const Location = ({ id }) => {
-  let __isMounted = false
-
   const [locationInfo, setLocationInfo] = useState({
     dateofevent: { value: "", isValid: true, err: [] },
     time: { value: "00:00", isValid: true, err: [] }
@@ -100,7 +98,7 @@ const Location = ({ id }) => {
   ])[0];
 
   useEffect(() => {
-    __isMounted = true;
+    let __isMounted = true;
     setTimeout(() => {
       if (__isMounted) {
         setLocationInfo({

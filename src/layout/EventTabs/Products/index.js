@@ -17,14 +17,11 @@ import Spinner from "../../../components/Spinner";
 import "./Products.scss";
 
 const Products = ({ id }) => {
-
-  let __isMounted = false
-
   const [productList, setProduct] = useState({ products: [], spinner: true });
 
 
   useEffect(() => {
-    __isMounted = true;
+    let __isMounted = true;
     setTimeout(() => {
       if (__isMounted) {
         setProduct({ products: createSetOfCategories(eventProducts), spinner: false });

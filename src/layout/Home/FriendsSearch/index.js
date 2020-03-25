@@ -1,5 +1,5 @@
-import React, { useState, useContext, useEffect } from "react";
-import { SearchBar, TextInput } from "../../../components/Inputs";
+import React, { useState } from "react";
+import { SearchBar } from "../../../components/Inputs";
 import { Button } from "../../../components/Button";
 // import { userService } from "../../../../Authentication/service";
 import PaginatedContainer from "../../../components/PaginatedContainer";

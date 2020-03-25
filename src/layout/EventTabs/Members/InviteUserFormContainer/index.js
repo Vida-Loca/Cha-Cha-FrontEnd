@@ -1,8 +1,8 @@
-import React, { useState, useContext, useEffect } from "react";
+import React, { useState, useEffect } from "react";
 import { TextInput } from "../../../../components/Inputs";
 import { Button } from "../../../../components/Button";
 // import { userService } from "../../../../Authentication/service";
-import { FormContext } from "../../../../context/FormContext";
+// import { FormContext } from "../../../../context/FormContext";
 import PaginatedContainer from "../../../../components/PaginatedContainer";
 import UserCard from "../../../../components/UserCard";
 import { friends } from "../../../../mockData";
@@ -12,7 +12,7 @@ import "./inviteFriends.scss";
 
 
 const InviteUserFormContainer = id => {
-  const [forms, setForm] = useContext(FormContext);
+  // const [forms, setForm] = useContext(FormContext);
 
   const [findUser, setfindUser] = useState({ username: "" });
   const [dislpayFriends, setDislpayFreinds] = useState({ friends: [], spinner: true });

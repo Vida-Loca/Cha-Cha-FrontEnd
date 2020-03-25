@@ -3,7 +3,8 @@ import PropTypes from "prop-types";
 import "./avatar.scss";
 
 const Avatar = ({ imageLink, title }) => {
-  return <img className="avatar" title={title} src={imageLink} alt="AVATAR" />;
+  const avatarURL = imageLink === "" ? "https://iupac.org/wp-content/uploads/2018/05/default-avatar.png" : imageLink;
+  return <img className="avatar" title={title} src={avatarURL} alt="AVATAR" />;
 };
 
 Avatar.defaultProps = {

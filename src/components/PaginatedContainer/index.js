@@ -30,7 +30,7 @@ PaginatedContainer.propTypes = {
   render: PropTypes.func.isRequired,
   items: PropTypes.array.isRequired,
   perPage: PropTypes.number,
-  title: PropTypes.string
+  title: PropTypes.oneOfType([PropTypes.string, PropTypes.object])
 };
 
 export default PaginatedContainer;

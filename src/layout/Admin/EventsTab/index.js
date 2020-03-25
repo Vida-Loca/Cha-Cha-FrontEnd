@@ -1,7 +1,6 @@
 import React, { useState, useEffect } from "react";
 import { events } from "../../../mockData";
 
-import { Button } from "../../../components/Button";
 import { SearchBar, TextInput } from "../../../components/Inputs";
 import EventCard from "../../../components/EventCard";
 import PaginatedContainer from "../../../components/PaginatedContainer";

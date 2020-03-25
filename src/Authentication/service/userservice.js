@@ -27,16 +27,7 @@ const addNewSuplyToEvent = (eventId, data) => {
   ).then(handleResponse);
 };
 
-const getCurrentUserInfo = () => {
-  const requestOptions = {
-    method: "GET",
-    headers: authHeader()
-  };
 
-  return fetch(`https://skibidi.herokuapp.com/user`, requestOptions).then(
-    handleResponse
-  );
-};
 
 const getEventById = id => {
   const requestOptions = { method: "GET", headers: authHeader() };
@@ -112,7 +103,6 @@ function getAllEventsOfCureentlyLogedInUser() {
 export const userService = {
   createNewEvent,
   getAllEvents,
-  getCurrentUserInfo,
   getEventById,
   getAllUsersFromGivenEvent,
   inviteUserTOEvent,

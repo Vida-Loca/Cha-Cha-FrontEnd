@@ -15,7 +15,7 @@ const MainPage = ({ eventPath, id, isAuth }) => {
 
   // if none of the above requirements are met dislpay error page
 
-  const [userStatus, setUserStatus] = useState(2);
+  const [userStatus,] = useState(2);
 
   const conditionalRender = () => {
     switch (userStatus) {

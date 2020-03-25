@@ -6,12 +6,11 @@ import Spinner from "../../../components/Spinner";
 import { friends, friendsRequests } from "../../../mockData";
 
 const FriendsList = () => {
-    let __isMounted = false
     const [friendList, setFriendList] = useState({ friends: [], spinner: true })
     const [friendRequests, setFriendRequests] = useState({ requests: [], spinner: true })
 
     useEffect(() => {
-        __isMounted = true;
+        let __isMounted = true;
         setTimeout(() => {
             if (__isMounted) {
                 setFriendList({ friends: friends, spinner: false });

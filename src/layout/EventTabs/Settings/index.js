@@ -12,8 +12,6 @@ import { membersOfTheEvent, requestsFoThisEvent } from "../../../mockData";
 import "./settings.scss";
 
 const Settings = ({ id }) => {
-    let __isMounted = false
-
     const [editState, setEdit] = useState(false);
 
     const [deleted, setDeleted] = useState(false);
@@ -26,7 +24,7 @@ const Settings = ({ id }) => {
     })
 
     useEffect(() => {
-        __isMounted = true;
+        let __isMounted = true;
 
         setTimeout(() => {
             if (__isMounted) {

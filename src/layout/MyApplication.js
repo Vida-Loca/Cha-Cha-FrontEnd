@@ -9,23 +9,9 @@ import { authenticationService } from "../Authentication/service";
 
 const MyApplication = () => {
   const [isLoggedIn, setLoggedIn] = useState(false);
-  // const [isUser, setUser] = useState(true);
 
   useEffect(() => {
     authenticationService.currentUser.subscribe(x => setLoggedIn(!!x));
-    //   if (isUser.break) {
-    //     const currentU = authenticationService.CurrentUser();
-    //     setUser({ ...isUser, break: false });
-    //     if (currentU != null || isUser.isLoggedIn) {
-    //       setLoggedIn({
-    //         isLoggedIn: true
-    //       });
-    //     } else {
-    //       setLoggedIn({
-    //         isLoggedIn: false
-    //       });
-    //     }
-    //   }
   }, []);
 
   const [forms, setform] = useContext(FormContext);

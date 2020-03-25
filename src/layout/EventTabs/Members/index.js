@@ -15,7 +15,6 @@ import InviteUserFormContainer from "./InviteUserFormContainer";
 import Spinner from "../../../components/Spinner";
 
 const Members = ({ id }) => {
-  let __isMounted = false
 
   const isUserAdmin = useState(true)[0];
 
@@ -24,7 +23,7 @@ const Members = ({ id }) => {
   const [eventRequests, seEventRequests] = useState({ members: [], spinner: true });
 
   useEffect(() => {
-    __isMounted = true;
+    let __isMounted = true;
 
     setTimeout(() => {
       if (__isMounted) {

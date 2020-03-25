@@ -3,7 +3,6 @@ import { TextInput } from "../../../components/Inputs";
 import { Button } from "../../../components/Button";
 import { authenticationService } from "../../../Authentication/service";
 import { FormContext } from "../../../context/FormContext";
-import { UserContext } from "../../../context/UserContext";
 import Spinner from "../../../components/Spinner";
 import ResetPassword from "./resetPassword";
 
@@ -13,7 +12,6 @@ const LoginFormContainer = () => {
   const [sendingDataSpinner, setSendingDataSpinner] = useState(false);
 
   const [changedForm, setChangedForm] = useContext(FormContext);
-  const setUser = useContext(UserContext)[1];
   const [login, setLogin] = useState({
     username: { value: "", isValid: true, err: [] },
     password: { value: "", isValid: true, err: [] }
