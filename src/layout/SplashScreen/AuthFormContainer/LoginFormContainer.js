@@ -47,16 +47,17 @@ const LoginFormContainer = () => {
         username: login.username.value,
         password: login.password.value
       }).then(res => {
-        console.log(res);
         setChangedForm({ ...changedForm, show: false })
+        setSendingDataSpinner(false);
       }, err => {
         setLogin({
           ...login,
           username: { value: "", isValid: false, err: [err.username] },
           password: { value: "", isValid: false, err: [err.password] }
         });
+        setSendingDataSpinner(false);
+
       });
-      setSendingDataSpinner(false);
 
     }
   }
