@@ -18,7 +18,7 @@ import "./Products.scss";
 
 const Products = ({ id }) => {
   const [productList, setProduct] = useState({ products: [], spinner: true });
-
+  const [forms, setform] = useContext(FormContext);
 
   useEffect(() => {
     let __isMounted = true;
@@ -37,10 +37,29 @@ const Products = ({ id }) => {
     };
   }, []);
 
-  const [forms, setform] = useContext(FormContext);
+
+  const addProduct = (addedProduct) => {
+    let tempProductsList = productList.products;
+    let foundIndex = tempProductsList.findIndex(catList => catList.Category === addedProduct.category);
+    // tempSup.push(addedProduct);
+
+    console.log(tempProductsList);
+    console.log(foundIndex);
+
+    if (foundIndex < 0) {
+      let tempProductCat = { Category: addedProduct.category, supplies: [addedProduct.product] }
+      tempProductsList.push(tempProductCat);
+      setProduct({ ...productList, products: tempProductsList });
+    }
+    else {
+      tempProductsList[foundIndex].supplies.push(addedProduct.product);
+      setProduct({ ...productList, products: tempProductsList });
+    }
+
+  }
 
   const addNewProductModal = () => {
-    setform({ ...forms, renderForm: <AddNewProductContainer id={id} />, show: true });
+    setform({ ...forms, renderForm: <AddNewProductContainer addProduct={addProduct} id={id} />, show: true });
   };
 
 

@@ -10,7 +10,7 @@ import { productService } from "../../../../Authentication/service";
 import { FormContext } from "../../../../context/FormContext";
 
 
-const AddNewProductContainer = ({ testFunc, id, category }) => {
+const AddNewProductContainer = ({ addProduct, id, category }) => {
 
   const [form, setform] = useContext(FormContext);
   let [sendingDataSpinner, setSendingDataSpinner] = useState(false);
@@ -92,14 +92,17 @@ const AddNewProductContainer = ({ testFunc, id, category }) => {
           console.log(res);
           setSendingDataSpinner(false);
           setform({ ...form, show: false });
-          testFunc({
-            id: "tempid",
-            supply: "dodany produkt",
-            price: 222,
-            userId: 1,
-            user: "Test User",
-            quantity: 1,
-            picUrl: ""
+          addProduct({
+            category: chosenCategory,
+            product: {
+              id: "tempid",
+              supply: "dodany produkt",
+              price: 222,
+              userId: 1,
+              user: "Test User",
+              quantity: 1,
+              picUrl: ""
+            }
           });
 
         }).catch(err => {

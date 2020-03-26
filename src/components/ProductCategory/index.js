@@ -17,16 +17,16 @@ const ProductCategory = ({ eventId, supCont }) => {
   });
   const [, setform] = useContext(FormContext);
 
-  const addProduct = (message) => {
+  const addProduct = (addedProduct) => {
     let tempSup = supplyContainer.supplies;
-    tempSup.push(message);
+    tempSup.push(addedProduct.product);
     setsupplyContainer({ ...supplyContainer, supplies: tempSup });
   }
 
   const openModalAddSupply = () => {
     setform({
       show: true,
-      renderForm: <AddNewProductContainer testFunc={addProduct} id={eventId} category={supplyContainer.Category} />
+      renderForm: <AddNewProductContainer addProduct={addProduct} id={eventId} category={supplyContainer.Category} />
     });
   };
 
