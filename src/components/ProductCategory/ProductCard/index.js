@@ -6,7 +6,7 @@ import { Button, EditButton } from "../../Button";
 import "./ProductCard.scss";
 import { TextInputNL, TextArea } from "../../Inputs";
 
-import { productService } from "../../../Authentication/service";
+// import { productService } from "../../../Authentication/service";
 
 
 const ProductCard = ({ removeProduct, eventId, id, user, supply, price, picUrl }) => {
@@ -73,7 +73,6 @@ const ProductCard = ({ removeProduct, eventId, id, user, supply, price, picUrl }
 
   const deletingProduct = () => {
     console.log(`deleteing product:${id} from event: ${eventId}`);
-
     removeProduct();
     // productService.removeProduct(eventId, id)
     //   .then(res => {

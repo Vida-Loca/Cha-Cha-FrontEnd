@@ -25,11 +25,14 @@ const Products = ({ id }) => {
 
     productService.getProductsFromEvent(id)
       .then(res => {
-        console.log(res);
-        setProduct({ products: createSetOfCategories(res), spinner: false });
+        if (__isMounted) {
+          setProduct({ products: createSetOfCategories(res), spinner: false });
+        }
       }).catch(err => {
         console.log(err);
-        setProduct({ products: [], spinner: false });
+        if (__isMounted) {
+          setProduct({ products: [], spinner: false });
+        }
       })
 
     return () => {
@@ -41,10 +44,6 @@ const Products = ({ id }) => {
   const addProduct = (addedProduct) => {
     let tempProductsList = productList.products;
     let foundIndex = tempProductsList.findIndex(catList => catList.Category === addedProduct.category);
-    // tempSup.push(addedProduct);
-
-    console.log(tempProductsList);
-    console.log(foundIndex);
 
     if (foundIndex < 0) {
       let tempProductCat = { Category: addedProduct.category, supplies: [addedProduct.product] }

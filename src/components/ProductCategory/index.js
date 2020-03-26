@@ -84,7 +84,7 @@ const ProductCategory = ({ eventId, supCont }) => {
 };
 
 ProductCategory.propTypes = {
-  // eslint-disable-next-line react/require-default-props
+  eventId: PropTypes.string.isRequired,
   supCont: PropTypes.shape({
     Category: PropTypes.string.isRequired,
     supplies: PropTypes.array.isRequired

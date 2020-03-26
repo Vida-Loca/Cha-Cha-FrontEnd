@@ -6,10 +6,12 @@ import "./CreateEvent.scss";
 import Spinner from "../../../components/Spinner";
 
 import { eventService } from "../../../Authentication/service";
+import { history } from "../../../Authentication/helper";
 
 const CreateEventContainer = () => {
 
   const [sendingDataSpinner, setSendingDataSpinner] = useState(false);
+
 
   const [Information, setInformation] = useState({
     name: { value: "", isValid: false, err: "", touched: false },
@@ -186,7 +188,11 @@ const CreateEventContainer = () => {
           number: newAddress.number.value
 
         }
-      }).then(res => setSendingDataSpinner(false)).catch(err => setSendingDataSpinner(false));
+      }).then(res => {
+        history.push(`/event/${res.id}`)
+        setSendingDataSpinner(false)
+      })
+        .catch(err => setSendingDataSpinner(false));
 
 
     } else {

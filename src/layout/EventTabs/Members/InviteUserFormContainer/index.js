@@ -1,4 +1,5 @@
 import React, { useState, useEffect } from "react";
+import PropTypes from "prop-types";
 import { TextInput } from "../../../../components/Inputs";
 import { Button } from "../../../../components/Button";
 import { userService, eventService } from "../../../../Authentication/service";
@@ -46,8 +47,8 @@ const InviteUserFormContainer = id => {
 
 
   const sendInvitation = (username) => {
-    eventService.
-      setTimeout(() => {
+    eventService
+      .setTimeout(() => {
         console.log(`sendding request to ... ${username}`)
       }, 2000);
   }
@@ -73,5 +74,11 @@ const InviteUserFormContainer = id => {
     </div>
   );
 };
+
+
+InviteUserFormContainer.propTypes = {
+  id: PropTypes.number.isRequired
+};
+
 
 export default InviteUserFormContainer;

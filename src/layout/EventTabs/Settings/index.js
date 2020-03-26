@@ -1,6 +1,5 @@
 import React, { useState, useEffect } from "react";
-import { Redirect } from "react-router-dom";
-
+import { history } from "../../../Authentication/helper";
 import { OptionsInput } from "../../../components/Inputs";
 import { Button, EditButton } from "../../../components/Button";
 import Spinner from "../../../components/Spinner";
@@ -15,8 +14,6 @@ import "./settings.scss";
 
 const Settings = ({ id }) => {
     const [editState, setEdit] = useState(false);
-
-    const [deleted, setDeleted] = useState(false);
 
     const [settings, setSettings] = useState({
         privacy: { value: "private", spinner: false },
@@ -59,7 +56,7 @@ const Settings = ({ id }) => {
         eventService.deleteEvent(id)
             .then(res => {
                 console.log(res);
-                setDeleted(true);
+                history.push("/");
             })
             .catch(err => {
                 console.log(err);
@@ -115,7 +112,6 @@ const Settings = ({ id }) => {
 
     return (
         <div className="settings-container">
-            {deleted && <Redirect to="/" push={true} />}
             <div className="privacy-box">
                 <div className="header-button">
                     <h2>Privacy</h2>

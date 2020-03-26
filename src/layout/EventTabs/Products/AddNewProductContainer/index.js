@@ -95,7 +95,7 @@ const AddNewProductContainer = ({ addProduct, id, category }) => {
           addProduct({
             category: chosenCategory,
             product: {
-              id: "tempid",
+              id: 3232,
               supply: "dodany produkt",
               price: 222,
               userId: 1,
@@ -109,17 +109,6 @@ const AddNewProductContainer = ({ addProduct, id, category }) => {
           console.log(err);
           setSendingDataSpinner(false);
         })
-
-
-      // setTimeout(() => {
-      //   console.log({
-      //     name: product.name.value,
-      //     price: product.price.value,
-      //     productCategory: chosenCategory
-      //   });
-      //   setSendingDataSpinner(false);
-      // }, 2000);
-
 
     } else {
       console.log("some fields are not valid");
@@ -156,7 +145,9 @@ AddNewProductContainer.defaultProps = {
 };
 
 AddNewProductContainer.propTypes = {
-  category: PropTypes.string
+  category: PropTypes.string,
+  addProduct: PropTypes.func.isRequired,
+  id: PropTypes.number.isRequired
 };
 
 export default AddNewProductContainer;
