@@ -6,7 +6,10 @@ import { Button, EditButton } from "../../Button";
 import "./ProductCard.scss";
 import { TextInputNL, TextArea } from "../../Inputs";
 
-const ProductCard = ({ id, user, supply, price, picUrl }) => {
+import { productService } from "../../../Authentication/service";
+
+
+const ProductCard = ({ removeProduct, eventId, id, user, supply, price, picUrl }) => {
   const [tileSupply, setTileSuply] = useState({
     user,
     supply,
@@ -69,7 +72,17 @@ const ProductCard = ({ id, user, supply, price, picUrl }) => {
   };
 
   const deletingProduct = () => {
-    console.log(`deleting product with id: ${id}`)
+    console.log(`deleteing product:${id} from event: ${eventId}`);
+
+    removeProduct();
+    // productService.removeProduct(eventId, id)
+    //   .then(res => {
+    //     console.log(res);
+    //   })
+    //   .catch(err => {
+    //     console.log(err);
+    //   });
+
   }
 
   const updatingProduct = () => {

@@ -1,7 +1,7 @@
 import React, { useState, useContext, useEffect } from "react";
 import PropTypes from "prop-types";
 
-// import { userService } from "../../../Authentication/service";
+import { productService } from "../../../Authentication/service";
 import { FormContext } from "../../../context/FormContext";
 
 import createSetOfCategories from "./helper";
@@ -11,7 +11,7 @@ import ProductCategory from "../../../components/ProductCategory";
 import PaginatedContainer from "../../../components/PaginatedContainer";
 import AddNewProductContainer from "./AddNewProductContainer";
 
-import { eventProducts } from "../../../mockData";
+// import { eventProducts } from "../../../mockData";
 import Spinner from "../../../components/Spinner";
 
 import "./Products.scss";
@@ -22,12 +22,15 @@ const Products = ({ id }) => {
 
   useEffect(() => {
     let __isMounted = true;
-    setTimeout(() => {
-      if (__isMounted) {
-        setProduct({ products: createSetOfCategories(eventProducts), spinner: false });
-      }
 
-    }, 1000);
+    productService.getProductsFromEvent(id)
+      .then(res => {
+        console.log(res);
+        setProduct({ products: createSetOfCategories(res), spinner: false });
+      }).catch(err => {
+        console.log(err);
+        setProduct({ products: [], spinner: false });
+      })
 
     return () => {
       __isMounted = false;
@@ -37,7 +40,7 @@ const Products = ({ id }) => {
   const [forms, setform] = useContext(FormContext);
 
   const addNewProductModal = () => {
-    setform({ ...forms, renderForm: <AddNewProductContainer />, show: true });
+    setform({ ...forms, renderForm: <AddNewProductContainer id={id} />, show: true });
   };
 
 
@@ -56,7 +59,7 @@ const Products = ({ id }) => {
         render={
           productList.spinner
             ? (() => <Spinner />)
-            : (({ items }) => items.map(supCont => <ProductCategory supCont={supCont} key={supCont.Category} />))
+            : (({ items }) => items.map(supCont => <ProductCategory eventId={id} supCont={supCont} key={supCont.Category} />))
         }
       />
 

@@ -14,15 +14,15 @@ const createSetOfCategories = array => {
     for (let i = 0; i < array.length; i += 1) {
       let tempSupply = {};
       if (cate === array[i].productCategory.name) {
-        array[i].userCards.forEach(user => {
+        array[i].eventUsers.forEach(user => {
           tempSupply = {
             id: array[i].id,
             supply: array[i].name,
-            userId: user.eventUser.user.id,
-            user: user.eventUser.user.username,
+            userId: user.user.id,
+            user: user.user.username,
             quantity: 2,
             price: array[i].price,
-            picUrl: user.eventUser.user.picUrl
+            picUrl: user.user.picUrl
           };
         });
         tempObject.supplies.push(tempSupply);

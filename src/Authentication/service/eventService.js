@@ -37,6 +37,8 @@ const deleteEvent = (id) => {
 
 
 
+
+
 export const eventService = {
     createEvent,
     getAllEvents,

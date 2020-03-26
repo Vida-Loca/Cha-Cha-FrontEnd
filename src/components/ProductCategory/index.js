@@ -9,17 +9,24 @@ import AddNewProductContainer from "../../layout/EventTabs/Products/AddNewProduc
 
 import { FormContext } from "../../context/FormContext";
 
-const ProductCategory = ({ supCont }) => {
+
+const ProductCategory = ({ eventId, supCont }) => {
   const [supplyContainer, setsupplyContainer] = useState({
     ...supCont,
     showMore: false
   });
-  const setform = useContext(FormContext)[1];
+  const [, setform] = useContext(FormContext);
+
+  const addProduct = (message) => {
+    let tempSup = supplyContainer.supplies;
+    tempSup.push(message);
+    setsupplyContainer({ ...supplyContainer, supplies: tempSup });
+  }
 
   const openModalAddSupply = () => {
     setform({
       show: true,
-      renderForm: <AddNewProductContainer category={supplyContainer.Category} />
+      renderForm: <AddNewProductContainer testFunc={addProduct} id={eventId} category={supplyContainer.Category} />
     });
   };
 
@@ -27,6 +34,12 @@ const ProductCategory = ({ supCont }) => {
     supplyContainer.showMore = !supplyContainer.showMore;
     setsupplyContainer({ ...supplyContainer });
   };
+
+  const removeProductFromCategory = (id) => {
+    setsupplyContainer({ ...supplyContainer, supplies: supplyContainer.supplies.filter(prod => prod.id !== id), show: true })
+  }
+
+
 
   return (
     <div className={supplyContainer.showMore ? "category-container" : "category-container hide"}>
@@ -54,6 +67,8 @@ const ProductCategory = ({ supCont }) => {
         {supplyContainer.supplies.map(sup => {
           return (
             <ProductCard
+              removeProduct={() => removeProductFromCategory(sup.id)}
+              eventId={eventId}
               id={sup.id}
               user={sup.user}
               supply={sup.supply}

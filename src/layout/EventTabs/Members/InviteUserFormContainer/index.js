@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from "react";
 import { TextInput } from "../../../../components/Inputs";
 import { Button } from "../../../../components/Button";
-import { userService } from "../../../../Authentication/service";
+import { userService, eventService } from "../../../../Authentication/service";
 // import { FormContext } from "../../../../context/FormContext";
 import PaginatedContainer from "../../../../components/PaginatedContainer";
 import UserCard from "../../../../components/UserCard";
@@ -46,9 +46,10 @@ const InviteUserFormContainer = id => {
 
 
   const sendInvitation = (username) => {
-    setTimeout(() => {
-      console.log(`sendding request to ... ${username}`)
-    }, 2000);
+    eventService.
+      setTimeout(() => {
+        console.log(`sendding request to ... ${username}`)
+      }, 2000);
   }
 
   return (

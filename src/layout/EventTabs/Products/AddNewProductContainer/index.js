@@ -1,15 +1,18 @@
-import React, { useState } from "react";
+import React, { useState, useContext } from "react";
 import PropTypes from "prop-types";
 import { TextInput } from "../../../../components/Inputs";
 import { Button } from "../../../../components/Button";
 import checkValidation from "../../../../validation";
 import Spinner from "../../../../components/Spinner";
 
-// import { eventService } from "../../../../Authentication/service";
+import { productService } from "../../../../Authentication/service";
+
+import { FormContext } from "../../../../context/FormContext";
 
 
-const AddNewProductContainer = ({ category }) => {
+const AddNewProductContainer = ({ testFunc, id, category }) => {
 
+  const [form, setform] = useContext(FormContext);
   let [sendingDataSpinner, setSendingDataSpinner] = useState(false);
 
   const [product, setProduct] = useState({
@@ -78,16 +81,46 @@ const AddNewProductContainer = ({ category }) => {
     const chosenCategory = !!category ? category : product.productCategory.value;
     if (product.name.isValid && product.price.isValid && (product.productCategory.isValid || !!category)) {
       setSendingDataSpinner(true);
-      setTimeout(() => {
-        console.log({
+
+      productService.addProduct(id,
+        {
           name: product.name.value,
           price: product.price.value,
           productCategory: chosenCategory
-        });
-        setSendingDataSpinner(false);
-      }, 2000);
+        })
+        .then(res => {
+          console.log(res);
+          setSendingDataSpinner(false);
+          setform({ ...form, show: false });
+          testFunc({
+            id: "tempid",
+            supply: "dodany produkt",
+            price: 222,
+            userId: 1,
+            user: "Test User",
+            quantity: 1,
+            picUrl: ""
+          });
+
+        }).catch(err => {
+          console.log(err);
+          setSendingDataSpinner(false);
+        })
+
+
+      // setTimeout(() => {
+      //   console.log({
+      //     name: product.name.value,
+      //     price: product.price.value,
+      //     productCategory: chosenCategory
+      //   });
+      //   setSendingDataSpinner(false);
+      // }, 2000);
+
+
     } else {
       console.log("some fields are not valid");
+
     }
   }
 

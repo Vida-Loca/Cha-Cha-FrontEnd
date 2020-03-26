@@ -240,12 +240,12 @@ const Profile = () => {
               : ({ items }) =>
                 items.map(ev => (
                   <EventCard
-                    id={ev.event_id}
-                    key={ev.event_id}
+                    id={ev.id}
+                    key={ev.id}
                     name={ev.name}
-                    date={ev.startDate}
+                    date={ev.startTime}
                     location={ev.address}
-                    eventState={ev.eventState}
+                    eventState="ongoing"
                   />
                 ))
           }
