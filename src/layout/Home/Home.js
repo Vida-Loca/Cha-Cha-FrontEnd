@@ -63,7 +63,7 @@ const Home = () => {
             publicEventsList.spinner
               ? () => <Spinner />
               : ({ items }) =>
-                items.map(ev => (
+                items.map((ev, index) => (
                   <EventCard
                     id={ev.id}
                     key={ev.id}
@@ -71,6 +71,7 @@ const Home = () => {
                     date={ev.startTime}
                     location={ev.address}
                     eventState="ongoing"
+                    listIndex={index % 5}
                   />
                 ))
           }
@@ -82,7 +83,7 @@ const Home = () => {
             friendsEventsList.spinner
               ? () => <Spinner />
               : ({ items }) =>
-                items.map(ev => (
+                items.map((ev, index) => (
                   <EventCard
                     id={ev.id}
                     key={ev.id}
@@ -90,6 +91,7 @@ const Home = () => {
                     date={ev.startTime}
                     location={ev.address}
                     eventState="ongoing"
+                    listIndex={index % 5}
                   />
                 ))
           }

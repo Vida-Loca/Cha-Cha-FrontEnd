@@ -6,12 +6,12 @@ import "./Modal.scss";
 const Modal = ({ show, modalClose, children }) => {
   return (
     <>
-      <div className="modal-container" style={{ display: show ? "flex" : "none" }}>
-        <div className="modal" style={{ opacity: show ? "1" : "0" }}>
+      <div className="modal-container" >
+        <div className={show ? `modal  modal-open` : `modal`} >
           {children}
         </div>
       </div>
-      {show ? <Backdrop clicked={modalClose} /> : null}
+      <Backdrop show={show} clicked={modalClose} />
     </>
   );
 };

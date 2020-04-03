@@ -26,6 +26,49 @@
   border-radius: $border-radius-lg;
 }
 
+.btn-blue-animated{
+  animation: ble-btn-anime 2s ease-out forwards;
+}
+.btn-orange-animated{
+  animation: orange-btn-anime 2s ease-out forwards;
+}
+
+@keyframes ble-btn-anime{
+  0%{
+    color: transparent;
+    box-shadow: 0px 0px 15px $main-blue;
+  }
+  20%{
+    color: transparent;
+    box-shadow: 0px 0px 20px $main-blue;
+  }
+  70%{
+    text-shadow: 2px 2px 5px white;
+  }
+  100%{
+    text-shadow: 0px 0px 0px white;
+    box-shadow: 0px 0px 5px $main-blue;
+  }
+}
+@keyframes orange-btn-anime{
+  0%{
+    color: transparent;
+    box-shadow: 0px 0px 15px $main-orange;
+  }
+  20%{
+    color: transparent;
+    box-shadow: 0px 0px 20px $main-orange;
+  }
+  70%{
+    text-shadow: 2px 2px 5px white;
+  }
+  100%{
+    text-shadow: 0px 0px 0px white;
+    box-shadow: 0px 0px 5px $main-orange;
+  }
+}
+
+
 .btn-blueGradient {
   @extend %btn;
   color: white;

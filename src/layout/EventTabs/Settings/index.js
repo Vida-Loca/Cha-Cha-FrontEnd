@@ -15,11 +15,12 @@ import "./settings.scss";
 const Settings = ({ id }) => {
     const [editState, setEdit] = useState(false);
 
+    const [members, setMembers] = useState({ users: [], spinner: true })
+    const [admins, setAdmins] = useState({ users: [], spinner: true })
+
     const [settings, setSettings] = useState({
         privacy: { value: "private", spinner: false },
-        currency: { value: "private", spinner: false },
-        admins: { users: [], spinner: true },
-        users: { users: [], spinner: true }
+        currency: { value: "private", spinner: false }
     })
 
     useEffect(() => {
@@ -29,10 +30,11 @@ const Settings = ({ id }) => {
             if (__isMounted) {
                 setSettings({
                     privacy: { value: "private", spinner: false },
-                    admins: { users: membersOfTheEvent, spinner: false },
-                    users: { users: requestsFoThisEvent, spinner: false },
                     currency: { value: "PLN", spinner: false }
                 });
+
+                setMembers({ users: membersOfTheEvent, spinner: false });
+                setAdmins({ users: requestsFoThisEvent, spinner: false });
             }
 
         }, 1000);
@@ -44,7 +46,6 @@ const Settings = ({ id }) => {
     const editHandler = () => {
         setEdit(!editState);
     };
-
 
     const onChangeHandler = (event) => {
         setSettings({
@@ -62,18 +63,21 @@ const Settings = ({ id }) => {
                 console.log(err);
                 editHandler();
             })
-
     }
 
     const promoteToAdmin = (username) => {
-        setTimeout(() => {
-            console.log(`promoting ${username} to admin on event ${id}`)
-        }, 2000);
+        const tempAdminsList = admins.users;
+        const foundUser = members.users.filter(user => user.username === username)[0];
+        tempAdminsList.push(foundUser);
+        setMembers({ users: members.users.filter(user => user.username !== username), spinner: false });
+        setAdmins({ users: tempAdminsList, spinner: false });
     }
     const demoteAdmin = (username) => {
-        setTimeout(() => {
-            console.log(`demoting ${username} from admin on event ${id}`)
-        }, 2000);
+        const tempMembersList = members.users;
+        const foundUser = admins.users.filter(user => user.username === username)[0];
+        tempMembersList.push(foundUser);
+        setMembers({ users: tempMembersList, spinner: false });
+        setAdmins({ users: admins.users.filter(user => user.username !== username), spinner: false });
     }
 
     const saveCurrencyChanges = () => {
@@ -150,10 +154,10 @@ const Settings = ({ id }) => {
                 <h2>Event Admins</h2>
                 <PaginatedContainer
                     title=""
-                    items={settings.admins.users}
+                    items={admins.users}
                     perPage={5}
                     render={
-                        settings.admins.spinner
+                        admins.spinner
                             ? () => <Spinner />
                             : ({ items }) =>
                                 items.map(ev => (
@@ -165,10 +169,10 @@ const Settings = ({ id }) => {
                 <h2>Event Members</h2>
                 <PaginatedContainer
                     title=""
-                    items={settings.users.users}
+                    items={members.users}
                     perPage={5}
                     render={
-                        settings.users.spinner
+                        members.spinner
                             ? () => <Spinner />
                             : ({ items }) =>
                                 items.map(ev => (

@@ -4,7 +4,7 @@ import { Button } from "../../../components/Button";
 import Spinner from "../../../components/Spinner";
 import { profileService } from "../../../Authentication/service";
 
-const ChangeAvatar = () => {
+const ChangeAvatar = ({ changeAvatarState }) => {
   const [sendingDataSpinner, setSendingDataSpinner] = useState(false);
 
   const [avatarUrl, setAvatarUrl] = useState({ URL: "" });
@@ -22,6 +22,7 @@ const ChangeAvatar = () => {
       profileService.changeAvatar(avatarUrl.URL)
         .then(res => {
           setSendingDataSpinner(false)
+          changeAvatarState(avatarUrl.URL);
           console.log(res);
         })
         .then(err => {

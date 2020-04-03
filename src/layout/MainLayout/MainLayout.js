@@ -1,8 +1,7 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useContext } from "react";
 import { Switch, Route, Redirect } from "react-router-dom";
 import { mainNav, adminNav, eventNav, mainNavNoAdmin } from "./Navs";
 import { profileService } from "../../Authentication/service";
-
 
 import "./Layout.scss";
 
@@ -12,8 +11,10 @@ import Profile from "../Profile/Profile";
 import Admin from "../Admin/Admin";
 import Event from "../EventTabs/Event";
 
+
 const MainLayout = () => {
   const [isUserAdmin, setUserAdmin] = useState(false);
+
   useEffect(() => {
     profileService
       .isLoggedInUserAdmin()
@@ -25,23 +26,24 @@ const MainLayout = () => {
       });
   }, []);
 
+
+
   return (
     <div className="MainLayout">
       <Sidebar classes="SideBar-orange" navlinks={isUserAdmin ? mainNav : mainNavNoAdmin} />
-      <>
-        <Switch>
-          <Route path="/" exact render={() => <Redirect to="/home" />} />
-          <Route path="/home" exact render={() => <Home />} />
-          <Route path="/profile" exact render={() => <Profile />} />
-          {isUserAdmin ? <Route path="/admin" render={() => <Admin />} /> : null}
 
-          <Route
-            path="/event/:id"
-            render={({ match }) => <Event eventId={match.params.id} eventPath={match.path} />}
-          />
-          <Redirect from="*" to="/home" />
-        </Switch>
-      </>
+      <Switch>
+        <Route path="/" exact render={() => <Redirect to="/home" />} />
+        <Route path="/home" exact render={() => <Home />} />
+        <Route path="/profile" exact render={() => <Profile />} />
+        {isUserAdmin ? <Route path="/admin" render={() => <Admin />} /> : null}
+
+        <Route
+          path="/event/:id"
+          render={({ match }) => <Event eventId={match.params.id} eventPath={match.path} />}
+        />
+        <Redirect from="*" to="/home" />
+      </Switch>
       <Route
         path="/event/:id"
         render={({ match }) => (

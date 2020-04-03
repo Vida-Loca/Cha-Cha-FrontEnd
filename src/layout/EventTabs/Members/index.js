@@ -41,15 +41,20 @@ const Members = ({ id }) => {
     setform({ show: true, renderForm: <InviteUserFormContainer id={id} /> });
   };
 
-  const kickUsers = (username) => {
-    setTimeout(() => {
-      console.log(`kicking user ... ${username}`)
-    }, 2000);
+  const kickUsers = (userId) => {
+    seEventMemebers({ members: eventMemebers.members.filter(prod => prod.id !== userId), spinner: false })
+
   }
-  const acceptUsers = (username) => {
-    setTimeout(() => {
-      console.log(`accepting user ... ${username}`)
-    }, 2000);
+  const ignoreRequest = (userId) => {
+    seEventRequests({ members: eventRequests.members.filter(prod => prod.id !== userId), spinner: false })
+
+  }
+  const acceptUsers = (userId) => {
+    const tempMembersList = eventMemebers.members;
+    const acceptedMember = eventRequests.members.filter(prod => prod.id === userId)[0];
+    tempMembersList.push(acceptedMember);
+    seEventRequests({ members: eventRequests.members.filter(prod => prod.id !== userId), spinner: false })
+    seEventMemebers({ members: tempMembersList, spinner: false })
   }
 
 
@@ -59,32 +64,39 @@ const Members = ({ id }) => {
         + Invite User
       </Button>
       <PaginatedContainer
-        title={`Pending requests ● ${eventMemebers.members.length}`}
-        items={eventMemebers.members}
+        title={`Pending requests ● ${eventRequests.members.length}`}
+        items={eventRequests.members}
         perPage={4}
         render={
-          eventMemebers.spinner
+          eventRequests.spinner
             ? () => <Spinner />
             : ({ items }) =>
               items.map(ev => (
-                <UserCard key={ev.username} username={ev.username} showControlls={isUserAdmin}>
-                  <Button clicked={() => acceptUsers(ev.username)} classes="btn-blueGradient btn-sm">accept</Button>
+                <UserCard key={ev.username} username={ev.username} imageUrl={ev.picUrl} showControlls={isUserAdmin}>
+                  <Button clicked={() => ignoreRequest(ev.id)} classes="btn-orangeGradient btn-sm">
+                    <i className="fas fa-times-circle" />
+                  </Button>
+                  <Button clicked={() => acceptUsers(ev.id)} classes="btn-blueGradient btn-sm">
+                    <i className="fas fa-check-circle" />
+                  </Button>
                 </UserCard>
               ))
         }
       />
 
       <PaginatedContainer
-        title={`Members ● ${eventRequests.members.length}`}
-        items={eventRequests.members}
+        title={`Members ● ${eventMemebers.members.length}`}
+        items={eventMemebers.members}
         perPage={3}
         render={
-          eventRequests.spinner
+          eventMemebers.spinner
             ? () => <Spinner />
             : ({ items }) =>
               items.map(ev => (
-                <UserCard key={ev.username} username={ev.username} showControlls={isUserAdmin}>
-                  <Button clicked={() => kickUsers(ev.username)} classes="btn-orangeGradient btn-sm">kick</Button>
+                <UserCard key={ev.username} username={ev.username} imageUrl={ev.picUrl} showControlls={isUserAdmin}>
+                  <Button clicked={() => kickUsers(ev.id)} classes="btn-orangeGradient btn-sm">
+                    <i className="fas fa-user-times" />
+                  </Button>
                 </UserCard>
               ))
         }

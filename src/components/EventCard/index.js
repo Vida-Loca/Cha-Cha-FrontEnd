@@ -1,9 +1,16 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
 import { Link } from "react-router-dom";
 import PropTypes from "prop-types";
 import "./EventCard.scss";
 
-const EventCard = ({ id, name, date, location, eventState }) => {
+const EventCard = ({ id, name, date, location, eventState, listIndex }) => {
+
+  const [showCard, setShowCard] = useState(false);
+  useEffect(() => {
+    setTimeout(() => {
+      setShowCard(true);
+    }, listIndex * 100);
+  }, [])
 
   const iconState = () => {
     switch (eventState) {
@@ -20,34 +27,37 @@ const EventCard = ({ id, name, date, location, eventState }) => {
   const cardStyle = () => {
     switch (eventState) {
       case "ongoing":
-        return "event-card"
+        return `event-card event-card-animation-1`
       case "finished":
-        return "event-card event-complete"
+        return `event-card event-card-animation-1 event-complete`
       case "invite":
-        return "event-card event-invite"
+        return `event-card event-card-animation-1 event-invite`
       default:
         return "";
     }
   }
   return (
     <Link to={`/event/${id}`}>
-      <div className={cardStyle()}>
-        <div className={"event-icon event-icon-complete"}>
-          <i className={iconState()} />
-        </div>
-        <div className="content">
-          <h2>{name}</h2>
-          <span className="date-cont">
-            <i className="fas fa-calendar-alt" />
-            <span className="date">{!!date ? date.substring(0, 10) : ""}</span>
-            <strong className="event-state">{eventState}</strong>
-          </span>
-          <span>
-            <i className="fas fa-map-marker-alt" />
-            {`${location.city}, ${location.street}, ${location.number}`}
-          </span>
-        </div>
-      </div>
+
+      {showCard
+        && <div className={cardStyle()}>
+          <div className={"event-icon event-icon-complete"}>
+            <i className={iconState()} />
+          </div>
+          <div className="content">
+            <h2>{name}</h2>
+            <span className="date-cont">
+              <i className="fas fa-calendar-alt" />
+              <span className="date">{!!date ? date.substring(0, 10) : ""}</span>
+              <strong className="event-state">{eventState}</strong>
+            </span>
+            <span>
+              <i className="fas fa-map-marker-alt" />
+              {`${location.city}, ${location.street}, ${location.number}`}
+            </span>
+          </div>
+        </div>}
+
     </Link>
   );
 };

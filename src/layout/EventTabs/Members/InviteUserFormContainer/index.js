@@ -47,10 +47,8 @@ const InviteUserFormContainer = id => {
 
 
   const sendInvitation = (username) => {
-    eventService
-      .setTimeout(() => {
-        console.log(`sendding request to ... ${username}`)
-      }, 2000);
+    const tempFriendsList = dislpayFriends.friends;
+    setDislpayFreinds({ friends: dislpayFriends.friends.filter(prod => prod.username !== username), spinner: false })
   }
 
   return (
@@ -65,7 +63,7 @@ const InviteUserFormContainer = id => {
             ? () => <Spinner />
             : ({ items }) =>
               items.map(ev => (
-                <UserCard key={ev.username} username={ev.username} showControlls>
+                <UserCard key={ev.username} username={ev.username} imageUrl={ev.avatarUrl} showControlls>
                   <Button clicked={() => sendInvitation(ev.username)} classes="btn-blueGradient btn-sm">invite</Button>
                 </UserCard>
               ))

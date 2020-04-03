@@ -17,14 +17,16 @@ const MyApplication = () => {
   const [forms, setform] = useContext(FormContext);
 
   const hideModal = () => {
-    setform({ ...forms, show: false, message: "" });
+    setform({ ...forms, show: false });
   };
 
   return (
     <div className="App">
-      <Modal show={forms.show} modalClose={hideModal} message={forms.message}>
-        {forms.renderForm}
-      </Modal>
+      {forms.show
+        && <Modal show={forms.show} modalClose={hideModal}>
+          {forms.renderForm}
+        </Modal>}
+
       {isLoggedIn ? <MainLayout /> : <SplashScreen />}
     </div>
   );

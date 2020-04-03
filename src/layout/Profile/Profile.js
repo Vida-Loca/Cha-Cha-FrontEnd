@@ -160,13 +160,17 @@ const Profile = () => {
 
   }
 
+  const changeAvatarInApp = (imageLink) => {
+    setUserInfo({ ...userInfo, avatarUrl: imageLink });
+  }
+
 
   const showFriendsInModal = () => {
     setform({ renderForm: <FriendsList />, show: true });
   };
 
   const changeAvatarInModal = () => {
-    setform({ renderForm: <ChangeAvatarContainer />, show: true });
+    setform({ renderForm: <ChangeAvatarContainer changeAvatarState={changeAvatarInApp} />, show: true });
   };
 
   return (

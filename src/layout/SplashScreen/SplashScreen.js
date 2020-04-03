@@ -1,7 +1,10 @@
 import React, { useContext } from "react";
+import { Switch, Route, Redirect } from "react-router-dom";
 import { Button } from "../../components/Button";
 import { FormContext } from "../../context/FormContext";
 import { LoginFormContainer, RegisterFormContainer } from "./AuthFormContainer";
+
+import ChangePassword from "./AuthFormContainer/changePassword";
 
 import "./SplashScreen.scss";
 
@@ -16,16 +19,23 @@ const SplashScreen = () => {
     setChangedForm({ show: true, renderForm: <RegisterFormContainer /> });
   };
 
+  const changePassword = () => {
+    setChangedForm({ renderForm: <ChangePassword />, show: true });
+    return <Redirect to="/" />;
+  }
+
   return (
     <div className="FirstLayout">
       <div className="SignContent">
         <h1>Skibidi</h1>
-        <Button clicked={openLogIn} classes="btn-blueGradient btn-lg">
+        <Button clicked={openLogIn} classes="btn-blueGradient btn-lg btn-blue-animated">
           Sign In
         </Button>
-        <Button clicked={openRegister} classes="btn-orangeGradient btn-lg">
+        <Button clicked={openRegister} classes="btn-orangeGradient btn-orange-animated btn-lg">
           Sign Up
         </Button>
+        <Route path="/changePassword" exact render={() => changePassword()} />
+
       </div>
     </div>
   );
