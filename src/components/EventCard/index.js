@@ -53,7 +53,7 @@ const EventCard = ({ id, name, date, location, eventState, listIndex }) => {
             </span>
             <span>
               <i className="fas fa-map-marker-alt" />
-              {`${location.city}, ${location.street}, ${location.number}`}
+              {`${location.city}, ${location.street}`}
             </span>
           </div>
         </div>}

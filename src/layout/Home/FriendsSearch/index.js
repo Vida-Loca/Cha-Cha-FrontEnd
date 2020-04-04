@@ -59,6 +59,7 @@ const SearchFriends = () => {
                 title=""
                 items={dislpayFriends.users}
                 perPage={5}
+                noContentMsg=""
                 render={
                     dislpayFriends.spinner
                         ? () => <Spinner size={"spinner-sm"} />

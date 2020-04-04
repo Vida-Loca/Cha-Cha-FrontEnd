@@ -65,6 +65,7 @@ const Profile = () => {
 
     profileService.getAllUserEvents()
       .then(res => {
+        console.log(res);
         setMyEvents({ events: res, spinner: false });
       })
       .catch(err => {

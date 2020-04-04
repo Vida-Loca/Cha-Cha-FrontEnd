@@ -5,7 +5,7 @@ import { Button } from "../../../components/Button";
 import Spinner from "../../../components/Spinner";
 import { userService } from "../../../Authentication/service";
 
-import { friends, friendsRequests } from "../../../mockData";
+// import { friends, friendsRequests } from "../../../mockData";
 
 const FriendsList = () => {
     const [friendList, setFriendList] = useState({ friends: [], spinner: true })
@@ -84,6 +84,7 @@ const FriendsList = () => {
                 title="Friends"
                 items={friendList.friends}
                 perPage={5}
+                noContentMsg="empty friends list"
                 render={
                     friendList.spinner
                         ? () => <Spinner />
@@ -101,6 +102,7 @@ const FriendsList = () => {
                 title="Friend Requests"
                 items={friendRequests.requests}
                 perPage={5}
+                noContentMsg="no new requests"
                 render={
                     friendRequests.spinner
                         ? () => <Spinner />

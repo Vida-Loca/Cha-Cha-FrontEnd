@@ -2,8 +2,7 @@ import React, { useState, useEffect } from "react";
 import PropTypes from "prop-types";
 import { TextInput } from "../../../../components/Inputs";
 import { Button } from "../../../../components/Button";
-import { userService, eventService } from "../../../../Authentication/service";
-// import { FormContext } from "../../../../context/FormContext";
+import { userService } from "../../../../Authentication/service";
 import PaginatedContainer from "../../../../components/PaginatedContainer";
 import UserCard from "../../../../components/UserCard";
 import { friends } from "../../../../mockData";
@@ -16,21 +15,28 @@ const InviteUserFormContainer = id => {
   // const [forms, setForm] = useContext(FormContext);
 
   const [findUser, setfindUser] = useState({ username: "" });
+  const [friendsList, setFriendList] = useState({ friends: [], spinner: true });
   const [dislpayFriends, setDislpayFreinds] = useState({ friends: [], spinner: true });
 
   useEffect(() => {
-
-    userService.getAllUsers()
+    let __isMounted = true;
+    userService.getFriendsList()
       .then(res => {
-        console.log(res);
-      })
-      .catch(err => {
-        console.log(err);
+        if (__isMounted) {
+          setFriendList({ friends: res, spinner: false });
+          setDislpayFreinds({ friends: res, spinner: false });
+        }
+      }).catch(err => {
+        if (__isMounted) {
+          console.log(err);
+          setFriendList({ friends: [], spinner: false });
+          setDislpayFreinds({ friends: [], spinner: false });
+        }
       });
-    setTimeout(() => {
-      setDislpayFreinds({ friends: friends, spinner: false });
-    }, 1000);
-    return () => { };
+
+    return () => {
+      __isMounted = false;
+    };
   }, []);
 
   const onChangeHandler = event => {
@@ -38,12 +44,11 @@ const InviteUserFormContainer = id => {
       ...findUser,
       [`${event.target.name}`]: event.target.value
     });
-    const foundUsers = friends.filter(o => o.username.includes(findUser.username));
+    const foundUsers = friendsList.friends.filter(user => user.username.includes(findUser.username));
     foundUsers.length !== 0 && findUser.username.length > 1
-      ? setDislpayFreinds(foundUsers)
-      : setDislpayFreinds(friends);
+      ? setDislpayFreinds({ ...dislpayFriends, friends: foundUsers })
+      : setDislpayFreinds({ ...dislpayFriends, friends: friendsList.friends });
   };
-
 
 
   const sendInvitation = (username) => {
@@ -63,7 +68,7 @@ const InviteUserFormContainer = id => {
             ? () => <Spinner />
             : ({ items }) =>
               items.map(ev => (
-                <UserCard key={ev.username} username={ev.username} imageUrl={ev.avatarUrl} showControlls>
+                <UserCard key={ev.username} username={ev.username} imageUrl={ev.picUrl} showControlls>
                   <Button clicked={() => sendInvitation(ev.username)} classes="btn-blueGradient btn-sm">invite</Button>
                 </UserCard>
               ))
@@ -75,7 +80,7 @@ const InviteUserFormContainer = id => {
 
 
 InviteUserFormContainer.propTypes = {
-  id: PropTypes.number.isRequired
+  id: PropTypes.string.isRequired
 };
 
 
