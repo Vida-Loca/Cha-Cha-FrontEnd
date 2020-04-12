@@ -1,5 +1,4 @@
 import React, { useState, useEffect, useContext } from "react";
-// import { UserContext } from "../context/UserContext";
 import { FormContext } from "../context/FormContext";
 
 import SplashScreen from "./SplashScreen/SplashScreen";

@@ -1,7 +1,7 @@
-import React, { useState, useEffect, useContext } from "react";
+import React, { useState, useEffect } from "react";
 import { Switch, Route, Redirect } from "react-router-dom";
 import { mainNav, adminNav, eventNav, mainNavNoAdmin } from "./Navs";
-import { profileService } from "../../Authentication/service";
+import { adminService } from "../../Authentication/service";
 
 import "./Layout.scss";
 
@@ -16,7 +16,7 @@ const MainLayout = () => {
   const [isUserAdmin, setUserAdmin] = useState(false);
 
   useEffect(() => {
-    profileService
+    adminService
       .isLoggedInUserAdmin()
       .then(res => {
         setUserAdmin(res);

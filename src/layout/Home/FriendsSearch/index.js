@@ -4,8 +4,8 @@ import { Button } from "../../../components/Button";
 import { userService } from "../../../Authentication/service";
 import PaginatedContainer from "../../../components/PaginatedContainer";
 import UserCard from "../../../components/UserCard";
-import { friends } from "../../../mockData";
 import Spinner from "../../../components/Spinner";
+// import { friends } from "../../../mockData";
 
 import "./inviteFriends.scss";
 

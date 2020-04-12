@@ -18,17 +18,17 @@ const Location = ({ id }) => {
     time: { value: "00:00", isValid: true, err: [] }
   });
   const [tempLocationInfo, setTempLocationInfo] = useState({ dateofevent: "", time: "Loading...", addidtionalInformation: "Loading..." });
-  const [adress, setAddress] = useState({
+  const [address, setAddress] = useState({
     country: { value: "Loading...", isValid: true, err: [] },
     city: { value: "Loading...", isValid: true, err: [] },
     street: { value: "Loading...", isValid: true, err: [] },
     number: { value: "0", isValid: true, err: [] },
     postcode: { value: "Loading...", isValid: true, err: [] }
   });
-  const [tempAdress, setTempAdress] = useState({ country: "Loading....", city: "Loading...", street: "Loading...", number: "0", postcode: "Loading..." });
+  const [tempAddress, setTempAddress] = useState({ country: "Loading....", city: "Loading...", street: "Loading...", number: "0", postcode: "Loading..." });
   const [editState, setEdit] = useState(false);
 
-  const addressForm = useState([
+  const [addressForm,] = useState([
     {
       name: "country",
       config: {
@@ -85,8 +85,8 @@ const Location = ({ id }) => {
         maxLength: 10
       }
     }
-  ])[0];
-  const locationInfoForm = useState([
+  ]);
+  const [locationInfoForm,] = useState([
     {
       name: "dateofevent",
       config: {
@@ -109,7 +109,7 @@ const Location = ({ id }) => {
         maxLength: 10
       }
     }
-  ])[0];
+  ]);
 
   useEffect(() => {
     let __isMounted = true;
@@ -126,13 +126,13 @@ const Location = ({ id }) => {
           setTempLocationInfo({ dateofevent: res.startTime.substring(0, 10), time: res.startTime.substring(11, 16) })
 
           setAddress({
-            country: { ...adress.city, value: res.address.country },
-            city: { ...adress.city, value: res.address.city },
-            street: { ...adress.street, value: res.address.street },
-            number: { ...adress.street, value: res.address.number },
-            postcode: { ...adress.postcode, value: res.address.postcode }
+            country: { ...address.city, value: res.address.country },
+            city: { ...address.city, value: res.address.city },
+            street: { ...address.street, value: res.address.street },
+            number: { ...address.street, value: res.address.number },
+            postcode: { ...address.postcode, value: res.address.postcode }
           });
-          setTempAdress({
+          setTempAddress({
             country: res.address.country, city: res.address.city, street: res.address.street,
             number: res.address.number, postcode: res.address.postcode
           })
@@ -142,7 +142,7 @@ const Location = ({ id }) => {
     return () => {
       __isMounted = false;
     };
-  }, []);
+  }, [id, address.city, address.street, address.postcode, address.country, address.number, locationInfo.dateofevent, locationInfo.time]);
 
   const editHandler = () => {
     setEdit(!editState);
@@ -150,11 +150,11 @@ const Location = ({ id }) => {
   const cancelEdit = () => {
     setEdit(false);
     setAddress({
-      country: { ...adress.country, value: tempAdress.country },
-      city: { ...adress.city, value: tempAdress.city },
-      street: { ...adress.street, value: tempAdress.street },
-      number: { ...adress.street, value: tempAdress.number },
-      postcode: { ...adress.postcode, value: tempAdress.postcode }
+      country: { ...address.country, value: tempAddress.country },
+      city: { ...address.city, value: tempAddress.city },
+      street: { ...address.street, value: tempAddress.street },
+      number: { ...address.street, value: tempAddress.number },
+      postcode: { ...address.postcode, value: tempAddress.postcode }
     });
     setLocationInfo({
       dateofevent: { ...locationInfo.dateofevent, value: tempLocationInfo.dateofevent },
@@ -169,9 +169,9 @@ const Location = ({ id }) => {
       addressForm.find(x => x.name === event.target.name).validation
     );
     setAddress({
-      ...adress,
+      ...address,
       [`${event.target.name}`]: {
-        ...adress[`${event.target.name}`],
+        ...address[`${event.target.name}`],
         value: event.target.value,
         isValid: validationResult[0],
         err: validationResult[1]
@@ -195,18 +195,18 @@ const Location = ({ id }) => {
   };
 
   const submitLocationChanges = () => {
-    if (locationInfo.dateofevent.isValid && locationInfo.time.isValid && adress.city.isValid &&
-      adress.country.isValid && adress.street.isValid && adress.number.isValid && adress.postcode.isValid) {
+    if (locationInfo.dateofevent.isValid && locationInfo.time.isValid && address.city.isValid &&
+      address.country.isValid && address.street.isValid && address.number.isValid && address.postcode.isValid) {
 
       eventService.updateEvent(id, {
         ...fetchedEvent,
         startTime: `${locationInfo.dateofevent.value}T${locationInfo.time.value}`,
         address: {
-          country: adress.country.value,
-          city: adress.city.value,
-          street: adress.street.value,
-          number: adress.number.value,
-          postcode: adress.postcode.value
+          country: address.country.value,
+          city: address.city.value,
+          street: address.street.value,
+          number: address.number.value,
+          postcode: address.postcode.value
         }
       }).then(res => {
         console.log(res);
@@ -222,7 +222,7 @@ const Location = ({ id }) => {
 
   return (
     <div className="location-container">
-      <div className="adress-info">
+      <div className="address-info">
         <EditButton options={editState} activate={editHandler} cancel={cancelEdit} confirm={submitLocationChanges} tags
           render={<> <i className="far fa-edit" />Edit</>} />
         {addressForm.map(el => (
@@ -232,10 +232,10 @@ const Location = ({ id }) => {
             type={el.config.type}
             placeholder={el.config.placeholder}
             name={el.name}
-            value={adress[el.name].value}
+            value={address[el.name].value}
             size="input-md"
             classes={editState ? "input-blue" : ""}
-            error={adress[el.name].err[0]}
+            error={address[el.name].err[0]}
             disabled={!editState}
           />
         ))}

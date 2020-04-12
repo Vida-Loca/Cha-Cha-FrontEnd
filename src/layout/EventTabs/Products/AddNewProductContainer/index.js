@@ -95,9 +95,9 @@ const AddNewProductContainer = ({ addProduct, id, category }) => {
           addProduct({
             category: chosenCategory,
             product: {
-              id: 3232,
-              supply: "dodany produkt",
-              price: 222,
+              id: `${res.name}${res.price}`,
+              supply: res.name,
+              price: res.price,
               userId: 1,
               user: "Test User",
               quantity: 1,

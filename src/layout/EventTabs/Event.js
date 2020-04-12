@@ -32,7 +32,7 @@ const Event = ({ eventId, eventPath }) => {
     return () => {
       __isMounted = false;
     };
-  }, []);
+  }, [eventId]);
 
   return (
     <div className="event-container">

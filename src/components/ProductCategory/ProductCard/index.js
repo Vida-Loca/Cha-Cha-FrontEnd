@@ -6,8 +6,6 @@ import { Button, EditButton } from "../../Button";
 import "./ProductCard.scss";
 import { TextInputNL, TextArea } from "../../Inputs";
 
-// import { productService } from "../../../Authentication/service";
-
 
 const ProductCard = ({ removeProduct, eventId, id, user, supply, price, picUrl }) => {
   const [tileSupply, setTileSuply] = useState({
@@ -47,6 +45,11 @@ const ProductCard = ({ removeProduct, eventId, id, user, supply, price, picUrl }
     tileStateSet(!tileState);
     setDeleteState(false);
     setEditState(false);
+    setTileSuply({
+      ...tileSupply,
+      supply: tileSupply.tempSupply,
+      price: tileSupply.tempPrice
+    });
   };
 
   const deleteHandler = () => {

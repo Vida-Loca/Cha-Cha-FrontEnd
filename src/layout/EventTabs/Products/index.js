@@ -38,7 +38,7 @@ const Products = ({ id }) => {
     return () => {
       __isMounted = false;
     };
-  }, []);
+  }, [id]);
 
 
   const addProduct = (addedProduct) => {

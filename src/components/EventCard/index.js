@@ -7,10 +7,17 @@ const EventCard = ({ id, name, date, location, eventState, listIndex }) => {
 
   const [showCard, setShowCard] = useState(false);
   useEffect(() => {
-    setTimeout(() => {
-      setShowCard(true);
+    let _isMounted = true;
+    let delayCompRender = setTimeout(() => {
+      if (_isMounted) {
+        setShowCard(true);
+      }
     }, listIndex * 100);
-  }, [])
+    return () => {
+      clearTimeout(delayCompRender);
+      _isMounted = false;
+    }
+  }, [listIndex])
 
   const iconState = () => {
     switch (eventState) {

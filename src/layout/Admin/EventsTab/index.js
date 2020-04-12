@@ -1,11 +1,13 @@
 import React, { useState, useEffect } from "react";
-import { events } from "../../../mockData";
+// import { events } from "../../../mockData";
 
 import { SearchBar, TextInput } from "../../../components/Inputs";
 import EventCard from "../../../components/EventCard";
 import PaginatedContainer from "../../../components/PaginatedContainer";
 import Spinner from "../../../components/Spinner";
 import "./EventTab.scss";
+
+import { eventService } from "../../../Authentication/service";
 
 const EventLayout = () => {
 
@@ -15,17 +17,23 @@ const EventLayout = () => {
 
   useEffect(() => {
     let __isMounted = true;
-    setTimeout(() => {
-      if (__isMounted) {
-        setPublicEventsList({ events: events, spinner: false });
-      }
-    }, 1000);
+    eventService.getAllEvents()
+      .then(res => {
+        if (__isMounted) {
+          setPublicEventsList({ events: res, spinner: false });
+        }
+      })
+      .catch(err => {
+        console.log(err);
+      })
+
     return () => {
       __isMounted = false;
     };
   }, []);
 
-  const onChangeHandler = event => {
+
+  const handleSearch = event => {
     setSearchFilter({
       ...searchFilter,
       [`${event.target.name}`]: event.target.value
@@ -33,16 +41,37 @@ const EventLayout = () => {
   };
 
   const searchingEventsWithFilter = () => {
-    if (searchFilter.name.length > 0 || (searchFilter.startDate.length > 0 && searchFilter.endDate.length > 0)) {
-      console.log("searching by ...");
-      console.log(`name=${searchFilter.name}/startDate=${searchFilter.startDate}/endDate=${searchFilter.endDate}`)
+
+    let filteredEvents = [...publicEventsList.events];
+    if (searchFilter.name.length > 0) {
+      console.log("searching by name...");
+      filteredEvents = filteredEvents.filter((ev) => {
+        let searchValue = ev.name;
+        return searchValue.indexOf(searchFilter.name) !== -1;
+      });
     }
+    if (searchFilter.startDate.length > 0) {
+      console.log("searching by star Date...");
+      filteredEvents = filteredEvents.filter((ev) => {
+        let searchValue = ev.startTime.substring(0, 10);
+        return Date.parse(searchValue) >= Date.parse(searchFilter.startDate);
+      });
+    }
+    if (searchFilter.endDate.length > 0) {
+      console.log("searching by endDate ...");
+      filteredEvents = filteredEvents.filter((ev) => {
+        let searchValue = ev.startTime.substring(0, 10);
+        return Date.parse(searchValue) <= Date.parse(searchFilter.endDate);
+      });
+    }
+    console.log(filteredEvents);
+
   }
   return (
     <div className="all-user-container">
       <div className="search-filters">
         <TextInput
-          onChange={onChangeHandler}
+          onChange={handleSearch}
           placeholder="start date"
           type="date"
           name="startDate"
@@ -50,7 +79,7 @@ const EventLayout = () => {
           classes="input-blue text-input-extra date"
         />
         <TextInput
-          onChange={onChangeHandler}
+          onChange={handleSearch}
           placeholder="end date"
           type="date"
           name="endDate"
@@ -58,7 +87,7 @@ const EventLayout = () => {
           classes="input-blue text-input-extra date"
         />
         <SearchBar
-          onChange={onChangeHandler}
+          onChange={handleSearch}
           placeholder="name"
           name="name"
           value={searchFilter.name}
@@ -74,14 +103,15 @@ const EventLayout = () => {
           publicEventsList.spinner
             ? () => <Spinner />
             : ({ items }) =>
-              items.map(ev => (
+              items.map((ev, index) => (
                 <EventCard
-                  id={ev.event_id}
-                  key={ev.event_id}
+                  id={ev.id}
+                  key={ev.id}
                   name={ev.name}
-                  date={ev.startDate}
+                  date={ev.startTime}
                   location={ev.address}
                   eventState={ev.isComplete}
+                  listIndex={index % 10}
                 />
               ))} />
 

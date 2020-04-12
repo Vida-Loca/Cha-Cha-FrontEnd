@@ -8,6 +8,7 @@ import ResetPassword from "./resetPassword";
 
 import "./authStyle.scss";
 
+
 const LoginFormContainer = () => {
   const [sendingDataSpinner, setSendingDataSpinner] = useState(false);
 
@@ -44,9 +45,8 @@ const LoginFormContainer = () => {
       authenticationService.login({
         username: login.username.value,
         password: login.password.value
-      }).then(res => {
+      }).then(_ => {
         setChangedForm({ ...changedForm, show: false })
-        setSendingDataSpinner(false);
       }, err => {
         setLogin({
           ...login,
@@ -54,7 +54,6 @@ const LoginFormContainer = () => {
           password: { value: "", isValid: false, err: [err.password] }
         });
         setSendingDataSpinner(false);
-
       });
 
     }

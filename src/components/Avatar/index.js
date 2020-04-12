@@ -1,16 +1,27 @@
-import React from "react";
+import React, { useState } from "react";
 import PropTypes from "prop-types";
 import "./avatar.scss";
 
 const Avatar = ({ imageLink, title }) => {
-  const avatarURL = imageLink === "" ? "https://iupac.org/wp-content/uploads/2018/05/default-avatar.png" : imageLink;
-  return <img className="avatar" title={title} src={avatarURL} alt="AVATAR" />;
+
+  const [failue, setFailure] = useState(false);
+
+  const fallback = () => {
+    setFailure(true);
+  }
+
+  return (
+    <>
+      {failue
+        ? <img className="avatar" title={title} alt="avatar" src="/default-avatar.png" />
+        : <img className="avatar" title={title} alt="avatar" src={imageLink} onError={fallback} />}
+    </>
+  )
 };
 
 Avatar.defaultProps = {
   title: "",
-  imageLink:
-    "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTSLmktkJrArXh_zZVovazl5mb3lna9HXqPo7XvvviCSQAuru5C&s"
+  imageLink: ""
 };
 
 Avatar.propTypes = {

@@ -13,16 +13,7 @@ const getCurrentUserInfo = () => {
     );
 };
 
-const isLoggedInUserAdmin = () => {
-    const requestOptions = {
-        method: "GET",
-        headers: authHeader()
-    };
 
-    return fetch(`${serverURL}/user/isAdmin`, requestOptions).then(
-        handleResponse
-    );
-};
 
 const changeAvatar = avatarUrl => {
     const requestOptions = {
@@ -50,6 +41,5 @@ const getAllUserEvents = () => {
 export const profileService = {
     getCurrentUserInfo,
     changeAvatar,
-    isLoggedInUserAdmin,
     getAllUserEvents
 }

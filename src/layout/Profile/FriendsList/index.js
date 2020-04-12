@@ -13,8 +13,8 @@ const FriendsList = () => {
 
     useEffect(() => {
         let __isMounted = true;
-        setFriendList({ ...friendList, spinner: true });
-        setFriendRequests({ ...friendRequests, spinner: true });
+        setFriendList({ friends: [], spinner: true });
+        setFriendRequests({ requests: [], spinner: true });
         userService.getFriendsList()
             .then(res => {
                 if (__isMounted) {

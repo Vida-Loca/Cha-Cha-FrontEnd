@@ -1,8 +1,8 @@
-import React, { useState, useContext } from "react";
+import React, { useState } from "react";
 import { TextInput } from "../../../components/Inputs";
 import { Button } from "../../../components/Button";
 // import { authenticationService } from "../../../Authentication/service";
-import { FormContext } from "../../../context/FormContext";
+// import { FormContext } from "../../../context/FormContext";
 import Spinner from "../../../components/Spinner";
 
 import "./authStyle.scss";
@@ -10,7 +10,7 @@ import "./authStyle.scss";
 const ChangePassword = () => {
     const [sendingDataSpinner, setSendingDataSpinner] = useState(false);
 
-    const [, setChangedForm] = useContext(FormContext);
+    // const [, setChangedForm] = useContext(FormContext);
     const [login, setLogin] = useState({
         password: { value: "", isValid: true, err: [] },
         retypePassword: { value: "", isValid: true, err: [] }

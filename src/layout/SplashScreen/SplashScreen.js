@@ -1,5 +1,5 @@
 import React, { useContext } from "react";
-import { Switch, Route, Redirect } from "react-router-dom";
+import { Route, Redirect } from "react-router-dom";
 import { Button } from "../../components/Button";
 import { FormContext } from "../../context/FormContext";
 import { LoginFormContainer, RegisterFormContainer } from "./AuthFormContainer";

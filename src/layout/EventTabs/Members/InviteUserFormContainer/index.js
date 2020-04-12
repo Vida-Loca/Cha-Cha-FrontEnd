@@ -5,7 +5,7 @@ import { Button } from "../../../../components/Button";
 import { userService } from "../../../../Authentication/service";
 import PaginatedContainer from "../../../../components/PaginatedContainer";
 import UserCard from "../../../../components/UserCard";
-import { friends } from "../../../../mockData";
+// import { friends } from "../../../../mockData";
 import Spinner from "../../../../components/Spinner";
 
 import "./inviteFriends.scss";
@@ -52,7 +52,6 @@ const InviteUserFormContainer = id => {
 
 
   const sendInvitation = (username) => {
-    const tempFriendsList = dislpayFriends.friends;
     setDislpayFreinds({ friends: dislpayFriends.friends.filter(prod => prod.username !== username), spinner: false })
   }
 
