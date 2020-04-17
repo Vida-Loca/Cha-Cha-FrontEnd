@@ -1,5 +1,5 @@
 import { authHeader, handleResponse } from "../helper";
-const serverURL = "http://localhost:8081"
+const serverURL = process.env.REACT_APP_API_URL;
 
 
 const getFriendsList = () => {

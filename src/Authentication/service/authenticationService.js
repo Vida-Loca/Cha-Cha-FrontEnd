@@ -1,13 +1,9 @@
 import { handleResponse } from "../helper";
 import { BehaviorSubject } from 'rxjs';
 
-const ServerURL = "http://localhost:8081";
+const ServerURL = process.env.REACT_APP_API_URL;
 
 const currentUserSubject = new BehaviorSubject(JSON.parse(localStorage.getItem('currentUser')));
-
-// const CurrentUser = () => {
-//   return localStorage.getItem("currentUser");
-// };
 
 const login = data => {
   const requestOptions = {
@@ -21,7 +17,6 @@ const login = data => {
     .then(user => {
       localStorage.setItem("currentUser", JSON.stringify(user.token));
       currentUserSubject.next(user);
-
       return user;
     });
 }
