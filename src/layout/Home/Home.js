@@ -20,7 +20,7 @@ const Home = () => {
   useEffect(() => {
     let __isMounted = true;
     if (__isMounted) {
-      eventService.getAllEvents()
+      eventService.getAllPublicEvents()
         .then(res => {
           setPublicEventsList({ events: res, spinner: false })
         }).catch(err => console.log(err));

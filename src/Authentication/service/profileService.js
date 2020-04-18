@@ -38,8 +38,15 @@ const getAllUserEvents = () => {
     );
 };
 
+const getEventInvitations = () => {
+    const requestOptions = { method: "GET", headers: authHeader() };
+    return fetch(`${serverURL}/user/event_invitations`, requestOptions).then(handleResponse);
+}
+
+
 export const profileService = {
     getCurrentUserInfo,
     changeAvatar,
-    getAllUserEvents
+    getAllUserEvents,
+    getEventInvitations
 }

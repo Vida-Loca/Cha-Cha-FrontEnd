@@ -23,7 +23,7 @@ const Profile = () => {
     username: "Loading ...",
     email: "Loading ...",
     datejoined: "Loading ...",
-    avatarUrl: "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTSLmktkJrArXh_zZVovazl5mb3lna9HXqPo7XvvviCSQAuru5C&s"
+    avatarUrl: ""
   });
   const [editableUserInfo, setEditableUserInfo] = useState({
     name: { value: "Loading ...", isValid: true, err: "" },
@@ -33,7 +33,7 @@ const Profile = () => {
   });
 
   const [myEvents, setMyEvents] = useState({ events: [], spinner: true });
-  const [invitations, setInvitations] = useState({ invitations: [], spinner: true });
+  const [invitations, setInvitations] = useState({ events: [], spinner: true });
 
   const [, setform] = useContext(FormContext);
   const [editState, setEdit] = useState(false);
@@ -72,8 +72,17 @@ const Profile = () => {
         console.log(err);
       });
 
+    profileService.getEventInvitations()
+      .then(res => {
+        console.log(res);
+        setInvitations({ events: res, spinner: false });
+      }, err => {
+        console.log(err);
+      })
+
+
     // setMyEvents({ events: events, spinner: false });
-    setInvitations({ invitations: events, spinner: false });
+    // setInvitations({ invitations: events, spinner: false });
     return () => {
       __isMounted = false;
     };
@@ -257,7 +266,7 @@ const Profile = () => {
         />
         <PaginatedContainer
           title="Invitations"
-          items={invitations.invitations}
+          items={invitations.events}
           perPage={4}
           render={
             invitations.spinner
@@ -265,11 +274,11 @@ const Profile = () => {
               : ({ items }) =>
                 items.map(ev => (
                   <EventCard
-                    id={ev.event_id}
-                    key={ev.event_id}
-                    name={ev.name}
-                    date={ev.startDate}
-                    location={ev.address}
+                    id={ev.event.id}
+                    key={ev.event.id}
+                    name={ev.event.name}
+                    date={ev.event.startTime}
+                    location={ev.event.address}
                     eventState="invite"
                   />
                 ))

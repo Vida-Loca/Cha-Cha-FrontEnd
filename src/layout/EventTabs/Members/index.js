@@ -10,7 +10,7 @@ import UserCard from "../../../components/UserCard";
 import { Button } from "../../../components/Button";
 import PaginatedContainer from "../../../components/PaginatedContainer";
 
-// import { userService } from "../../../Authentication/service";
+import { eventService } from "../../../Authentication/service";
 import InviteUserFormContainer from "./InviteUserFormContainer";
 import Spinner from "../../../components/Spinner";
 
@@ -25,13 +25,25 @@ const Members = ({ id }) => {
   useEffect(() => {
     let __isMounted = true;
 
-    setTimeout(() => {
-      if (__isMounted) {
-        seEventMemebers({ members: membersOfTheEvent, spinner: false });
-        seEventRequests({ members: requestsFoThisEvent, spinner: false });
-      }
+    eventService.getEventPendingInvitations(id)
+      .then(res => {
+        console.log(res);
+        if (__isMounted) {
+          seEventRequests({ members: res, spinner: false });
+        }
+      })
 
-    }, 1000);
+    eventService.getEventMembers(id)
+      .then(res => {
+        console.log(res);
+        if (__isMounted) {
+          seEventMemebers({ members: res, spinner: false });
+        }
+      }, err => {
+        console.log(err);
+      })
+
+
     return () => {
       __isMounted = false;
     };
@@ -72,11 +84,11 @@ const Members = ({ id }) => {
             ? () => <Spinner />
             : ({ items }) =>
               items.map(ev => (
-                <UserCard key={ev.username} username={ev.username} imageUrl={ev.picUrl} showControlls={isUserAdmin}>
-                  <Button clicked={() => ignoreRequest(ev.id)} classes="btn-orangeGradient btn-sm">
+                <UserCard key={ev.user.username} username={ev.user.username} imageUrl={ev.user.picUrl} showControlls={isUserAdmin}>
+                  <Button clicked={() => ignoreRequest(ev.user.id)} classes="btn-orangeGradient btn-sm">
                     <i className="fas fa-times-circle" />
                   </Button>
-                  <Button clicked={() => acceptUsers(ev.id)} classes="btn-blueGradient btn-sm">
+                  <Button clicked={() => acceptUsers(ev.user.id)} classes="btn-blueGradient btn-sm">
                     <i className="fas fa-check-circle" />
                   </Button>
                 </UserCard>

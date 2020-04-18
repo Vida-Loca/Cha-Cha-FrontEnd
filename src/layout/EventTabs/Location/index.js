@@ -7,12 +7,24 @@ import { TextInput } from "../../../components/Inputs";
 import { EditButton } from "../../../components/Button";
 import checkValidation from "../../../validation";
 
+// import Map from "../../../components/Map";
+import ReactMapGL, { Marker, Popup } from "react-map-gl";
+
 import "./Location.scss";
 
 
 const Location = ({ id }) => {
 
   const [fetchedEvent, setFetchedEvent] = useState({});
+
+  const [viewport, setViewport] = useState({
+    latitude: 45.4211,
+    longitude: -75.6903,
+    width: "100%",
+    height: "30rem",
+    zoom: 10
+  })
+
   const [locationInfo, setLocationInfo] = useState({
     dateofevent: { value: "", isValid: true, err: [] },
     time: { value: "00:00", isValid: true, err: [] }
@@ -254,11 +266,20 @@ const Location = ({ id }) => {
           />
         ))}
       </div>
-      <img
-        className="location-map"
-        src="https://techupdatess.com/wp-content/uploads/2019/05/google-maps-speed-cams.jpg"
-        alt=""
-      />
+      <div className="map-container">
+        <ReactMapGL
+          {...viewport}
+          mapboxApiAccessToken={process.env.REACT_APP_MAPBOX_KEY}
+          onViewportChange={viewport => {
+            setViewport(viewport);
+          }}
+          mapStyle="mapbox://styles/darotp/ck94jrgus39pb1js9xpobel3r"
+        >
+          <Marker latitude={45.4211} longitude={-75.6903}>Hello</Marker>
+          <Popup latitude={45.4211} longitude={-75.6903}>opsie</Popup>
+        </ReactMapGL>
+      </div>
+
     </div>
   );
 };

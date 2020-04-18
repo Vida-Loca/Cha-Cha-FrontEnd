@@ -2,7 +2,7 @@ import React, { useState, useEffect } from "react";
 import PropTypes from "prop-types";
 import { TextInput } from "../../../../components/Inputs";
 import { Button } from "../../../../components/Button";
-import { userService } from "../../../../Authentication/service";
+import { userService, eventService } from "../../../../Authentication/service";
 import PaginatedContainer from "../../../../components/PaginatedContainer";
 import UserCard from "../../../../components/UserCard";
 // import { friends } from "../../../../mockData";
@@ -11,7 +11,7 @@ import Spinner from "../../../../components/Spinner";
 import "./inviteFriends.scss";
 
 
-const InviteUserFormContainer = id => {
+const InviteUserFormContainer = ({ id }) => {
   // const [forms, setForm] = useContext(FormContext);
 
   const [findUser, setfindUser] = useState({ username: "" });
@@ -51,8 +51,14 @@ const InviteUserFormContainer = id => {
   };
 
 
-  const sendInvitation = (username) => {
-    setDislpayFreinds({ friends: dislpayFriends.friends.filter(prod => prod.username !== username), spinner: false })
+  const sendInvitation = (userId) => {
+    eventService.inviteUserToAnEvent(id, userId)
+      .then(res => {
+        console.log(res);
+      }, err => {
+        console.log(err);
+      });
+    setDislpayFreinds({ friends: dislpayFriends.friends.filter(prod => prod.id !== userId), spinner: false })
   }
 
   return (
@@ -68,7 +74,7 @@ const InviteUserFormContainer = id => {
             : ({ items }) =>
               items.map(ev => (
                 <UserCard key={ev.username} username={ev.username} imageUrl={ev.picUrl} showControlls>
-                  <Button clicked={() => sendInvitation(ev.username)} classes="btn-blueGradient btn-sm">invite</Button>
+                  <Button clicked={() => sendInvitation(ev.id)} classes="btn-blueGradient btn-sm">invite</Button>
                 </UserCard>
               ))
         }

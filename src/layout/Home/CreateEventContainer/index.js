@@ -17,7 +17,7 @@ const CreateEventContainer = () => {
     name: { value: "", isValid: false, err: "", touched: false },
     startDate: { value: "", isValid: false, err: "", touched: false },
     startTime: { value: "", isValid: false, err: "", touched: false },
-    privacy: { value: "private", isValid: true, err: "", touched: true }
+    privacy: { value: "Private", isValid: true, err: "", touched: true }
   });
   const [newAddress, setNewAddress] = useState({
     country: { value: "", isValid: false, err: "", touched: false },
@@ -186,8 +186,8 @@ const CreateEventContainer = () => {
           street: newAddress.street.value,
           postcode: newAddress.postcode.value,
           number: newAddress.number.value
-
-        }
+        },
+        eventType: Information.privacy.value
       }).then(res => {
         history.push(`/event/${res.id}`)
         setSendingDataSpinner(false)
@@ -215,7 +215,7 @@ const CreateEventContainer = () => {
           error={Information[el.name].err[0]}
         />
       ))}
-      <OptionsInput onChange={onChangePrivacy} value={Information.privacy.value} name="privacy" options={["private", "public", "friends"]} />
+      <OptionsInput onChange={onChangePrivacy} value={Information.privacy.value} name="privacy" options={["NORMAL", "PUBLIC", "PRIVATE", "SECRET"]} />
       {formAdress.map(el => (
         <TextInput
           onChange={onChangeHandlerAddress}

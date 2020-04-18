@@ -1,11 +1,13 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import PropTypes from "prop-types";
 import { Redirect } from "react-router-dom";
 import { Button } from "../../../components/Button";
+import { eventService, profileService } from "../../../Authentication/service";
+import { history } from "../../../Authentication/helper";
 
 import "./MainPage.scss";
 
-const MainPage = ({ eventPath, id, isAuth }) => {
+const MainPage = ({ eventPath, id, isAuth, type }) => {
   // fetch current logged in user
 
   // cheeck if got invitations
@@ -15,7 +17,60 @@ const MainPage = ({ eventPath, id, isAuth }) => {
 
   // if none of the above requirements are met dislpay error page
 
-  const [userStatus,] = useState(2);
+  const [userStatus, setUserStatus] = useState(2);
+  const [invitationId, setInvitationId] = useState("");
+
+  useEffect(() => {
+    let __isMounted = true;
+    profileService.getEventInvitations()
+      .then(res => {
+        const found = res.find(el => el.event.id.toString() === id.toString());
+        setInvitationId(found.id);
+        if (found) {
+          setUserStatus(1);
+        } else if (type === "PUBLIC") {
+          setUserStatus(2);
+        } else {
+          setUserStatus(3);
+        }
+      }
+        , err => {
+          console.log(err);
+        });
+
+    return () => {
+      __isMounted = false;
+    };
+  }, [])
+
+  const joinCurrentEvent = () => {
+
+    eventService.joinEvent(id)
+      .then(res => {
+        console.log(res);
+        history.go(0);
+      }, err => {
+        console.log(err);
+      })
+  }
+  const acceptInvitationToEvent = () => {
+    eventService.acceptEventInvitation(invitationId)
+      .then(res => {
+        console.log(res);
+        history.go(0);
+      }, err => {
+        console.log(err);
+      })
+  }
+  const rejectInvitationToEvent = () => {
+    eventService.rejectEventInvitation(invitationId)
+      .then(res => {
+        console.log(res);
+        history.go(0);
+      }, err => {
+        console.log(err);
+      })
+  }
 
   const conditionalRender = () => {
     switch (userStatus) {
@@ -24,8 +79,8 @@ const MainPage = ({ eventPath, id, isAuth }) => {
           <>
             <h2>You have been invited to attend this event</h2>
             <div className="accept-decline-box">
-              <Button classes="btn-blueGradient btn-md">accept</Button>
-              <Button classes="btn-orangeGradient btn-md">decline</Button>
+              <Button clicked={acceptInvitationToEvent} classes="btn-blueGradient btn-md">accept</Button>
+              <Button clicked={rejectInvitationToEvent} classes="btn-orangeGradient btn-md">decline</Button>
             </div>
           </>
         );
@@ -33,7 +88,7 @@ const MainPage = ({ eventPath, id, isAuth }) => {
         return (
           <>
             <h2>This event is public so please join us</h2>
-            <Button classes="btn-blueGradient btn-md">join event</Button>
+            <Button clicked={joinCurrentEvent} classes="btn-blueGradient btn-md">join event</Button>
           </>
         );
 

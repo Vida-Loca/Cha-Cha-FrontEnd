@@ -31,6 +31,7 @@ const removeFromFriends = (Userid) => {
   return fetch(`${serverURL}/user/remove?userToRemoveId=${Userid}`, requestOptions).then(handleResponse);
 }
 
+
 export const userService = {
   inviteUserByID,
   getFriendsList,

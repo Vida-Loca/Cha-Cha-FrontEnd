@@ -11,9 +11,18 @@ const createEvent = (eventData) => {
     return fetch(`${serverURL}/event`, requestOptions).then(handleResponse);
 };
 
+const joinEvent = (id) => {
+    const requestOptions = { method: "POST", headers: authHeader() };
+    return fetch(`${serverURL}/event/${id}/join`, requestOptions).then(handleResponse);
+}
+
 const getAllEvents = () => {
     const requestOptions = { method: "GET", headers: authHeader() };
     return fetch(`${serverURL}/event`, requestOptions).then(handleResponse);
+}
+const getAllPublicEvents = () => {
+    const requestOptions = { method: "GET", headers: authHeader() };
+    return fetch(`${serverURL}/event/public`, requestOptions).then(handleResponse);
 }
 
 const getEventByID = (id) => {
@@ -35,14 +44,46 @@ const deleteEvent = (id) => {
     return fetch(`${serverURL}/event/${id}`, requestOptions).then(handleResponse);
 }
 
+const getEventPendingInvitations = (id) => {
+    const requestOptions = { method: "GET", headers: authHeader() };
+    return fetch(`${serverURL}/event/${id}/invitations`, requestOptions).then(handleResponse);
+}
+
+
+const inviteUserToAnEvent = (eventId, userId) => {
+    const requestOptions = { method: "POST", headers: authHeader() };
+    return fetch(`${serverURL}/event/${eventId}/invite?userId=${userId}`, requestOptions).then(handleResponse);
+}
+
+const getEventMembers = (id) => {
+    const requestOptions = { method: "GET", headers: authHeader() };
+    return fetch(`${serverURL}/event/${id}/users`, requestOptions).then(handleResponse);
+}
+
+const acceptEventInvitation = (invitationId) => {
+    const requestOptions = { method: "PUT", headers: authHeader() };
+    return fetch(`${serverURL}/event/invite/${invitationId}/accept`, requestOptions).then(handleResponse);
+}
+const rejectEventInvitation = (invitationId) => {
+    const requestOptions = { method: "PUT", headers: authHeader() };
+    return fetch(`${serverURL}/event/invite/${invitationId}/reject`, requestOptions).then(handleResponse);
+}
+
 
 
 
 
 export const eventService = {
-    createEvent,
+    getAllPublicEvents,
     getAllEvents,
+    createEvent,
     getEventByID,
     updateEvent,
-    deleteEvent
+    deleteEvent,
+    joinEvent,
+    getEventPendingInvitations,
+    inviteUserToAnEvent,
+    getEventMembers,
+    acceptEventInvitation,
+    rejectEventInvitation
 }
