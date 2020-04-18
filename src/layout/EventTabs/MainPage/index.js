@@ -24,9 +24,10 @@ const MainPage = ({ eventPath, id, isAuth, type }) => {
     let __isMounted = true;
     profileService.getEventInvitations()
       .then(res => {
-        const found = res.find(el => el.event.id.toString() === id.toString());
-        setInvitationId(found.id);
+        console.log(res);
+        const found = res === [] ? false : res.find(el => el.event.id.toString() === id.toString());
         if (found) {
+          setInvitationId(found.id);
           setUserStatus(1);
         } else if (type === "PUBLIC") {
           setUserStatus(2);

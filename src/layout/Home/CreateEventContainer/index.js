@@ -17,7 +17,7 @@ const CreateEventContainer = () => {
     name: { value: "", isValid: false, err: "", touched: false },
     startDate: { value: "", isValid: false, err: "", touched: false },
     startTime: { value: "", isValid: false, err: "", touched: false },
-    privacy: { value: "Private", isValid: true, err: "", touched: true }
+    privacy: { value: "PRIVATE", isValid: true, err: "", touched: true }
   });
   const [newAddress, setNewAddress] = useState({
     country: { value: "", isValid: false, err: "", touched: false },
@@ -215,7 +215,7 @@ const CreateEventContainer = () => {
           error={Information[el.name].err[0]}
         />
       ))}
-      <OptionsInput onChange={onChangePrivacy} value={Information.privacy.value} name="privacy" options={["NORMAL", "PUBLIC", "PRIVATE", "SECRET"]} />
+      <OptionsInput onChange={onChangePrivacy} value={Information.privacy.value} name="privacy" options={["PRIVATE", "NORMAL", "PUBLIC", "SECRET"]} />
       {formAdress.map(el => (
         <TextInput
           onChange={onChangeHandlerAddress}

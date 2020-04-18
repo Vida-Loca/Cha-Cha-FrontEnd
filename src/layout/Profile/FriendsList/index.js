@@ -17,6 +17,7 @@ const FriendsList = () => {
         setFriendRequests({ requests: [], spinner: true });
         userService.getFriendsList()
             .then(res => {
+                console.log(res);
                 if (__isMounted) {
                     setFriendList({ friends: res, spinner: false });
                 }

@@ -22,6 +22,7 @@ const InviteUserFormContainer = ({ id }) => {
     let __isMounted = true;
     userService.getFriendsList()
       .then(res => {
+        console.log(res);
         if (__isMounted) {
           setFriendList({ friends: res, spinner: false });
           setDislpayFreinds({ friends: res, spinner: false });
