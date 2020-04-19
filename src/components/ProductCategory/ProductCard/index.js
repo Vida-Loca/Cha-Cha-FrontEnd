@@ -1,13 +1,20 @@
 /* eslint-disable no-nested-ternary */
-import React, { useState } from "react";
+import React, { useState, useContext, useEffect } from "react";
 import PropTypes from "prop-types";
 import Avatar from "../../Avatar";
 import { Button, EditButton } from "../../Button";
 import "./ProductCard.scss";
 import { TextInputNL, TextArea } from "../../Inputs";
+import { UserContext } from "../../../context/UserContext";
+
+import { eventService, adminService } from "../../../Authentication/service";
 
 
-const ProductCard = ({ removeProduct, eventId, id, user, supply, price, picUrl }) => {
+const ProductCard = ({ removeProduct, eventId, prductId, user, userId, supply, price, picUrl }) => {
+
+
+  const [loggedInUser,] = useContext(UserContext);
+
   const [tileSupply, setTileSuply] = useState({
     user,
     supply,
@@ -22,6 +29,36 @@ const ProductCard = ({ removeProduct, eventId, id, user, supply, price, picUrl }
 
   const [tileState, tileStateSet] = useState(false);
 
+  const [isAuthorized, setAuthorization] = useState(false);
+
+
+  useEffect(() => {
+    // console.log(loggedInUser);
+    // adminService.isLoggedInUserAdmin()
+    //   .then(res => {
+    //     setAuthorization(isAuthorized || res);
+    //   }, err => {
+    //     console.log(err);
+    //   })
+    eventService.isCurrentUserAdminOfEvent(eventId)
+      .then(res => {
+        setAuthorization(isAuthorized || res || loggedInUser.isAdmin || (userId === loggedInUser.user.id));
+        console.log(`ev: ${res}`);
+      }, err => {
+        console.log(err);
+      })
+
+    // Promise.all([adminService.isLoggedInUserAdmin(), eventService.isCurrentUserAdminOfEvent(eventId)])
+    //   .then(res => {
+    //     setAuthorization(isAuthorized || res || res[1]);
+    //   }).catch(err => {
+    //     console.log(err);
+    //   })
+
+    return () => {
+
+    }
+  }, []);
 
 
   const onChangeHandlerPrice = event => {
@@ -75,22 +112,15 @@ const ProductCard = ({ removeProduct, eventId, id, user, supply, price, picUrl }
   };
 
   const deletingProduct = () => {
-    console.log(`deleteing product:${id} from event: ${eventId}`);
+    console.log(`deleteing product:${prductId} from event: ${eventId}`);
     removeProduct();
-    // productService.removeProduct(eventId, id)
-    //   .then(res => {
-    //     console.log(res);
-    //   })
-    //   .catch(err => {
-    //     console.log(err);
-    //   });
 
   }
 
   const updatingProduct = () => {
     if (tileSupply.supply.length > 0 && tileSupply.price.length > 0 && !isNaN(tileSupply.price)) {
       setTimeout(() => {
-        console.log(`updating product with id: ${id}`)
+        console.log(`updating product with id: ${prductId}`)
         console.log({
           price: tileSupply.price,
           supply: tileSupply.supply
@@ -146,9 +176,10 @@ const ProductCard = ({ removeProduct, eventId, id, user, supply, price, picUrl }
           </span>
           <TextArea value={tileSupply.supply} name="supply" onChange={onChangeHandlerDescription} disabled={!editState} />
         </span>
-        <Button classes="options-btn" clicked={changeOptions}>
+        {isAuthorized && <Button classes="options-btn" clicked={changeOptions}>
           {tileState ? <i className="fas fa-times" /> : <i className="fas fa-ellipsis-v" />}
-        </Button>
+        </Button>}
+
       </div>
     </>
 
@@ -159,7 +190,7 @@ ProductCard.defaultProps = {
 };
 
 ProductCard.propTypes = {
-  id: PropTypes.number.isRequired,
+  prductId: PropTypes.number.isRequired,
   user: PropTypes.string.isRequired,
   supply: PropTypes.string.isRequired,
   price: PropTypes.number.isRequired,

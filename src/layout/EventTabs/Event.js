@@ -20,45 +20,53 @@ const Event = ({ eventId, eventPath }) => {
   const [hasAuthorization, setAuthorization] = useState(false);
   const [loaded, setLoaded] = useState(false);
 
-  const getEventInfo = async () => {
-    await eventService.getEventByID(eventId)
+  useEffect(() => {
+    let __isMounted = true;
+    eventService.getEventByID(eventId)
       .then(res => {
-        setEventInfo({ name: res.name, type: res.eventType });
+        if (__isMounted) {
+          setEventInfo({ name: res.name, type: res.eventType });
+        }
       }).catch(err => {
         console.log(err);
       })
-    await eventService.getEventPendingInvitations(eventId)
+
+    eventService.getEventPendingInvitations(eventId)
       .then(res => {
-        setAuthorization(true);
+        if (__isMounted) {
+          setAuthorization(true);
+        }
       }, err => {
-        setAuthorization(false);
+        if (__isMounted) {
+          setAuthorization(false);
+        }
       });
-    setLoaded(true);
-  }
 
-  useEffect(() => {
-    let __isMounted = true;
-    // eventService.getEventByID(eventId)
-    //   .then(res => {
-    //     if (__isMounted) {
-    //       setEventInfo({ name: res.name, type: res.eventType });
-    //     }
-    //   }).catch(err => {
-    //     console.log(err);
-    //   })
-
-    // eventService.getEventPendingInvitations(eventId)
-    //   .then(res => {
-    //     setAuthorization(true);
-    //   }, err => {
-    //     setAuthorization(false);
-    //   })
-    getEventInfo();
+    eventService.isCurrentUserAdminOfEvent(eventId)
+      .then(res => {
+        console.log(`res =>`);
+        console.log(res);
+      }, err => {
+        console.log(`err =>`);
+        console.log(err);
+      })
+    if (__isMounted) {
+      setLoaded(true);
+    }
 
     return () => {
       __isMounted = false;
     };
-  }, [eventId]);
+  }, []);
+
+  // const checkIfUserIsAuthorized = () => {
+  //   eventService.isCurrentUserAdminOfEvent(eventId)
+  //     .then(res => {
+  //       console.log(res);
+  //     }, err => {
+  //       console.log(err);
+  //     })
+  // }
 
   return (
     <div className="event-container">

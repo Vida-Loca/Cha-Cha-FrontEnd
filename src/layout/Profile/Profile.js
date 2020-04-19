@@ -15,7 +15,7 @@ import ChangeAvatarContainer from "./ChangeAvatarContainer";
 import FriendsList from "./FriendsList";
 import Spinner from "../../components/Spinner";
 
-import { events } from "../../mockData";
+// import { events } from "../../mockData";
 
 const Profile = () => {
 
@@ -75,7 +75,7 @@ const Profile = () => {
     profileService.getEventInvitations()
       .then(res => {
         console.log(res);
-        setInvitations({ events: res, spinner: false });
+        setInvitations({ events: res.filter(invitation => invitation.accessStatus === "PROCESSING"), spinner: false });
       }, err => {
         console.log(err);
       })

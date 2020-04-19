@@ -24,32 +24,50 @@ const MainPage = ({ eventPath, id, isAuth, type }) => {
     let __isMounted = true;
     profileService.getEventInvitations()
       .then(res => {
-        console.log(res);
+        console.log(type);
         const found = res === [] ? false : res.find(el => el.event.id.toString() === id.toString());
         if (found) {
-          setInvitationId(found.id);
-          setUserStatus(1);
+          if (__isMounted) {
+            setInvitationId(found.id);
+            setUserStatus(1);
+          }
         } else if (type === "PUBLIC") {
-          setUserStatus(2);
-        } else {
-          setUserStatus(3);
+          if (__isMounted) {
+            setUserStatus(2);
+          }
+        } else if (type === "NORMAL") {
+          if (__isMounted) {
+            setUserStatus(3);
+          }
         }
-      }
-        , err => {
-          console.log(err);
-        });
+        else {
+          if (__isMounted) {
+            setUserStatus(4);
+          }
+        }
+      }, err => {
+        console.log(err);
+      });
 
     return () => {
       __isMounted = false;
     };
-  }, [])
+  }, [id, type])
 
   const joinCurrentEvent = () => {
-
     eventService.joinEvent(id)
       .then(res => {
         console.log(res);
         history.go(0);
+      }, err => {
+        console.log(err);
+      })
+  }
+  const requestToJoinEvent = () => {
+
+    eventService.sendRequestToJoinEvent(id)
+      .then(res => {
+        console.log(res);
       }, err => {
         console.log(err);
       })
@@ -67,7 +85,7 @@ const MainPage = ({ eventPath, id, isAuth, type }) => {
     eventService.rejectEventInvitation(invitationId)
       .then(res => {
         console.log(res);
-        history.go(0);
+        history.push("/");
       }, err => {
         console.log(err);
       })
@@ -90,6 +108,13 @@ const MainPage = ({ eventPath, id, isAuth, type }) => {
           <>
             <h2>This event is public so please join us</h2>
             <Button clicked={joinCurrentEvent} classes="btn-blueGradient btn-md">join event</Button>
+          </>
+        );
+      case 3:
+        return (
+          <>
+            <h2>Ask to join this event</h2>
+            <Button clicked={requestToJoinEvent} classes="btn-blueGradient btn-md">send request</Button>
           </>
         );
 

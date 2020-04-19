@@ -69,8 +69,9 @@ const ProductCategory = ({ eventId, supCont }) => {
             <ProductCard
               removeProduct={() => removeProductFromCategory(sup.id)}
               eventId={eventId}
-              id={sup.id}
+              prductId={sup.id}
               user={sup.user}
+              userId={sup.userId}
               supply={sup.supply}
               price={sup.price}
               key={sup.id}

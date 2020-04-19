@@ -69,9 +69,34 @@ const rejectEventInvitation = (invitationId) => {
     return fetch(`${serverURL}/event/invite/${invitationId}/reject`, requestOptions).then(handleResponse);
 }
 
+const getAllEventsRequests = (eventId) => {
+    const requestOptions = { method: "GET", headers: authHeader() };
+    return fetch(`${serverURL}/event/${eventId}/requests`, requestOptions).then(handleResponse);
+}
+const sendRequestToJoinEvent = (eventId) => {
+    const requestOptions = { method: "POST", headers: authHeader() };
+    return fetch(`${serverURL}/event/${eventId}/send_request`, requestOptions).then(handleResponse);
+}
 
+const acceptRequest = (requestId) => {
+    const requestOptions = { method: "PUT", headers: authHeader() };
+    return fetch(`${serverURL}/event/request/${requestId}/accept`, requestOptions).then(handleResponse);
+}
 
+const rejectRequest = (requestId) => {
+    const requestOptions = { method: "PUT", headers: authHeader() };
+    return fetch(`${serverURL}/event/request/${requestId}/reject`, requestOptions).then(handleResponse);
+}
 
+const kickUserFromEvent = (eventId, userId) => {
+    const requestOptions = { method: "DELETE", headers: authHeader() };
+    return fetch(`${serverURL}/event/${eventId}/user?userToDeleteId=${userId}`, requestOptions).then(handleResponse);
+}
+
+const isCurrentUserAdminOfEvent = (eventId) => {
+    const requestOptions = { method: "GET", headers: authHeader() };
+    return fetch(`${serverURL}/event/${eventId}/isAdmin`, requestOptions).then(handleResponse);
+}
 
 export const eventService = {
     getAllPublicEvents,
@@ -85,5 +110,11 @@ export const eventService = {
     inviteUserToAnEvent,
     getEventMembers,
     acceptEventInvitation,
-    rejectEventInvitation
+    rejectEventInvitation,
+    getAllEventsRequests,
+    sendRequestToJoinEvent,
+    acceptRequest,
+    rejectRequest,
+    kickUserFromEvent,
+    isCurrentUserAdminOfEvent
 }

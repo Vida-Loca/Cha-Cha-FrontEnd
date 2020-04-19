@@ -19,18 +19,22 @@ const Home = () => {
 
   useEffect(() => {
     let __isMounted = true;
-    if (__isMounted) {
-      eventService.getAllPublicEvents()
-        .then(res => {
-          setPublicEventsList({ events: res, spinner: false })
-        }).catch(err => console.log(err));
+
+    eventService.getAllPublicEvents()
+      .then(res => {
+        if (__isMounted) {
+          setPublicEventsList({ events: res, spinner: false });
+        }
+      }).catch(err => console.log(err));
 
 
-      eventService.getAllEvents()
-        .then(res => {
-          setFriendsEventsList({ events: res, spinner: false })
-        }).catch(err => console.log(err));
-    }
+    eventService.getAllEvents()
+      .then(res => {
+        if (__isMounted) {
+          setFriendsEventsList({ events: res, spinner: false });
+        }
+      }).catch(err => console.log(err));
+
     return () => {
       __isMounted = false;
     };

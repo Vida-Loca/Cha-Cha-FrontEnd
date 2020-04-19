@@ -20,9 +20,9 @@ const Products = ({ id }) => {
   const [productList, setProduct] = useState({ products: [], spinner: true });
   const [forms, setform] = useContext(FormContext);
 
+
   useEffect(() => {
     let __isMounted = true;
-
     productService.getProductsFromEvent(id)
       .then(res => {
         if (__isMounted) {

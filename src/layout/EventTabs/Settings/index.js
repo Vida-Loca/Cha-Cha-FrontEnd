@@ -1,18 +1,22 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useContext } from "react";
+import { FormContext } from "../../../context/FormContext";
 import { history } from "../../../Authentication/helper";
 import { OptionsInput } from "../../../components/Inputs";
 import { Button, EditButton } from "../../../components/Button";
 import Spinner from "../../../components/Spinner";
 import UserCard from "../../../components/UserCard";
 import PaginatedContainer from "../../../components/PaginatedContainer";
+import LeaveEventContainer from "./LeaveEventContainer";
 
 import { eventService } from "../../../Authentication/service";
 
-import { membersOfTheEvent, requestsFoThisEvent } from "../../../mockData";
+import { requestsFoThisEvent } from "../../../mockData";
 
 import "./settings.scss";
 
 const Settings = ({ id }) => {
+
+    const [, setform] = useContext(FormContext);
     const [editState, setEdit] = useState(false);
 
     const [members, setMembers] = useState({ users: [], spinner: true })
@@ -26,22 +30,28 @@ const Settings = ({ id }) => {
     useEffect(() => {
         let __isMounted = true;
 
-        setTimeout(() => {
-            if (__isMounted) {
-                setSettings({
-                    privacy: { value: "private", spinner: false },
-                    currency: { value: "PLN", spinner: false }
-                });
-
-                setMembers({ users: membersOfTheEvent, spinner: false });
-                setAdmins({ users: requestsFoThisEvent, spinner: false });
-            }
-
-        }, 1000);
+        eventService.getEventMembers(id)
+            .then(res => {
+                console.log(res);
+                if (__isMounted) {
+                    setMembers({ users: res, spinner: false });
+                }
+            }, err => {
+                console.log(err);
+            })
+        if (__isMounted) {
+            setSettings({
+                privacy: { value: "private", spinner: false },
+                currency: { value: "PLN", spinner: false }
+            });
+        }
+        if (__isMounted) {
+            setAdmins({ users: requestsFoThisEvent, spinner: false });
+        }
         return () => {
             __isMounted = false;
         };
-    }, []);
+    }, [id]);
 
     const editHandler = () => {
         setEdit(!editState);
@@ -114,8 +124,16 @@ const Settings = ({ id }) => {
         "XBD", "XCD", "XDR", "XFU", "XOF", "XPD", "XPF", "XPT", "XTS", "XXX", "YER",
         "ZAR", "ZMW"];
 
+    const openModalToLeaveEvent = () => {
+        setform({ show: true, renderForm: <LeaveEventContainer eventId={id} /> });
+    };
+
+
     return (
         <div className="settings-container">
+            <Button clicked={openModalToLeaveEvent} classes="btn-orangeGradient btn-md">
+                Leave Event
+      </Button>
             <div className="privacy-box">
                 <div className="header-button">
                     <h2>Privacy</h2>
