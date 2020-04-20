@@ -2,8 +2,9 @@ import React, { useContext } from 'react'
 import { Button } from "../../../../components/Button";
 import { FormContext } from "../../../../context/FormContext";
 import { history } from "../../../../Authentication/helper";
+import { eventService } from "../../../../Authentication/service";
 
-const LeaveEventContainer = (eventId) => {
+const LeaveEventContainer = ({ eventId }) => {
     const [, setform] = useContext(FormContext);
 
     const cancelAction = () => {
@@ -11,8 +12,15 @@ const LeaveEventContainer = (eventId) => {
     }
 
     const leaveEvent = () => {
-        setform({ show: false, renderForm: "" });
-        history.push("/");
+        eventService.leaveEvent(eventId)
+            .then(res => {
+                console.log(res);
+                // setform({ show: false, renderForm: "" });
+                // history.push("/");
+            }, err => {
+                console.log(err);
+            })
+
     }
     return (
         <div>

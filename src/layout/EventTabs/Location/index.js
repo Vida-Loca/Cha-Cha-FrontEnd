@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useContext } from "react";
 import PropTypes from "prop-types";
 import { eventService } from "../../../Authentication/service";
 
@@ -6,6 +6,7 @@ import { eventService } from "../../../Authentication/service";
 import { TextInput } from "../../../components/Inputs";
 import { EditButton } from "../../../components/Button";
 import checkValidation from "../../../validation";
+import { UserContext } from "../../../context/UserContext";
 
 // import Map from "../../../components/Map";
 import ReactMapGL, { Marker, Popup } from "react-map-gl";
@@ -16,10 +17,13 @@ import "./Location.scss";
 const Location = ({ id }) => {
 
   const [fetchedEvent, setFetchedEvent] = useState({});
+  const [isAuthorized, setAuthorization] = useState(false);
+  const [loggedInUser,] = useContext(UserContext);
+
 
   const [viewport, setViewport] = useState({
-    latitude: 45.4211,
-    longitude: -75.6903,
+    latitude: 54.352024,
+    longitude: 18.646639,
     width: "100%",
     height: "30rem",
     zoom: 10
@@ -126,9 +130,18 @@ const Location = ({ id }) => {
   useEffect(() => {
     let __isMounted = true;
 
+    eventService.isCurrentUserAdminOfEvent(id)
+      .then(res => {
+        setAuthorization(res || loggedInUser.isAdmin);
+        console.log(`ev: ${res}`);
+      }, err => {
+        console.log(err);
+      })
+
     eventService.getEventByID(id)
       .then(res => {
         if (__isMounted) {
+          console.log("hello");
           setFetchedEvent(res);
 
           setLocationInfo({
@@ -154,7 +167,7 @@ const Location = ({ id }) => {
     return () => {
       __isMounted = false;
     };
-  }, [id, address.city, address.street, address.postcode, address.country, address.number, locationInfo.dateofevent, locationInfo.time]);
+  }, []);
 
   const editHandler = () => {
     setEdit(!editState);
@@ -234,9 +247,10 @@ const Location = ({ id }) => {
 
   return (
     <div className="location-container">
-      <div className="address-info">
+      {isAuthorized &&
         <EditButton options={editState} activate={editHandler} cancel={cancelEdit} confirm={submitLocationChanges} tags
-          render={<> <i className="far fa-edit" />Edit</>} />
+          render={<> <i className="far fa-edit" />Edit</>} />}
+      <div className="address-info">
         {addressForm.map(el => (
           <TextInput
             key={el.name}
@@ -275,8 +289,8 @@ const Location = ({ id }) => {
           }}
           mapStyle="mapbox://styles/darotp/ck94jrgus39pb1js9xpobel3r"
         >
-          <Marker latitude={45.4211} longitude={-75.6903}>Hello</Marker>
-          <Popup latitude={45.4211} longitude={-75.6903}>opsie</Popup>
+          <Marker latitude={54.352024} longitude={18.646639}>Hello</Marker>
+          <Popup latitude={54.352024} longitude={18.646639}>opsie</Popup>
         </ReactMapGL>
       </div>
 

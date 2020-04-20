@@ -9,7 +9,6 @@ const Avatar = ({ imageLink, title }) => {
   const fallback = () => {
     setFailure(true);
   }
-
   return (
     <>
       {failue
@@ -18,7 +17,6 @@ const Avatar = ({ imageLink, title }) => {
     </>
   )
 };
-
 Avatar.defaultProps = {
   title: "",
   imageLink: ""

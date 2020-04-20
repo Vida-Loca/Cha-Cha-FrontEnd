@@ -30,6 +30,10 @@ const removeFromFriends = (Userid) => {
   const requestOptions = { method: "PUT", headers: authHeader() };
   return fetch(`${serverURL}/user/remove?userToRemoveId=${Userid}`, requestOptions).then(handleResponse);
 }
+const cancelFriendInvitation = (invitationID) => {
+  const requestOptions = { method: "PUT", headers: authHeader() };
+  return fetch(`${serverURL}/user/cancel?invitationId=${invitationID}`, requestOptions).then(handleResponse);
+}
 
 
 export const userService = {
@@ -39,5 +43,6 @@ export const userService = {
   getFriendRequestList,
   acceptInvite,
   rejectInvite,
-  removeFromFriends
+  removeFromFriends,
+  cancelFriendInvitation
 };

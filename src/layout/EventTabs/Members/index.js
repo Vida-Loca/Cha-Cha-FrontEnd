@@ -75,7 +75,8 @@ const Members = ({ id }) => {
   };
 
   const kickUsers = (userId) => {
-    eventService.kickUserFromEvent(userId, userId)
+    console.log(`userId: ${userId}, id: ${id}`);
+    eventService.kickUserFromEvent(id, userId)
       .then(res => {
         console.log(res);
         setEventMemebers({ members: eventMemebers.members.filter(prod => prod.id !== userId), spinner: false })

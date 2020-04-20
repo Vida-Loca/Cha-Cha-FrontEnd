@@ -17,6 +17,15 @@ const getProductsFromEvent = (id) => {
     return fetch(`${serverURL}/event/${id}/product`, requestOptions).then(handleResponse);
 }
 
+const updateProduct = (eventId, productId, updatedProduct) => {
+    const requestOptions = {
+        method: "PUT",
+        headers: authHeader(),
+        body: JSON.stringify(updatedProduct)
+    };
+    return fetch(`${serverURL}/event/${eventId}/product/${productId}`, requestOptions).then(handleResponse);
+}
+
 const removeProduct = (id, productId) => {
     const requestOptions = { method: "DELETE", headers: authHeader() };
     return fetch(`${serverURL}/event/${id}/product?productToDeleteId=${productId}`, requestOptions).then(handleResponse);
@@ -27,5 +36,6 @@ const removeProduct = (id, productId) => {
 export const productService = {
     addProduct,
     getProductsFromEvent,
-    removeProduct
+    removeProduct,
+    updateProduct
 }

@@ -1,5 +1,7 @@
 import React, { useState, useEffect, useContext } from "react";
 import { FormContext } from "../../../context/FormContext";
+import { UserContext } from "../../../context/UserContext";
+
 import { history } from "../../../Authentication/helper";
 import { OptionsInput } from "../../../components/Inputs";
 import { Button, EditButton } from "../../../components/Button";
@@ -17,6 +19,9 @@ import "./settings.scss";
 const Settings = ({ id }) => {
 
     const [, setform] = useContext(FormContext);
+    const [loggedInUser,] = useContext(UserContext);
+    const [isAuthorized, setAuthorization] = useState(false);
+
     const [editState, setEdit] = useState(false);
 
     const [members, setMembers] = useState({ users: [], spinner: true })
@@ -29,6 +34,14 @@ const Settings = ({ id }) => {
 
     useEffect(() => {
         let __isMounted = true;
+
+        eventService.isCurrentUserAdminOfEvent(id)
+            .then(res => {
+                setAuthorization(isAuthorized || res || loggedInUser.isAdmin);
+                console.log(`ev: ${res}`);
+            }, err => {
+                console.log(err);
+            })
 
         eventService.getEventMembers(id)
             .then(res => {
@@ -74,6 +87,15 @@ const Settings = ({ id }) => {
                 editHandler();
             })
     }
+
+    const leaveCurrentEvent = () => [
+        eventService.leaveEvent(id)
+            .then(res => {
+                console.log(res);
+            }, err => {
+                console.log(err);
+            })
+    ]
 
     const promoteToAdmin = (username) => {
         const tempAdminsList = admins.users;
@@ -133,72 +155,77 @@ const Settings = ({ id }) => {
         <div className="settings-container">
             <Button clicked={openModalToLeaveEvent} classes="btn-orangeGradient btn-md">
                 Leave Event
-      </Button>
-            <div className="privacy-box">
-                <div className="header-button">
-                    <h2>Privacy</h2>
-                    {settings.privacy.spinner
-                        ? <Spinner />
-                        : <Button clicked={savePrivacyChanges} classes="btn-blueGradient btn-sm">Save changes</Button>
-                    }
+            </Button>
+            {isAuthorized &&
+                <>
+                    <div className="privacy-box">
+                        <div className="header-button">
+                            <h2>Privacy</h2>
+                            {settings.privacy.spinner
+                                ? <Spinner />
+                                : <Button clicked={savePrivacyChanges} classes="btn-blueGradient btn-sm">Save changes</Button>
+                            }
 
-                </div>
-                <OptionsInput onChange={onChangeHandler} value={settings.privacy.value} name="privacy" options={["private", "public", "friends"]} />
+                        </div>
+                        <OptionsInput onChange={onChangeHandler} value={settings.privacy.value} name="privacy" options={["private", "public", "friends"]} />
 
-            </div>
-            <div className="currency-box">
-                <div className="header-button">
-                    <h2>Currency</h2>
-                    {settings.currency.spinner
-                        ? <Spinner />
-                        : <Button clicked={saveCurrencyChanges} classes="btn-blueGradient btn-sm">Save changes</Button>
-                    }
-                </div>
-                <OptionsInput onChange={onChangeHandler} value={settings.currency.value} name="currency" options={currencyCodes} />
+                    </div>
+                    <div className="currency-box">
+                        <div className="header-button">
+                            <h2>Currency</h2>
+                            {settings.currency.spinner
+                                ? <Spinner />
+                                : <Button clicked={saveCurrencyChanges} classes="btn-blueGradient btn-sm">Save changes</Button>
+                            }
+                        </div>
+                        <OptionsInput onChange={onChangeHandler} value={settings.currency.value} name="currency" options={currencyCodes} />
 
-            </div>
-            <div className="delete-box">
-                <h2>Delete Event</h2>
-                <EditButton
-                    options={editState}
-                    activate={editHandler}
-                    cancel={editHandler}
-                    confirm={confirmEventDeletion}
-                    tags
-                    render={
-                        <><i className="far fa-trash-alt" />Delete</>} />
-            </div>
-            <div className="admin-members-box">
-                <h2>Event Admins</h2>
-                <PaginatedContainer
-                    title=""
-                    items={admins.users}
-                    perPage={5}
-                    render={
-                        admins.spinner
-                            ? () => <Spinner />
-                            : ({ items }) =>
-                                items.map(ev => (
-                                    <UserCard key={ev.username} username={ev.username} showControlls={true}>
-                                        <Button clicked={() => demoteAdmin(ev.username)} classes="btn-secondary-orange-active btn-sm">demote</Button>
-                                    </UserCard>
-                                ))} />
+                    </div>
+                    <div className="delete-box">
+                        <h2>Delete Event</h2>
+                        <EditButton
+                            options={editState}
+                            activate={editHandler}
+                            cancel={editHandler}
+                            confirm={confirmEventDeletion}
+                            tags
+                            render={
+                                <><i className="far fa-trash-alt" />Delete</>} />
+                    </div>
+                    <div className="admin-members-box">
+                        <h2>Event Admins</h2>
+                        <PaginatedContainer
+                            title=""
+                            items={admins.users}
+                            perPage={5}
+                            render={
+                                admins.spinner
+                                    ? () => <Spinner />
+                                    : ({ items }) =>
+                                        items.map(ev => (
+                                            <UserCard key={ev.username} username={ev.username} showControlls={true}>
+                                                <Button clicked={() => demoteAdmin(ev.username)} classes="btn-secondary-orange-active btn-sm">demote</Button>
+                                            </UserCard>
+                                        ))} />
 
-                <h2>Event Members</h2>
-                <PaginatedContainer
-                    title=""
-                    items={members.users}
-                    perPage={5}
-                    render={
-                        members.spinner
-                            ? () => <Spinner />
-                            : ({ items }) =>
-                                items.map(ev => (
-                                    <UserCard key={ev.username} username={ev.username} showControlls={true}>
-                                        <Button clicked={() => promoteToAdmin(ev.username)} classes="btn-secondary-orange btn-sm">promote</Button>
-                                    </UserCard>
-                                ))} />
-            </div>
+                        <h2>Event Members</h2>
+                        <PaginatedContainer
+                            title=""
+                            items={members.users}
+                            perPage={5}
+                            render={
+                                members.spinner
+                                    ? () => <Spinner />
+                                    : ({ items }) =>
+                                        items.map(ev => (
+                                            <UserCard key={ev.username} username={ev.username} showControlls={true}>
+                                                <Button clicked={() => promoteToAdmin(ev.username)} classes="btn-secondary-orange btn-sm">promote</Button>
+                                            </UserCard>
+                                        ))} />
+                    </div>
+                </>
+            }
+
 
         </div>)
 }

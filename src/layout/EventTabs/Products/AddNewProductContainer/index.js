@@ -8,11 +8,13 @@ import Spinner from "../../../../components/Spinner";
 import { productService } from "../../../../Authentication/service";
 
 import { FormContext } from "../../../../context/FormContext";
+import { UserContext } from "../../../../context/UserContext";
 
 
 const AddNewProductContainer = ({ addProduct, id, category }) => {
 
   const [form, setform] = useContext(FormContext);
+  const [loggedInUser,] = useContext(UserContext);
   let [sendingDataSpinner, setSendingDataSpinner] = useState(false);
 
   const [product, setProduct] = useState({
@@ -89,19 +91,18 @@ const AddNewProductContainer = ({ addProduct, id, category }) => {
           productCategory: chosenCategory
         })
         .then(res => {
-          console.log(res);
           setSendingDataSpinner(false);
           setform({ ...form, show: false });
           addProduct({
             category: chosenCategory,
             product: {
-              id: `${res.name}${res.price}`,
+              id: res.id,
               supply: res.name,
               price: res.price,
               userId: 1,
-              user: "Test User",
+              user: loggedInUser.user.username,
               quantity: 1,
-              picUrl: ""
+              picUrl: loggedInUser.user.picUrl
             }
           });
 
@@ -147,7 +148,7 @@ AddNewProductContainer.defaultProps = {
 AddNewProductContainer.propTypes = {
   category: PropTypes.string,
   addProduct: PropTypes.func.isRequired,
-  id: PropTypes.number.isRequired
+  id: PropTypes.string.isRequired
 };
 
 export default AddNewProductContainer;

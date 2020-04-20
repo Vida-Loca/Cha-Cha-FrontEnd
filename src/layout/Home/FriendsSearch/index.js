@@ -1,20 +1,21 @@
-import React, { useState } from "react";
+import React, { useState, useContext } from "react";
 import { SearchBar } from "../../../components/Inputs";
 import { Button } from "../../../components/Button";
 import { userService } from "../../../Authentication/service";
 import PaginatedContainer from "../../../components/PaginatedContainer";
 import UserCard from "../../../components/UserCard";
 import Spinner from "../../../components/Spinner";
+import { UserContext } from "../../../context/UserContext";
 // import { friends } from "../../../mockData";
 
 import "./inviteFriends.scss";
 
-
-
 const SearchFriends = () => {
 
     const [findUser, setfindUser] = useState({ username: "" });
+    const [friendsList, setFriendsList] = useState([]);
     const [dislpayFriends, setDislpayFreinds] = useState({ users: [], spinner: false });
+    const [loggedInUser,] = useContext(UserContext);
 
 
     const onChangeHandler = event => {
@@ -35,10 +36,18 @@ const SearchFriends = () => {
     }
 
     const lookingForUsers = () => {
-        setDislpayFreinds({ users: dislpayFriends.users, spinner: true });
+
+        userService.getFriendsList()
+            .then(res => {
+                setFriendsList(res);
+            }).catch(err => {
+                console.log(err)
+            });
+
         userService.getUsersByRegex(findUser.username)
             .then(res => {
-                setDislpayFreinds({ users: res, spinner: false });
+
+                setDislpayFreinds({ users: res.filter(user => user.id !== loggedInUser.user.id), spinner: false });
             }).catch(err => {
                 setDislpayFreinds({ users: [], spinner: false });
                 console.log(err)
@@ -64,13 +73,18 @@ const SearchFriends = () => {
                     dislpayFriends.spinner
                         ? () => <Spinner size={"spinner-sm"} />
                         : ({ items }) =>
-                            items.map(ev => (
-                                <UserCard key={ev.id} username={ev.username} imageUrl={ev.picUrl} showControlls>
-                                    <Button clicked={() => sendAFriendRequest(ev.id)} classes="btn-blueGradient btn-sm">
-                                        <i className="fas fa-user-plus" />
-                                    </Button>
-                                </UserCard>
-                            ))
+                            items.map(ev => {
+                                const isUserAFriend = friendsList.filter(user => user.id === ev.id);
+                                return (
+                                    <UserCard key={ev.id} username={ev.username} imageUrl={ev.picUrl} showControlls>
+                                        {!isUserAFriend.length > 0 &&
+                                            <Button clicked={() => sendAFriendRequest(ev.id)} classes="btn-blueGradient btn-sm">
+                                                <i className="fas fa-user-plus" />
+                                            </Button>}
+
+                                    </UserCard>
+                                )
+                            })
                 }
             />
         </div>

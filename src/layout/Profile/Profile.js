@@ -1,7 +1,7 @@
 import React, { useContext, useState, useEffect } from "react";
 
 import { FormContext } from "../../context/FormContext";
-import { authenticationService, profileService } from "../../Authentication/service";
+import { authenticationService, profileService, userService } from "../../Authentication/service";
 
 import "./Profile.scss";
 
@@ -23,7 +23,7 @@ const Profile = () => {
     username: "Loading ...",
     email: "Loading ...",
     datejoined: "Loading ...",
-    avatarUrl: ""
+    avatarUrl: "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTSLmktkJrArXh_zZVovazl5mb3lna9HXqPo7XvvviCSQAuru5C&s"
   });
   const [editableUserInfo, setEditableUserInfo] = useState({
     name: { value: "Loading ...", isValid: true, err: "" },
@@ -37,10 +37,24 @@ const Profile = () => {
 
   const [, setform] = useContext(FormContext);
   const [editState, setEdit] = useState(false);
+  const [amountOfNewRequests, setNewRequests] = useState(0);
 
 
   useEffect(() => {
     let __isMounted = true;
+
+    userService.getFriendRequestList()
+      .then(res => {
+        console.log(res);
+        if (__isMounted) {
+          setNewRequests(res.filter(invite => invite.invitationStatus === "PROCESSING").length);
+        }
+      }).catch(err => {
+        if (__isMounted) {
+          console.log(err);
+        }
+      });
+
     profileService.getCurrentUserInfo().then(res => {
       if (__isMounted) {
         setUserInfo({
@@ -239,8 +253,11 @@ const Profile = () => {
         </div>
       </div>
       <div className="friends-btn">
+
         <Button classes="btn-md btn-default" clicked={showFriendsInModal}>
           friends
+          {amountOfNewRequests > 0 && <span className="red-marker"></span>}
+
         </Button>
       </div>
       <div className="event-section">

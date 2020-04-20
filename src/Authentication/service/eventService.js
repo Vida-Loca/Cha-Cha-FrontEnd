@@ -93,9 +93,17 @@ const kickUserFromEvent = (eventId, userId) => {
     return fetch(`${serverURL}/event/${eventId}/user?userToDeleteId=${userId}`, requestOptions).then(handleResponse);
 }
 
+
+
+
 const isCurrentUserAdminOfEvent = (eventId) => {
     const requestOptions = { method: "GET", headers: authHeader() };
     return fetch(`${serverURL}/event/${eventId}/isAdmin`, requestOptions).then(handleResponse);
+}
+
+const leaveEvent = (eventId) => {
+    const requestOptions = { method: "DELETE", headers: authHeader() };
+    return fetch(`${serverURL}/event/${eventId}/leave`, requestOptions).then(handleResponse);
 }
 
 export const eventService = {
@@ -116,5 +124,6 @@ export const eventService = {
     acceptRequest,
     rejectRequest,
     kickUserFromEvent,
-    isCurrentUserAdminOfEvent
+    isCurrentUserAdminOfEvent,
+    leaveEvent
 }
