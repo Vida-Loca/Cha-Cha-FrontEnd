@@ -8,7 +8,6 @@ import ResetPassword from "./resetPassword";
 
 import "./authStyle.scss";
 
-
 const LoginFormContainer = () => {
   const [sendingDataSpinner, setSendingDataSpinner] = useState(false);
 
@@ -18,7 +17,7 @@ const LoginFormContainer = () => {
     password: { value: "", isValid: true, err: [] }
   });
 
-  const loginForm = useState([
+  const loginForm = [
     {
       name: "username",
       config: {
@@ -35,8 +34,7 @@ const LoginFormContainer = () => {
         classes: "input-blue"
       }
     }
-
-  ])[0];
+  ];
 
   const submitLogin = () => {
     if (login.username.isValid && login.password.isValid) {
@@ -58,7 +56,6 @@ const LoginFormContainer = () => {
 
     }
   }
-
   const onChangeHandler = event => {
     setLogin({
       ...login,
@@ -69,7 +66,6 @@ const LoginFormContainer = () => {
   const resetPasswordModal = () => {
     setChangedForm({ show: true, renderForm: <ResetPassword /> });
   }
-
 
   return (
     <div>
@@ -85,7 +81,6 @@ const LoginFormContainer = () => {
           error={login[el.name].err[0]}
         />
       ))}
-
 
       {sendingDataSpinner
         ? <Spinner classes={"spinner-container-h-sm"} size={"spinner-sm"} />

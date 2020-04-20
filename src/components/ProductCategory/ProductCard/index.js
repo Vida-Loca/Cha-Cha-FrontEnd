@@ -10,7 +10,7 @@ import { UserContext } from "../../../context/UserContext";
 import { eventService, adminService, productService } from "../../../Authentication/service";
 
 
-const ProductCard = ({ removeProduct, eventId, prductId, user, userId, supply, price, picUrl }) => {
+const ProductCard = ({ removeProduct, eventId, prductId, category, user, userId, supply, price, picUrl }) => {
 
 
   const [loggedInUser,] = useContext(UserContext);
@@ -114,26 +114,32 @@ const ProductCard = ({ removeProduct, eventId, prductId, user, userId, supply, p
   const deletingProduct = () => {
     console.log(`deleteing product:${prductId} from event: ${eventId}`);
     removeProduct();
+    productService.removeProduct(eventId, prductId)
+      .then(res => {
+        console.log(res);
+      }, err => {
+        console.log(err);
+      })
 
   }
 
   const updatingProduct = () => {
     if (tileSupply.supply.length > 0 && tileSupply.price.length > 0 && !isNaN(tileSupply.price)) {
+      console.log("updating");
+      productService.updateProduct(eventId, prductId, {
+        price: tileSupply.price,
+        supply: tileSupply.supply,
+        productCategory: category
+      })
 
-      // productService.updateProduct(eventId, prductId, {
-      //   price: tileSupply.price,
-      //   supply: tileSupply.supply
-      //   productCategory: tileSupply.
-      // })
+      // setTimeout(() => {
+      //   console.log(`updating product with id: ${prductId}`)
+      //   console.log({
+      //     price: tileSupply.price,
+      //     supply: tileSupply.supply
+      //   })
 
-      setTimeout(() => {
-        console.log(`updating product with id: ${prductId}`)
-        console.log({
-          price: tileSupply.price,
-          supply: tileSupply.supply
-        })
-
-      }, 2000);
+      // }, 2000);
     } else {
       console.log("can't be updatted")
     }

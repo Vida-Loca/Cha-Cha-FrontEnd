@@ -18,16 +18,12 @@ const ChangeAvatar = ({ changeAvatarState }) => {
   const changeAvatar = () => {
     if (avatarUrl.URL.length > 5) {
       setSendingDataSpinner(true);
-
       profileService.changeAvatar(avatarUrl.URL)
-        .then(res => {
+        .then(_ => {
           setSendingDataSpinner(false)
           changeAvatarState(avatarUrl.URL);
-          console.log(res);
-        })
-        .then(err => {
-          console.log(err);
-          setSendingDataSpinner(false);
+        }, _ => {
+          setSendingDataSpinner(false)
         });
 
     } else {

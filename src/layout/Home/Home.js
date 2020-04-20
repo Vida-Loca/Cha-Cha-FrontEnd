@@ -25,22 +25,21 @@ const Home = () => {
         if (__isMounted) {
           setPublicEventsList({ events: res, spinner: false });
         }
-      }).catch(err => console.log(err));
-
+      })
 
     eventService.getAllEvents()
       .then(res => {
         if (__isMounted) {
           setFriendsEventsList({ events: res, spinner: false });
         }
-      }).catch(err => console.log(err));
+      });
 
     return () => {
       __isMounted = false;
     };
   }, []);
 
-  const setform = useContext(FormContext)[1];
+  const [, setform] = useContext(FormContext);
   const createNewEventModal = () => {
     setform({ show: true, renderForm: <CreateEventContainer /> });
   };
@@ -48,15 +47,12 @@ const Home = () => {
     setform({ show: true, renderForm: <SearchFriends /> });
   };
 
-
   return (
     <div className="home-container">
       <div className="buttons-container">
         <Button clicked={createNewEventModal} classes="btn-md btn-blueGradient">+ Create Event</Button>
         <Button clicked={friendSearchModal} classes="btn-md btn-orangeGradient">Look for friends</Button>
       </div>
-
-
 
       <div className="dashboard">
 

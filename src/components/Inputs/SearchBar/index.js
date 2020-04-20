@@ -1,5 +1,6 @@
 import React from "react";
 import PropTypes from "prop-types";
+
 import "./searchbar.scss";
 
 const SearchBar = ({ name, placeholder, onChange, disabled, value, clicked }) => {
@@ -20,11 +21,11 @@ SearchBar.defaultProps = {
 };
 
 SearchBar.propTypes = {
-    value: PropTypes.oneOfType([PropTypes.string, PropTypes.number]),
-    disabled: PropTypes.bool,
-    onChange: PropTypes.func,
     name: PropTypes.string.isRequired,
     placeholder: PropTypes.string,
+    onChange: PropTypes.func,
+    disabled: PropTypes.bool,
+    value: PropTypes.oneOfType([PropTypes.string, PropTypes.number]),
     clicked: PropTypes.func
 };
 

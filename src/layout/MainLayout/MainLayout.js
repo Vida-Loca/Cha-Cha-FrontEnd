@@ -1,7 +1,7 @@
-import React, { useState, useEffect, useContext } from "react";
+import React, { useEffect, useContext } from "react";
 import { Switch, Route, Redirect } from "react-router-dom";
-import { mainNav, adminNav, eventNav, adminEventNav, mainNavNoAdmin } from "./Navs";
-import { adminService, eventService, profileService } from "../../Authentication/service";
+import { mainNav, adminNav, adminEventNav, mainNavNoAdmin } from "./Navs";
+import { adminService, profileService } from "../../Authentication/service";
 import { UserContext } from "../../context/UserContext";
 import "./Layout.scss";
 
@@ -14,57 +14,22 @@ import Event from "../EventTabs/Event";
 
 const MainLayout = () => {
   const [loggedinUser, setLoggedInUser] = useContext(UserContext);
-  const [isAdmin, setIsAdmin] = useState(false);
-
 
   useEffect(() => {
     let _isMounted = true;
-
     Promise.all([adminService.isLoggedInUserAdmin(), profileService.getCurrentUserInfo()])
       .then(res => {
         if (_isMounted) {
-          setLoggedInUser({ user: res[1], isAdmin: res[0] });
+          setLoggedInUser({ ...loggedinUser, user: res[1], isAdmin: res[0] });
         }
       }).catch(err => {
         console.log(err);
       })
 
-
-    // adminService
-    //   .isLoggedInUserAdmin()
-    //   .then(res => {
-    //     if (_isMounted) {
-    //       setIsAdmin(res);
-    //     }
-    //   })
-    //   .catch(err => {
-    //     console.log(err);
-    //   });
-
-
-    // profileService.getCurrentUserInfo()
-    //   .then(res => {
-    //     if (_isMounted) {
-    //       setLoggedInUser({ user: res });
-    //     }
-    //   }, err => {
-    //     console.log(err);
-    //   })
     return () => {
       _isMounted = false;
     }
   }, []);
-
-  const checkIfUserIsAuthorized = (eventId) => {
-    eventService.isCurrentUserAdminOfEvent(eventId)
-      .then(res => {
-        // console.log(res);
-        return res;
-      }, err => {
-        console.log(err);
-        return false;
-      });
-  }
 
   return (
     <div className="MainLayout">
@@ -80,7 +45,7 @@ const MainLayout = () => {
           path="/event/:id"
           render={({ match }) => <Event eventId={match.params.id} eventPath={match.path} />}
         />
-        <Redirect from="*" to="/home" />
+        <Route render={() => <Redirect to="/home" />} />
       </Switch>
       <Route
         path="/event/:id"

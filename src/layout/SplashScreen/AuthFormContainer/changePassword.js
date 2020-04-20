@@ -16,7 +16,7 @@ const ChangePassword = () => {
         retypePassword: { value: "", isValid: true, err: [] }
     });
 
-    const [changePassForm,] = useState([
+    const changePassForm = [
         {
             name: "password",
             config: {
@@ -33,15 +33,12 @@ const ChangePassword = () => {
                 classes: "input-blue"
             }
         }
-
-    ]);
+    ];
 
     const submitNewPassword = () => {
         if (login.password.isValid && login.retypePassword.isValid) {
             setSendingDataSpinner(true);
             setSendingDataSpinner(false);
-
-
         }
     }
 
@@ -51,8 +48,6 @@ const ChangePassword = () => {
             [`${event.target.name}`]: { ...login[`${event.target.name}`], isValid: true, err: [], value: event.target.value }
         });
     };
-
-
 
     return (
         <div>
@@ -68,7 +63,6 @@ const ChangePassword = () => {
                     error={login[el.name].err[0]}
                 />
             ))}
-
 
             {sendingDataSpinner
                 ? <Spinner classes={"spinner-container-h-sm"} size={"spinner-sm"} />

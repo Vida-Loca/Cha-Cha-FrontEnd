@@ -76,6 +76,7 @@ const ProductCategory = ({ eventId, supCont }) => {
               price={sup.price}
               key={sup.id}
               picUrl={sup.picUrl}
+              category={supCont.Category}
             />
           );
         })}

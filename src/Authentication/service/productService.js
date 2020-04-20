@@ -26,9 +26,9 @@ const updateProduct = (eventId, productId, updatedProduct) => {
     return fetch(`${serverURL}/event/${eventId}/product/${productId}`, requestOptions).then(handleResponse);
 }
 
-const removeProduct = (id, productId) => {
+const removeProduct = (eventId, productId) => {
     const requestOptions = { method: "DELETE", headers: authHeader() };
-    return fetch(`${serverURL}/event/${id}/product?productToDeleteId=${productId}`, requestOptions).then(handleResponse);
+    return fetch(`${serverURL}/event/${eventId}/product?productToDeleteId=${productId}`, requestOptions).then(handleResponse);
 }
 
 

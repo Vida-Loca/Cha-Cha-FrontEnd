@@ -35,7 +35,6 @@ const SplashScreen = () => {
           Sign Up
         </Button>
         <Route path="/changePassword" exact render={() => changePassword()} />
-
       </div>
     </div>
   );

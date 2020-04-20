@@ -25,7 +25,6 @@ const MyApplication = () => {
         && <Modal show={forms.show} modalClose={hideModal}>
           {forms.renderForm}
         </Modal>}
-
       {isLoggedIn ? <MainLayout /> : <SplashScreen />}
     </div>
   );

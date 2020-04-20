@@ -21,7 +21,7 @@ const RegistrationFormContainer = () => {
     email: { value: "", isValid: false, err: [], touched: false }
   });
 
-  const registerForm = useState([
+  const registerForm = [
     {
       name: "username",
       config: {
@@ -101,7 +101,7 @@ const RegistrationFormContainer = () => {
       }
     }
 
-  ])[0];
+  ];
   const onChangeHandler = event => {
     const validationResult = checkValidation(
       event.target.value,
@@ -147,7 +147,6 @@ const RegistrationFormContainer = () => {
 
     }
   }
-
 
 
   return (

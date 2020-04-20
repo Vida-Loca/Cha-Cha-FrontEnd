@@ -88,14 +88,7 @@ const Settings = ({ id }) => {
             })
     }
 
-    const leaveCurrentEvent = () => [
-        eventService.leaveEvent(id)
-            .then(res => {
-                console.log(res);
-            }, err => {
-                console.log(err);
-            })
-    ]
+
 
     const promoteToAdmin = (username) => {
         const tempAdminsList = admins.users;

@@ -17,13 +17,11 @@ const SearchFriends = () => {
     const [dislpayFriends, setDislpayFreinds] = useState({ users: [], spinner: false });
     const [loggedInUser,] = useContext(UserContext);
 
-
     const onChangeHandler = event => {
         setfindUser({
             ...findUser,
             [`${event.target.name}`]: event.target.value
         });
-
     };
 
     const sendAFriendRequest = (id) => {
@@ -36,23 +34,18 @@ const SearchFriends = () => {
     }
 
     const lookingForUsers = () => {
-
         userService.getFriendsList()
             .then(res => {
                 setFriendsList(res);
-            }).catch(err => {
-                console.log(err)
+            }, _ => {
+                setFriendsList([]);
             });
-
         userService.getUsersByRegex(findUser.username)
             .then(res => {
-
                 setDislpayFreinds({ users: res.filter(user => user.id !== loggedInUser.user.id), spinner: false });
-            }).catch(err => {
+            }, _ => {
                 setDislpayFreinds({ users: [], spinner: false });
-                console.log(err)
             });
-
     }
 
     return (
@@ -81,7 +74,6 @@ const SearchFriends = () => {
                                             <Button clicked={() => sendAFriendRequest(ev.id)} classes="btn-blueGradient btn-sm">
                                                 <i className="fas fa-user-plus" />
                                             </Button>}
-
                                     </UserCard>
                                 )
                             })
