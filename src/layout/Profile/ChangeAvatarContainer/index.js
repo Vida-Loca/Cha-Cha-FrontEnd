@@ -1,11 +1,15 @@
-import React, { useState } from "react";
+import React, { useState, useContext } from "react";
 import { TextInput } from "../../../components/Inputs";
 import { Button } from "../../../components/Button";
 import Spinner from "../../../components/Spinner";
 import { profileService } from "../../../Authentication/service";
 
+import { FormContext } from "../../../context/FormContext";
+
 const ChangeAvatar = ({ changeAvatarState }) => {
   const [sendingDataSpinner, setSendingDataSpinner] = useState(false);
+
+  const [, setChangedForm] = useContext(FormContext);
 
   const [avatarUrl, setAvatarUrl] = useState({ URL: "" });
   const onChangeHandler = event => {
@@ -22,6 +26,7 @@ const ChangeAvatar = ({ changeAvatarState }) => {
         .then(_ => {
           setSendingDataSpinner(false)
           changeAvatarState(avatarUrl.URL);
+          setChangedForm({ renderForm: "", show: false });
         }, _ => {
           setSendingDataSpinner(false)
         });

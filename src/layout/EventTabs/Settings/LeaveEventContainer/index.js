@@ -4,6 +4,8 @@ import { FormContext } from "../../../../context/FormContext";
 import { history } from "../../../../Authentication/helper";
 import { eventService } from "../../../../Authentication/service";
 
+import "./leaveEvent.scss";
+
 const LeaveEventContainer = ({ eventId }) => {
     const [, setform] = useContext(FormContext);
 
@@ -23,14 +25,16 @@ const LeaveEventContainer = ({ eventId }) => {
 
     }
     return (
-        <div>
+        <div className="leave-event-container">
             <h2>Do you wan to leave th is event ?</h2>
-            <Button clicked={leaveEvent} classes="btn-blueGradient btn-md">
-                YES
+            <div class="leave-btn-group">
+                <Button clicked={leaveEvent} classes="btn-blueGradient btn-md">
+                    YES
              </Button>
-            <Button clicked={cancelAction} classes="btn-orangeGradient btn-md">
-                NO
+                <Button clicked={cancelAction} classes="btn-orangeGradient btn-md">
+                    NO
             </Button>
+            </div>
         </div>
     )
 }

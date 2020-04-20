@@ -96,7 +96,7 @@ const AddNewProductContainer = ({ addProduct, id, category }) => {
           addProduct({
             category: chosenCategory,
             product: {
-              id: res.id,
+              id: res.id - 1,
               supply: res.name,
               price: res.price,
               userId: 1,

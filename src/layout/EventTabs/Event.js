@@ -6,6 +6,8 @@ import { UserContext } from "../../context/UserContext";
 
 import { eventService } from "../../Authentication/service";
 
+import Spinner from "../../components/Spinner";
+
 import Products from "./Products";
 import Location from "./Location";
 import Members from "./Members";
@@ -25,33 +27,69 @@ const Event = ({ eventId, eventPath }) => {
 
   useEffect(() => {
     let __isMounted = true;
-    eventService.getEventByID(eventId)
-      .then(res => {
-        if (__isMounted) {
-          setEventInfo({ name: res.name, type: res.eventType });
-        }
-      });
+    console.log("you are in event!!!!");
 
-    eventService.getEventPendingInvitations(eventId)
-      .then(_ => {
-        if (__isMounted) {
+    let a = eventService.getEventByID(eventId);
+    let b = eventService.isCurrentUserAdminOfEvent(eventId);
+
+
+    Promise.all([a.catch(e => e), b.catch(e => e)])
+      .then(res => {
+        setEventInfo({ name: res[0].name, type: res[0].eventType });
+
+        if (res[1].err !== undefined) {
+          console.log("not from this event");
+          setLoggedInUser({
+            ...loggedInUser,
+            eventAuth: {
+              eventId: res[0].id,
+              hasAuth: false,
+              isAdmin: false
+            }
+          });
+          setAuthorization(false);
+        } else if (res[1] === false) {
+          console.log("normal user");
+          setLoggedInUser({
+            ...loggedInUser,
+            eventAuth: {
+              eventId: res[0].id,
+              hasAuth: true,
+              isAdmin: false
+            }
+          });
           setAuthorization(true);
-        }
-      }, _ => {
-        if (__isMounted) {
+        } else if (res[1] === true) {
+          console.log("this is Admin of the event")
+          setLoggedInUser({
+            ...loggedInUser,
+            eventAuth: {
+              eventId: res[0].id,
+              hasAuth: true,
+              isAdmin: true
+            }
+          });
+          setAuthorization(true);
+        } else {
+          console.log("WTF");
+          setLoggedInUser({
+            ...loggedInUser,
+            eventAuth: {
+              eventId: res[0].id,
+              hasAuth: false,
+              isAdmin: false
+            }
+          });
           setAuthorization(false);
         }
-      });
-
-    eventService.isCurrentUserAdminOfEvent(eventId)
-      .then(res => {
-        console.log(res);
-      }, err => {
-        console.log(err);
       })
-    if (__isMounted) {
-      setLoaded(true);
-    }
+      .catch(err => console.log('Catch', err))
+      .finally(() => {
+        if (__isMounted) {
+          setLoaded(true);
+        }
+      })
+
 
     return () => {
       __isMounted = false;
@@ -65,20 +103,20 @@ const Event = ({ eventId, eventPath }) => {
       <Route
         path={`${eventPath}/`}
         exact
-        render={() => loaded && <MainPage isAuth={hasAuthorization} eventPath={eventPath} id={eventId} type={eventInfo.type} />}
+        render={() => loaded ? <MainPage isAuth={hasAuthorization || loggedInUser.isAdmin}
+          eventPath={eventPath} eventId={eventId} type={eventInfo.type} />
+          : <Spinner />}
       />
-      {hasAuthorization ? (
+      {(hasAuthorization || loggedInUser.isAdmin) ? (
         <>
           <Route path={`${eventPath}/products`} exact render={() => <Products id={eventId} />} />
           <Route path={`${eventPath}/location`} exact render={() => <Location id={eventId} />} />
-          <Route path={`${eventPath}/members`} exact render={() => <Members id={eventId} />} />
-          <Route path={`${eventPath}/settings`} exact render={() => <Settings id={eventId} />} />
+          <Route path={`${eventPath}/members`} exact render={() => <Members eventType={eventInfo.type} eventId={eventId} />} />
+          <Route path={`${eventPath}/settings`} exact render={() => <Settings eventId={eventId} />} />
         </>
       )
         : (
-          <Route
-            render={() => <Redirect to={`${eventPath.substring(0, eventPath.length - 4)}/${eventId}`} />}
-          />
+          <Route render={() => <Redirect to={`${eventPath.substring(0, eventPath.length - 4)}/${eventId}`} />} />
         )}
     </div>
   );

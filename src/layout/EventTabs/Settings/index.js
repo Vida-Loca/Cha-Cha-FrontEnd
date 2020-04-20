@@ -3,7 +3,7 @@ import { FormContext } from "../../../context/FormContext";
 import { UserContext } from "../../../context/UserContext";
 
 import { history } from "../../../Authentication/helper";
-import { OptionsInput } from "../../../components/Inputs";
+import { OptionsInput, TextInput } from "../../../components/Inputs";
 import { Button, EditButton } from "../../../components/Button";
 import Spinner from "../../../components/Spinner";
 import UserCard from "../../../components/UserCard";
@@ -16,7 +16,7 @@ import { requestsFoThisEvent } from "../../../mockData";
 
 import "./settings.scss";
 
-const Settings = ({ id }) => {
+const Settings = ({ eventId }) => {
 
     const [, setform] = useContext(FormContext);
     const [loggedInUser,] = useContext(UserContext);
@@ -25,6 +25,9 @@ const Settings = ({ id }) => {
     const [editState, setEdit] = useState(false);
 
     const [members, setMembers] = useState({ users: [], spinner: true })
+
+    const [eventInfo, setEventInfo] = useState({ event: {}, spinner: true });
+
     const [admins, setAdmins] = useState({ users: [], spinner: true })
 
     const [settings, setSettings] = useState({
@@ -35,7 +38,15 @@ const Settings = ({ id }) => {
     useEffect(() => {
         let __isMounted = true;
 
-        eventService.isCurrentUserAdminOfEvent(id)
+        eventService.getEventByID(eventId)
+            .then(res => {
+                console.log(res);
+                setEventInfo({ ...eventInfo, event: res });
+            }, err => {
+                console.log(err);
+            })
+
+        eventService.isCurrentUserAdminOfEvent(eventId)
             .then(res => {
                 setAuthorization(isAuthorized || res || loggedInUser.isAdmin);
                 console.log(`ev: ${res}`);
@@ -43,28 +54,26 @@ const Settings = ({ id }) => {
                 console.log(err);
             })
 
-        eventService.getEventMembers(id)
+
+        Promise.all([eventService.getEventMembers(eventId), eventService.getAllEventAdmins(eventId)])
             .then(res => {
-                console.log(res);
                 if (__isMounted) {
-                    setMembers({ users: res, spinner: false });
+                    console.log(res[0]);
+                    console.log(res[1]);
+                    setMembers({
+                        users: res[0].filter(user => {
+                            return res[1].filter(admin => admin.id === user.id).length <= 0;
+                        }), spinner: false
+                    });
+                    setAdmins({ users: res[1], spinner: false });
                 }
-            }, err => {
-                console.log(err);
             })
-        if (__isMounted) {
-            setSettings({
-                privacy: { value: "private", spinner: false },
-                currency: { value: "PLN", spinner: false }
-            });
-        }
-        if (__isMounted) {
-            setAdmins({ users: requestsFoThisEvent, spinner: false });
-        }
+
+
         return () => {
             __isMounted = false;
         };
-    }, [id]);
+    }, [eventId]);
 
     const editHandler = () => {
         setEdit(!editState);
@@ -77,7 +86,7 @@ const Settings = ({ id }) => {
     }
 
     const confirmEventDeletion = () => {
-        eventService.deleteEvent(id)
+        eventService.deleteEvent(eventId)
             .then(res => {
                 console.log(res);
                 history.push("/");
@@ -90,32 +99,31 @@ const Settings = ({ id }) => {
 
 
 
-    const promoteToAdmin = (username) => {
-        const tempAdminsList = admins.users;
-        const foundUser = members.users.filter(user => user.username === username)[0];
-        tempAdminsList.push(foundUser);
-        setMembers({ users: members.users.filter(user => user.username !== username), spinner: false });
-        setAdmins({ users: tempAdminsList, spinner: false });
-    }
-    const demoteAdmin = (username) => {
-        const tempMembersList = members.users;
-        const foundUser = admins.users.filter(user => user.username === username)[0];
-        tempMembersList.push(foundUser);
-        setMembers({ users: tempMembersList, spinner: false });
-        setAdmins({ users: admins.users.filter(user => user.username !== username), spinner: false });
+    const promoteToAdmin = (userId) => {
+        eventService.promoteToEventAdmin(eventId, userId)
+            .then(res => {
+                console.log(res);
+                const tempAdminsList = admins.users;
+                const foundUser = members.users.filter(user => user.id === userId)[0];
+                tempAdminsList.push(foundUser);
+                setMembers({ users: members.users.filter(user => user.id !== userId), spinner: false });
+                setAdmins({ users: tempAdminsList, spinner: false });
+            }, err => {
+                console.log(err);
+            })
     }
 
     const saveCurrencyChanges = () => {
         setSettings({ ...settings, currency: { ...settings.currency, spinner: true } })
         setTimeout(() => {
-            console.log(`currency changed to ${settings.currency.value} on event: ${id}`)
+            console.log(`currency changed to ${settings.currency.value} on event: ${eventId}`)
             setSettings({ ...settings, currency: { ...settings.currency, spinner: false }, privacy: { ...settings.privacy, spinner: false } })
         }, 2000);
     }
     const savePrivacyChanges = () => {
         setSettings({ ...settings, privacy: { ...settings.privacy, spinner: true } })
         setTimeout(() => {
-            console.log(`privacy changed to ${settings.privacy.value} on event: ${id}`)
+            console.log(`privacy changed to ${settings.privacy.value} on event: ${eventId}`)
             setSettings({ ...settings, privacy: { ...settings.privacy, spinner: false }, currency: { ...settings.currency, spinner: false } })
         }, 2000);
     }
@@ -140,17 +148,30 @@ const Settings = ({ id }) => {
         "ZAR", "ZMW"];
 
     const openModalToLeaveEvent = () => {
-        setform({ show: true, renderForm: <LeaveEventContainer eventId={id} /> });
+        setform({ show: true, renderForm: <LeaveEventContainer eventId={eventId} /> });
     };
 
 
     return (
         <div className="settings-container">
-            <Button clicked={openModalToLeaveEvent} classes="btn-orangeGradient btn-md">
-                Leave Event
-            </Button>
+            <div className="leave-btn-container">
+                <Button clicked={openModalToLeaveEvent} classes="btn-orangeGradient btn-md">
+                    Leave Event
+                </Button>
+            </div>
             {isAuthorized &&
                 <>
+                    {/* <div className="name-box">
+                        <TextInput
+                            onChange={onChangeHandler}
+                            placeholder={el.config.placeholder}
+                            name="name"
+                            value={eventInfo.event.name}
+                            size="input-sm"
+                            classes={isEditable ? "input-blue" : ""}
+                            error={editableUserInfo[el.name].err[0]}
+                        />
+                    </div> */}
                     <div className="privacy-box">
                         <div className="header-button">
                             <h2>Privacy</h2>
@@ -160,7 +181,7 @@ const Settings = ({ id }) => {
                             }
 
                         </div>
-                        <OptionsInput onChange={onChangeHandler} value={settings.privacy.value} name="privacy" options={["private", "public", "friends"]} />
+                        <OptionsInput onChange={onChangeHandler} value={eventInfo.event.eventType} name="privacy" options={["PRIVATE", "PUBLIC", "NORMAL", "SECRET"]} />
 
                     </div>
                     <div className="currency-box">
@@ -197,7 +218,6 @@ const Settings = ({ id }) => {
                                     : ({ items }) =>
                                         items.map(ev => (
                                             <UserCard key={ev.username} username={ev.username} showControlls={true}>
-                                                <Button clicked={() => demoteAdmin(ev.username)} classes="btn-secondary-orange-active btn-sm">demote</Button>
                                             </UserCard>
                                         ))} />
 
@@ -212,7 +232,7 @@ const Settings = ({ id }) => {
                                     : ({ items }) =>
                                         items.map(ev => (
                                             <UserCard key={ev.username} username={ev.username} showControlls={true}>
-                                                <Button clicked={() => promoteToAdmin(ev.username)} classes="btn-secondary-orange btn-sm">promote</Button>
+                                                <Button clicked={() => promoteToAdmin(ev.id)} classes="btn-secondary-orange btn-sm">promote</Button>
                                             </UserCard>
                                         ))} />
                     </div>

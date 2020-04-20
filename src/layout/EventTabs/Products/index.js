@@ -1,10 +1,10 @@
 import React, { useState, useContext, useEffect } from "react";
 import PropTypes from "prop-types";
 
+import createSetOfCategories from "./helper";
+
 import { productService } from "../../../Authentication/service";
 import { FormContext } from "../../../context/FormContext";
-
-import createSetOfCategories from "./helper";
 
 import { Button } from "../../../components/Button";
 import ProductCategory from "../../../components/ProductCategory";
@@ -28,8 +28,7 @@ const Products = ({ id }) => {
         if (__isMounted) {
           setProduct({ products: createSetOfCategories(res), spinner: false });
         }
-      }).catch(err => {
-        console.log(err);
+      }, err => {
         if (__isMounted) {
           setProduct({ products: [], spinner: false });
         }

@@ -9,7 +9,8 @@ export const UserProvider = ({ children }) => {
     isAdmin: false,
     eventAuth: {
       eventId: "",
-      hasAuth: false
+      hasAuth: false,
+      isAdmin: false
     }
   });
 

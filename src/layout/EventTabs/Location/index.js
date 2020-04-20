@@ -1,6 +1,6 @@
 import React, { useState, useEffect, useContext } from "react";
 import PropTypes from "prop-types";
-import { eventService } from "../../../Authentication/service";
+import { eventService, mapboxService } from "../../../Authentication/service";
 
 // import { eventLocation } from "../../../mockData";
 import { TextInput } from "../../../components/Inputs";
@@ -8,8 +8,8 @@ import { EditButton } from "../../../components/Button";
 import checkValidation from "../../../validation";
 import { UserContext } from "../../../context/UserContext";
 
-// import Map from "../../../components/Map";
-import ReactMapGL, { Marker, Popup } from "react-map-gl";
+import Map from "../../../components/Map";
+
 
 import "./Location.scss";
 
@@ -21,13 +21,7 @@ const Location = ({ id }) => {
   const [loggedInUser,] = useContext(UserContext);
 
 
-  const [viewport, setViewport] = useState({
-    latitude: 54.352024,
-    longitude: 18.646639,
-    width: "100%",
-    height: "30rem",
-    zoom: 10
-  })
+
 
   const [locationInfo, setLocationInfo] = useState({
     dateofevent: { value: "", isValid: true, err: [] },
@@ -43,6 +37,8 @@ const Location = ({ id }) => {
   });
   const [tempAddress, setTempAddress] = useState({ country: "Loading....", city: "Loading...", street: "Loading...", number: "0", postcode: "Loading..." });
   const [editState, setEdit] = useState(false);
+
+  const [latLong, setlantLong] = useState({ lat: 54.68333, long: 25.28333, spinner: true });
 
   const [addressForm,] = useState([
     {
@@ -129,6 +125,18 @@ const Location = ({ id }) => {
 
   useEffect(() => {
     let __isMounted = true;
+    console.log("local debug!!");
+
+    console.log();
+
+
+    // mapboxService.searchPlaces(address.country.value, address.city.value, address.street.value)
+    //   .then(res => {
+    //     console.log(res.features[0].center);
+    //     setlantLong({ lat: res.features[0].center[1], long: res.features[0].center[0] })
+    //   }, err => {
+    //     console.log(err);
+    //   })
 
     eventService.isCurrentUserAdminOfEvent(id)
       .then(res => {
@@ -162,6 +170,11 @@ const Location = ({ id }) => {
             number: res.address.number, postcode: res.address.postcode
           })
         }
+        return mapboxService.searchPlaces(res.address.country, res.address.city, res.address.street);
+      }).then(data => {
+        console.log("thi sis data => ");
+        console.log(data.features[0].center);
+        setlantLong({ lat: data.features[0].center[1], long: data.features[0].center[0], spinner: false })
       })
 
     return () => {
@@ -281,17 +294,10 @@ const Location = ({ id }) => {
         ))}
       </div>
       <div className="map-container">
-        <ReactMapGL
-          {...viewport}
-          mapboxApiAccessToken={process.env.REACT_APP_MAPBOX_KEY}
-          onViewportChange={viewport => {
-            setViewport(viewport);
-          }}
-          mapStyle="mapbox://styles/darotp/ck94jrgus39pb1js9xpobel3r"
-        >
-          <Marker latitude={54.352024} longitude={18.646639}>Hello</Marker>
-          <Popup latitude={54.352024} longitude={18.646639}>opsie</Popup>
-        </ReactMapGL>
+        {
+          !latLong.spinner && <Map latitude={latLong.lat} longitude={latLong.long} />
+        }
+
       </div>
 
     </div>

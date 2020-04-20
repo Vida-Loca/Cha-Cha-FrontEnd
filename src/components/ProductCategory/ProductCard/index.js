@@ -1,5 +1,5 @@
 /* eslint-disable no-nested-ternary */
-import React, { useState, useContext, useEffect } from "react";
+import React, { useState, useContext } from "react";
 import PropTypes from "prop-types";
 import Avatar from "../../Avatar";
 import { Button, EditButton } from "../../Button";
@@ -7,11 +7,9 @@ import "./ProductCard.scss";
 import { TextInputNL, TextArea } from "../../Inputs";
 import { UserContext } from "../../../context/UserContext";
 
-import { eventService, adminService, productService } from "../../../Authentication/service";
-
+import { productService } from "../../../Authentication/service";
 
 const ProductCard = ({ removeProduct, eventId, prductId, category, user, userId, supply, price, picUrl }) => {
-
 
   const [loggedInUser,] = useContext(UserContext);
 
@@ -21,7 +19,7 @@ const ProductCard = ({ removeProduct, eventId, prductId, category, user, userId,
     price: String(price),
     picUrl,
     tempSupply: supply,
-    tempPrice: price
+    tempPrice: String(price)
   });
 
   const [editState, setEditState] = useState(false);
@@ -29,36 +27,6 @@ const ProductCard = ({ removeProduct, eventId, prductId, category, user, userId,
 
   const [tileState, tileStateSet] = useState(false);
 
-  const [isAuthorized, setAuthorization] = useState(false);
-
-
-  useEffect(() => {
-    // console.log(loggedInUser);
-    // adminService.isLoggedInUserAdmin()
-    //   .then(res => {
-    //     setAuthorization(isAuthorized || res);
-    //   }, err => {
-    //     console.log(err);
-    //   })
-    eventService.isCurrentUserAdminOfEvent(eventId)
-      .then(res => {
-        setAuthorization(isAuthorized || res || loggedInUser.isAdmin || (userId === loggedInUser.user.id));
-        console.log(`ev: ${res}`);
-      }, err => {
-        console.log(err);
-      })
-
-    // Promise.all([adminService.isLoggedInUserAdmin(), eventService.isCurrentUserAdminOfEvent(eventId)])
-    //   .then(res => {
-    //     setAuthorization(isAuthorized || res || res[1]);
-    //   }).catch(err => {
-    //     console.log(err);
-    //   })
-
-    return () => {
-
-    }
-  }, []);
 
 
   const onChangeHandlerPrice = event => {
@@ -124,32 +92,29 @@ const ProductCard = ({ removeProduct, eventId, prductId, category, user, userId,
   }
 
   const updatingProduct = () => {
+    console.log(tileSupply);
     if (tileSupply.supply.length > 0 && tileSupply.price.length > 0 && !isNaN(tileSupply.price)) {
       console.log("updating");
       productService.updateProduct(eventId, prductId, {
         price: tileSupply.price,
-        supply: tileSupply.supply,
+        name: tileSupply.supply,
         productCategory: category
       })
+        .then(_ => {
+          setEditState(false);
+          tileStateSet(false);
+        }, err => {
+          console.log(err);
+        })
 
-      // setTimeout(() => {
-      //   console.log(`updating product with id: ${prductId}`)
-      //   console.log({
-      //     price: tileSupply.price,
-      //     supply: tileSupply.supply
-      //   })
-
-      // }, 2000);
     } else {
       console.log("can't be updatted")
     }
-
   }
 
   return (
     <>
       <div className="product-card-container tooltip">
-        {/* <span className={editState ? "tooltiptext tooltiptext-active" : "tooltiptext"}> */}
         {tileState && (
           <span className="tooltiptext">
             {!editState &&
@@ -189,9 +154,10 @@ const ProductCard = ({ removeProduct, eventId, prductId, category, user, userId,
           </span>
           <TextArea value={tileSupply.supply} name="supply" onChange={onChangeHandlerDescription} disabled={!editState} />
         </span>
-        {isAuthorized && <Button classes="options-btn" clicked={changeOptions}>
-          {tileState ? <i className="fas fa-times" /> : <i className="fas fa-ellipsis-v" />}
-        </Button>}
+        {(loggedInUser.isAdmin || loggedInUser.user.id === userId || loggedInUser.eventAuth.isAdmin)
+          && <Button classes="options-btn" clicked={changeOptions}>
+            {tileState ? <i className="fas fa-times" /> : <i className="fas fa-ellipsis-v" />}
+          </Button>}
 
       </div>
     </>
@@ -199,7 +165,7 @@ const ProductCard = ({ removeProduct, eventId, prductId, category, user, userId,
   );
 };
 ProductCard.defaultProps = {
-  picUrl: "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTSLmktkJrArXh_zZVovazl5mb3lna9HXqPo7XvvviCSQAuru5C&s"
+  picUrl: ""
 };
 
 ProductCard.propTypes = {

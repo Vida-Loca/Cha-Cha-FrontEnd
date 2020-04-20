@@ -7,6 +7,11 @@
         align-items: center;
         height: 3rem;
     }
+    .leave-btn-container{
+      display: flex;
+      justify-content: center;
+      align-items: center;
+    }
     .privacy-box, .currency-box{
       .loader-container{
         width: 8rem;

@@ -94,8 +94,6 @@ const kickUserFromEvent = (eventId, userId) => {
 }
 
 
-
-
 const isCurrentUserAdminOfEvent = (eventId) => {
     const requestOptions = { method: "GET", headers: authHeader() };
     return fetch(`${serverURL}/event/${eventId}/isAdmin`, requestOptions).then(handleResponse);
@@ -104,6 +102,15 @@ const isCurrentUserAdminOfEvent = (eventId) => {
 const leaveEvent = (eventId) => {
     const requestOptions = { method: "DELETE", headers: authHeader() };
     return fetch(`${serverURL}/event/${eventId}/leave`, requestOptions).then(handleResponse);
+}
+
+const promoteToEventAdmin = (eventId, userId) => {
+    const requestOptions = { method: "PUT", headers: authHeader() };
+    return fetch(`${serverURL}/event/${eventId}/user/${userId}/grantAdmin`, requestOptions).then(handleResponse);
+}
+const getAllEventAdmins = (eventId) => {
+    const requestOptions = { method: "GET", headers: authHeader() };
+    return fetch(`${serverURL}/event/${eventId}/admin`, requestOptions).then(handleResponse);
 }
 
 export const eventService = {
@@ -125,5 +132,7 @@ export const eventService = {
     rejectRequest,
     kickUserFromEvent,
     isCurrentUserAdminOfEvent,
-    leaveEvent
+    leaveEvent,
+    getAllEventAdmins,
+    promoteToEventAdmin
 }

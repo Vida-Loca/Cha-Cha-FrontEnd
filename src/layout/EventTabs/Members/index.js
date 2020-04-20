@@ -16,7 +16,7 @@ import InviteUserFormContainer from "./InviteUserFormContainer";
 import Spinner from "../../../components/Spinner";
 
 
-const Members = ({ id }) => {
+const Members = ({ eventId, eventType }) => {
 
 
   const [, setform] = useContext(FormContext);
@@ -24,37 +24,30 @@ const Members = ({ id }) => {
   const [eventMemebers, setEventMemebers] = useState({ members: [], spinner: true });
   const [eventRequests, seEventRequests] = useState({ members: [], spinner: true });
   const [sentRequests, seSentRequests] = useState({ members: [], spinner: true });
-  const [isAuthorized, setAuthorization] = useState(false);
 
   useEffect(() => {
     let __isMounted = true;
+    console.log(loggedInUser);
+    if (loggedInUser.eventAuth.isAdmin) {
+      eventService.getEventPendingInvitations(eventId)
+        .then(res => {
+          console.log(res);
+          if (__isMounted) {
+            seSentRequests({ members: res, spinner: false });
+          }
+        }, err => {
+          console.log(err);
+        })
+      eventService.getAllEventsRequests(eventId)
+        .then(res => {
+          console.log(res);
+          if (__isMounted) {
+            seEventRequests({ members: res, spinner: false });
+          }
+        })
+    }
 
-    eventService.isCurrentUserAdminOfEvent(id)
-      .then(res => {
-        setAuthorization(isAuthorized || res || loggedInUser.isAdmin);
-        console.log(`ev: ${res}`);
-      }, err => {
-        console.log(err);
-      })
-
-    eventService.getEventPendingInvitations(id)
-      .then(res => {
-        console.log(res);
-        if (__isMounted) {
-          seSentRequests({ members: res, spinner: false });
-        }
-      }, err => {
-        console.log(err);
-      })
-    eventService.getAllEventsRequests(id)
-      .then(res => {
-        console.log(res);
-        if (__isMounted) {
-          seEventRequests({ members: res, spinner: false });
-        }
-      })
-
-    eventService.getEventMembers(id)
+    eventService.getEventMembers(eventId)
       .then(res => {
         console.log(res);
         if (__isMounted) {
@@ -64,23 +57,21 @@ const Members = ({ id }) => {
         console.log(err);
       })
 
-
     return () => {
       __isMounted = false;
     };
-  }, [id]);
+  }, [eventId]);
 
   const openModalToInviteUser = () => {
-    setform({ show: true, renderForm: <InviteUserFormContainer id={id} /> });
+    setform({ show: true, renderForm: <InviteUserFormContainer id={eventId} /> });
   };
 
   const kickUsers = (userId) => {
-    console.log(`userId: ${userId}, id: ${id}`);
-    eventService.kickUserFromEvent(id, userId)
+    console.log(`userId: ${userId}, id: ${eventId}`);
+    eventService.kickUserFromEvent(eventId, userId)
       .then(res => {
         console.log(res);
         setEventMemebers({ members: eventMemebers.members.filter(prod => prod.id !== userId), spinner: false })
-
       }, err => {
         console.log(err);
       })
@@ -91,7 +82,6 @@ const Members = ({ id }) => {
       .then(res => {
         console.log(res);
         seEventRequests({ members: eventRequests.members.filter(prod => prod.id !== userId), spinner: false })
-
       }, err => {
         console.log(err);
       })
@@ -109,17 +99,19 @@ const Members = ({ id }) => {
       }, err => {
         console.log(err);
       })
-
-
   }
 
 
   return (
     <div className="members-container">
-      <Button clicked={openModalToInviteUser} classes="btn-blueGradient btn-md">
-        + Invite User
-      </Button>
-      {isAuthorized &&
+      {
+        (loggedInUser.eventAuth.isAdmin || loggedInUser.isAdmin || eventType === "NORMAL" || eventType === "PUBLIC")
+        && <Button clicked={openModalToInviteUser} classes="btn-blueGradient btn-md">
+          + Invite User
+        </Button>
+      }
+
+      {loggedInUser.eventAuth.isAdmin &&
         <PaginatedContainer
           title={`Requests to join ● ${eventRequests.members.length}`}
           items={eventRequests.members}
@@ -129,7 +121,7 @@ const Members = ({ id }) => {
               ? () => <Spinner />
               : ({ items }) =>
                 items.map(ev => (
-                  <UserCard key={ev.user.username} username={ev.user.username} imageUrl={ev.user.picUrl} showControlls={isAuthorized}>
+                  <UserCard key={ev.user.username} username={ev.user.username} imageUrl={ev.user.picUrl} showControlls={loggedInUser.eventAuth.isAdmin}>
                     <Button clicked={() => ignoreRequest(ev.user.id, ev.id)} classes="btn-orangeGradient btn-sm">
                       <i className="fas fa-times-circle" />
                     </Button>
@@ -142,7 +134,7 @@ const Members = ({ id }) => {
         />
       }
 
-      {isAuthorized &&
+      {loggedInUser.eventAuth.isAdmin &&
         <PaginatedContainer
           title={`Sent requests ● ${sentRequests.members.length}`}
           items={sentRequests.members}
@@ -152,7 +144,7 @@ const Members = ({ id }) => {
               ? () => <Spinner />
               : ({ items }) =>
                 items.map(ev => (
-                  <UserCard key={ev.user.username} username={ev.user.username} imageUrl={ev.user.picUrl} showControlls={isAuthorized}>
+                  <UserCard key={ev.user.username} username={ev.user.username} imageUrl={ev.user.picUrl} showControlls={loggedInUser.eventAuth.isAdmin}>
                     <Button clicked={() => ignoreRequest(ev.user.id, ev.id)} classes="btn-orangeGradient btn-sm">
                       <i className="fas fa-times-circle" />
                     </Button>
@@ -172,7 +164,7 @@ const Members = ({ id }) => {
             ? () => <Spinner />
             : ({ items }) =>
               items.map(ev => (
-                <UserCard key={ev.username} username={ev.username} imageUrl={ev.picUrl} showControlls={isAuthorized}>
+                <UserCard key={ev.username} username={ev.username} imageUrl={ev.picUrl} showControlls={loggedInUser.eventAuth.isAdmin}>
                   <Button clicked={() => kickUsers(ev.id)} classes="btn-orangeGradient btn-sm">
                     <i className="fas fa-user-times" />
                   </Button>
@@ -185,7 +177,7 @@ const Members = ({ id }) => {
 };
 
 Members.propTypes = {
-  id: PropTypes.string.isRequired
+  eventId: PropTypes.string.isRequired
 };
 
 export default Members;

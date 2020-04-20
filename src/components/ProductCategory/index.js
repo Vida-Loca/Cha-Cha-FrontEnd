@@ -40,7 +40,6 @@ const ProductCategory = ({ eventId, supCont }) => {
   }
 
 
-
   return (
     <div className={supplyContainer.showMore ? "category-container" : "category-container hide"}>
       <div className="product-header">

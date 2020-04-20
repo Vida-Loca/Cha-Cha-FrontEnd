@@ -7,15 +7,7 @@ import { history } from "../../../Authentication/helper";
 
 import "./MainPage.scss";
 
-const MainPage = ({ eventPath, id, isAuth, type }) => {
-  // fetch current logged in user
-
-  // cheeck if got invitations
-  //  * if yes buttons "accept" or "decline" apears
-
-  // if event is public button "join apears"
-
-  // if none of the above requirements are met dislpay error page
+const MainPage = ({ eventPath, eventId, isAuth, type }) => {
 
   const [userStatus, setUserStatus] = useState(2);
   const [invitationId, setInvitationId] = useState("");
@@ -24,23 +16,26 @@ const MainPage = ({ eventPath, id, isAuth, type }) => {
     let __isMounted = true;
     profileService.getEventInvitations()
       .then(res => {
-        console.log(type);
-        const found = res === [] ? false : res.find(el => el.event.id.toString() === id.toString());
+        const found = res === [] ? false : res.find(el => el.event.id.toString() === eventId.toString());
         if (found) {
+          // if found invitation for this event
           if (__isMounted) {
             setInvitationId(found.id);
             setUserStatus(1);
           }
         } else if (type === "PUBLIC") {
+          // if invitation is not found - check if event is Public
           if (__isMounted) {
             setUserStatus(2);
           }
         } else if (type === "NORMAL") {
+          // if invitation is not fund check if event is Normal
           if (__isMounted) {
             setUserStatus(3);
           }
         }
         else {
+          // None of the above -return error page
           if (__isMounted) {
             setUserStatus(4);
           }
@@ -52,10 +47,10 @@ const MainPage = ({ eventPath, id, isAuth, type }) => {
     return () => {
       __isMounted = false;
     };
-  }, [id, type])
+  }, [eventId, type])
 
   const joinCurrentEvent = () => {
-    eventService.joinEvent(id)
+    eventService.joinEvent(eventId)
       .then(res => {
         console.log(res);
         history.go(0);
@@ -65,7 +60,7 @@ const MainPage = ({ eventPath, id, isAuth, type }) => {
   }
   const requestToJoinEvent = () => {
 
-    eventService.sendRequestToJoinEvent(id)
+    eventService.sendRequestToJoinEvent(eventId)
       .then(res => {
         console.log(res);
       }, err => {
@@ -106,25 +101,30 @@ const MainPage = ({ eventPath, id, isAuth, type }) => {
       case 2:
         return (
           <>
-            <h2>This event is public so please join us</h2>
+            <h2>This event is public so join us</h2>
             <Button clicked={joinCurrentEvent} classes="btn-blueGradient btn-md">join event</Button>
           </>
         );
       case 3:
         return (
           <>
-            <h2>Ask to join this event</h2>
+            <h2>Request to join this event</h2>
             <Button clicked={requestToJoinEvent} classes="btn-blueGradient btn-md">send request</Button>
           </>
         );
 
       default:
-        return <h1>Error Page</h1>;
+        return (
+          <>
+            <h1>Error - 403</h1>
+            <h3>you are not authorized to join this event</h3>
+          </>
+        );
     }
   };
 
   return isAuth ? (
-    <Redirect to={`${eventPath.substring(0, eventPath.length - 4)}/${id}/products`} />
+    <Redirect to={`${eventPath.substring(0, eventPath.length - 4)}/${eventId}/products`} />
   ) : (
       <div className="MainPage">{conditionalRender()}</div>
     );
@@ -132,7 +132,7 @@ const MainPage = ({ eventPath, id, isAuth, type }) => {
 
 MainPage.propTypes = {
   eventPath: PropTypes.string.isRequired,
-  id: PropTypes.string.isRequired,
+  eventId: PropTypes.string.isRequired,
   isAuth: PropTypes.bool.isRequired
 };
 

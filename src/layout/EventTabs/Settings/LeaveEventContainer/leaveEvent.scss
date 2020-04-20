@@ -1,0 +1,16 @@
+.leave-event-container{
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-content: center;
+    .leave-btn-group{
+        display: flex;
+        flex-direction: row;
+        justify-content: center;
+        align-content: center;
+        &>*{
+            margin: 0 0.5rem;
+        }
+    }
+
+}
