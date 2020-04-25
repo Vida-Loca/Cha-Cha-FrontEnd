@@ -7,7 +7,7 @@ const Map = ({ latitude, longitude }) => {
         longitude: longitude,
         width: "100%",
         height: "30rem",
-        zoom: 10
+        zoom: 12.5
     })
     return (
         <ReactMapGL

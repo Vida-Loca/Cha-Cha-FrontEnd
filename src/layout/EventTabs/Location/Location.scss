@@ -41,7 +41,7 @@
     display: grid;
 
     @include breaking-point-1 {
-      grid-template-columns: 1fr 1fr;
+      grid-template-columns: repeat(2, 1fr);
       grid-column-gap: 2rem;
   
       .text-input:nth-child(1){
@@ -54,18 +54,19 @@
 
     .settings {
       display: grid;
-      grid-template-columns: 1fr 1fr;
+      grid-template-columns: 1fr;
       width: 100%;
       margin-top: 0.5rem;
       margin-bottom: 0.5rem;
       @include breaking-point-1 {
+        grid-template-columns: 1fr 1fr;
         grid-column-start: 1;
         grid-column-end: 3;
-      }
 
-      & > .edit-btn {
-        grid-column-start: 1;
-        grid-column-end: 3;
+        & > .edit-btn {
+          grid-column-start: 1;
+          grid-column-end: 3;
+        }
       }
  
       & > .cancel-btn {
@@ -75,6 +76,38 @@
       & > .confirm-btn {
         transition: color 0.2s, background 0.2s;
         border-radius: 0 $border-radius-sm $border-radius-sm 0;
+      }
+    }
+
+
+    .title{
+      grid-column-start: 1;
+      grid-column-end: 3;
+      justify-self: center;
+    }
+
+
+  }
+
+
+
+
+  .map-container{
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    & > *{
+      margin: 0.5rem 0;
+    }
+    .coordinates-input{
+      display: flex;
+      flex-direction: row;
+      width: 100%;
+      align-items: center;
+      justify-content: center;
+      & > *{
+        margin: 0 1rem;
       }
     }
   }

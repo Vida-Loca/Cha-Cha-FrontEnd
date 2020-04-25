@@ -25,14 +25,14 @@ const Settings = ({ eventId }) => {
     const [editState, setEdit] = useState(false);
 
     const [members, setMembers] = useState({ users: [], spinner: true })
+    const [admins, setAdmins] = useState({ users: [], spinner: true })
 
     const [eventInfo, setEventInfo] = useState({ event: {}, spinner: true });
 
-    const [admins, setAdmins] = useState({ users: [], spinner: true })
-
     const [settings, setSettings] = useState({
         privacy: { value: "private", spinner: false },
-        currency: { value: "private", spinner: false }
+        currency: { value: "PLN", spinner: false },
+        eventName: { value: "PLN", spinner: false }
     })
 
     useEffect(() => {
@@ -41,7 +41,7 @@ const Settings = ({ eventId }) => {
         eventService.getEventByID(eventId)
             .then(res => {
                 console.log(res);
-                setEventInfo({ ...eventInfo, event: res });
+                setEventInfo({ event: res, spinner: false });
             }, err => {
                 console.log(err);
             })
@@ -80,8 +80,8 @@ const Settings = ({ eventId }) => {
     };
 
     const onChangeHandler = (event) => {
-        setSettings({
-            ...settings, [`${event.target.name}`]: event.target.value,
+        setEventInfo({
+            ...eventInfo, event: { ...eventInfo.event, [`${event.target.name}`]: event.target.value},
         })
     }
 
@@ -113,19 +113,16 @@ const Settings = ({ eventId }) => {
             })
     }
 
-    const saveCurrencyChanges = () => {
-        setSettings({ ...settings, currency: { ...settings.currency, spinner: true } })
+
+    const saveChanges = () => {
+
+        setEventInfo({...eventInfo, spinner: true});
+
         setTimeout(() => {
-            console.log(`currency changed to ${settings.currency.value} on event: ${eventId}`)
-            setSettings({ ...settings, currency: { ...settings.currency, spinner: false }, privacy: { ...settings.privacy, spinner: false } })
-        }, 2000);
-    }
-    const savePrivacyChanges = () => {
-        setSettings({ ...settings, privacy: { ...settings.privacy, spinner: true } })
-        setTimeout(() => {
-            console.log(`privacy changed to ${settings.privacy.value} on event: ${eventId}`)
-            setSettings({ ...settings, privacy: { ...settings.privacy, spinner: false }, currency: { ...settings.currency, spinner: false } })
-        }, 2000);
+            console.log(eventInfo.event);
+            setEventInfo({...eventInfo, spinner: false});
+        }, 3000);
+    
     }
 
     var currencyCodes = [
@@ -161,42 +158,34 @@ const Settings = ({ eventId }) => {
             </div>
             {isAuthorized &&
                 <>
-                    {/* <div className="name-box">
+                    <div className="name-box">
+                    <h3>Event Name</h3>
                         <TextInput
                             onChange={onChangeHandler}
-                            placeholder={el.config.placeholder}
+                            placeholder=""
                             name="name"
                             value={eventInfo.event.name}
-                            size="input-sm"
-                            classes={isEditable ? "input-blue" : ""}
-                            error={editableUserInfo[el.name].err[0]}
+                            size="input-md"
+                            classes="input-blue"
                         />
-                    </div> */}
-                    <div className="privacy-box">
-                        <div className="header-button">
-                            <h2>Privacy</h2>
-                            {settings.privacy.spinner
-                                ? <Spinner />
-                                : <Button clicked={savePrivacyChanges} classes="btn-blueGradient btn-sm">Save changes</Button>
-                            }
-
-                        </div>
-                        <OptionsInput onChange={onChangeHandler} value={eventInfo.event.eventType} name="privacy" options={["PRIVATE", "PUBLIC", "NORMAL", "SECRET"]} />
-
                     </div>
-                    <div className="currency-box">
-                        <div className="header-button">
-                            <h2>Currency</h2>
-                            {settings.currency.spinner
-                                ? <Spinner />
-                                : <Button clicked={saveCurrencyChanges} classes="btn-blueGradient btn-sm">Save changes</Button>
-                            }
-                        </div>
+                    <div className="privacy-box">
+                        <h3>Privacy</h3>
+                        <OptionsInput onChange={onChangeHandler} value={eventInfo.event.eventType} name="eventType" options={["PRIVATE", "PUBLIC", "NORMAL", "SECRET"]} />
+                    </div>
+       
+                    {/* <div className="currency-box">
+                        <h3>Currency</h3>
                         <OptionsInput onChange={onChangeHandler} value={settings.currency.value} name="currency" options={currencyCodes} />
-
+                    </div> */}
+                    <div className="save-btn">
+                    {eventInfo.spinner
+                                ? <Spinner />
+                                : <Button clicked={saveChanges} classes="btn-blueGradient btn-sm">Save changes</Button>
+                            }
                     </div>
                     <div className="delete-box">
-                        <h2>Delete Event</h2>
+                        <h3>Delete Event</h3>
                         <EditButton
                             options={editState}
                             activate={editHandler}
@@ -207,7 +196,7 @@ const Settings = ({ eventId }) => {
                                 <><i className="far fa-trash-alt" />Delete</>} />
                     </div>
                     <div className="admin-members-box">
-                        <h2>Event Admins</h2>
+                        <h3>Event Admins</h3>
                         <PaginatedContainer
                             title=""
                             items={admins.users}
@@ -221,7 +210,7 @@ const Settings = ({ eventId }) => {
                                             </UserCard>
                                         ))} />
 
-                        <h2>Event Members</h2>
+                        <h3>Event Members</h3>
                         <PaginatedContainer
                             title=""
                             items={members.users}

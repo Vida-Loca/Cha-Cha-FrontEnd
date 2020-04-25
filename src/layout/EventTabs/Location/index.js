@@ -1,26 +1,23 @@
 import React, { useState, useEffect, useContext } from "react";
 import PropTypes from "prop-types";
-import { eventService, mapboxService } from "../../../Authentication/service";
+import { eventService } from "../../../Authentication/service";
 
 // import { eventLocation } from "../../../mockData";
 import { TextInput } from "../../../components/Inputs";
-import { EditButton } from "../../../components/Button";
+import { EditButton, Button } from "../../../components/Button";
 import checkValidation from "../../../validation";
 import { UserContext } from "../../../context/UserContext";
 
+import {locationInfoForm, addressForm, letlongRules} from "./validationRules";
+
 import Map from "../../../components/Map";
-
-
 import "./Location.scss";
 
 
 const Location = ({ id }) => {
-
   const [fetchedEvent, setFetchedEvent] = useState({});
   const [isAuthorized, setAuthorization] = useState(false);
   const [loggedInUser,] = useContext(UserContext);
-
-
 
 
   const [locationInfo, setLocationInfo] = useState({
@@ -33,110 +30,21 @@ const Location = ({ id }) => {
     city: { value: "Loading...", isValid: true, err: [] },
     street: { value: "Loading...", isValid: true, err: [] },
     number: { value: "0", isValid: true, err: [] },
-    postcode: { value: "Loading...", isValid: true, err: [] }
+    postcode: { value: "Loading...", isValid: true, err: [] },
+    lat: { value: 0, isValid: true, err: [] },
+    long: { value: 0, isValid: true, err: [] }
   });
-  const [tempAddress, setTempAddress] = useState({ country: "Loading....", city: "Loading...", street: "Loading...", number: "0", postcode: "Loading..." });
+  const [tempAddress, setTempAddress] = useState({ country: "Loading....", city: "Loading...", street: "Loading...", number: "0", postcode: "Loading...", lat: 0,  long: 0 });
   const [editState, setEdit] = useState(false);
 
-  const [latLong, setlantLong] = useState({ lat: 54.68333, long: 25.28333, spinner: true });
+  const [tempLatLong, setTempLantLong] = useState({ lat: 54.679120, long: 25.204154 });
+  const [latLong, setlantLong] = useState({ lat: { value: 0, isValid: true, err: [] }, long: { value: 0, isValid: true, err: [] } });
 
-  const [addressForm,] = useState([
-    {
-      name: "country",
-      config: {
-        placeholder: "country",
-        type: "text"
-      },
-      validation: {
-        required: true,
-        string: true
-      }
-    },
-    {
-      name: "city",
-      config: {
-        placeholder: "city",
-        type: "text"
-      },
-      validation: {
-        required: true,
-        string: true
-      }
-    },
-    {
-      name: "street",
-      config: {
-        placeholder: "street",
-        type: "text"
-      },
-      validation: {
-        required: true,
-        maxLength: 10
-      }
-    },
-    {
-      name: "number",
-      config: {
-        placeholder: "house number",
-        type: "number"
-      },
-      validation: {
-        required: true,
-        number: true,
-        maxLength: 10
-      }
-    },
-    {
-      name: "postcode",
-      config: {
-        placeholder: "post code",
-        type: "text"
-      },
-      validation: {
-        required: true,
-        maxLength: 10
-      }
-    }
-  ]);
-  const [locationInfoForm,] = useState([
-    {
-      name: "dateofevent",
-      config: {
-        placeholder: "date of event",
-        type: "date"
-      },
-      validation: {
-        required: true,
-        maxLength: 10
-      }
-    },
-    {
-      name: "time",
-      config: {
-        placeholder: "time",
-        type: "time"
-      },
-      validation: {
-        required: true,
-        maxLength: 10
-      }
-    }
-  ]);
+  
 
   useEffect(() => {
     let __isMounted = true;
     console.log("local debug!!");
-
-    console.log();
-
-
-    // mapboxService.searchPlaces(address.country.value, address.city.value, address.street.value)
-    //   .then(res => {
-    //     console.log(res.features[0].center);
-    //     setlantLong({ lat: res.features[0].center[1], long: res.features[0].center[0] })
-    //   }, err => {
-    //     console.log(err);
-    //   })
 
     eventService.isCurrentUserAdminOfEvent(id)
       .then(res => {
@@ -149,32 +57,26 @@ const Location = ({ id }) => {
     eventService.getEventByID(id)
       .then(res => {
         if (__isMounted) {
-          console.log("hello");
           setFetchedEvent(res);
-
           setLocationInfo({
             dateofevent: { ...locationInfo.dateofevent, value: res.startTime.substring(0, 10) },
             time: { ...locationInfo.time, value: res.startTime.substring(11, 16) },
           });
           setTempLocationInfo({ dateofevent: res.startTime.substring(0, 10), time: res.startTime.substring(11, 16) })
-
           setAddress({
             country: { ...address.city, value: res.address.country },
             city: { ...address.city, value: res.address.city },
             street: { ...address.street, value: res.address.street },
             number: { ...address.street, value: res.address.number },
-            postcode: { ...address.postcode, value: res.address.postcode }
+            postcode: { ...address.postcode, value: res.address.postcode },
+            lat: { ...address.lat, value: 54.45 },
+            long: { ...address.long, value: 23.45 }
           });
           setTempAddress({
             country: res.address.country, city: res.address.city, street: res.address.street,
-            number: res.address.number, postcode: res.address.postcode
+            number: res.address.number, postcode: res.address.postcode, lat: 0, long: 0
           })
         }
-        return mapboxService.searchPlaces(res.address.country, res.address.city, res.address.street);
-      }).then(data => {
-        console.log("thi sis data => ");
-        console.log(data.features[0].center);
-        setlantLong({ lat: data.features[0].center[1], long: data.features[0].center[0], spinner: false })
       })
 
     return () => {
@@ -192,12 +94,31 @@ const Location = ({ id }) => {
       city: { ...address.city, value: tempAddress.city },
       street: { ...address.street, value: tempAddress.street },
       number: { ...address.street, value: tempAddress.number },
-      postcode: { ...address.postcode, value: tempAddress.postcode }
+      postcode: { ...address.postcode, value: tempAddress.postcode },
+      lat: { ...address.lat, value: tempAddress.lat },
+      long: { ...address.long, value: tempAddress.long }
     });
     setLocationInfo({
       dateofevent: { ...locationInfo.dateofevent, value: tempLocationInfo.dateofevent },
       time: { ...locationInfo.time, value: tempLocationInfo.time },
       addidtionalInformation: { ...locationInfo.addidtionalInformation, value: tempLocationInfo.addidtionalInformation }
+    });
+  };
+
+
+  const onChangeHandlerLetLong = event => {
+    const validationResult = checkValidation(
+      event.target.value,
+      letlongRules.find(x => x.name === event.target.name).validation
+    );
+    setAddress({
+      ...address,
+      [`${event.target.name}`]: {
+        ...address[`${event.target.name}`],
+        value: event.target.value,
+        isValid: validationResult[0],
+        err: validationResult[1]
+      }
     });
   };
 
@@ -292,13 +213,37 @@ const Location = ({ id }) => {
             disabled={!editState}
           />
         ))}
+           {isAuthorized && (
+             <>
+              <h3 className="title">map coordinates</h3>
+                {letlongRules.map(el => (
+                <TextInput
+                  key={el.name}
+                  onChange={onChangeHandlerLetLong}
+                  type={el.config.type}
+                  placeholder={el.config.placeholder}
+                  name={el.name}
+                  value={address[el.name].value}
+                  size="input-md"
+                  classes={editState ? "input-blue" : ""}
+                  error={address[el.name].err[0]}
+                  disabled={!editState}
+                />
+              ))}
+             </>
+           )
+          }
+         
+      
       </div>
-      <div className="map-container">
-        {
-          !latLong.spinner && <Map latitude={latLong.lat} longitude={latLong.long} />
-        }
-
-      </div>
+      {/* {
+        (tempAddress.lat.value !== 0 && tempAddress.long.value !== 0) &&
+        <div className="map-container">
+          <h2>Map</h2>
+            <Map latitude={tempAddress.lat.value} longitude={tempAddress.lat.value} />
+        </div>
+      }
+       */}
 
     </div>
   );
