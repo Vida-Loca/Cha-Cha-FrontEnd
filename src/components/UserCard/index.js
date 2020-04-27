@@ -16,8 +16,7 @@ const UserCard = ({ username, imageUrl, showControlls, clicked, children }) => {
 };
 
 UserCard.defaultProps = {
-  imageUrl:
-    "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTSLmktkJrArXh_zZVovazl5mb3lna9HXqPo7XvvviCSQAuru5C&s",
+  imageUrl:"",
   showControlls: false,
   children: null,
   clicked: null

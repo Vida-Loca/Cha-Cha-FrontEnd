@@ -9,17 +9,15 @@ import { UserContext } from "../../../context/UserContext";
 
 import { productService } from "../../../Authentication/service";
 
-const ProductCard = ({ removeProduct, eventId, prductId, category, user, userId, supply, price, picUrl }) => {
+const ProductCard = ({removeProduct, eventId, product, category, user, currency }) => {
 
   const [loggedInUser,] = useContext(UserContext);
 
   const [tileSupply, setTileSuply] = useState({
-    user,
-    supply,
-    price: String(price),
-    picUrl,
-    tempSupply: supply,
-    tempPrice: String(price)
+    supply: product.name,
+    price: String(product.price),
+    tempSupply: product.name,
+    tempPrice: String(product.price)
   });
 
   const [editState, setEditState] = useState(false);
@@ -79,23 +77,11 @@ const ProductCard = ({ removeProduct, eventId, prductId, category, user, userId,
     });
   };
 
-  const deletingProduct = () => {
-    console.log(`deleteing product:${prductId} from event: ${eventId}`);
-    removeProduct();
-    productService.removeProduct(eventId, prductId)
-      .then(res => {
-        console.log(res);
-      }, err => {
-        console.log(err);
-      })
-
-  }
-
   const updatingProduct = () => {
     console.log(tileSupply);
     if (tileSupply.supply.length > 0 && tileSupply.price.length > 0 && !isNaN(tileSupply.price)) {
       console.log("updating");
-      productService.updateProduct(eventId, prductId, {
+      productService.updateProduct(eventId, product.id, {
         price: tileSupply.price,
         name: tileSupply.supply,
         productCategory: category
@@ -123,7 +109,7 @@ const ProductCard = ({ removeProduct, eventId, prductId, category, user, userId,
                 activate={deleteHandler}
                 cancel={cancelDelete}
                 render={<i className="far fa-trash-alt" />}
-                confirm={deletingProduct}
+                confirm={removeProduct}
               />}
 
             {!deleteState &&
@@ -138,10 +124,10 @@ const ProductCard = ({ removeProduct, eventId, prductId, category, user, userId,
           </span>
         )}
 
-        <Avatar title={tileSupply.user} imageLink={tileSupply.picUrl} />
+        <Avatar title={user.username} imageLink={user.picUrl} />
         <span className="product-info">
           <span className="price-container">
-            <span className="product-currency">PLN</span>
+            <span className="product-currency">{currency}</span>
             <TextInputNL
               onChange={onChangeHandlerPrice}
               value={tileSupply.price}
@@ -154,26 +140,33 @@ const ProductCard = ({ removeProduct, eventId, prductId, category, user, userId,
           </span>
           <TextArea value={tileSupply.supply} name="supply" onChange={onChangeHandlerDescription} disabled={!editState} />
         </span>
-        {(loggedInUser.isAdmin || loggedInUser.user.id === userId || loggedInUser.eventAuth.isAdmin)
+        {(loggedInUser.user.id === user.id || user.isEventAdmin)
           && <Button classes="options-btn" clicked={changeOptions}>
             {tileState ? <i className="fas fa-times" /> : <i className="fas fa-ellipsis-v" />}
           </Button>}
 
       </div>
     </>
-
   );
-};
-ProductCard.defaultProps = {
-  picUrl: ""
 };
 
 ProductCard.propTypes = {
-  prductId: PropTypes.number.isRequired,
-  user: PropTypes.string.isRequired,
-  supply: PropTypes.string.isRequired,
-  price: PropTypes.number.isRequired,
-  picUrl: PropTypes.string
+  eventId: PropTypes.string.isRequired,
+  removeProduct: PropTypes.func.isRequired,
+  product: PropTypes.shape({
+    id: PropTypes.number.isRequired,
+    name: PropTypes.string.isRequired,
+    price: PropTypes.number.isRequired
+  }).isRequired,
+  user: PropTypes.shape({
+    id: PropTypes.number.isRequired,
+    picUrl: PropTypes.string.isRequired,
+    username: PropTypes.string.isRequired,
+    isEventAdmin: PropTypes.bool.isRequired
+  }).isRequired,
+  category: PropTypes.string.isRequired,
+  currency: PropTypes.string.isRequired
+
 };
 
 export default ProductCard;

@@ -82,6 +82,8 @@ const CreateEventContainer = () => {
           postcode: newAddress.postcode.value,
           number: newAddress.number.value
         },
+        isOver: false,
+        currency: "USD",
         eventType: Information.privacy.value
       }).then(res => {
         history.push(`/event/${res.id}`)

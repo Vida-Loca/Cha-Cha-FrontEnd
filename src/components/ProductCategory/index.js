@@ -8,9 +8,9 @@ import ProductCard from "./ProductCard";
 import AddNewProductContainer from "../../layout/EventTabs/Products/AddNewProductContainer";
 
 import { FormContext } from "../../context/FormContext";
+import { productService } from "../../Authentication/service";
 
-
-const ProductCategory = ({ eventId, supCont }) => {
+const ProductCategory = ({ isEventAdmin, eventId, supCont, currency }) => {
   const [supplyContainer, setsupplyContainer] = useState({
     ...supCont,
     showMore: false
@@ -35,8 +35,13 @@ const ProductCategory = ({ eventId, supCont }) => {
     setsupplyContainer({ ...supplyContainer });
   };
 
-  const removeProductFromCategory = (id) => {
-    setsupplyContainer({ ...supplyContainer, supplies: supplyContainer.supplies.filter(prod => prod.id !== id), show: true })
+  const removeProductFromCategory = (eventId, productId) => {
+    productService.removeProduct(eventId, productId)
+      .then(res => {
+        setsupplyContainer({ ...supplyContainer, supplies: supplyContainer.supplies.filter(prod => prod.id !== productId), show: true })
+      }, err => {
+        console.log(err);
+      })
   }
 
 
@@ -54,7 +59,7 @@ const ProductCategory = ({ eventId, supCont }) => {
                 return previous + supplyContainer.supplies[index].price;
               }, 0)
             ).toFixed(2)}
-            <span> zl</span>
+            <span> {currency}</span>
           </p>
           <Button clicked={openModalAddSupply} classes="btn-sm btn-orangeGradient">
             <i className="fas fa-plus-circle" />
@@ -66,15 +71,21 @@ const ProductCategory = ({ eventId, supCont }) => {
         {supplyContainer.supplies.map(sup => {
           return (
             <ProductCard
-              removeProduct={() => removeProductFromCategory(sup.id)}
+              currency={currency}
+              removeProduct={() => removeProductFromCategory(eventId, sup.id)}
               eventId={eventId}
-              prductId={sup.id}
-              user={sup.user}
-              userId={sup.userId}
-              supply={sup.supply}
-              price={sup.price}
-              key={sup.id}
-              picUrl={sup.picUrl}
+              product={{
+                id: sup.id,
+                name: sup.supply,
+                price: sup.price
+              }}
+              user={{
+                id: sup.userId,
+                picUrl: sup.picUrl,
+                username:sup.user,
+                isEventAdmin: isEventAdmin
+              }}
+              key={`${sup.id}-${sup.userId}`}
               category={supCont.Category}
             />
           );
@@ -86,6 +97,7 @@ const ProductCategory = ({ eventId, supCont }) => {
 
 ProductCategory.propTypes = {
   eventId: PropTypes.string.isRequired,
+  isEventAdmin: PropTypes.bool.isRequired,
   supCont: PropTypes.shape({
     Category: PropTypes.string.isRequired,
     supplies: PropTypes.array.isRequired

@@ -4,31 +4,33 @@ import { FormContext } from "../../../../context/FormContext";
 import { history } from "../../../../Authentication/helper";
 import { eventService } from "../../../../Authentication/service";
 
-import "./leaveEvent.scss";
+import "../LeaveEventContainer/leaveEvent.scss";
 
-const LeaveEventContainer = ({ eventId }) => {
+const EndEventContainer = ({ eventId, currentEvent }) => {
     const [, setform] = useContext(FormContext);
 
     const cancelAction = () => {
         setform({ show: false, renderForm: "" });
     }
 
-    const leaveEvent = () => {
-        eventService.leaveEvent(eventId)
-            .then(res => {
-                console.log(res);
-                setform({ show: false, renderForm: "" });
-                history.push("/");
-            }, err => {
-                console.log(err);
-            })
+    
+    const endEvent = () => {
+        eventService.updateEvent(eventId, {
+            ...currentEvent, startTime: currentEvent.startTime.replace(" ","T"), over: true
+        }).then(res =>{
+            console.log(res);
+            setform({ show: false, renderForm: "" });
+            history.go(0);
+        }, err =>{
+            console.log(err);
+        });
 
     }
     return (
         <div className="leave-event-container">
-            <h3>Do you wan to leave th is event ?</h3>
+            <h3>Are you sure you want to end this event ?</h3>
             <div className="leave-btn-group">
-                <Button clicked={leaveEvent} classes="btn-blueGradient btn-md">
+            <Button clicked={endEvent} classes="btn-blueGradient btn-md">
                     YES
              </Button>
                 <Button clicked={cancelAction} classes="btn-orangeGradient btn-md">
@@ -40,4 +42,4 @@ const LeaveEventContainer = ({ eventId }) => {
 }
 
 
-export default LeaveEventContainer;
+export default EndEventContainer;

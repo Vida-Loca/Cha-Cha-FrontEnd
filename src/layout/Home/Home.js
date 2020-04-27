@@ -25,6 +25,10 @@ const Home = () => {
         if (__isMounted) {
           setPublicEventsList({ events: res, spinner: false });
         }
+      }).catch(_ =>{
+        if (__isMounted) {
+        setPublicEventsList({ ...publicEventsList, spinner: false });
+        }
       })
 
     eventService.getAllEvents()
@@ -32,7 +36,11 @@ const Home = () => {
         if (__isMounted) {
           setFriendsEventsList({ events: res, spinner: false });
         }
-      });
+      }).catch(_ =>{
+        if (__isMounted) {
+          setFriendsEventsList({ ...friendsEventsList, spinner: false });
+        }
+      })
 
     return () => {
       __isMounted = false;
@@ -59,6 +67,7 @@ const Home = () => {
         <PaginatedContainer
           title={<span><i className="fas fa-door-open" /> {`Public Events`}</span>}
           items={publicEventsList.events}
+          noContentMsg="there are no public events at the moment"
           render={
             publicEventsList.spinner
               ? () => <Spinner />
@@ -70,7 +79,7 @@ const Home = () => {
                     name={ev.name}
                     date={ev.startTime}
                     location={ev.address}
-                    eventState="ongoing"
+                    eventState={ev.over ? "finished" : "ongoing"}
                     listIndex={index % 5}
                   />
                 ))
@@ -79,6 +88,7 @@ const Home = () => {
         <PaginatedContainer
           title={<span><i className="fas fa-users" /> {`Friend's Events`}</span>}
           items={friendsEventsList.events}
+          noContentMsg="none of your friends are hosting events at the moment"
           render={
             friendsEventsList.spinner
               ? () => <Spinner />
@@ -90,7 +100,7 @@ const Home = () => {
                     name={ev.name}
                     date={ev.startTime}
                     location={ev.address}
-                    eventState="ongoing"
+                    eventState={ev.over ? "finished" : "ongoing"}
                     listIndex={index % 5}
                   />
                 ))

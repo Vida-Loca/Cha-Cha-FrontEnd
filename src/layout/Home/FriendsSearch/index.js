@@ -26,10 +26,15 @@ const SearchFriends = () => {
 
     const sendAFriendRequest = (id) => {
         userService.inviteUserByID(id)
-            .then(res => {
-                console.log(res);
-            }).catch(err => {
-                console.log(err);
+            .then(_ => {
+                let newEl = dislpayFriends.users.map(user =>{
+                    if(user.id === id){
+                        return {...user, sent: true};
+                    } else{
+                        return user;
+                    }
+                });
+                setDislpayFreinds({users: newEl, spinner: false});
             });
     }
 
@@ -42,7 +47,10 @@ const SearchFriends = () => {
             });
         userService.getUsersByRegex(findUser.username)
             .then(res => {
-                setDislpayFreinds({ users: res.filter(user => user.id !== loggedInUser.user.id), spinner: false });
+                let letfilteredUser = res.filter(user => user.id !== loggedInUser.user.id);
+                let addedSentParam = letfilteredUser.map(user => ({...user, sent: false}));
+                setDislpayFreinds({ users: addedSentParam, spinner: false });
+                // setDislpayFreinds({ users: , spinner: false });
             }, _ => {
                 setDislpayFreinds({ users: [], spinner: false });
             });
@@ -71,8 +79,12 @@ const SearchFriends = () => {
                                 return (
                                     <UserCard key={ev.id} username={ev.username} imageUrl={ev.picUrl} showControlls>
                                         {!isUserAFriend.length > 0 &&
-                                            <Button clicked={() => sendAFriendRequest(ev.id)} classes="btn-blueGradient btn-sm">
-                                                <i className="fas fa-user-plus" />
+                                            <Button clicked={() => sendAFriendRequest(ev.id)} classes="btn-blueGradient-icon btn-sm">
+                                                {
+                                                    ev.sent 
+                                                    ? <i className="fas fa-check" />
+                                                    : <i className="fas fa-user-plus" />
+                                                }
                                             </Button>}
                                     </UserCard>
                                 )

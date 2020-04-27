@@ -1,23 +1,20 @@
-import React, { useState, useEffect, useContext } from "react";
+import React, { useState, useEffect } from "react";
 import PropTypes from "prop-types";
 import { eventService } from "../../../Authentication/service";
 
 // import { eventLocation } from "../../../mockData";
 import { TextInput } from "../../../components/Inputs";
-import { EditButton, Button } from "../../../components/Button";
+import { EditButton } from "../../../components/Button";
 import checkValidation from "../../../validation";
-import { UserContext } from "../../../context/UserContext";
 
 import {locationInfoForm, addressForm, letlongRules} from "./validationRules";
 
-import Map from "../../../components/Map";
+// import Map from "../../../components/Map";
 import "./Location.scss";
 
 
-const Location = ({ id }) => {
+const Location = ({ eventId, isEventAdmin }) => {
   const [fetchedEvent, setFetchedEvent] = useState({});
-  const [isAuthorized, setAuthorization] = useState(false);
-  const [loggedInUser,] = useContext(UserContext);
 
 
   const [locationInfo, setLocationInfo] = useState({
@@ -37,24 +34,11 @@ const Location = ({ id }) => {
   const [tempAddress, setTempAddress] = useState({ country: "Loading....", city: "Loading...", street: "Loading...", number: "0", postcode: "Loading...", lat: 0,  long: 0 });
   const [editState, setEdit] = useState(false);
 
-  const [tempLatLong, setTempLantLong] = useState({ lat: 54.679120, long: 25.204154 });
-  const [latLong, setlantLong] = useState({ lat: { value: 0, isValid: true, err: [] }, long: { value: 0, isValid: true, err: [] } });
-
   
 
   useEffect(() => {
     let __isMounted = true;
-    console.log("local debug!!");
-
-    eventService.isCurrentUserAdminOfEvent(id)
-      .then(res => {
-        setAuthorization(res || loggedInUser.isAdmin);
-        console.log(`ev: ${res}`);
-      }, err => {
-        console.log(err);
-      })
-
-    eventService.getEventByID(id)
+    eventService.getEventByID(eventId)
       .then(res => {
         if (__isMounted) {
           setFetchedEvent(res);
@@ -157,7 +141,7 @@ const Location = ({ id }) => {
     if (locationInfo.dateofevent.isValid && locationInfo.time.isValid && address.city.isValid &&
       address.country.isValid && address.street.isValid && address.number.isValid && address.postcode.isValid) {
 
-      eventService.updateEvent(id, {
+      eventService.updateEvent(eventId, {
         ...fetchedEvent,
         startTime: `${locationInfo.dateofevent.value}T${locationInfo.time.value}`,
         address: {
@@ -167,21 +151,15 @@ const Location = ({ id }) => {
           number: address.number.value,
           postcode: address.postcode.value
         }
-      }).then(res => {
-        console.log(res);
+      }).then(_ => {
         setEdit(false);
       })
-
-
-    } else {
-      console.log("can't update")
-    }
-
+    } 
   }
 
   return (
     <div className="location-container">
-      {isAuthorized &&
+      {isEventAdmin &&
         <EditButton options={editState} activate={editHandler} cancel={cancelEdit} confirm={submitLocationChanges} tags
           render={<> <i className="far fa-edit" />Edit</>} />}
       <div className="address-info">
@@ -213,9 +191,9 @@ const Location = ({ id }) => {
             disabled={!editState}
           />
         ))}
-           {isAuthorized && (
+           {isEventAdmin && (
              <>
-              <h3 className="title">map coordinates</h3>
+              <h3 className="title"><i className="fas fa-map-marked-alt"/> map coordinates</h3>
                 {letlongRules.map(el => (
                 <TextInput
                   key={el.name}
@@ -250,7 +228,8 @@ const Location = ({ id }) => {
 };
 
 Location.propTypes = {
-  id: PropTypes.string.isRequired
+  eventId: PropTypes.string.isRequired,
+  isEventAdmin: PropTypes.bool.isRequired
 };
 
 export default Location;

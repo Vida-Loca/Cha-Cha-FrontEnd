@@ -4,6 +4,7 @@ import { Redirect } from "react-router-dom";
 import { Button } from "../../../components/Button";
 import { eventService, profileService } from "../../../Authentication/service";
 import { history } from "../../../Authentication/helper";
+import Spinner from "../../../components/Spinner";
 
 import "./MainPage.scss";
 
@@ -11,6 +12,7 @@ const MainPage = ({ eventPath, eventId, isAuth, type }) => {
 
   const [userStatus, setUserStatus] = useState(2);
   const [invitationId, setInvitationId] = useState("");
+  const [actionComplete, setactionComplete] = useState(false);
 
   useEffect(() => {
     let __isMounted = true;
@@ -28,8 +30,8 @@ const MainPage = ({ eventPath, eventId, isAuth, type }) => {
           if (__isMounted) {
             setUserStatus(2);
           }
-        } else if (type === "NORMAL") {
-          // if invitation is not fund check if event is Normal
+        } else if (type === "NORMAL" || type === "PRIVATE") {
+          // if invitation is not fund check if event is Normal or Private
           if (__isMounted) {
             setUserStatus(3);
           }
@@ -50,27 +52,30 @@ const MainPage = ({ eventPath, eventId, isAuth, type }) => {
   }, [eventId, type])
 
   const joinCurrentEvent = () => {
+    setactionComplete(true);
     eventService.joinEvent(eventId)
-      .then(res => {
-        console.log(res);
+      .then(_ => {
         history.go(0);
+        setactionComplete(false);
       }, err => {
         console.log(err);
+        setactionComplete(false);
       })
   }
   const requestToJoinEvent = () => {
-
+    setactionComplete(true);
     eventService.sendRequestToJoinEvent(eventId)
       .then(res => {
-        console.log(res);
+        history.push("/");
+        setactionComplete(false);
       }, err => {
         console.log(err);
+        setactionComplete(false);
       })
   }
   const acceptInvitationToEvent = () => {
     eventService.acceptEventInvitation(invitationId)
-      .then(res => {
-        console.log(res);
+      .then(_ => {
         history.go(0);
       }, err => {
         console.log(err);
@@ -78,8 +83,7 @@ const MainPage = ({ eventPath, eventId, isAuth, type }) => {
   }
   const rejectInvitationToEvent = () => {
     eventService.rejectEventInvitation(invitationId)
-      .then(res => {
-        console.log(res);
+      .then(_ => {
         history.push("/");
       }, err => {
         console.log(err);
@@ -102,14 +106,23 @@ const MainPage = ({ eventPath, eventId, isAuth, type }) => {
         return (
           <>
             <h2>This event is public so join us</h2>
-            <Button clicked={joinCurrentEvent} classes="btn-blueGradient btn-md">join event</Button>
+            {
+              actionComplete 
+              ? <Spinner size="spinner-sm" classes="spinner-container-h-sm" />
+              : <Button clicked={joinCurrentEvent} classes="btn-blueGradient btn-md">join event</Button>
+            }
           </>
         );
       case 3:
         return (
           <>
             <h2>Request to join this event</h2>
-            <Button clicked={requestToJoinEvent} classes="btn-blueGradient btn-md">send request</Button>
+            {
+              actionComplete 
+              ? <Spinner size="spinner-sm" classes="spinner-container-h-sm" />
+              : <Button clicked={requestToJoinEvent} classes="btn-blueGradient btn-md">send request</Button>
+            }
+            
           </>
         );
 

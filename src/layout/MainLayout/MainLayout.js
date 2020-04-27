@@ -48,7 +48,7 @@ const MainLayout = () => {
         <Route render={() => <Redirect to="/home" />} />
       </Switch>
       <Route
-        path="/event/:id"
+        path="/event/:id/*"
         render={({ match }) => (
           <Sidebar beforeLink={`/event/${match.params.id}`} classes="SideBar-darkBlue" navlinks={adminEventNav} />
         )}

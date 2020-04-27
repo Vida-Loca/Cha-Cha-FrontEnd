@@ -22,7 +22,6 @@ const InviteUserFormContainer = ({ id }) => {
     let __isMounted = true;
     userService.getFriendsList()
       .then(res => {
-        console.log(res);
         if (__isMounted) {
           setFriendList({ friends: res, spinner: false });
           setDislpayFreinds({ friends: res, spinner: false });
@@ -54,12 +53,11 @@ const InviteUserFormContainer = ({ id }) => {
 
   const sendInvitation = (userId) => {
     eventService.inviteUserToAnEvent(id, userId)
-      .then(res => {
-        console.log(res);
+      .then(_ => {
+        setDislpayFreinds({ friends: dislpayFriends.friends.filter(prod => prod.id !== userId), spinner: false })
       }, err => {
         console.log(err);
       });
-    setDislpayFreinds({ friends: dislpayFriends.friends.filter(prod => prod.id !== userId), spinner: false })
   }
 
   return (

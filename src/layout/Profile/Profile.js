@@ -25,7 +25,7 @@ const Profile = () => {
     username: "Loading ...",
     email: "Loading ...",
     datejoined: "Loading ...",
-    avatarUrl: "https://encrypted-tbn0.gstatic.com/images?q=tbn"
+    avatarUrl: {link: "", loaded: false}
   });
   const [editableUserInfo, setEditableUserInfo] = useState({
     name: { value: "Loading ...", isValid: true, err: "" },
@@ -47,7 +47,6 @@ const Profile = () => {
 
     userService.getFriendRequestList()
       .then(res => {
-        console.log(res);
         if (__isMounted) {
           setNewRequests(res.filter(invite => invite.invitationStatus === "PROCESSING").length);
         }
@@ -60,7 +59,7 @@ const Profile = () => {
             username: res.username,
             email: res.email,
             datejoined: res.joined.substring(0, 10),
-            avatarUrl: res.picUrl
+            avatarUrl: {link: res.picUrl, loaded: true}
           })
           setEditableUserInfo({
             name: { value: res.name, isValid: true, err: "" },
@@ -131,7 +130,7 @@ const Profile = () => {
   }
 
   const changeAvatarInApp = (imageLink) => {
-    setUserInfo({ ...userInfo, avatarUrl: imageLink });
+    setUserInfo({ ...userInfo, avatarUrl:{link: imageLink, loaded: true} });
   }
 
 
@@ -147,7 +146,7 @@ const Profile = () => {
     <div className="profile-container">
       <div className="profile-card">
         <div className="avatar-section">
-          <Avatar imageLink={userInfo.avatarUrl} />
+          {userInfo.avatarUrl.loaded &&  <Avatar imageLink={userInfo.avatarUrl.link} />}
 
           <div className="edit-btn">
             <Button clicked={changeAvatarInModal} classes="change-avatar-icon"><i className="fas fa-image" /></Button>
@@ -210,6 +209,7 @@ const Profile = () => {
       <div className="event-section">
         <PaginatedContainer
           title="My Events"
+          noContentMsg="you are not a part of any event"
           items={myEvents.events}
           perPage={4}
           render={
@@ -223,7 +223,7 @@ const Profile = () => {
                     name={ev.name}
                     date={ev.startTime}
                     location={ev.address}
-                    eventState="ongoing"
+                    eventState={ev.over ? "finished" : "ongoing"}
                   />
                 ))
           }
@@ -231,6 +231,7 @@ const Profile = () => {
         <PaginatedContainer
           title="Invitations"
           items={invitations.events}
+          noContentMsg="no new invitations"
           perPage={4}
           render={
             invitations.spinner

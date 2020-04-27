@@ -21,10 +21,12 @@ $event-col: 2;
       flex-direction: row;
       justify-content: center;
       align-items: center;
-      border: 2px solid rgb(160, 160, 160);
+      border: 2px solid rgb(174, 174, 174);
+      background: rgb(201, 201, 201);
       color: rgb(41, 41, 41);
       &:hover{
         color: black;
+        background: rgb(175, 175, 175);
       }
     }
     @keyframes notification-main{
@@ -33,7 +35,7 @@ $event-col: 2;
         box-shadow: 0 0 3px 2px rgb(59, 144, 255);
       }
       50%{
-        background: rgb(59, 144, 255);
+        background: rgb(162, 202, 255);
         box-shadow: 0 0 5px 2px rgb(59, 144, 255);
       }
       100%{
@@ -51,7 +53,7 @@ $event-col: 2;
       box-shadow: 0 0 3px 2px rgb(59, 144, 255);
       border-radius: 10rem;
       transition: 0.3s all ease-in-out;
-      animation: notification-main 2s ease-out infinite;
+      animation: notification-main 4s ease-out infinite;
     }
   }
 
@@ -64,7 +66,7 @@ $event-col: 2;
     grid-template-columns: repeat(2, 1fr);
   }
   .avatar-section {
-
+    margin-top: 2rem;
     .avatar {
       width: 10rem;
       height: 10rem;

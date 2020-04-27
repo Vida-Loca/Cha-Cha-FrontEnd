@@ -13,18 +13,11 @@ const FriendsList = () => {
 
     useEffect(() => {
         let __isMounted = true;
-        setFriendList({ friends: [], spinner: true });
-        setFriendRequests({ requests: [], spinner: true });
         userService.getFriendsList()
             .then(res => {
                 console.log(res);
                 if (__isMounted) {
                     setFriendList({ friends: res, spinner: false });
-                }
-            }).catch(err => {
-                if (__isMounted) {
-                    console.log(err);
-                    setFriendList({ friends: [], spinner: false });
                 }
             });
         userService.getFriendRequestList()
@@ -46,12 +39,11 @@ const FriendsList = () => {
 
     const removeFromFriendsList = (userID) => {
         userService.removeFromFriends(userID)
-            .then(res => {
+            .then(_ => {
                 setFriendList({ friends: friendList.friends.filter(user => user.id !== userID), spinner: false });
-                console.log(res);
             })
-            .catch(err => {
-                console.log(err);
+            .catch(_ => {
+                setFriendList({ ...friendList, spinner: false });
             });
     }
     const ignoreRequestFriendsList = (invitationId) => {
@@ -59,8 +51,7 @@ const FriendsList = () => {
             .then(res => {
                 setFriendRequests({ requests: friendRequests.requests.filter(invitation => invitation.invitor.id !== res.invitor.id), spinner: false });
             })
-            .catch(err => {
-                console.log(err);
+            .catch(_ => {
                 setFriendRequests({ ...friendRequests, spinner: false })
             });
     }
@@ -73,8 +64,8 @@ const FriendsList = () => {
                 setFriendRequests({ requests: friendRequests.requests.filter(invitation => invitation.invitor.id !== res.relatedUserId), spinner: false });
                 setFriendList({ friends: tempFriedsList, spinner: false });
             })
-            .catch(err => {
-                console.log(err);
+            .catch(_ => {
+                setFriendList({ ...FriendsList, spinner: false });
             });
 
     }
@@ -92,7 +83,7 @@ const FriendsList = () => {
                         : ({ items }) =>
                             items.map(ev => (
                                 <UserCard key={ev.username} username={ev.username} imageUrl={ev.picUrl} showControlls>
-                                    <Button clicked={() => removeFromFriendsList(ev.id)} classes="btn-orangeGradient btn-sm">
+                                    <Button clicked={() => removeFromFriendsList(ev.id)} classes="btn-orangeGradient-icon btn-sm">
                                         <i className="fas fa-user-minus" />
                                     </Button>
                                 </UserCard>
@@ -110,10 +101,10 @@ const FriendsList = () => {
                         : ({ items }) =>
                             items.map(ev => (
                                 <UserCard key={ev.invitor.id} username={ev.invitor.username} imageUrl={ev.invitor.picUrl} showControlls>
-                                    <Button clicked={() => ignoreRequestFriendsList(ev.id)} classes="btn-orangeGradient btn-sm">
+                                    <Button clicked={() => ignoreRequestFriendsList(ev.id)} classes="btn-orangeGradient-icon btn-sm">
                                         <i className="fas fa-user-times" />
                                     </Button>
-                                    <Button clicked={() => acceptFriendsList(ev.id)} classes="btn-blueGradient btn-sm">
+                                    <Button clicked={() => acceptFriendsList(ev.id)} classes="btn-blueGradient-icon btn-sm">
                                         <i className="fas fa-user-plus" />
                                     </Button>
                                 </UserCard>

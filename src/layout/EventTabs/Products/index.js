@@ -16,28 +16,31 @@ import Spinner from "../../../components/Spinner";
 
 import "./Products.scss";
 
-const Products = ({ id }) => {
+const Products = ({ eventId, isEventAdmin, currency }) => {
   const [productList, setProduct] = useState({ products: [], spinner: true });
   const [forms, setform] = useContext(FormContext);
 
 
+
   useEffect(() => {
     let __isMounted = true;
-    productService.getProductsFromEvent(id)
+
+    productService.getProductsFromEvent(eventId)
       .then(res => {
         if (__isMounted) {
           setProduct({ products: createSetOfCategories(res), spinner: false });
         }
-      }, err => {
+      }, _ => {
         if (__isMounted) {
           setProduct({ products: [], spinner: false });
         }
       })
 
+
     return () => {
       __isMounted = false;
     };
-  }, [id]);
+  }, [eventId]);
 
 
   const addProduct = (addedProduct) => {
@@ -57,7 +60,7 @@ const Products = ({ id }) => {
   }
 
   const addNewProductModal = () => {
-    setform({ ...forms, renderForm: <AddNewProductContainer addProduct={addProduct} id={id} />, show: true });
+    setform({ ...forms, renderForm: <AddNewProductContainer addProduct={addProduct} id={eventId} />, show: true });
   };
 
 
@@ -76,7 +79,14 @@ const Products = ({ id }) => {
         render={
           productList.spinner
             ? (() => <Spinner />)
-            : (({ items }) => items.map(supCont => <ProductCategory eventId={id} supCont={supCont} key={supCont.Category} />))
+            : (({ items }) => items.map(supCont => 
+            <ProductCategory 
+              currency={currency}
+              isEventAdmin={isEventAdmin} 
+              eventId={eventId} 
+              supCont={supCont} 
+              key={supCont.Category} 
+            />))
         }
       />
 
@@ -85,7 +95,9 @@ const Products = ({ id }) => {
 };
 
 Products.propTypes = {
-  id: PropTypes.string.isRequired
+  eventId: PropTypes.string.isRequired,
+  isEventAdmin: PropTypes.bool.isRequired,
+  currency: PropTypes.string.isRequired
 };
 
 export default Products;

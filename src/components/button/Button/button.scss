@@ -69,6 +69,39 @@
 }
 
 
+.btn-blueGradient-icon {
+  @extend %btn;
+  background: #065af700;
+  color: $main-blue;
+  border-radius: 20rem;
+  font-size: 1rem;
+  padding: 0.2rem;
+  height: 2rem;
+  width: 2rem;
+
+  &:hover {
+    background: #065af750;
+    color: $main-blue;
+  }
+}
+
+.btn-orangeGradient-icon {
+  @extend %btn;
+  background: #fd9f2500;
+  font-size: 1rem;
+  padding: 0.2rem;
+  color: $main-orange;
+  border-radius: 20rem;
+  height: 2rem;
+  width: 2rem;
+
+  &:hover {
+    background: #fd9f2550;
+    color: $main-orange;
+  }
+}
+
+
 .btn-blueGradient {
   @extend %btn;
   color: white;
