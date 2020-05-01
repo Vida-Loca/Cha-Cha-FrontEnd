@@ -64,7 +64,7 @@ const addressForm = [
         type: "number"
       },
       validation: {
-        required: true,
+        required: false,
       }
     },
     {
@@ -74,7 +74,7 @@ const addressForm = [
         type: "number"
       },
       validation: {
-        required: true,
+        required: false,
       }
     }
   ];

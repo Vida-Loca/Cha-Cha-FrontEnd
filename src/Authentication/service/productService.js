@@ -32,10 +32,16 @@ const removeProduct = (eventId, productId) => {
 }
 
 
+const getProductsOfCurrentUser = (eventId) => {
+    const requestOptions = { method: "GET", headers: authHeader() };
+    return fetch(`${serverURL}/event/${eventId}/myproducts`, requestOptions).then(handleResponse);
+}
+
 
 export const productService = {
     addProduct,
     getProductsFromEvent,
     removeProduct,
-    updateProduct
+    updateProduct,
+    getProductsOfCurrentUser
 }

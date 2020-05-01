@@ -7,9 +7,14 @@ import { productService } from "../../../Authentication/service";
 import { FormContext } from "../../../context/FormContext";
 
 import { Button } from "../../../components/Button";
+
 import ProductCategory from "../../../components/ProductCategory";
 import PaginatedContainer from "../../../components/PaginatedContainer";
+
+import MyProducts from "../../../components/MyProducts";
+
 import AddNewProductContainer from "./AddNewProductContainer";
+import Overview from "./Overview";
 
 // import { eventProducts } from "../../../mockData";
 import Spinner from "../../../components/Spinner";
@@ -18,6 +23,7 @@ import "./Products.scss";
 
 const Products = ({ eventId, isEventAdmin, currency }) => {
   const [productList, setProduct] = useState({ products: [], spinner: true });
+  const [loggedInUserProducts, setLoggedInUserProducts] = useState({ products: [], spinner: true });
   const [forms, setform] = useContext(FormContext);
 
 
@@ -30,11 +36,21 @@ const Products = ({ eventId, isEventAdmin, currency }) => {
         if (__isMounted) {
           setProduct({ products: createSetOfCategories(res), spinner: false });
         }
-      }, _ => {
+      }, _err => {
         if (__isMounted) {
           setProduct({ products: [], spinner: false });
         }
       })
+
+    productService.getProductsOfCurrentUser(eventId)
+    .then(res =>{
+      const newMyProductList = res.map(el =>({...el, productCategory: el.productCategory.name}));
+
+      setLoggedInUserProducts({ products: newMyProductList, spinner: false });
+      
+    }, _err =>{
+      setLoggedInUserProducts({ products: [], spinner: false })
+    })
 
 
     return () => {
@@ -42,13 +58,29 @@ const Products = ({ eventId, isEventAdmin, currency }) => {
     };
   }, [eventId]);
 
+  const calculateTotalPrice = () =>{
+    // const totalPrice = productList.products.reduce((acc, val) =>{
+    //   return acc += val.price;
+    // }, 0);
+    // return Number(totalPrice).toFixed(2);
+    let money = 0;
+    productList.products.forEach(el =>{
+      console.log(el);
+      el.supplies.forEach(prod =>{
+        money += prod.price;
+      })
+    })
+    return Number(money).toFixed(2);
+  }
+
+
 
   const addProduct = (addedProduct) => {
     let tempProductsList = productList.products;
-    let foundIndex = tempProductsList.findIndex(catList => catList.Category === addedProduct.category);
-
+    
+    let foundIndex = tempProductsList.findIndex(catList => catList.productCategory === addedProduct.productCategory);
     if (foundIndex < 0) {
-      let tempProductCat = { Category: addedProduct.category, supplies: [addedProduct.product] }
+      let tempProductCat = { productCategory: addedProduct.category, supplies: [addedProduct.product] }
       tempProductsList.push(tempProductCat);
       setProduct({ ...productList, products: tempProductsList });
     }
@@ -60,16 +92,45 @@ const Products = ({ eventId, isEventAdmin, currency }) => {
   }
 
   const addNewProductModal = () => {
-    setform({ ...forms, renderForm: <AddNewProductContainer addProduct={addProduct} id={eventId} />, show: true });
+    setform({ ...forms, renderForm: <AddNewProductContainer addProductToList={addProduct} id={eventId} />, show: true });
+  };
+  const overviewOpenModal = () => {
+    setform({ ...forms, renderForm: <Overview eventProducts={productList.products} eventId={eventId} />, show: true });
   };
 
 
   return (
     <div className="product-container">
-      <div className="button-container">
+      <div className="button-container-add-new">
         <Button classes="btn-md btn-blueGradient" clicked={addNewProductModal}>
           Add new supply +
         </Button>
+      </div>
+      <div className="button-container">
+        <p className="full-price-label">
+          <span className="label">Total:</span>
+          <span className="price">{`${calculateTotalPrice()} ${currency}`}</span>
+        </p>
+        <Button classes="btn-md btn-orangeGradient" clicked={overviewOpenModal}>
+          overview
+        </Button>
+      </div>
+
+      <div className="my-products">
+        <h2 style={{textAlign: "center"}}>My products</h2>
+        {
+          loggedInUserProducts.spinner
+          ? <Spinner />
+          : <MyProducts 
+            currency={currency}
+            isEventAdmin={isEventAdmin} 
+            eventId={eventId} 
+            supCont={loggedInUserProducts.products} 
+            key="myProducts" 
+           />
+        }
+        
+
       </div>
 
       <PaginatedContainer
@@ -85,7 +146,7 @@ const Products = ({ eventId, isEventAdmin, currency }) => {
               isEventAdmin={isEventAdmin} 
               eventId={eventId} 
               supCont={supCont} 
-              key={supCont.Category} 
+              key={supCont.productCategory} 
             />))
         }
       />

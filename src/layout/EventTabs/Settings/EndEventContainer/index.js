@@ -18,7 +18,6 @@ const EndEventContainer = ({ eventId, currentEvent }) => {
         eventService.updateEvent(eventId, {
             ...currentEvent, startTime: currentEvent.startTime.replace(" ","T"), over: true
         }).then(res =>{
-            console.log(res);
             setform({ show: false, renderForm: "" });
             history.go(0);
         }, err =>{

@@ -16,7 +16,6 @@ const LeaveEventContainer = ({ eventId }) => {
     const leaveEvent = () => {
         eventService.leaveEvent(eventId)
             .then(res => {
-                console.log(res);
                 setform({ show: false, renderForm: "" });
                 history.push("/");
             }, err => {

@@ -3,10 +3,9 @@ import PropTypes from "prop-types";
 import "./EditInput.scss";
 
 const TextInputNL = ({ name, type, onChange, size, disabled, value, classes }) => {
-  const inputWidth = { width: `auto` };
+
   return (
     <input
-      style={inputWidth}
       className={`Text-Input-NL ${classes} ${size} `}
       type={type}
       name={name}

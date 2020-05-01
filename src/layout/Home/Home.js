@@ -12,10 +12,12 @@ import { Button } from "../../components/Button";
 import EventCard from "../../components/EventCard";
 import PaginatedContainer from "../../components/PaginatedContainer";
 import Spinner from "../../components/Spinner";
+import MapBox from "../../components/Map";
 
 const Home = () => {
   const [publicEventsList, setPublicEventsList] = useState({ events: [], spinner: true });
   const [friendsEventsList, setFriendsEventsList] = useState({ events: [], spinner: true });
+  const [publicEventMarkers, setPublicEventMarkers] = useState({ markers: [], loaded: false });
 
   useEffect(() => {
     let __isMounted = true;
@@ -24,6 +26,12 @@ const Home = () => {
       .then(res => {
         if (__isMounted) {
           setPublicEventsList({ events: res, spinner: false });
+          const markers = res.map(event => {
+            if(event.address.longitude !== null && event.address.latitude !== null){
+              return({lat: event.address.latitude, long: event.address.longitude})
+            }
+          }).filter(el => el !== undefined);
+          setPublicEventMarkers({markers: markers, loaded: true });
         }
       }).catch(_ =>{
         if (__isMounted) {
@@ -41,7 +49,6 @@ const Home = () => {
           setFriendsEventsList({ ...friendsEventsList, spinner: false });
         }
       })
-
     return () => {
       __isMounted = false;
     };
@@ -106,7 +113,17 @@ const Home = () => {
                 ))
           }
         />
+        <div className="map-cont">
+          {
+            (publicEventMarkers.loaded && publicEventMarkers.markers.lnegth > 0) &&
+            <MapBox 
+              latitude={publicEventMarkers.markers[0].lat} longitude={publicEventMarkers.markers[0].long} 
+              markers={publicEventMarkers.markers} 
+            />
+          }
+        </div>
       </div>
+      
     </div>
   );
 };

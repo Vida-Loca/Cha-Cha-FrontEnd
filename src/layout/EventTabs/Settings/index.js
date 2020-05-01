@@ -179,11 +179,11 @@ const Settings = ({ eventId, isEventAdmin }) => {
                     </div>
                     <div className="privacy-box">
                         <h3>Privacy</h3>
-                        <OptionsInput onChange={onChangeHandler} value={eventInfo.event.eventType} name="eventType" options={["PRIVATE", "PUBLIC", "NORMAL", "SECRET"]} />
+                        <OptionsInput classes="input-md option-md option-blue" onChange={onChangeHandler} value={eventInfo.event.eventType} name="eventType" options={["PRIVATE", "PUBLIC", "NORMAL", "SECRET"]} />
                     </div>
                     <div className="currency-box">
                         <h3>Currency</h3>
-                        <OptionsInput onChange={onChangeHandler} value={eventInfo.event.currency} name="currency" options={currencyCodes} />
+                        <OptionsInput classes="input-md option-md option-blue" onChange={onChangeHandler} value={eventInfo.event.currency} name="currency" options={currencyCodes} />
                     </div>
                     <div className="save-btn">
                     {eventInfo.spinner

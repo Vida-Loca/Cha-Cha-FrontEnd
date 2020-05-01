@@ -30,7 +30,13 @@
 
     @include breaking-point-2 {
       grid-template-columns: 1fr 1fr;
+      .map-cont{
+        background: red;
+        grid-column-start: 1;
+        grid-column-end: 3;
+      }
     }
+    
   }
 
   & > a {

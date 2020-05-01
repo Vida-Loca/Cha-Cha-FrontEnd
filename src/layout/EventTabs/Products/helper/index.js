@@ -9,7 +9,7 @@ const createSetOfCategories = array => {
   const uniqCategory = [...new Set(ListOfCategories)];
 
   uniqCategory.forEach(cate => {
-    const tempObject = { Category: cate, supplies: [] };
+    const tempObject = { productCategory: cate, supplies: [] };
 
     for (let i = 0; i < array.length; i += 1) {
       let tempSupply = {};
@@ -17,10 +17,9 @@ const createSetOfCategories = array => {
         array[i].eventUsers.forEach(user => {
           tempSupply = {
             id: array[i].id,
-            supply: array[i].name,
+            name: array[i].name,
             userId: user.user.id,
             user: user.user.username,
-            quantity: 2,
             price: array[i].price,
             picUrl: user.user.picUrl
           };
@@ -32,5 +31,10 @@ const createSetOfCategories = array => {
   });
   return newArray;
 };
+
+
+const userProductList = products =>{
+  const user
+}
 
 export default createSetOfCategories;

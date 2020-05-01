@@ -9,7 +9,7 @@ import checkValidation from "../../../validation";
 
 import {locationInfoForm, addressForm, letlongRules} from "./validationRules";
 
-// import Map from "../../../components/Map";
+import MapBox from "../../../components/Map";
 import "./Location.scss";
 
 
@@ -33,6 +33,7 @@ const Location = ({ eventId, isEventAdmin }) => {
   });
   const [tempAddress, setTempAddress] = useState({ country: "Loading....", city: "Loading...", street: "Loading...", number: "0", postcode: "Loading...", lat: 0,  long: 0 });
   const [editState, setEdit] = useState(false);
+  const [loaded, setLoaded] = useState(false);
 
   
 
@@ -41,7 +42,9 @@ const Location = ({ eventId, isEventAdmin }) => {
     eventService.getEventByID(eventId)
       .then(res => {
         if (__isMounted) {
+
           setFetchedEvent(res);
+          console.log(res);
           setLocationInfo({
             dateofevent: { ...locationInfo.dateofevent, value: res.startTime.substring(0, 10) },
             time: { ...locationInfo.time, value: res.startTime.substring(11, 16) },
@@ -53,13 +56,14 @@ const Location = ({ eventId, isEventAdmin }) => {
             street: { ...address.street, value: res.address.street },
             number: { ...address.street, value: res.address.number },
             postcode: { ...address.postcode, value: res.address.postcode },
-            lat: { ...address.lat, value: 54.45 },
-            long: { ...address.long, value: 23.45 }
+            lat: { ...address.lat, value: res.address.latitude === null ? "" : res.address.latitude },
+            long: { ...address.long, value: res.address.longitude  === null ? "" : res.address.longitude }
           });
           setTempAddress({
             country: res.address.country, city: res.address.city, street: res.address.street,
-            number: res.address.number, postcode: res.address.postcode, lat: 0, long: 0
+            number: res.address.number, postcode: res.address.postcode, lat: res.address.latitude === null ? "" : res.address.latitude , long: res.address.longitude  === null ? "" : res.address.longitude
           })
+          setLoaded(true);
         }
       })
 
@@ -140,19 +144,23 @@ const Location = ({ eventId, isEventAdmin }) => {
   const submitLocationChanges = () => {
     if (locationInfo.dateofevent.isValid && locationInfo.time.isValid && address.city.isValid &&
       address.country.isValid && address.street.isValid && address.number.isValid && address.postcode.isValid) {
-
       eventService.updateEvent(eventId, {
-        ...fetchedEvent,
-        startTime: `${locationInfo.dateofevent.value}T${locationInfo.time.value}`,
-        address: {
-          country: address.country.value,
-          city: address.city.value,
-          street: address.street.value,
-          number: address.number.value,
-          postcode: address.postcode.value
-        }
-      }).then(_ => {
+          ...fetchedEvent,
+          startTime: `${locationInfo.dateofevent.value}T${locationInfo.time.value}`,
+          address: {
+            country: address.country.value,
+            city: address.city.value,
+            street: address.street.value,
+            number: address.number.value,
+            postcode: address.postcode.value,
+            latitude:  address.lat.value === "" ? null : parseFloat(address.lat.value),
+            longitude: address.long.value === "" ? null : parseFloat(address.long.value)
+          }
+        }).then(res => {
+        console.log(res)
         setEdit(false);
+      }, err =>{
+        console.log(err);
       })
     } 
   }
@@ -201,7 +209,7 @@ const Location = ({ eventId, isEventAdmin }) => {
                   type={el.config.type}
                   placeholder={el.config.placeholder}
                   name={el.name}
-                  value={address[el.name].value}
+                  value={!!address[el.name].value ? address[el.name].value : ""}
                   size="input-md"
                   classes={editState ? "input-blue" : ""}
                   error={address[el.name].err[0]}
@@ -214,15 +222,15 @@ const Location = ({ eventId, isEventAdmin }) => {
          
       
       </div>
-      {/* {
-        (tempAddress.lat.value !== 0 && tempAddress.long.value !== 0) &&
+      {
+        (address.lat.value !== "" && address.long.value !== "" && loaded) &&
         <div className="map-container">
-          <h2>Map</h2>
-            <Map latitude={tempAddress.lat.value} longitude={tempAddress.lat.value} />
+            <MapBox 
+            latitude={parseFloat(address.lat.value)} longitude={parseFloat(address.long.value)} 
+            markers={[{lat: parseFloat(address.lat.value),long: parseFloat(address.long.value)}]} 
+            />
         </div>
       }
-       */}
-
     </div>
   );
 };

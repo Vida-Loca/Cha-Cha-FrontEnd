@@ -26,7 +26,7 @@ const ProductCategory = ({ isEventAdmin, eventId, supCont, currency }) => {
   const openModalAddSupply = () => {
     setform({
       show: true,
-      renderForm: <AddNewProductContainer addProduct={addProduct} id={eventId} category={supplyContainer.Category} />
+      renderForm: <AddNewProductContainer addProductToList={addProduct} id={eventId} category={supplyContainer.productCategory} />
     });
   };
 
@@ -49,7 +49,7 @@ const ProductCategory = ({ isEventAdmin, eventId, supCont, currency }) => {
     <div className={supplyContainer.showMore ? "category-container" : "category-container hide"}>
       <div className="product-header">
         <div className="label-button">
-          <p className="category-label">{supplyContainer.Category}</p>
+          <p className="category-label">{supplyContainer.productCategory}</p>
           <ShowMore showState={supplyContainer.showMore} clicked={() => showMoreHandler()} />
         </div>
         <div className="price-and-add">
@@ -76,7 +76,7 @@ const ProductCategory = ({ isEventAdmin, eventId, supCont, currency }) => {
               eventId={eventId}
               product={{
                 id: sup.id,
-                name: sup.supply,
+                name: sup.name,
                 price: sup.price
               }}
               user={{
@@ -86,7 +86,7 @@ const ProductCategory = ({ isEventAdmin, eventId, supCont, currency }) => {
                 isEventAdmin: isEventAdmin
               }}
               key={`${sup.id}-${sup.userId}`}
-              category={supCont.Category}
+              category={supCont.productCategory}
             />
           );
         })}
@@ -99,7 +99,7 @@ ProductCategory.propTypes = {
   eventId: PropTypes.string.isRequired,
   isEventAdmin: PropTypes.bool.isRequired,
   supCont: PropTypes.shape({
-    Category: PropTypes.string.isRequired,
+    productCategory: PropTypes.string.isRequired,
     supplies: PropTypes.array.isRequired
   })
 };

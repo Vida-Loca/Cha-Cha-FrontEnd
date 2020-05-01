@@ -11,7 +11,7 @@ import { FormContext } from "../../../../context/FormContext";
 import { UserContext } from "../../../../context/UserContext";
 
 
-const AddNewProductContainer = ({ addProduct, id, category }) => {
+const AddNewProductContainer = ({ addProductToList, id, category }) => {
 
   const [form, setform] = useContext(FormContext);
   const [loggedInUser,] = useContext(UserContext);
@@ -88,18 +88,19 @@ const AddNewProductContainer = ({ addProduct, id, category }) => {
         {
           name: product.name.value,
           price: product.price.value,
-          productCategory: chosenCategory
+          productCategory: chosenCategory.toUpperCase()
         })
         .then(res => {
+          console.log(res);
           setSendingDataSpinner(false);
           setform({ ...form, show: false });
-          addProduct({
-            category: chosenCategory,
+          
+          addProductToList({
+            productCategory: chosenCategory.toUpperCase(),
             product: {
-              id: res.id - 1,
-              supply: res.name,
+              id: res.id,
+              name: res.name,
               price: res.price,
-              userId: 1,
               user: loggedInUser.user.username,
               quantity: 1,
               picUrl: loggedInUser.user.picUrl
@@ -147,7 +148,7 @@ AddNewProductContainer.defaultProps = {
 
 AddNewProductContainer.propTypes = {
   category: PropTypes.string,
-  addProduct: PropTypes.func.isRequired,
+  addProductToList: PropTypes.func.isRequired,
   id: PropTypes.string.isRequired
 };
 
