@@ -1,7 +1,8 @@
 import { handleResponse } from "../helper";
 import { BehaviorSubject } from 'rxjs';
 
-const ServerURL = "http://localhost:8081";
+const ServerURL = process.env.REACT_APP_API_URL;
+
 
 const currentUserSubject = new BehaviorSubject(JSON.parse(localStorage.getItem('currentUser')));
 

@@ -5,7 +5,7 @@ import { eventService } from "../../../../Authentication/service";
 import Spinner from "../../../../components/Spinner";
 import "./Overview.scss";
 
-const Overview = ({eventProducts, eventId}) => {
+const Overview = ({eventProducts, eventId, currency}) => {
     
     const [memebers, setMembers] = useState({users:[], spinner: true});
 
@@ -50,7 +50,10 @@ const Overview = ({eventProducts, eventId}) => {
                 : ({ items }) =>
                     items.map(user => (
                     <UserCard key={user.username} username={user.username} imageUrl={user.picUrl} showControlls>
-                        <span className={`money-label ${user.money < 0 ? "red" : ""}`}>{user.money > 0 ? `+${user.money}`: user.money}</span>
+                        <span className={`money-label ${user.money < 0 ? "red" : ""}`}>
+                            {user.money > 0 ? `+${user.money}`: user.money}
+                            <span className="currency"> {currency}</span>
+                        </span>
                     </UserCard>
                     ))
                     }

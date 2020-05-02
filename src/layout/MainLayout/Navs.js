@@ -43,6 +43,10 @@ export const adminEventNav = [
     iconClass: "fas fa-users"
   },
   {
+    navLink: "Forum",
+    iconClass: "fas fa-comments"
+  },
+  {
     navLink: "Settings",
     iconClass: "fas fa-cog"
   }

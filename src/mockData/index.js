@@ -6,6 +6,7 @@ import events from "./PublicEvents";
 import allEvents from "./allEvents";
 import allUsers from "./allUsers";
 import loggedInUser from "./LoggedInUser";
+import AllComments from "./comments";
 
 export {
   friends,
@@ -17,5 +18,6 @@ export {
   events,
   allEvents,
   allUsers,
-  loggedInUser
+  loggedInUser,
+  AllComments
 };

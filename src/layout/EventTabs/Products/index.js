@@ -90,7 +90,7 @@ const Products = ({ eventId, isEventAdmin, currency }) => {
     setform({ ...forms, renderForm: <AddNewProductContainer addProductToList={addProduct} id={eventId} />, show: true });
   };
   const overviewOpenModal = () => {
-    setform({ ...forms, renderForm: <Overview eventProducts={productList.products} eventId={eventId} />, show: true });
+    setform({ ...forms, renderForm: <Overview eventProducts={productList.products} eventId={eventId} currency={currency} />, show: true });
   };
 
 
