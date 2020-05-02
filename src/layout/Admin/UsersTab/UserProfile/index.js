@@ -1,38 +1,38 @@
 import React, { useState, useEffect } from "react";
 import Avatar from "../../../../components/Avatar";
 import { Button, EditButton } from "../../../../components/Button";
-import { loggedInUser } from "../../../../mockData";
+// import { loggedInUser } from "../../../../mockData";
+import { adminService } from "../../../../Authentication/service";
 import "./UserProfile.scss";
 
-const UserProfile = () => {
+const UserProfile = ({ userDetails }) => {
     const [userInfo, setUserInfo] = useState({
+        id: "",
         username: "Loading ...",
         email: "Loading ...",
         datejoined: "Loading ...",
-        avatarUrl: "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTSLmktkJrArXh_zZVovazl5mb3lna9HXqPo7XvvviCSQAuru5C&s",
+        avatarUrl: "/default-avatar.png",
         name: "Loading ...",
         surname: "Loading ..."
     });
     const [editState, setEdit] = useState(false);
     useEffect(() => {
         let __isMounted = true;
-        setTimeout(() => {
-            if (__isMounted) {
-                setUserInfo({
-                    username: loggedInUser.username,
-                    email: loggedInUser.email,
-                    datejoined: loggedInUser.joined.substring(0, 10),
-                    avatarUrl: loggedInUser.picUrl,
-                    name: loggedInUser.name,
-                    surname: loggedInUser.surname
-                })
-            }
-
-        }, 1000);
+        if (__isMounted) {
+            setUserInfo({
+                id: userDetails.id,
+                username: userDetails.username,
+                email: userDetails.email,
+                datejoined: userDetails.joined.substring(0, 10),
+                avatarUrl: userDetails.picUrl,
+                name: userDetails.name,
+                surname: userDetails.surname
+            })
+        }
         return () => {
             __isMounted = false;
         };
-    }, []);
+    }, [userDetails.id, userDetails.username, userDetails.email, userDetails.joined, userDetails.picUrl, userDetails.name, userDetails.surname]);
 
 
     const editHandler = () => {
@@ -41,13 +41,28 @@ const UserProfile = () => {
 
     const deleteAccount = () => {
         console.log("deleteing an account");
+        console.log(userInfo.id);
+        adminService.deleteUser(userInfo.id)
+            .then(res => {
+                console.log(res);
+            })
+            .catch(err => {
+                console.log(err);
+            })
+    }
+
+    const promoteToAdmin = () => {
+        adminService.grantUserAdmin(userInfo.id)
+            .then(res => {
+                console.log(res);
+            })
     }
     return (
         <div className="user-profile-container">
             <div className="user-profile">
                 <Avatar imageLink={userInfo.avatarUrl} />
 
-                <Button classes="promote-btn btn-sm btn-orangeGradient">promote to Admin</Button>
+                <Button clicked={promoteToAdmin} classes="promote-btn btn-sm btn-orangeGradient">promote to Admin</Button>
             </div>
             <div className="user-profile-info">
                 <strong>name:</strong>

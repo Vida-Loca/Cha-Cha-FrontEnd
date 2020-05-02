@@ -1,23 +1,23 @@
 import React, { useContext, useState, useEffect } from "react";
 
 import { FormContext } from "../../context/FormContext";
-import { UserContext } from "../../context/UserContext";
-import { authenticationService } from "../../Authentication/service";
-// import { userService } from "../../Authentication/service";
+import { authenticationService, profileService, userService } from "../../Authentication/service";
 
-import "./Profile.scss";
+import { editableProfileRules, profileRules } from "./validationCfg";
 
 import { Button, EditButton } from "../../components/Button";
 import { TextInput } from "../../components/Inputs";
 import EventCard from "../../components/EventCard";
 import PaginatedContainer from "../../components/PaginatedContainer";
 import Avatar from "../../components/Avatar";
+import Spinner from "../../components/Spinner";
+
 import checkValidation from "../../validation";
 import ChangeAvatarContainer from "./ChangeAvatarContainer";
 import FriendsList from "./FriendsList";
-import Spinner from "../../components/Spinner";
 
-import { loggedInUser, events } from "../../mockData";
+import "./Profile.scss";
+// import { events } from "../../mockData";
 
 const Profile = () => {
 
@@ -25,7 +25,7 @@ const Profile = () => {
     username: "Loading ...",
     email: "Loading ...",
     datejoined: "Loading ...",
-    avatarUrl: "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTSLmktkJrArXh_zZVovazl5mb3lna9HXqPo7XvvviCSQAuru5C&s"
+    avatarUrl: {link: "", loaded: false}
   });
   const [editableUserInfo, setEditableUserInfo] = useState({
     name: { value: "Loading ...", isValid: true, err: "" },
@@ -35,80 +35,60 @@ const Profile = () => {
   });
 
   const [myEvents, setMyEvents] = useState({ events: [], spinner: true });
-  const [invitations, setInvitations] = useState({ invitations: [], spinner: true });
+  const [invitations, setInvitations] = useState({ events: [], spinner: true });
+
+  const [isEditable, setEdit] = useState(false);
+  const [amountOfNewRequests, setNewRequests] = useState(0);
 
   const [, setform] = useContext(FormContext);
-  const [, setuser] = useContext(UserContext);
-  const [editState, setEdit] = useState(false);
-
 
   useEffect(() => {
     let __isMounted = true;
-    setTimeout(() => {
-      if (__isMounted) {
-        setUserInfo({
-          username: loggedInUser.username,
-          email: loggedInUser.email,
-          datejoined: loggedInUser.joined.substring(0, 10),
-          avatarUrl: loggedInUser.picUrl
-        })
 
-        setEditableUserInfo({
-          name: { value: loggedInUser.name, isValid: true, err: "" },
-          surname: { value: loggedInUser.surname, isValid: true, err: "" },
-          tempName: loggedInUser.name,
-          tempSurname: loggedInUser.surname
-        })
+    userService.getFriendRequestList()
+      .then(res => {
+        if (__isMounted) {
+          setNewRequests(res.filter(invite => invite.invitationStatus === "PROCESSING").length);
+        }
+      });
 
-        setMyEvents({ events: events, spinner: false });
-        setInvitations({ invitations: events, spinner: false });
-      }
+    profileService.getCurrentUserInfo()
+      .then(res => {
+        if (__isMounted) {
+          setUserInfo({
+            username: res.username,
+            email: res.email,
+            datejoined: res.joined.substring(0, 10),
+            avatarUrl: {link: res.picUrl, loaded: true}
+          })
+          setEditableUserInfo({
+            name: { value: res.name, isValid: true, err: "" },
+            surname: { value: res.surname, isValid: true, err: "" },
+            tempName: res.name,
+            tempSurname: res.surname
+          })
+        }
+      });
 
-    }, 1000);
+    profileService.getAllUserEvents()
+      .then(res => {
+        setMyEvents({ events: res, spinner: false });
+      });
+
+    profileService.getEventInvitations()
+      .then(res => {
+        setInvitations({ events: res.filter(invitation => invitation.accessStatus === "PROCESSING"), spinner: false });
+      });
+
     return () => {
       __isMounted = false;
     };
   }, []);
 
-  const editableFormProfile = useState([
-    {
-      name: "name",
-      config: {
-        placeholder: "name"
-      },
-      validation: {
-        required: true,
-        string: true
-      }
-    },
-    {
-      name: "surname",
-      config: {
-        placeholder: "surname"
-      },
-      validation: {
-        required: true,
-        maxLength: 10
-      }
-    }
-  ])[0];
-  const FormProfile = useState([
-    {
-      name: "email",
-      config: {
-        placeholder: "e-mail"
-      }
-    },
-    {
-      name: "datejoined",
-      config: {
-        placeholder: "date joined"
-      }
-    }
-  ])[0];
+
 
   const editHandler = () => {
-    setEdit(!editState);
+    setEdit(!isEditable);
   };
   const cancelEdit = () => {
     setEdit(false);
@@ -122,7 +102,7 @@ const Profile = () => {
   const onChangeHandler = event => {
     const validationResult = checkValidation(
       event.target.value,
-      editableFormProfile.find(x => x.name === event.target.name).validation
+      editableProfileRules.find(x => x.name === event.target.name).validation
     );
     setEditableUserInfo({
       ...editableUserInfo,
@@ -136,7 +116,6 @@ const Profile = () => {
 
   const LogOut = () => {
     authenticationService.logout();
-    setuser({ isLoggedIn: false, break: true });
   };
 
   const submitUpdateProfile = () => {
@@ -147,10 +126,11 @@ const Profile = () => {
           surname: editableUserInfo.surname.value,
         })
       }, 2000);
-    } else {
-      console.log("can't update profile")
     }
+  }
 
+  const changeAvatarInApp = (imageLink) => {
+    setUserInfo({ ...userInfo, avatarUrl:{link: imageLink, loaded: true} });
   }
 
 
@@ -159,14 +139,15 @@ const Profile = () => {
   };
 
   const changeAvatarInModal = () => {
-    setform({ renderForm: <ChangeAvatarContainer />, show: true });
+    setform({ renderForm: <ChangeAvatarContainer changeAvatarState={changeAvatarInApp} />, show: true });
   };
 
   return (
     <div className="profile-container">
       <div className="profile-card">
         <div className="avatar-section">
-          <Avatar imageLink={userInfo.avatarUrl} />
+          {userInfo.avatarUrl.loaded &&  <Avatar imageLink={userInfo.avatarUrl.link} />}
+
           <div className="edit-btn">
             <Button clicked={changeAvatarInModal} classes="change-avatar-icon"><i className="fas fa-image" /></Button>
           </div>
@@ -179,7 +160,7 @@ const Profile = () => {
         <div className="information-section">
           <h3>Profile</h3>
           <EditButton
-            options={editState}
+            options={isEditable}
             activate={editHandler}
             cancel={cancelEdit}
             confirm={submitUpdateProfile}
@@ -191,7 +172,7 @@ const Profile = () => {
               </>
             }
           />
-          {editableFormProfile.map(el => (
+          {editableProfileRules.map(el => (
             <TextInput
               key={el.name}
               onChange={onChangeHandler}
@@ -199,12 +180,12 @@ const Profile = () => {
               name={el.name}
               value={editableUserInfo[el.name].value}
               size="input-sm"
-              classes={editState ? "input-blue" : ""}
+              classes={isEditable ? "input-blue" : ""}
               error={editableUserInfo[el.name].err[0]}
-              disabled={!editState}
+              disabled={!isEditable}
             />
           ))}
-          {FormProfile.map(el => (
+          {profileRules.map(el => (
             <TextInput
               key={el.name}
               onChange={onChangeHandler}
@@ -218,13 +199,17 @@ const Profile = () => {
         </div>
       </div>
       <div className="friends-btn">
+
         <Button classes="btn-md btn-default" clicked={showFriendsInModal}>
           friends
+          {amountOfNewRequests > 0 && <span className="red-marker"></span>}
+
         </Button>
       </div>
       <div className="event-section">
         <PaginatedContainer
           title="My Events"
+          noContentMsg="you are not a part of any event"
           items={myEvents.events}
           perPage={4}
           render={
@@ -233,19 +218,20 @@ const Profile = () => {
               : ({ items }) =>
                 items.map(ev => (
                   <EventCard
-                    id={ev.event_id}
-                    key={ev.event_id}
+                    id={ev.id}
+                    key={ev.id}
                     name={ev.name}
-                    date={ev.startDate}
+                    date={ev.startTime}
                     location={ev.address}
-                    eventState={ev.eventState}
+                    eventState={ev.over ? "finished" : "ongoing"}
                   />
                 ))
           }
         />
         <PaginatedContainer
           title="Invitations"
-          items={invitations.invitations}
+          items={invitations.events}
+          noContentMsg="no new invitations"
           perPage={4}
           render={
             invitations.spinner
@@ -253,11 +239,11 @@ const Profile = () => {
               : ({ items }) =>
                 items.map(ev => (
                   <EventCard
-                    id={ev.event_id}
-                    key={ev.event_id}
-                    name={ev.name}
-                    date={ev.startDate}
-                    location={ev.address}
+                    id={ev.event.id}
+                    key={ev.event.id}
+                    name={ev.event.name}
+                    date={ev.event.startTime}
+                    location={ev.event.address}
                     eventState="invite"
                   />
                 ))

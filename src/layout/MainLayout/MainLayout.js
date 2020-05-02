@@ -1,9 +1,8 @@
-import React, { useState, useEffect } from "react";
-import { Switch, BrowserRouter, Route, Redirect } from "react-router-dom";
-import { mainNav, adminNav, eventNav, mainNavNoAdmin } from "./Navs";
-import { userService } from "../../Authentication/service";
-
-
+import React, { useEffect, useContext } from "react";
+import { Switch, Route, Redirect } from "react-router-dom";
+import { mainNav, adminNav, adminEventNav, mainNavNoAdmin } from "./Navs";
+import { adminService, profileService } from "../../Authentication/service";
+import { UserContext } from "../../context/UserContext";
 import "./Layout.scss";
 
 import Sidebar from "../../components/Sidebar";
@@ -12,59 +11,54 @@ import Profile from "../Profile/Profile";
 import Admin from "../Admin/Admin";
 import Event from "../EventTabs/Event";
 
-// isUserAdmin
+
 const MainLayout = () => {
-  const [isUserAdmin, setUserAdmin] = useState(true);
+  const [loggedinUser, setLoggedInUser] = useContext(UserContext);
+
   useEffect(() => {
-    userService
-      .isUserAdmin()
-      .then(body => {
-        return body;
-      })
+    let _isMounted = true;
+    Promise.all([adminService.isLoggedInUserAdmin(), profileService.getCurrentUserInfo()])
       .then(res => {
-        console.log(res);
-        if (res.message === "true") {
-          setUserAdmin(true);
+        if (_isMounted) {
+          setLoggedInUser({ ...loggedinUser, user: res[1], isAdmin: res[0] });
         }
-        // setUserInfo(res);
-        // setEventsList(res);
-      })
-      .catch(err => {
+      }).catch(err => {
         console.log(err);
-      });
+      })
+
+    return () => {
+      _isMounted = false;
+    }
   }, []);
 
   return (
     <div className="MainLayout">
-      <BrowserRouter>
-        <Sidebar classes="SideBar-orange" navlinks={isUserAdmin ? mainNav : mainNavNoAdmin} />
-        <>
-          <Switch>
-            <Route path="/" exact render={() => <Redirect to="/home" />} />
-            <Route path="/home" exact render={() => <Home />} />
-            <Route path="/profile" exact render={() => <Profile />} />
-            {isUserAdmin ? <Route path="/admin" render={() => <Admin />} /> : null}
+      <Sidebar classes="SideBar-orange" navlinks={loggedinUser.isAdmin ? mainNav : mainNavNoAdmin} />
 
-            <Route
-              path="/event/:id"
-              render={({ match }) => <Event eventId={match.params.id} eventPath={match.path} />}
-            />
-            <Redirect from="*" to="/home" />
-          </Switch>
-        </>
+      <Switch>
+        <Route path="/" exact render={() => <Redirect to="/home" />} />
+        <Route path="/home" exact render={() => <Home />} />
+        <Route path="/profile" exact render={() => <Profile />} />
+        {loggedinUser.isAdmin ? <Route path="/admin" render={() => <Admin />} /> : null}
+
         <Route
           path="/event/:id"
-          render={({ match }) => (
-            <Sidebar beforeLink={`/event/${match.params.id}`} classes="SideBar-darkBlue" navlinks={eventNav} />
-          )}
+          render={({ match }) => <Event eventId={match.params.id} eventPath={match.path} />}
         />
-        {isUserAdmin ? (
-          <Route
-            path="/admin"
-            render={() => <Sidebar beforeLink="/admin" classes="SideBar-darkBlue" navlinks={adminNav} />}
-          />
-        ) : null}
-      </BrowserRouter>
+        <Route render={() => <Redirect to="/home" />} />
+      </Switch>
+      <Route
+        path="/event/:id/*"
+        render={({ match }) => (
+          <Sidebar beforeLink={`/event/${match.params.id}`} classes="SideBar-darkBlue" navlinks={adminEventNav} />
+        )}
+      />
+      {loggedinUser.isAdmin ? (
+        <Route
+          path="/admin"
+          render={() => <Sidebar beforeLink="/admin" classes="SideBar-darkBlue" navlinks={adminNav} />}
+        />
+      ) : null}
     </div>
   );
 };

@@ -1,10 +1,15 @@
-import React, { useState } from "react";
+import React, { useState, useContext } from "react";
 import { TextInput } from "../../../components/Inputs";
 import { Button } from "../../../components/Button";
 import Spinner from "../../../components/Spinner";
+import { profileService } from "../../../Authentication/service";
 
-const ChangeAvatar = () => {
+import { FormContext } from "../../../context/FormContext";
+
+const ChangeAvatar = ({ changeAvatarState }) => {
   const [sendingDataSpinner, setSendingDataSpinner] = useState(false);
+
+  const [, setChangedForm] = useContext(FormContext);
 
   const [avatarUrl, setAvatarUrl] = useState({ URL: "" });
   const onChangeHandler = event => {
@@ -17,10 +22,15 @@ const ChangeAvatar = () => {
   const changeAvatar = () => {
     if (avatarUrl.URL.length > 5) {
       setSendingDataSpinner(true);
-      setTimeout(() => {
-        console.log("changing avatar")
-        setSendingDataSpinner(false);
-      }, 2000);
+      profileService.changeAvatar(avatarUrl.URL)
+        .then(_ => {
+          setSendingDataSpinner(false)
+          changeAvatarState(avatarUrl.URL);
+          setChangedForm({ renderForm: "", show: false });
+        }, _ => {
+          setSendingDataSpinner(false)
+        });
+
     } else {
       console.log("can't change avatar")
     }

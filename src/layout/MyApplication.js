@@ -1,5 +1,4 @@
 import React, { useState, useEffect, useContext } from "react";
-// import { UserContext } from "../context/UserContext";
 import { FormContext } from "../context/FormContext";
 
 import SplashScreen from "./SplashScreen/SplashScreen";
@@ -9,36 +8,23 @@ import { authenticationService } from "../Authentication/service";
 
 const MyApplication = () => {
   const [isLoggedIn, setLoggedIn] = useState(false);
-  // const [isUser, setUser] = useState(true);
 
   useEffect(() => {
     authenticationService.currentUser.subscribe(x => setLoggedIn(!!x));
-    //   if (isUser.break) {
-    //     const currentU = authenticationService.CurrentUser();
-    //     setUser({ ...isUser, break: false });
-    //     if (currentU != null || isUser.isLoggedIn) {
-    //       setLoggedIn({
-    //         isLoggedIn: true
-    //       });
-    //     } else {
-    //       setLoggedIn({
-    //         isLoggedIn: false
-    //       });
-    //     }
-    //   }
   }, []);
 
   const [forms, setform] = useContext(FormContext);
 
   const hideModal = () => {
-    setform({ ...forms, show: false, message: "" });
+    setform({ ...forms, show: false });
   };
 
   return (
     <div className="App">
-      <Modal show={forms.show} modalClose={hideModal} message={forms.message}>
-        {forms.renderForm}
-      </Modal>
+      {forms.show
+        && <Modal show={forms.show} modalClose={hideModal}>
+          {forms.renderForm}
+        </Modal>}
       {isLoggedIn ? <MainLayout /> : <SplashScreen />}
     </div>
   );

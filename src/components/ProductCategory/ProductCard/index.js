@@ -1,19 +1,23 @@
 /* eslint-disable no-nested-ternary */
-import React, { useState } from "react";
+import React, { useState, useContext } from "react";
 import PropTypes from "prop-types";
 import Avatar from "../../Avatar";
 import { Button, EditButton } from "../../Button";
 import "./ProductCard.scss";
 import { TextInputNL, TextArea } from "../../Inputs";
+import { UserContext } from "../../../context/UserContext";
 
-const ProductCard = ({ id, user, supply, price, picUrl }) => {
+import { productService } from "../../../Authentication/service";
+
+const ProductCard = ({removeProduct, eventId, product, category, user, currency }) => {
+
+  const [loggedInUser,] = useContext(UserContext);
+
   const [tileSupply, setTileSuply] = useState({
-    user,
-    supply,
-    price: String(price),
-    picUrl,
-    tempSupply: supply,
-    tempPrice: price
+    supply: product.name,
+    price: String(product.price),
+    tempSupply: product.name,
+    tempPrice: String(product.price)
   });
 
   const [editState, setEditState] = useState(false);
@@ -44,6 +48,11 @@ const ProductCard = ({ id, user, supply, price, picUrl }) => {
     tileStateSet(!tileState);
     setDeleteState(false);
     setEditState(false);
+    setTileSuply({
+      ...tileSupply,
+      supply: tileSupply.tempSupply,
+      price: tileSupply.tempPrice
+    });
   };
 
   const deleteHandler = () => {
@@ -68,30 +77,30 @@ const ProductCard = ({ id, user, supply, price, picUrl }) => {
     });
   };
 
-  const deletingProduct = () => {
-    console.log(`deleting product with id: ${id}`)
-  }
-
   const updatingProduct = () => {
+    console.log(tileSupply);
     if (tileSupply.supply.length > 0 && tileSupply.price.length > 0 && !isNaN(tileSupply.price)) {
-      setTimeout(() => {
-        console.log(`updating product with id: ${id}`)
-        console.log({
-          price: tileSupply.price,
-          supply: tileSupply.supply
+      console.log("updating");
+      productService.updateProduct(eventId, product.id, {
+        price: tileSupply.price,
+        name: tileSupply.supply,
+        productCategory: category
+      })
+        .then(_ => {
+          setEditState(false);
+          tileStateSet(false);
+        }, err => {
+          console.log(err);
         })
 
-      }, 2000);
     } else {
       console.log("can't be updatted")
     }
-
   }
 
   return (
     <>
       <div className="product-card-container tooltip">
-        {/* <span className={editState ? "tooltiptext tooltiptext-active" : "tooltiptext"}> */}
         {tileState && (
           <span className="tooltiptext">
             {!editState &&
@@ -100,7 +109,7 @@ const ProductCard = ({ id, user, supply, price, picUrl }) => {
                 activate={deleteHandler}
                 cancel={cancelDelete}
                 render={<i className="far fa-trash-alt" />}
-                confirm={deletingProduct}
+                confirm={removeProduct}
               />}
 
             {!deleteState &&
@@ -115,10 +124,10 @@ const ProductCard = ({ id, user, supply, price, picUrl }) => {
           </span>
         )}
 
-        <Avatar title={tileSupply.user} imageLink={tileSupply.picUrl} />
+        <Avatar title={user.username} imageLink={user.picUrl} />
         <span className="product-info">
           <span className="price-container">
-            <span className="product-currency">PLN</span>
+            <span className="product-currency">{currency}</span>
             <TextInputNL
               onChange={onChangeHandlerPrice}
               value={tileSupply.price}
@@ -131,24 +140,33 @@ const ProductCard = ({ id, user, supply, price, picUrl }) => {
           </span>
           <TextArea value={tileSupply.supply} name="supply" onChange={onChangeHandlerDescription} disabled={!editState} />
         </span>
-        <Button classes="options-btn" clicked={changeOptions}>
-          {tileState ? <i className="fas fa-times" /> : <i className="fas fa-ellipsis-v" />}
-        </Button>
+        {(loggedInUser.user.id === user.id || user.isEventAdmin)
+          && <Button classes="options-btn" clicked={changeOptions}>
+            {tileState ? <i className="fas fa-times" /> : <i className="fas fa-ellipsis-v" />}
+          </Button>}
+
       </div>
     </>
-
   );
-};
-ProductCard.defaultProps = {
-  picUrl: "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTSLmktkJrArXh_zZVovazl5mb3lna9HXqPo7XvvviCSQAuru5C&s"
 };
 
 ProductCard.propTypes = {
-  id: PropTypes.number.isRequired,
-  user: PropTypes.string.isRequired,
-  supply: PropTypes.string.isRequired,
-  price: PropTypes.number.isRequired,
-  picUrl: PropTypes.string
+  eventId: PropTypes.string.isRequired,
+  removeProduct: PropTypes.func.isRequired,
+  product: PropTypes.shape({
+    id: PropTypes.number.isRequired,
+    name: PropTypes.string.isRequired,
+    price: PropTypes.number.isRequired
+  }).isRequired,
+  user: PropTypes.shape({
+    id: PropTypes.number.isRequired,
+    picUrl: PropTypes.string.isRequired,
+    username: PropTypes.string.isRequired,
+    isEventAdmin: PropTypes.bool.isRequired
+  }).isRequired,
+  category: PropTypes.string.isRequired,
+  currency: PropTypes.string.isRequired
+
 };
 
 export default ProductCard;

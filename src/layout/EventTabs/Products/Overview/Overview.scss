@@ -1,0 +1,15 @@
+@import "../../../../style/globalVariabels.scss";
+
+.overview-container{
+    .money-label{
+        background: $main-blue;
+        padding: 0.2rem 0.4rem;
+        border-radius: 0.2rem;
+        color: white;
+        font-weight: bold;
+        &.red{
+            background: $main-orange;
+            color: white;
+        }
+    }
+}

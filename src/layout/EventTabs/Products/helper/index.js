@@ -9,20 +9,19 @@ const createSetOfCategories = array => {
   const uniqCategory = [...new Set(ListOfCategories)];
 
   uniqCategory.forEach(cate => {
-    const tempObject = { Category: cate, supplies: [] };
+    const tempObject = { productCategory: cate, supplies: [] };
 
     for (let i = 0; i < array.length; i += 1) {
       let tempSupply = {};
       if (cate === array[i].productCategory.name) {
-        array[i].userCards.forEach(user => {
+        array[i].eventUsers.forEach(user => {
           tempSupply = {
             id: array[i].id,
-            supply: array[i].name,
-            userId: user.eventUser.user.id,
-            user: user.eventUser.user.username,
-            quantity: 2,
+            name: array[i].name,
+            userId: user.user.id,
+            user: user.user.username,
             price: array[i].price,
-            picUrl: user.eventUser.user.picUrl
+            picUrl: user.user.picUrl
           };
         });
         tempObject.supplies.push(tempSupply);
@@ -32,5 +31,8 @@ const createSetOfCategories = array => {
   });
   return newArray;
 };
+
+
+
 
 export default createSetOfCategories;

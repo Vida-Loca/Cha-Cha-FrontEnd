@@ -1,8 +1,6 @@
 @import "../../../style/globalVariabels.scss";
 .options-input {
     position: relative;
-    padding: 5px 0;
-    
   
     &:first-of-type {
       padding-top: 0;
@@ -15,29 +13,30 @@
 
     select {
       font-family: "Montserrat", sans-serif;
-      font-size: 17px;
-      // margin-top: 0.7rem;
+      font-size: 12px;
+      font-weight: bold;
+      margin-top: 0;
       appearance: none;
       outline: none;
-      background-color: none;
-      border: 1px solid $main-blue;
+      background-color: $grey-1;
+      border: 1px solid $grey-3;
       // line-height: 0;
   
       width: 100%;
       display: block;
       box-sizing: border-box;
-      border-radius: $border-radius-md;
-      color: $main-blue;
+      border-radius: $border-radius-sm;
+      color: $grey-3;
       font-weight: 100;
       letter-spacing: 0.01em;
       position: relative;
       z-index: 1;
-      height: 2.1rem;
-      padding: 0 1rem;
+      height: 1.6rem;
+      padding: 0 0.4rem;
   
       &:focus {
         outline: none;
-        background: $main-blue;
+        background: $grey-3;
         color: white;
       }
   
@@ -51,6 +50,33 @@
       }
     }
 
+}
+
+.option-md{
+  select{
+    font-size: 17px;
+    height: 2.1rem;
+  }
+  height: 100%;
+  margin: 0;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  
+}
+
+.option-blue{
+  select{
+    background: white;
+    border-radius: $border-radius-md;
+    border: 1px solid $main-blue;
+    color: $main-blue;
+    &:focus {
+      outline: none;
+      background: $main-blue;
+      color: white;
+    }
+  }
 }
 
 

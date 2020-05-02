@@ -1,13 +1,20 @@
-import React, { useState } from "react";
+import React, { useState, useContext } from "react";
 import PropTypes from "prop-types";
 import { TextInput } from "../../../../components/Inputs";
 import { Button } from "../../../../components/Button";
 import checkValidation from "../../../../validation";
 import Spinner from "../../../../components/Spinner";
 
+import { productService } from "../../../../Authentication/service";
 
-const AddNewProductContainer = ({ category }) => {
+import { FormContext } from "../../../../context/FormContext";
+import { UserContext } from "../../../../context/UserContext";
 
+
+const AddNewProductContainer = ({ addProductToList, id, category }) => {
+
+  const [form, setform] = useContext(FormContext);
+  const [loggedInUser,] = useContext(UserContext);
   let [sendingDataSpinner, setSendingDataSpinner] = useState(false);
 
   const [product, setProduct] = useState({
@@ -76,16 +83,38 @@ const AddNewProductContainer = ({ category }) => {
     const chosenCategory = !!category ? category : product.productCategory.value;
     if (product.name.isValid && product.price.isValid && (product.productCategory.isValid || !!category)) {
       setSendingDataSpinner(true);
-      setTimeout(() => {
-        console.log({
+
+      productService.addProduct(id,
+        {
           name: product.name.value,
           price: product.price.value,
-          productCategory: chosenCategory
-        });
-        setSendingDataSpinner(false);
-      }, 2000);
+          productCategory: chosenCategory.toUpperCase()
+        })
+        .then(res => {
+          console.log(res);
+          setSendingDataSpinner(false);
+          setform({ ...form, show: false });
+          
+          addProductToList({
+            productCategory: chosenCategory.toUpperCase(),
+            product: {
+              id: res.id,
+              name: res.name,
+              price: res.price,
+              user: loggedInUser.user.username,
+              quantity: 1,
+              picUrl: loggedInUser.user.picUrl
+            }
+          });
+
+        }).catch(err => {
+          console.log(err);
+          setSendingDataSpinner(false);
+        })
+
     } else {
       console.log("some fields are not valid");
+
     }
   }
 
@@ -118,7 +147,9 @@ AddNewProductContainer.defaultProps = {
 };
 
 AddNewProductContainer.propTypes = {
-  category: PropTypes.string
+  category: PropTypes.string,
+  addProductToList: PropTypes.func.isRequired,
+  id: PropTypes.string.isRequired
 };
 
 export default AddNewProductContainer;

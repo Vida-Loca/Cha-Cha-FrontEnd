@@ -1,10 +1,11 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useContext } from "react";
 import { Route, Redirect } from "react-router-dom";
 import PropTypes from "prop-types";
 
-import "./Event.scss";
 
-// import { userService } from "../../Authentication/service";
+import { eventService } from "../../Authentication/service";
+
+import Spinner from "../../components/Spinner";
 
 import Products from "./Products";
 import Location from "./Location";
@@ -12,39 +13,69 @@ import Members from "./Members";
 import MainPage from "./MainPage";
 import Settings from "./Settings";
 
+import "./Event.scss";
+
 const Event = ({ eventId, eventPath }) => {
-  // check if user is a part of this event
-  //  * if not redirect to /:id page
-  //  * else leave him be
-  const eventName = useState("no name ")[0];
-  const [hasAuthorization, setAuthorization] = useState(true);
+
+  const [eventInfo, setEventInfo] = useState({ name: "Loading...", type: "None" });
+
+  const [hasAuthorization, setAuthorization] = useState({auth:false, isEventAdmin: false});
+  const [loaded, setLoaded] = useState(false);
 
   useEffect(() => {
+    let __isMounted = true;
 
-    return () => { };
+    let a = eventService.getEventByID(eventId);
+    let b = eventService.isCurrentUserAdminOfEvent(eventId);
+
+    Promise.all([a.catch(e => e), b.catch(e => e)])
+      .then(res => {
+        setEventInfo({ name: res[0].name, type: res[0].eventType, currency: res[0].currency });
+
+        if (res[1].err !== undefined) {
+          // user is not a part of this event
+          setAuthorization({auth:false, isEventAdmin: false});
+        }  else {
+          // user is a part of this event
+          setAuthorization({auth:true, isEventAdmin: res[1]});
+        }
+      })
+      .catch(err => console.log('Catch', err))
+      .finally(() => {
+        if (__isMounted) {
+            setLoaded(true);
+        }
+      })
+
+    return () => {
+      __isMounted = false;
+    };
   }, []);
 
   return (
     <div className="event-container">
-      <h1 className="event-name">{eventName}</h1>
+
+      <h1 className="event-name">{eventInfo.name}</h1>
       <Route
         path={`${eventPath}/`}
         exact
-        render={() => <MainPage isAuth={hasAuthorization} eventPath={eventPath} id={eventId} />}
+        render={() => loaded ? <MainPage isAuth={hasAuthorization.auth}
+          eventPath={eventPath} eventId={eventId} type={eventInfo.type} />
+          : <Spinner />}
       />
-      {!hasAuthorization ? (
-        <Route
-          path={`${eventPath}/*`} exact
-          render={() => <Redirect to={`${eventPath.substring(0, eventPath.length - 4)}/${eventId}`} />}
-        />
-      ) : (
+      {
+        hasAuthorization.auth ? (
           <>
-            <Route path={`${eventPath}/products`} exact render={() => <Products id={eventId} />} />
-            <Route path={`${eventPath}/location`} exact render={() => <Location id={eventId} />} />
-            <Route path={`${eventPath}/members`} exact render={() => <Members id={eventId} />} />
-            <Route path={`${eventPath}/settings`} exact render={() => <Settings id={eventId} />} />
+            <Route path={`${eventPath}/products`} exact render={() => <Products eventId={eventId} isEventAdmin={hasAuthorization.isEventAdmin} currency={eventInfo.currency} />} />
+            <Route path={`${eventPath}/location`} exact render={() => <Location eventId={eventId} isEventAdmin={hasAuthorization.isEventAdmin} />} />
+            <Route path={`${eventPath}/members`} exact render={() => <Members eventType={eventInfo.type} eventId={eventId} isEventAdmin={hasAuthorization.isEventAdmin} />} />
+            <Route path={`${eventPath}/settings`} exact render={() => <Settings eventId={eventId} isEventAdmin={hasAuthorization.isEventAdmin} />} />
           </>
-        )}
+        )
+          : (
+            <Route render={() => <Redirect to={`${eventPath.substring(0, eventPath.length - 4)}/${eventId}`} />} />
+          )
+      }
     </div>
   );
 };

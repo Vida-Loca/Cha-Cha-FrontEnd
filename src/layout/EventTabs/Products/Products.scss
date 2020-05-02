@@ -5,10 +5,42 @@
   width: 100%;
 
 
-  .button-container {
+  .button-container-add-new{
     display: flex;
     justify-content: center;
-    margin-bottom: 1rem;
+  }
+  .button-container {
+    display: flex;
+    justify-content: space-between;
+    flex-direction: column;
+    align-items: center;
+    margin: 1rem;
+    @include breaking-point-2 {
+      flex-direction: row;
+    }
+
+    .full-price-label{
+      font-weight: bold;
+      color: $main-orange;
+      font-size: 1.1rem;
+      background: white;
+      border-radius: 0.4rem;
+      padding: 0.2rem 0;
+      box-shadow: 0 0 5px 1px $main-orange;
+
+      .label{
+        background: $main-orange;
+        color: white;
+        border-radius: 0.4rem 0 0 0.4rem;
+        padding: 0.2rem 0.6rem;
+      }
+      .price{
+        margin: 0 0.4rem;
+        .currency{
+          font-size: 0.6rem;
+        }
+      }
+    }
   }
   
 }

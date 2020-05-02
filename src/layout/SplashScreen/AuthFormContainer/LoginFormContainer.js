@@ -3,7 +3,6 @@ import { TextInput } from "../../../components/Inputs";
 import { Button } from "../../../components/Button";
 import { authenticationService } from "../../../Authentication/service";
 import { FormContext } from "../../../context/FormContext";
-import { UserContext } from "../../../context/UserContext";
 import Spinner from "../../../components/Spinner";
 import ResetPassword from "./resetPassword";
 
@@ -13,13 +12,12 @@ const LoginFormContainer = () => {
   const [sendingDataSpinner, setSendingDataSpinner] = useState(false);
 
   const [changedForm, setChangedForm] = useContext(FormContext);
-  const setUser = useContext(UserContext)[1];
   const [login, setLogin] = useState({
     username: { value: "", isValid: true, err: [] },
     password: { value: "", isValid: true, err: [] }
   });
 
-  const loginForm = useState([
+  const loginForm = [
     {
       name: "username",
       config: {
@@ -36,8 +34,7 @@ const LoginFormContainer = () => {
         classes: "input-blue"
       }
     }
-
-  ])[0];
+  ];
 
   const submitLogin = () => {
     if (login.username.isValid && login.password.isValid) {
@@ -46,9 +43,8 @@ const LoginFormContainer = () => {
       authenticationService.login({
         username: login.username.value,
         password: login.password.value
-      }).then(res => {
+      }).then(_ => {
         setChangedForm({ ...changedForm, show: false })
-        setSendingDataSpinner(false);
       }, err => {
         setLogin({
           ...login,
@@ -56,12 +52,10 @@ const LoginFormContainer = () => {
           password: { value: "", isValid: false, err: [err.password] }
         });
         setSendingDataSpinner(false);
-
       });
 
     }
   }
-
   const onChangeHandler = event => {
     setLogin({
       ...login,
@@ -72,7 +66,6 @@ const LoginFormContainer = () => {
   const resetPasswordModal = () => {
     setChangedForm({ show: true, renderForm: <ResetPassword /> });
   }
-
 
   return (
     <div>
@@ -88,7 +81,6 @@ const LoginFormContainer = () => {
           error={login[el.name].err[0]}
         />
       ))}
-
 
       {sendingDataSpinner
         ? <Spinner classes={"spinner-container-h-sm"} size={"spinner-sm"} />

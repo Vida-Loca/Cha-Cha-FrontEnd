@@ -1,8 +1,8 @@
 import React, { useContext, useState, useEffect } from "react";
 import { FormContext } from "../../context/FormContext";
 
-import { events } from "../../mockData";
-// import { userService } from "../../Authentication/service";
+// import { events } from "../../mockData";
+import { eventService } from "../../Authentication/service";
 
 import "./Home.scss";
 import CreateEventContainer from "./CreateEventContainer";
@@ -12,34 +12,55 @@ import { Button } from "../../components/Button";
 import EventCard from "../../components/EventCard";
 import PaginatedContainer from "../../components/PaginatedContainer";
 import Spinner from "../../components/Spinner";
+import MapBox from "../../components/Map";
 
 const Home = () => {
-  let __isMounted = false
-
   const [publicEventsList, setPublicEventsList] = useState({ events: [], spinner: true });
   const [friendsEventsList, setFriendsEventsList] = useState({ events: [], spinner: true });
+  const [publicEventMarkers, setPublicEventMarkers] = useState({ markers: [], loaded: false });
 
   useEffect(() => {
-    __isMounted = true;
-    setTimeout(() => {
-      if (__isMounted) {
-        setPublicEventsList({ events: events, spinner: false });
-        setFriendsEventsList({ events: events, spinner: false });
-      }
-    }, 1000);
+    let __isMounted = true;
+
+    eventService.getAllPublicEvents()
+      .then(res => {
+        if (__isMounted) {
+          setPublicEventsList({ events: res, spinner: false });
+          const markers = res.map(event => {
+            if(event.address.longitude !== null && event.address.latitude !== null){
+              return({lat: event.address.latitude, long: event.address.longitude})
+            }
+          }).filter(el => el !== undefined);
+          setPublicEventMarkers({markers: markers, loaded: true });
+        }
+      }).catch(_ =>{
+        if (__isMounted) {
+        setPublicEventsList({ ...publicEventsList, spinner: false });
+        }
+      })
+
+    eventService.getAllEvents()
+      .then(res => {
+        if (__isMounted) {
+          setFriendsEventsList({ events: res, spinner: false });
+        }
+      }).catch(_ =>{
+        if (__isMounted) {
+          setFriendsEventsList({ ...friendsEventsList, spinner: false });
+        }
+      })
     return () => {
       __isMounted = false;
     };
   }, []);
 
-  const setform = useContext(FormContext)[1];
+  const [, setform] = useContext(FormContext);
   const createNewEventModal = () => {
     setform({ show: true, renderForm: <CreateEventContainer /> });
   };
   const friendSearchModal = () => {
     setform({ show: true, renderForm: <SearchFriends /> });
   };
-
 
   return (
     <div className="home-container">
@@ -48,50 +69,61 @@ const Home = () => {
         <Button clicked={friendSearchModal} classes="btn-md btn-orangeGradient">Look for friends</Button>
       </div>
 
-
-
       <div className="dashboard">
 
         <PaginatedContainer
           title={<span><i className="fas fa-door-open" /> {`Public Events`}</span>}
           items={publicEventsList.events}
+          noContentMsg="there are no public events at the moment"
           render={
             publicEventsList.spinner
               ? () => <Spinner />
               : ({ items }) =>
-                items.map(ev => (
+                items.map((ev, index) => (
                   <EventCard
-                    id={ev.event_id}
-                    key={ev.event_id}
+                    id={ev.id}
+                    key={ev.id}
                     name={ev.name}
-                    date={ev.startDate}
+                    date={ev.startTime}
                     location={ev.address}
-                    eventState={ev.eventState}
+                    eventState={ev.over ? "finished" : "ongoing"}
+                    listIndex={index % 5}
                   />
                 ))
           }
         />
         <PaginatedContainer
-          // title="Friend's Events"
           title={<span><i className="fas fa-users" /> {`Friend's Events`}</span>}
           items={friendsEventsList.events}
+          noContentMsg="none of your friends are hosting events at the moment"
           render={
             friendsEventsList.spinner
               ? () => <Spinner />
               : ({ items }) =>
-                items.map(ev => (
+                items.map((ev, index) => (
                   <EventCard
-                    id={ev.event_id}
-                    key={ev.event_id}
+                    id={ev.id}
+                    key={ev.id}
                     name={ev.name}
-                    date={ev.startDate}
+                    date={ev.startTime}
                     location={ev.address}
-                    eventState={ev.eventState}
+                    eventState={ev.over ? "finished" : "ongoing"}
+                    listIndex={index % 5}
                   />
                 ))
           }
         />
+        <div className="map-cont">
+          {
+            (publicEventMarkers.loaded && publicEventMarkers.markers.lnegth > 0) &&
+            <MapBox 
+              latitude={publicEventMarkers.markers[0].lat} longitude={publicEventMarkers.markers[0].long} 
+              markers={publicEventMarkers.markers} 
+            />
+          }
+        </div>
       </div>
+      
     </div>
   );
 };

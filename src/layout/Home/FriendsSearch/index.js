@@ -1,37 +1,59 @@
-import React, { useState, useContext, useEffect } from "react";
-import { SearchBar, TextInput } from "../../../components/Inputs";
+import React, { useState, useContext } from "react";
+import { SearchBar } from "../../../components/Inputs";
 import { Button } from "../../../components/Button";
-// import { userService } from "../../../../Authentication/service";
+import { userService } from "../../../Authentication/service";
 import PaginatedContainer from "../../../components/PaginatedContainer";
 import UserCard from "../../../components/UserCard";
-import { friends } from "../../../mockData";
+import Spinner from "../../../components/Spinner";
+import { UserContext } from "../../../context/UserContext";
+// import { friends } from "../../../mockData";
 
-
+import "./inviteFriends.scss";
 
 const SearchFriends = () => {
 
     const [findUser, setfindUser] = useState({ username: "" });
-    const [dislpayFriends, setDislpayFreinds] = useState([]);
-
+    const [friendsList, setFriendsList] = useState([]);
+    const [dislpayFriends, setDislpayFreinds] = useState({ users: [], spinner: false });
+    const [loggedInUser,] = useContext(UserContext);
 
     const onChangeHandler = event => {
         setfindUser({
             ...findUser,
             [`${event.target.name}`]: event.target.value
         });
-
     };
 
-    const sendAFriendRequest = (username) => {
-        console.log(`sending a friend request to ... ${username}`)
+    const sendAFriendRequest = (id) => {
+        userService.inviteUserByID(id)
+            .then(_ => {
+                let newEl = dislpayFriends.users.map(user =>{
+                    if(user.id === id){
+                        return {...user, sent: true};
+                    } else{
+                        return user;
+                    }
+                });
+                setDislpayFreinds({users: newEl, spinner: false});
+            });
     }
 
     const lookingForUsers = () => {
-        console.log(`looking for users with username ${findUser.username}`)
-        setTimeout(() => {
-            console.log("found something");
-            setDislpayFreinds(friends);
-        }, 2000);
+        userService.getFriendsList()
+            .then(res => {
+                setFriendsList(res);
+            }, _ => {
+                setFriendsList([]);
+            });
+        userService.getUsersByRegex(findUser.username)
+            .then(res => {
+                let letfilteredUser = res.filter(user => user.id !== loggedInUser.user.id);
+                let addedSentParam = letfilteredUser.map(user => ({...user, sent: false}));
+                setDislpayFreinds({ users: addedSentParam, spinner: false });
+                // setDislpayFreinds({ users: , spinner: false });
+            }, _ => {
+                setDislpayFreinds({ users: [], spinner: false });
+            });
     }
 
     return (
@@ -45,16 +67,28 @@ const SearchFriends = () => {
             />
             <PaginatedContainer
                 title=""
-                items={dislpayFriends}
+                items={dislpayFriends.users}
                 perPage={5}
-                render={({ items }) =>
-                    items.map(ev => (
-                        <UserCard key={ev.username} username={ev.username} showControlls>
-                            <Button clicked={() => sendAFriendRequest(ev.username)} classes="btn-blueGradient btn-sm">
-                                <i className="fas fa-user-plus" />
-                            </Button>
-                        </UserCard>
-                    ))
+                noContentMsg=""
+                render={
+                    dislpayFriends.spinner
+                        ? () => <Spinner size={"spinner-sm"} />
+                        : ({ items }) =>
+                            items.map(ev => {
+                                const isUserAFriend = friendsList.filter(user => user.id === ev.id);
+                                return (
+                                    <UserCard key={ev.id} username={ev.username} imageUrl={ev.picUrl} showControlls>
+                                        {!isUserAFriend.length > 0 &&
+                                            <Button clicked={() => sendAFriendRequest(ev.id)} classes="btn-blueGradient-icon btn-sm">
+                                                {
+                                                    ev.sent 
+                                                    ? <i className="fas fa-check" />
+                                                    : <i className="fas fa-user-plus" />
+                                                }
+                                            </Button>}
+                                    </UserCard>
+                                )
+                            })
                 }
             />
         </div>

@@ -26,6 +26,21 @@ export const eventNav = [
   {
     navLink: "Members",
     iconClass: "fas fa-users"
+  }
+];
+
+export const adminEventNav = [
+  {
+    navLink: "Products",
+    iconClass: "fas fa-box-open"
+  },
+  {
+    navLink: "Location",
+    iconClass: "fas fa-map-marker-alt"
+  },
+  {
+    navLink: "Members",
+    iconClass: "fas fa-users"
   },
   {
     navLink: "Settings",
