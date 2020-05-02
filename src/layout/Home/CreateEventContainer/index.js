@@ -107,7 +107,7 @@ const CreateEventContainer = () => {
           error={Information[el.name].err[0]}
         />
       ))}
-      <OptionsInput onChange={onChangePrivacy} value={Information.privacy.value} name="privacy" options={["PRIVATE", "NORMAL", "PUBLIC", "SECRET"]} />
+      <OptionsInput classes="input-md option-md option-blue" onChange={onChangePrivacy} value={Information.privacy.value} name="privacy" options={["PRIVATE", "NORMAL", "PUBLIC", "SECRET"]} />
       {adressFormRules.map(el => (
         <TextInput
           onChange={onChangeAddressHandler}

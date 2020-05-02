@@ -59,13 +59,8 @@ const Products = ({ eventId, isEventAdmin, currency }) => {
   }, [eventId]);
 
   const calculateTotalPrice = () =>{
-    // const totalPrice = productList.products.reduce((acc, val) =>{
-    //   return acc += val.price;
-    // }, 0);
-    // return Number(totalPrice).toFixed(2);
     let money = 0;
     productList.products.forEach(el =>{
-      console.log(el);
       el.supplies.forEach(prod =>{
         money += prod.price;
       })
@@ -80,7 +75,7 @@ const Products = ({ eventId, isEventAdmin, currency }) => {
     
     let foundIndex = tempProductsList.findIndex(catList => catList.productCategory === addedProduct.productCategory);
     if (foundIndex < 0) {
-      let tempProductCat = { productCategory: addedProduct.category, supplies: [addedProduct.product] }
+      let tempProductCat = { productCategory: addedProduct.productCategory, supplies: [addedProduct.product] }
       tempProductsList.push(tempProductCat);
       setProduct({ ...productList, products: tempProductsList });
     }
@@ -109,10 +104,10 @@ const Products = ({ eventId, isEventAdmin, currency }) => {
       <div className="button-container">
         <p className="full-price-label">
           <span className="label">Total:</span>
-          <span className="price">{`${calculateTotalPrice()} ${currency}`}</span>
+          <span className="price">{calculateTotalPrice()}<span className="currency"> {currency}</span></span>
         </p>
         <Button classes="btn-md btn-orangeGradient" clicked={overviewOpenModal}>
-          overview
+        <i className="fas fa-chart-bar" /> expenses
         </Button>
       </div>
 

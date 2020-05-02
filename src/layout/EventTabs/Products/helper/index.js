@@ -33,8 +33,6 @@ const createSetOfCategories = array => {
 };
 
 
-const userProductList = products =>{
-  const user
-}
+
 
 export default createSetOfCategories;

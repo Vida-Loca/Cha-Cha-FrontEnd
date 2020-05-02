@@ -8,40 +8,26 @@ import "./Overview.scss";
 const Overview = ({eventProducts, eventId}) => {
     
     const [memebers, setMembers] = useState({users:[], spinner: true});
-    const [totalPrice, setTotalPrice] = useState(0);
 
-        const prepareOverview = (userId) =>{
+        const prepareOverview = (userId, userAmount) =>{
+            let totalPrice = 0;
             let money = 0;
             eventProducts.forEach(categories =>{
                 categories.supplies.forEach(products => {
                     money += products.userId === userId ? products.price: 0;
+                    totalPrice += products.price;
                 })
             })
-            return money;
-        }
-        const calculateOverallPrice = () =>{
-            let money = 0;
-            eventProducts.forEach(categories =>{
-                categories.supplies.forEach(products => {
-                    money +=  products.price;
-                })
-            })
-            return money;
+            return Number(- totalPrice / userAmount + money).toFixed(2);
         }
 
-        const calculateExpense = (money) =>{
-            const amountOfMoney = Number(- totalPrice / memebers.users.length + money).toFixed(2)
-            // return <span className={`money-label ${amountOfMoney < 0 ? "red" : ""}`}>{amountOfMoney > 0 ? `+${amountOfMoney}`: amountOfMoney}</span>
-            return <span className={`money-label`}>{amountOfMoney}</span>
-        }
 
         useEffect(() => {
-            setTotalPrice(calculateOverallPrice());
             eventService.getEventMembers(eventId)
             .then(res =>{
                 console.log(res);
                 setMembers({users: res.map( user =>{
-                    return ({...user, money: prepareOverview(user.id)})
+                    return ({...user, money: prepareOverview(user.id, res.length)})
                 }), spinner: false});
             }, err =>{
                 setMembers({users: [], spinner: false})
@@ -64,7 +50,7 @@ const Overview = ({eventProducts, eventId}) => {
                 : ({ items }) =>
                     items.map(user => (
                     <UserCard key={user.username} username={user.username} imageUrl={user.picUrl} showControlls>
-                        {calculateExpense()}
+                        <span className={`money-label ${user.money < 0 ? "red" : ""}`}>{user.money > 0 ? `+${user.money}`: user.money}</span>
                     </UserCard>
                     ))
                     }
