@@ -8,7 +8,7 @@ const PaginatedContainer = ({ render, items, perPage, title, noContentMsg }) => 
   const [currentPage, setCurrentPage] = useState(1);
   const indexOfLastPost = currentPage * perPage;
   const indexOfFirstPost = indexOfLastPost - perPage;
-  const currentPosts = items.slice(indexOfFirstPost, indexOfLastPost);
+  const currentPosts = items === Array.isArray(items) ? items.slice(indexOfFirstPost, indexOfLastPost): [];
 
   const paginate = pageNumber => setCurrentPage(pageNumber);
   return (

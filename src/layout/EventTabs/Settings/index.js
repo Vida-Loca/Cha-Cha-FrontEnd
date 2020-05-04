@@ -129,7 +129,7 @@ const Settings = ({ eventId, isEventAdmin }) => {
             setEventInfo({...eventInfo, spinner: true});
             const updatedEvent = {
                 ...eventInfo.fullEvent,
-                startTime: eventInfo.fullEvent.startTime.replace(" ", "T"),
+                startTime: eventInfo.fullEvent.startTime !== undefined ? eventInfo.fullEvent.startTime.replace(" ", "T") : "",
                 name: eventInfo.event.name,
                 currency: eventInfo.event.currency,
                 eventType: eventInfo.event.eventType,
