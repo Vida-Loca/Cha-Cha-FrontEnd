@@ -12,6 +12,7 @@ import Location from "./Location";
 import Members from "./Members";
 import MainPage from "./MainPage";
 import Settings from "./Settings";
+import Forum from "./Forum";
 
 import "./Event.scss";
 
@@ -69,6 +70,7 @@ const Event = ({ eventId, eventPath }) => {
             <Route path={`${eventPath}/products`} exact render={() => <Products eventId={eventId} isEventAdmin={hasAuthorization.isEventAdmin} currency={eventInfo.currency} />} />
             <Route path={`${eventPath}/location`} exact render={() => <Location eventId={eventId} isEventAdmin={hasAuthorization.isEventAdmin} />} />
             <Route path={`${eventPath}/members`} exact render={() => <Members eventType={eventInfo.type} eventId={eventId} isEventAdmin={hasAuthorization.isEventAdmin} />} />
+            <Route path={`${eventPath}/forum`} exact render={() => <Forum eventId={eventId} isEventAdmin={hasAuthorization.isEventAdmin} />} />
             <Route path={`${eventPath}/settings`} exact render={() => <Settings eventId={eventId} isEventAdmin={hasAuthorization.isEventAdmin} />} />
           </>
         )

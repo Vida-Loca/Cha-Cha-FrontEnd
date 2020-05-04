@@ -98,7 +98,8 @@ const MyProducts = ({ isEventAdmin, eventId, supCont, currency }) => {
 MyProducts.propTypes = {
   eventId: PropTypes.string.isRequired,
   isEventAdmin: PropTypes.bool.isRequired,
-  supCont: PropTypes.array
+  supCont: PropTypes.array,
+  currency: PropTypes.string.isRequired
 };
 
 export default MyProducts;

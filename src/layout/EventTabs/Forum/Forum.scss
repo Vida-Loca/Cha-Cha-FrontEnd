@@ -1,0 +1,28 @@
+
+
+.forum-container{
+    .comment-text-send{
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+        width: 100%;
+        button{
+            margin-top: 1rem;
+            align-self: center;
+        }
+        .my-comment-area{
+            background: rgb(217, 213, 224);
+            border-radius: 0.4rem;
+            box-shadow: 1px 2px 2px 1px rgba(0, 0, 0, 0.25);
+            .resizable-ta{
+                height: 6.5rem;
+                font-size: 1rem;
+                &::placeholder{
+                    font-style: italic;
+                    color: rgb(71, 71, 71);
+                }
+            }
+        }
+    }
+   
+}
