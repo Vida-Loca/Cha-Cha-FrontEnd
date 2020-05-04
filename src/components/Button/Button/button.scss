@@ -1,0 +1,197 @@
+@import "../../../style/globalVariabels.scss";
+%btn {
+  cursor: pinter;
+  font-weight: bold;
+  letter-spacing: 0.1rem;
+  cursor: pointer;
+  transition: 0.2s all;
+  border-width: 0;
+  outline: none;
+}
+
+
+.btn-sm {
+  padding: 0.4rem 0.8rem;
+  font-size: 0.7rem;
+  border-radius: $border-radius-sm;
+}
+.btn-md {
+  padding: 0.5rem 1.2rem;
+  font-size: 1rem;
+  border-radius: $border-radius-md;
+}
+.btn-lg {
+  padding: 1rem 1.8rem;
+  font-size: 1.4rem;
+  border-radius: $border-radius-lg;
+}
+
+.btn-blue-animated{
+  animation: ble-btn-anime 2s ease-out forwards;
+}
+.btn-orange-animated{
+  animation: orange-btn-anime 2s ease-out forwards;
+}
+
+@keyframes ble-btn-anime{
+  0%{
+    color: transparent;
+    box-shadow: 0px 0px 15px $main-blue;
+  }
+  20%{
+    color: transparent;
+    box-shadow: 0px 0px 20px $main-blue;
+  }
+  70%{
+    text-shadow: 2px 2px 5px white;
+  }
+  100%{
+    text-shadow: 0px 0px 0px white;
+    box-shadow: 0px 0px 5px $main-blue;
+  }
+}
+@keyframes orange-btn-anime{
+  0%{
+    color: transparent;
+    box-shadow: 0px 0px 15px $main-orange;
+  }
+  20%{
+    color: transparent;
+    box-shadow: 0px 0px 20px $main-orange;
+  }
+  70%{
+    text-shadow: 2px 2px 5px white;
+  }
+  100%{
+    text-shadow: 0px 0px 0px white;
+    box-shadow: 0px 0px 5px $main-orange;
+  }
+}
+
+
+.btn-blueGradient-icon {
+  @extend %btn;
+  background: #065af700;
+  color: $main-blue;
+  border-radius: 20rem;
+  font-size: 1rem;
+  padding: 0.2rem;
+  height: 2rem;
+  width: 2rem;
+
+  &:hover {
+    background: #065af750;
+    color: $main-blue;
+  }
+}
+
+.btn-orangeGradient-icon {
+  @extend %btn;
+  background: #fd9f2500;
+  font-size: 1rem;
+  padding: 0.2rem;
+  color: $main-orange;
+  border-radius: 20rem;
+  height: 2rem;
+  width: 2rem;
+
+  &:hover {
+    background: #fd9f2550;
+    color: $main-orange;
+  }
+}
+
+
+.btn-blueGradient {
+  @extend %btn;
+  color: white;
+  background: $blue-gradient;
+  box-shadow: 0px 0px 5px $main-blue;
+
+  &:hover {
+    background: white;
+    color: $main-blue;
+  }
+}
+
+.btn-reverse-blueGradient {
+  @extend %btn;
+  color: $main-blue;
+  background: white;
+  &:hover {
+    background: $blue-gradient;
+    color: white;
+    box-shadow: 0px 0px 5px $main-blue;
+  }
+}
+
+.btn-orangeGradient {
+  @extend %btn;
+  color: white;
+  background: $orange-gradient;
+  box-shadow: 0px 0px 5px $main-orange;
+
+  &:hover {
+    background: white;
+    color: $main-orange;
+  }
+}
+
+.btn-default {
+  @extend %btn;
+  color: black;
+  background: $grey-2;
+
+  &:hover {
+    background: $grey-3;
+    color: white;
+  }
+}
+
+.btn-default-blue {
+  @extend %btn;
+  color: white;
+  background: $blue-gradient;
+
+  &:hover {
+    background: $main-blue-1;
+    color: $main-blue;
+  }
+}
+
+.btn-default-orange {
+  @extend %btn;
+  color: white;
+  background: $orange-gradient;
+
+  &:hover {
+    background: $main-orange-1;
+    color: $main-orange;
+  }
+}
+
+
+.btn-secondary-orange{
+  @extend %btn;
+  background: $grey-2;
+  border-radius: 50rem;
+  color: rgb(83, 83, 83);
+  box-shadow: inset 0 2px 5px #00000052;
+  &:hover{
+    box-shadow: inset 0 1px 2px #00000052;
+    color: orangered;
+  }
+}
+.btn-secondary-orange-active{
+  @extend %btn;
+  background: $orange-gradient;
+  border-radius: 50rem;
+  box-shadow: inset 0 2px 5px #fff78dd8;
+  color: white;
+  box-shadow: 0px 0px 6px $main-orange;
+  &:hover{
+    box-shadow: inset 0 1px 2px #ffd35acc;
+    color: white;
+    box-shadow: 0px 0px 2px $main-orange;
+  }
+}

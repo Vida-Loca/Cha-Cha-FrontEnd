@@ -1,0 +1,16 @@
+.Text-Input-NL {
+  outline: none;
+  background: transparent;
+  border: none;
+  width: 4rem;
+  font-family: "Montserrat", sans-serif;
+  font-size: 1rem;
+  font-style: italic;
+  &.product-price {
+    font-weight: bold;
+  }
+
+  &:disabled {
+    font-style: normal;
+  }
+}
