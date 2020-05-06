@@ -120,12 +120,15 @@ const Profile = () => {
 
   const submitUpdateProfile = () => {
     if (editableUserInfo.name.isValid && editableUserInfo.surname.isValid) {
-      setTimeout(() => {
-        console.log({
-          name: editableUserInfo.name.value,
-          surname: editableUserInfo.surname.value,
-        })
-      }, 2000);
+   
+      userService.updateCredentials(
+       editableUserInfo.name.value,
+       editableUserInfo.surname.value
+      ).then(_res =>{
+        setEdit(false);
+      }, err =>{
+        console.log(err);
+      })
     }
   }
 

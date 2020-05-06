@@ -25,7 +25,6 @@ const Home = () => {
     eventService.getAllPublicEvents()
       .then(res => {
         if (__isMounted) {
-          console.log(res);
           setPublicEventsList({ events: res, spinner: false });
           const markers = res.map(event => {
             if(event.address.longitude !== null && event.address.latitude !== null){
@@ -40,9 +39,8 @@ const Home = () => {
         }
       })
 
-    eventService.getAllEvents()
+    eventService.getAllFriendsEvents()
       .then(res => {
-        console.log(res);
         if (__isMounted) {
           setFriendsEventsList({ events: res, spinner: false });
         }
@@ -94,7 +92,7 @@ const Home = () => {
                 ))
           }
         />
-        {/* <PaginatedContainer
+        <PaginatedContainer
           title={<span><i className="fas fa-users" /> {`Friend's Events`}</span>}
           items={friendsEventsList.events}
           noContentMsg="none of your friends are hosting events at the moment"
@@ -114,7 +112,7 @@ const Home = () => {
                   />
                 ))
           }
-        /> */}
+        />
         <div className="map-cont">
           {
             (publicEventMarkers.loaded && publicEventMarkers.markers.lnegth > 0) &&

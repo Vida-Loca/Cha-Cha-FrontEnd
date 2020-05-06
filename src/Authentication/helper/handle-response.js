@@ -20,5 +20,5 @@ export const handleResponse = response => {
     }
 
     return data;
-  });
+  })
 };

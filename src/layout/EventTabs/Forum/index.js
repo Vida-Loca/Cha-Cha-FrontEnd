@@ -1,4 +1,4 @@
-import React, { useState, useEffect, useContext } from 'react'
+import React, { useState, useEffect, useContext, useRef } from 'react'
 import PropTypes from "prop-types";
 
 import { forumService } from "../../../Authentication/service";
@@ -6,8 +6,7 @@ import { UserContext } from "../../../context/UserContext";
 
 import { TextArea } from "../../../components/Inputs";
 import { Button } from "../../../components/Button";
-import CommentCard from "../../../components/CommentCard";
-import PaginatedContainer from "../../../components/PaginatedContainer";
+import {CommentCard, MyCommentCard} from "../../../components/CommentCards";
 
 import "./Forum.scss";
 import {AllComments} from "../../../mockData";
@@ -33,6 +32,14 @@ const Forum = ({eventId, isEventAdmin}) => {
     //   return newCommentList;
     // }
 
+    const messagesEndRef = useRef(null)
+
+    const scrollToBottom = () => {
+      messagesEndRef.current.scrollIntoView({ behavior: "auto" })
+    }
+  
+    useEffect(scrollToBottom, [allComments]);
+
     useEffect(() =>{
 
         let __isMounted = true;
@@ -41,7 +48,7 @@ const Forum = ({eventId, isEventAdmin}) => {
         .then(res =>{
             console.log(res);
             if(__isMounted){
-                setAllComments({comments: AllComments.reverse()  , loading: false});
+                setAllComments({comments: AllComments , loading: false});
             }
         }, err =>{
             console.log(err);
@@ -77,7 +84,7 @@ const Forum = ({eventId, isEventAdmin}) => {
                 }
             }
             let tempComments = allComments.comments;
-            tempComments.unshift(newCommentTemp);
+            tempComments.push(newCommentTemp);
             setAllComments({...allComments, comments: tempComments});
             setNewComment("");
         }, err =>{
@@ -103,38 +110,39 @@ const Forum = ({eventId, isEventAdmin}) => {
 
     return (
         <div className="forum-container">
-            <div className="comment-text-send">
+
+            {/* <ChatContainer commentList={allComments.comments} eventId={eventId} /> */}
+            <div className="chat-container">
+               {
+               allComments.comments.map(comment =>{
+                   return (
+                    <CommentCard
+                        likeComment={() => likeAcomment(comment.id)}
+                        eventId={eventId}
+                        likes={comment.likes}
+                        isLiked={comment.isLiked}
+                        text={comment.text}
+                        timeStamp={`${comment.timePosted.substring(0,10)} ${comment.timePosted.substring(12,16)}`}
+                        user={{
+                            id: comment.userCard.id,
+                            picUrl: comment.userCard.picUrl,
+                            username:  comment.userCard.username,
+                            isEventAdmin: true
+                        }}
+                        key={comment.id}
+                  
+                    />
+                   )
+               })
+           }
+            <div ref={messagesEndRef} />
+        </div>
+             <div className="comment-text-send">
                 <div className="my-comment-area">
                     <TextArea name="comment" onChange={newCommentOnChangeHandler} value={newComment} placeholder="write something..." />
                 </div>
                 <Button clicked={submitComment} classes="btn-blueGradient btn-md">send <i className="fas fa-paper-plane"/></Button>
             </div>
-            {
-                !allComments.loading &&
-                <PaginatedContainer
-                    title=""
-                    items={allComments.comments}
-                    perPage={5}
-                    render={
-                      ({ items }) => items.map(comment => 
-                        <CommentCard
-                            likeComment={() => likeAcomment(comment.id)}
-                            eventId={eventId}
-                            likes={comment.likes}
-                            isLiked={comment.isLiked}
-                            text={comment.text}
-                            timePosted={`${comment.timePosted.substring(0,10)} ${comment.timePosted.substring(12,16)}`}
-                            user={{
-                                id: comment.userCard.id,
-                                picUrl: comment.userCard.picUrl,
-                                username:  comment.userCard.username,
-                                isEventAdmin: true
-                            }}
-                            key={comment.id}
-                            />)
-                    }
-                />
-            }
             
     
         </div>
