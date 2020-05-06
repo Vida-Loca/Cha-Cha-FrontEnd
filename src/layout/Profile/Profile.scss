@@ -154,7 +154,7 @@ $event-col: 2;
   display: grid;
   grid-template-columns: 1fr;
 
-  @include breaking-point-1 {
+  @include breaking-point-2 {
     grid-template-columns: repeat($event-col, 1fr);
   }
 }

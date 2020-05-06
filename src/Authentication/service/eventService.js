@@ -114,6 +114,11 @@ const getAllEventAdmins = (eventId) => {
     return fetch(`${serverURL}/event/${eventId}/admin`, requestOptions).then(handleResponse);
 }
 
+const getAllFriendsEvents = () => {
+    const requestOptions = { method: "GET", headers: authHeader() };
+    return fetch(`${serverURL}/user/friends/events`, requestOptions).then(handleResponse);
+}
+
 export const eventService = {
     getAllPublicEvents,
     getAllEvents,
@@ -135,5 +140,6 @@ export const eventService = {
     isCurrentUserAdminOfEvent,
     leaveEvent,
     getAllEventAdmins,
-    promoteToEventAdmin
+    promoteToEventAdmin,
+    getAllFriendsEvents
 }

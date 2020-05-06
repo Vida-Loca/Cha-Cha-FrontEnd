@@ -28,6 +28,8 @@ const changeAvatar = avatarUrl => {
 };
 
 
+
+
 const getAllUserEvents = () => {
     const requestOptions = {
         method: "GET",

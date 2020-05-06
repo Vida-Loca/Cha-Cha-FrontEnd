@@ -5,13 +5,15 @@ import { SearchBar, TextInput } from "../../../components/Inputs";
 import EventCard from "../../../components/EventCard";
 import PaginatedContainer from "../../../components/PaginatedContainer";
 import Spinner from "../../../components/Spinner";
+import {Button} from "../../../components/Button";
 import "./EventTab.scss";
 
 import { eventService } from "../../../Authentication/service";
 
 const EventLayout = () => {
 
-  const [publicEventsList, setPublicEventsList] = useState({ events: [], spinner: true });
+  const [allEventsList, setAllEventsList] = useState({ events: [], spinner: true });
+  const [dislpayEvent, setDisplayEvent] = useState({ events: [], spinner: true });
 
   const [searchFilter, setSearchFilter] = useState({ startDate: "", endDate: "", name: "" });
 
@@ -20,12 +22,13 @@ const EventLayout = () => {
     eventService.getAllEvents()
       .then(res => {
         if (__isMounted) {
-          setPublicEventsList({ events: res, spinner: false });
+          setAllEventsList({ events: res, spinner: false });
+          setDisplayEvent({ events: res, spinner: false });
         }
-      })
-      .catch(err => {
-        console.log(err);
-      })
+      }, _err =>{
+        setAllEventsList({ events: [], spinner: false });
+        setDisplayEvent({ events: [], spinner: false });
+      });
 
     return () => {
       __isMounted = false;
@@ -40,31 +43,32 @@ const EventLayout = () => {
     });
   };
 
+  const clearFilters = () =>{
+    setDisplayEvent({ ...allEventsList});
+  }
+
   const searchingEventsWithFilter = () => {
 
-    let filteredEvents = [...publicEventsList.events];
+    let filteredEvents = [...allEventsList.events];
     if (searchFilter.name.length > 0) {
-      console.log("searching by name...");
       filteredEvents = filteredEvents.filter((ev) => {
         let searchValue = ev.name;
         return searchValue.indexOf(searchFilter.name) !== -1;
       });
     }
     if (searchFilter.startDate.length > 0) {
-      console.log("searching by star Date...");
       filteredEvents = filteredEvents.filter((ev) => {
         let searchValue = ev.startTime.substring(0, 10);
         return Date.parse(searchValue) >= Date.parse(searchFilter.startDate);
       });
     }
     if (searchFilter.endDate.length > 0) {
-      console.log("searching by endDate ...");
       filteredEvents = filteredEvents.filter((ev) => {
         let searchValue = ev.startTime.substring(0, 10);
         return Date.parse(searchValue) <= Date.parse(searchFilter.endDate);
       });
     }
-    console.log(filteredEvents);
+    setDisplayEvent({...dislpayEvent, events: filteredEvents});
 
   }
   return (
@@ -93,14 +97,14 @@ const EventLayout = () => {
           value={searchFilter.name}
           clicked={searchingEventsWithFilter}
         />
-
+      <Button clicked={clearFilters} classes="btn-sm btn-blueGradient">clear filters</Button>
       </div>
       <PaginatedContainer
         title="All Events"
         perPage={10}
-        items={publicEventsList.events}
+        items={dislpayEvent.events}
         render={
-          publicEventsList.spinner
+          dislpayEvent.spinner
             ? () => <Spinner />
             : ({ items }) =>
               items.map((ev, index) => (

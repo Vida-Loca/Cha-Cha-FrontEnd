@@ -36,6 +36,15 @@ const cancelFriendInvitation = (invitationID) => {
   return fetch(`${serverURL}/user/cancel?invitationId=${invitationID}`, requestOptions).then(handleResponse);
 }
 
+const updateCredentials = (name, surname) => {
+  const requestOptions = {
+      method: "PUT",
+      headers: authHeader(),
+      body: JSON.stringify({name, surname})
+  };
+  return fetch(`${serverURL}/user/changeNames`, requestOptions).then(handleResponse);
+}
+
 
 export const userService = {
   inviteUserByID,
@@ -45,5 +54,6 @@ export const userService = {
   acceptInvite,
   rejectInvite,
   removeFromFriends,
-  cancelFriendInvitation
+  cancelFriendInvitation,
+  updateCredentials
 };

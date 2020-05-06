@@ -1,0 +1,69 @@
+@import "../../../style/globalVariabels.scss";
+
+
+@keyframes like-animation{
+  20%{
+    font-size: 0.8rem;
+  }
+  100%{
+    font-size: 0.7rem;
+  }
+}
+
+
+.my-comment-card-container{
+  display: flex;
+  flex-direction: column;
+  margin: 1rem 0;
+
+  .comment-header{
+    display: flex;
+    flex-direction: row;
+    justify-content: flex-start;
+    align-items: center;
+    font-size: 0.7rem;
+    .fa-heart{
+      font-size: 0.7rem;
+      cursor: pointer;
+      transition: all 0.1s ease-in-out;
+      &.liked{
+        color: rgb(238, 77, 77);
+        animation: like-animation ease-in-out 0.2s;
+      }
+    }
+  
+    .username{
+      font-weight: bold;
+      
+      margin-left: 3rem;
+      &::after{
+        content: ":";
+      }
+    }
+  }
+
+  .comment-body{
+    display: flex;
+    flex-direction: row;
+    .comment-content{
+      background: rgb(218, 218, 218);
+      box-shadow: 0 1px 1px 1px rgba(0, 0, 0, 0.17);
+      padding: 0.4rem;
+      border-radius: 0.3rem;
+
+
+      .time-stamp{
+        margin-top: 0.3rem;
+        font-style: italic;
+        color: gray;
+        font-size: 0.5rem;
+      }
+    }
+  }
+  .avatar{
+    $avatar-size: 2rem;
+    width: $avatar-size;
+    height: $avatar-size;
+    margin-right: 1rem;
+  }
+}

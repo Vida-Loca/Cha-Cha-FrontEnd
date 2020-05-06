@@ -1,6 +1,12 @@
 
 
 .forum-container{
+    .chat-container{
+        max-height: 30rem;
+        overflow-y: scroll;
+        padding: 0 1rem;
+        margin-bottom: 1rem;
+    }
     .comment-text-send{
         display: flex;
         flex-direction: column;
@@ -10,6 +16,7 @@
             margin-top: 1rem;
             align-self: center;
         }
+    
         .my-comment-area{
             background: rgb(217, 213, 224);
             border-radius: 0.4rem;

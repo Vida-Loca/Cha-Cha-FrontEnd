@@ -15,7 +15,11 @@ const UserProfile = ({ userDetails }) => {
         name: "Loading ...",
         surname: "Loading ..."
     });
-    const [editState, setEdit] = useState(false);
+    const [editState, setEdit] = useState({
+        delete: false,
+        admin: false,
+        ban: false
+    });
     useEffect(() => {
         let __isMounted = true;
         if (__isMounted) {
@@ -35,8 +39,14 @@ const UserProfile = ({ userDetails }) => {
     }, [userDetails.id, userDetails.username, userDetails.email, userDetails.joined, userDetails.picUrl, userDetails.name, userDetails.surname]);
 
 
-    const editHandler = () => {
-        setEdit(!editState);
+    const editDelete = () => {
+        setEdit({...editState, delete: !editState.delete});
+    };
+    const editPromote = () => {
+         setEdit({...editState, admin: !editState.admin});
+    };
+    const editBan = () => {
+         setEdit({...editState, ban: !editState.ban});
     };
 
     const deleteAccount = () => {
@@ -57,12 +67,14 @@ const UserProfile = ({ userDetails }) => {
                 console.log(res);
             })
     }
+
+    const banUser = () => {
+       console.log(userInfo.id);
+    }
     return (
         <div className="user-profile-container">
             <div className="user-profile">
                 <Avatar imageLink={userInfo.avatarUrl} />
-
-                <Button clicked={promoteToAdmin} classes="promote-btn btn-sm btn-orangeGradient">promote to Admin</Button>
             </div>
             <div className="user-profile-info">
                 <strong>name:</strong>
@@ -77,12 +89,26 @@ const UserProfile = ({ userDetails }) => {
                 <p>{userInfo.datejoined}</p>
             </div>
             <EditButton
-                options={editState}
-                activate={editHandler}
-                cancel={editHandler}
+                options={editState.delete}
+                activate={editDelete}
+                cancel={editDelete}
                 confirm={deleteAccount}
                 tags
-                render={<><i className="far fa-trash-alt" />delete</>} />
+                render={<><i className="far fa-trash-alt" />delete user</>} />
+            <EditButton
+                options={editState.admin}
+                activate={editPromote}
+                cancel={editPromote}
+                confirm={promoteToAdmin}
+                tags
+                render={<><i className="fas fa-star" />promote to admin</>} />
+            <EditButton
+                options={editState.ban}
+                activate={editBan}
+                cancel={editBan}
+                confirm={banUser}
+                tags
+                render={<><i className="fas fa-ban" />ban user</>} />
         </div>)
 }
 
