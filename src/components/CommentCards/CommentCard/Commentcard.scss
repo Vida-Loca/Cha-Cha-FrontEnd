@@ -11,6 +11,15 @@
 }
 
 
+.options-btn{
+  cursor: pointer;
+  width: 1rem;
+}
+
+
+
+
+
 .my-comment-card-container{
   display: flex;
   flex-direction: column;
@@ -57,6 +66,11 @@
         font-style: italic;
         color: gray;
         font-size: 0.5rem;
+        .edited{
+          i{
+            margin:0 0.25rem;
+          }
+        }
       }
     }
   }

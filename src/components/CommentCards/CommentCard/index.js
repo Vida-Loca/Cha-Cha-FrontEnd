@@ -7,7 +7,7 @@ import { Button } from "../../Button";
 
 import "./Commentcard.scss";
 
-const Commentcard = ({eventId, text, user,likes, timeStamp,isLiked, likeComment}) => {
+const Commentcard = ({eventId, text, user,likes, edited, timeStamp,isLiked, likeComment}) => {
 
 
   return (
@@ -17,13 +17,18 @@ const Commentcard = ({eventId, text, user,likes, timeStamp,isLiked, likeComment}
           <Button clicked={likeComment}>
               <i className={`fas fa-heart ${isLiked? "liked": ""}`}/>
           </Button>
-          {likes}
+          {likes > 0 ? likes : ""}
       </div>
       <div className="comment-body">
         <Avatar imageLink={user.picUrl} />
         <div className="comment-content">
           {text}
-            <div className="time-stamp">{timeStamp}</div>
+          <div className="time-stamp">{timeStamp} {edited 
+          ? <span className="edited">
+              <i className="fas fa-pencil-alt"/>{"edited"}
+            </span>
+              : ""}
+          </div>
         </div>
       </div>
     </div>
