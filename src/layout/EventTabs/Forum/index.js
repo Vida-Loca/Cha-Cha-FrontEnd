@@ -36,7 +36,7 @@ const Forum = ({eventId, isEventAdmin}) => {
             console.log(res);
             if(__isMounted){
                 const tempComments = res.reverse().map( comment => {
-                    return {...comment, isLiked: comment.likers.length > 0 && comment.likers.indexOf( liker => liker.user.id === loggedInUser.user.id)}
+                    return {...comment, isLiked: comment.likers.length > 0 && comment.likers.findIndex( liker => liker.user.id === loggedInUser.user.id)}
                 })
                 setAllComments({comments: tempComments , loading: false});
             }

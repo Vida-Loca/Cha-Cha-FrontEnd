@@ -1,5 +1,6 @@
 import React, { useState, useContext, useEffect } from "react";
 import { FormContext } from "../../../context/FormContext";
+
 // import { allUsers } from "../../../mockData";
 import { adminService } from "../../../Authentication/service";
 
@@ -17,10 +18,12 @@ const UsersLayout = () => {
   const [dislpayUsers, setDislpayUsers] = useState({ members: [], spinner: true });
   const [, setform] = useContext(FormContext);
 
+
   useEffect(() => {
     let __isMounted = true;
     adminService.getAllUsers()
       .then(res => {
+        console.log(res);
         if (__isMounted) {
           seEventMemebers({ members: res, spinner: false });
           setDislpayUsers({ members: res, spinner: false });
@@ -48,6 +51,7 @@ const UsersLayout = () => {
     setDislpayUsers({ ...dislpayUsers, members: displayUsers })
 
   }
+
 
 
   const openUserProfileModal = (userDetails) => {

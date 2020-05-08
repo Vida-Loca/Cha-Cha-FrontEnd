@@ -2,9 +2,9 @@ import React from "react";
 import PropTypes from "prop-types";
 import Button from "../Button";
 
-const EditButton = ({ activate, cancel, confirm, options, tags, render }) => {
+const EditButton = ({ activate, cancel, confirm, options, tags, render, classes }) => {
   return (
-    <div className="settings">
+    <div className={`settings ${classes}`}>
       {options ? (
         <>
           <Button clicked={cancel} classes="btn-sm btn-default-orange cancel-btn">
@@ -33,7 +33,8 @@ const EditButton = ({ activate, cancel, confirm, options, tags, render }) => {
 
 EditButton.defaultProps = {
   options: false,
-  tags: false
+  tags: false,
+  classes: ""
 };
 
 EditButton.propTypes = {
@@ -41,7 +42,8 @@ EditButton.propTypes = {
   tags: PropTypes.bool,
   options: PropTypes.bool,
   activate: PropTypes.func.isRequired,
-  cancel: PropTypes.func.isRequired
+  cancel: PropTypes.func.isRequired,
+  classes: PropTypes.string
 };
 
 export default EditButton;

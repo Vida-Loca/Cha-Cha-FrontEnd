@@ -18,9 +18,9 @@ const ProductCategory = ({ isEventAdmin, eventId, supCont, currency }) => {
   const [, setform] = useContext(FormContext);
 
   const addProduct = (addedProduct) => {
-    let tempSup = supplyContainer.supplies;
+    let tempSup = supplyContainer.products;
     tempSup.push(addedProduct.product);
-    setsupplyContainer({ ...supplyContainer, supplies: tempSup });
+    setsupplyContainer({ ...supplyContainer, products: tempSup });
   }
 
   const openModalAddSupply = () => {
@@ -38,10 +38,21 @@ const ProductCategory = ({ isEventAdmin, eventId, supCont, currency }) => {
   const removeProductFromCategory = (eventId, productId) => {
     productService.removeProduct(eventId, productId)
       .then(res => {
-        setsupplyContainer({ ...supplyContainer, supplies: supplyContainer.supplies.filter(prod => prod.id !== productId), show: true })
+        console.log(res);
+        setsupplyContainer({ ...supplyContainer, products: supplyContainer.products.filter(prod => prod.id !== productId), show: true });
       }, err => {
         console.log(err);
       })
+  }
+
+  const updateProductInList = (productId, newProd) => {
+    setsupplyContainer({ ...supplyContainer, products: supplyContainer.products.map(prod => {
+      if( prod.id === productId){
+        return {...prod, name: newProd.name, price: newProd.price, quantity: newProd.quantity }
+      }else{
+        return prod;
+      }
+     }), show: true });
   }
 
 
@@ -55,8 +66,8 @@ const ProductCategory = ({ isEventAdmin, eventId, supCont, currency }) => {
         <div className="price-and-add">
           <p className="price-label">
             {Number(
-              Object.keys(supplyContainer.supplies).reduce((previous, index) => {
-                return previous + supplyContainer.supplies[index].price;
+              Object.keys(supplyContainer.products).reduce((previous, index) => {
+                return previous + supplyContainer.products[index].price * supplyContainer.products[index].quantity;
               }, 0)
             ).toFixed(2)}
             <span> {currency}</span>
@@ -68,21 +79,21 @@ const ProductCategory = ({ isEventAdmin, eventId, supCont, currency }) => {
       </div>
 
       <div className="product-collection">
-        {supplyContainer.supplies.map(sup => {
+        {supplyContainer.products.map(sup => {
           return (
             <ProductCard
               currency={currency}
+              updateProductList={updateProductInList}
               removeProduct={() => removeProductFromCategory(eventId, sup.id)}
               eventId={eventId}
               product={{
                 id: sup.id,
                 name: sup.name,
-                price: sup.price
+                price: sup.price,
+                quantity: sup.quantity
               }}
               user={{
-                id: sup.userId,
-                picUrl: sup.picUrl,
-                username:sup.user,
+                ...sup.user,
                 isEventAdmin: isEventAdmin
               }}
               key={`${sup.id}-${sup.userId}`}
@@ -100,7 +111,7 @@ ProductCategory.propTypes = {
   isEventAdmin: PropTypes.bool.isRequired,
   supCont: PropTypes.shape({
     productCategory: PropTypes.string.isRequired,
-    supplies: PropTypes.array.isRequired
+    products: PropTypes.array.isRequired
   })
 };
 

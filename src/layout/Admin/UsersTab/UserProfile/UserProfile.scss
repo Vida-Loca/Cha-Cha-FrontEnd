@@ -5,19 +5,24 @@
     display: grid;
     @include breaking-point-1 {
         grid-template-columns: repeat(2, 1fr);
-        gap: 1rem;
+        grid-column-gap: 0.5rem;
       }
     .user-profile{
         display: flex;
         flex-direction: column;
+        justify-content: center;
+        align-items: center;
 
         .avatar{
-            justify-self: center;
-            align-self: center;
             width: 10rem;
             height: 10rem;
             margin-bottom: 0.5rem;
         }
+  
+          .promote>.edit-btn:hover{
+            background: rgb(245, 223, 182);
+            color: rgb(54, 45, 36);
+          }
 
         .promote-btn{
             margin-top: 1.5rem;
@@ -28,9 +33,9 @@
         grid-template-columns: repeat(2, 1fr);
         width: 100%;
         margin: 0.5rem 0;
+        max-width: 15rem;
+        justify-self: center;
         @include breaking-point-1 {
-            grid-column-start: 1;
-            grid-column-end: 3;
           }
         & > .edit-btn {
           grid-column-start: 1;
@@ -45,15 +50,37 @@
           transition: color 0.2s, background 0.2s;
           border-radius: 0 0.5rem 0.5rem 0;
         }
+
+        &.delete>.edit-btn:hover{
+          background: rgb(241, 201, 201);
+          color: rgb(57, 39, 39);
+        }
+
+        &.ban>.edit-btn:hover{
+          background: rgb(182, 205, 245);
+          color: rgb(44, 56, 66);
+        }
       }
 
     .user-profile-info{
-        strong{
+      max-width: 30rem;
+      justify-self: center;
+      min-width: 15rem;
+      @include breaking-point-1 {
+        justify-self: flex-start;
+        min-width: auto;
+      }
+        span{
             margin: 0;
+            font-size: 0.8rem;
         }
         p{
             margin: 0;
             margin-bottom: 0.5rem;
+            font-weight: bold;
+            padding: 0.2rem;
+            border-radius: 0.2rem;
+            font-size: 0.9rem;
         }
     }
    

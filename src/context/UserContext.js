@@ -7,11 +7,6 @@ export const UserProvider = ({ children }) => {
   const [user, setUser] = useState({
     user: "",
     isAdmin: false,
-    eventAuth: {
-      eventId: "",
-      hasAuth: false,
-      isAdmin: false
-    }
   });
 
   return <UserContext.Provider value={[user, setUser]}>{children}</UserContext.Provider>;

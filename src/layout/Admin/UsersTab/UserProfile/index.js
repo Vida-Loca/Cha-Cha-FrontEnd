@@ -1,8 +1,10 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useContext } from "react";
 import Avatar from "../../../../components/Avatar";
 import { Button, EditButton } from "../../../../components/Button";
 // import { loggedInUser } from "../../../../mockData";
 import { adminService } from "../../../../Authentication/service";
+import { FlashMessageContext } from "../../../../context/FlashMessageContext";
+
 import "./UserProfile.scss";
 
 const UserProfile = ({ userDetails }) => {
@@ -13,13 +15,17 @@ const UserProfile = ({ userDetails }) => {
         datejoined: "Loading ...",
         avatarUrl: "/default-avatar.png",
         name: "Loading ...",
-        surname: "Loading ..."
+        surname: "Loading ...",
+        banned: false
     });
     const [editState, setEdit] = useState({
         delete: false,
         admin: false,
         ban: false
     });
+
+    const [, setFlashMessage] = useContext(FlashMessageContext);
+
     useEffect(() => {
         let __isMounted = true;
         if (__isMounted) {
@@ -30,7 +36,9 @@ const UserProfile = ({ userDetails }) => {
                 datejoined: userDetails.joined.substring(0, 10),
                 avatarUrl: userDetails.picUrl,
                 name: userDetails.name,
-                surname: userDetails.surname
+                surname: userDetails.surname,
+                banned: userDetails.banned,
+                isAdmin: false
             })
         }
         return () => {
@@ -50,8 +58,6 @@ const UserProfile = ({ userDetails }) => {
     };
 
     const deleteAccount = () => {
-        console.log("deleteing an account");
-        console.log(userInfo.id);
         adminService.deleteUser(userInfo.id)
             .then(res => {
                 console.log(res);
@@ -71,44 +77,83 @@ const UserProfile = ({ userDetails }) => {
     const banUser = () => {
        console.log(userInfo.id);
     }
+
+    const flashMessageOpen = () =>{
+        setFlashMessage({
+        message: "hello",
+        show: true,
+        messageState: "success"})
+      }
+
     return (
         <div className="user-profile-container">
             <div className="user-profile">
                 <Avatar imageLink={userInfo.avatarUrl} />
+                
+                {
+                    userInfo.isAdmin
+                    ? <div><i className="fas fa-star" /> Admin</div>
+                    :  (userInfo.banned
+                        ? null
+                        : <EditButton
+                            options={editState.admin}
+                            activate={editPromote}
+                            cancel={editPromote}
+                            confirm={promoteToAdmin}
+                            classes="promote"
+                            tags
+                            render={<><i className="fas fa-star" />promote to admin</>} 
+                            />)
+                }
+               
             </div>
             <div className="user-profile-info">
-                <strong>name:</strong>
+                <span>name:</span>
                 <p>{userInfo.name}</p>
-                <strong>surname:</strong>
+                <span>surname:</span>
                 <p>{userInfo.surname}</p>
-                <strong>username:</strong>
+                <span>username:</span>
                 <p>{userInfo.username}</p>
-                <strong>email:</strong>
+                <span>email:</span>
                 <p>{userInfo.email}</p>
-                <strong>date joined:</strong>
+                <span>date joined:</span>
                 <p>{userInfo.datejoined}</p>
             </div>
-            <EditButton
+            {
+                !userInfo.isAdmin 
+                && <EditButton
                 options={editState.delete}
                 activate={editDelete}
                 cancel={editDelete}
-                confirm={deleteAccount}
+                confirm={flashMessageOpen}
+                classes="delete"
                 tags
                 render={<><i className="far fa-trash-alt" />delete user</>} />
-            <EditButton
-                options={editState.admin}
-                activate={editPromote}
-                cancel={editPromote}
-                confirm={promoteToAdmin}
-                tags
-                render={<><i className="fas fa-star" />promote to admin</>} />
-            <EditButton
+            }
+
+           {
+               userInfo.banned
+               ? (
+                <EditButton
                 options={editState.ban}
                 activate={editBan}
                 cancel={editBan}
                 confirm={banUser}
+                classes="ban"
+                tags
+                render={<><i className="fas fa-ban" />unban</>} />
+               )
+               : (
+                <EditButton
+                options={editState.ban}
+                activate={editBan}
+                cancel={editBan}
+                confirm={banUser}
+                classes="ban"
                 tags
                 render={<><i className="fas fa-ban" />ban user</>} />
+               )
+           }
         </div>)
 }
 

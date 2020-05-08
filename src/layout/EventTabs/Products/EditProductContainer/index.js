@@ -9,22 +9,21 @@ import { productService } from "../../../../Authentication/service";
 
 import { FormContext } from "../../../../context/FormContext";
 import { UserContext } from "../../../../context/UserContext";
+import {validationRules} from "../AddNewProductContainer/productValidationRules";
 
-import {validationRules} from "./productValidationRules";
-
-
-const AddNewProductContainer = ({ addProductToList, id, category }) => {
+const EditProductContainer = ({ updateProductInList, eventId, prodId, category, name, quantity, price }) => {
 
   const [form, setform] = useContext(FormContext);
   const [loggedInUser,] = useContext(UserContext);
   let [sendingDataSpinner, setSendingDataSpinner] = useState(false);
 
   const [product, setProduct] = useState({
-    name: { value: "", isValid: false, err: "", touched: false },
-    price: { value: "", isValid: false, err: "", touched: false },
-    quantity: { value: "", isValid: false, err: "", touched: false },
-    productCategory: { value: "", isValid: false, err: "", touched: false }
+    name: { value: name, isValid: true, err: "", touched: true },
+    price: { value: price, isValid: true, err: "", touched: true },
+    quantity: { value: quantity, isValid: true, err: "", touched: true },
+    productCategory: { value: category, isValid: true, err: "", touched: true }
   });
+
 
 
   const onChangeHandler = event => {
@@ -45,38 +44,24 @@ const AddNewProductContainer = ({ addProductToList, id, category }) => {
   };
 
   const submitProduct = () => {
-    const chosenCategory = !!category ? category : product.productCategory.value;
     if (product.name.isValid && product.price.isValid && (product.productCategory.isValid || !!category)) {
       setSendingDataSpinner(true);
+      const newProduct = {
+        name: product.name.value,
+        price: parseFloat(product.price.value),
+        quantity: parseFloat(product.quantity.value),
+        productCategory: product.productCategory.value.toUpperCase()
+      };
 
-      productService.addProduct(id,
-        {
-          name: product.name.value,
-          price: product.price.value,
-          quantity: product.quantity.value,
-          productCategory: chosenCategory.toUpperCase()
-        })
+      
+
+      productService.updateProduct(eventId,prodId,newProduct)
         .then(res => {
+          updateProductInList(prodId,newProduct);
           console.log(res);
           setSendingDataSpinner(false);
           setform({ ...form, show: false });
           
-          addProductToList({
-            productCategory: chosenCategory.toUpperCase(),
-            product: {
-              id: res.id,
-              name: res.name,
-              price: res.price,
-              quantity: res.quantity,
-              user: {
-                id: loggedInUser.user.id,
-                username: loggedInUser.user.username,
-                picUrl: loggedInUser.user.picUrl
-              }
-              
-            }
-          });
-
         }).catch(err => {
           console.log(err);
           setSendingDataSpinner(false);
@@ -97,29 +82,28 @@ const AddNewProductContainer = ({ addProductToList, id, category }) => {
           placeholder={el.config.placeholder}
           type={el.config.type}
           name={el.name}
-          value={!!category && el.config.disabled ? category : product[el.name].value}
+          value={product[el.name].value}
           classes={product[el.name].touched ^ product[el.name].isValid ? "input-orange" : el.config.classes}
           error={product[el.name].err[0]}
-          disabled={!!category && el.config.disabled}
         />
       ))}
 
       {sendingDataSpinner
         ? <Spinner classes={"spinner-container-h-sm"} size={"spinner-sm"} />
-        : <Button clicked={submitProduct} classes="form-btn btn-blueGradient btn-md"> Add</Button>
+        : <Button clicked={submitProduct} classes="form-btn btn-blueGradient btn-md">Update</Button>
       }
     </>
   );
 };
 
-AddNewProductContainer.defaultProps = {
+EditProductContainer.defaultProps = {
   category: null
 };
 
-AddNewProductContainer.propTypes = {
+EditProductContainer.propTypes = {
   category: PropTypes.string,
   addProductToList: PropTypes.func.isRequired,
   id: PropTypes.string.isRequired
 };
 
-export default AddNewProductContainer;
+export default EditProductContainer;

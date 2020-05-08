@@ -1,7 +1,7 @@
 import React, {useState, useEffect} from 'react'
 import UserCard from "../../../../components/UserCard";
 import PaginatedContainer from "../../../../components/PaginatedContainer";
-import { eventService } from "../../../../Authentication/service";
+import { eventService, productService } from "../../../../Authentication/service";
 import Spinner from "../../../../components/Spinner";
 import "./Overview.scss";
 
@@ -23,16 +23,19 @@ const Overview = ({eventProducts, eventId, currency}) => {
 
 
         useEffect(() => {
-            eventService.getEventMembers(eventId)
-            .then(res =>{
-                console.log(res);
-                setMembers({users: res.map( user =>{
-                    return ({...user, money: prepareOverview(user.id, res.length)})
-                }), spinner: false});
-            }, err =>{
-                setMembers({users: [], spinner: false})
-                console.log(err);
-            })
+            // eventService.getEventMembers(eventId)
+            // .then(data => )
+
+            // eventService.getEventMembers(eventId)
+            // .then(res =>{
+            //     console.log(res);
+            //     setMembers({users: res.map( user =>{
+            //         return ({...user, money: prepareOverview(user.id, res.length)})
+            //     }), spinner: false});
+            // }, err =>{
+            //     setMembers({users: [], spinner: false})
+            //     console.log(err);
+            // })
             return () =>{}
         },[])
 

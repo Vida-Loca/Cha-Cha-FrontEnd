@@ -12,7 +12,7 @@ const grantUserAdmin = (id) => {
 }
 const deleteUser = (id) => {
     const requestOptions = { method: "DELETE", headers: authHeader() };
-    return fetch(`${serverURL}/admin/deleteUser/${id}`, requestOptions).then(handleResponse);
+    return fetch(`${serverURL}/admin/user/${id}`, requestOptions).then(handleResponse);
 }
 const isLoggedInUserAdmin = () => {
     const requestOptions = {
