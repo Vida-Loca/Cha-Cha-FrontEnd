@@ -4,38 +4,48 @@
 
   .search-filters{
     display: grid;
-    grid-template-columns: 1fr 1fr;
+    grid-template-columns: 1fr;
     align-items: center;
-    .search-bar, .search-btn{
-      grid-column-start: 1;
-      grid-column-end: 3;
+    @include mobile{
+      grid-template-columns: 1fr 1fr;
+      .search-bar, .search-submit-btn{
+        grid-column-start: 1;
+        grid-column-end: 3;
+    }
+    }
+
+
+    .search-submit-btn{
+      margin-top: 1rem;
     }
     .date{
       margin-top: 2rem;
       padding: 0;
       &:nth-of-type(1){
         input{
-          border-top-right-radius: 0;
-          border-bottom-right-radius: 0;
+          @include mobile{
+            border-top-right-radius: 0;
+            border-bottom-right-radius: 0;
+          }
         }
       }
       &:nth-of-type(2){
         input{
-          border-top-left-radius: 0;
-          border-bottom-left-radius: 0;
+          @include mobile{
+            border-top-left-radius: 0;
+            border-bottom-left-radius: 0;
+          }
         }
       }
     }
   }
   
   .paginated-content-column{
-    @include mobile {
-      display: grid;
-      grid-template-columns: 1fr 1fr;
-      .pagination-title{
-        grid-column-start: 1;
-        grid-column-end: 3;
-      }
+    display: flex;
+    flex-direction: row;
+    flex-wrap: wrap;
+    .pagination-title{
+      width: 100%;
     }
 
   }

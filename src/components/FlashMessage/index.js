@@ -1,9 +1,19 @@
-import React from "react";
+import React, {useEffect, useContext} from "react";
 import PropTypes from "prop-types";
 import {Button} from "../Button";
+import {FlashMessageContext} from "../../context/FlashMessageContext";
 import "./FlashMessage.scss";
 
 const FlashMessage = ({ show, flashClose, message, messageState }) => {
+const[flashMessage,setFlashMessage] = useContext(FlashMessageContext);
+  useEffect(() =>{
+    console.log("check!!!");
+    if(show){
+      setTimeout(() => {
+        setFlashMessage({...flashMessage, show: false});
+      }, 6000);
+    }
+  }, []);
 
  const fontAwesomeIcon = () =>{
      switch (messageState) {
@@ -22,13 +32,11 @@ const FlashMessage = ({ show, flashClose, message, messageState }) => {
     <>
       <div className="flash-message-container" >
         <div className={`flash-message ${messageState} ${show ? "flash-message-open" : ""}`} >
-          <Button classes="close-btn" clicked={flashClose}><i className="fas fa-times"/></Button>
-          <div className="content">
             <i className={`${fontAwesomeIcon()}`} />
             <div className="text">
                 {message}
             </div>
-          </div>
+            <Button classes="close-btn" clicked={flashClose}><i className="fas fa-times"/></Button>
         </div>
       </div>
     </>

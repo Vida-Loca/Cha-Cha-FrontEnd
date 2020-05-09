@@ -1,17 +1,19 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useContext } from "react";
 // import { events } from "../../../mockData";
+import {FormContext} from "../../../context/FormContext";
 
 import { SearchBar, TextInput } from "../../../components/Inputs";
-import EventCard from "../../../components/EventCard";
+import EventInfoCard from "./EventInfoCard";
 import PaginatedContainer from "../../../components/PaginatedContainer";
 import Spinner from "../../../components/Spinner";
 import {Button} from "../../../components/Button";
+import EventInfoContainer from "./EventInfoContainer";
 import "./EventTab.scss";
 
 import { eventService } from "../../../Authentication/service";
 
 const EventLayout = () => {
-
+  const [forms, setForms] = useContext(FormContext);
   const [allEventsList, setAllEventsList] = useState({ events: [], spinner: true });
   const [dislpayEvent, setDisplayEvent] = useState({ events: [], spinner: true });
 
@@ -45,6 +47,7 @@ const EventLayout = () => {
 
   const clearFilters = () =>{
     setDisplayEvent({ ...allEventsList});
+    setSearchFilter({startDate: "", endDate: "", name: "" });
   }
 
   const searchingEventsWithFilter = () => {
@@ -71,12 +74,16 @@ const EventLayout = () => {
     setDisplayEvent({...dislpayEvent, events: filteredEvents});
 
   }
+
+  const openEventInfoCard = (eventId) =>{
+    setForms({renderForm: <EventInfoContainer eventId={eventId} />, show: true});
+  }
   return (
     <div className="all-user-container">
       <div className="search-filters">
         <TextInput
           onChange={handleSearch}
-          placeholder="start date"
+          placeholder="from"
           type="date"
           name="startDate"
           value={searchFilter.startDate}
@@ -84,7 +91,7 @@ const EventLayout = () => {
         />
         <TextInput
           onChange={handleSearch}
-          placeholder="end date"
+          placeholder="to"
           type="date"
           name="endDate"
           value={searchFilter.endDate}
@@ -97,7 +104,7 @@ const EventLayout = () => {
           value={searchFilter.name}
           clicked={searchingEventsWithFilter}
         />
-      <Button clicked={clearFilters} classes="btn-sm btn-blueGradient">clear filters</Button>
+      <Button clicked={clearFilters} classes="btn-sm btn-blueGradient search-submit-btn">clear filters</Button>
       </div>
       <PaginatedContainer
         title="All Events"
@@ -107,15 +114,14 @@ const EventLayout = () => {
           dislpayEvent.spinner
             ? () => <Spinner />
             : ({ items }) =>
-              items.map((ev, index) => (
-                <EventCard
-                  id={ev.id}
+              items.map(ev => (
+                <EventInfoCard
+                  clicked={() => openEventInfoCard(ev.id)}
                   key={ev.id}
-                  name={ev.name}
-                  date={ev.startTime}
-                  location={ev.address}
+                  eventName={ev.name}
+                  date={ev.startTime.substring(0,10)}
+                  country={ev.address.country}
                   eventState={ev.isComplete}
-                  listIndex={index % 10}
                 />
               ))} />
 

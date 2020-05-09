@@ -4,10 +4,12 @@ import { Button, EditButton } from "../../../../components/Button";
 // import { loggedInUser } from "../../../../mockData";
 import { adminService } from "../../../../Authentication/service";
 import { FlashMessageContext } from "../../../../context/FlashMessageContext";
+import { FormContext } from "../../../../context/FormContext";
+import {} from "../../../../Authentication/service";
 
 import "./UserProfile.scss";
 
-const UserProfile = ({ userDetails }) => {
+const UserProfile = ({promoteToAdminInList, removeUserFromList, banUserInList, userDetails, isAdmin }) => {
     const [userInfo, setUserInfo] = useState({
         id: "",
         username: "Loading ...",
@@ -25,6 +27,7 @@ const UserProfile = ({ userDetails }) => {
     });
 
     const [, setFlashMessage] = useContext(FlashMessageContext);
+    const [, setForm] = useContext(FormContext);
 
     useEffect(() => {
         let __isMounted = true;
@@ -38,7 +41,6 @@ const UserProfile = ({ userDetails }) => {
                 name: userDetails.name,
                 surname: userDetails.surname,
                 banned: userDetails.banned,
-                isAdmin: false
             })
         }
         return () => {
@@ -61,9 +63,20 @@ const UserProfile = ({ userDetails }) => {
         adminService.deleteUser(userInfo.id)
             .then(res => {
                 console.log(res);
+                setFlashMessage({
+                    message: `user ${userInfo.username} has been succesfully deleted`,
+                    show: true,
+                    messageState: "success"});
+                    setForm({renderForm: "", show: false});
+                    removeUserFromList(userInfo.id);
             })
             .catch(err => {
                 console.log(err);
+                setFlashMessage({
+                    message: "there has been a problem with deleting this user",
+                    show: true,
+                    messageState: "warning"
+                })
             })
     }
 
@@ -71,19 +84,45 @@ const UserProfile = ({ userDetails }) => {
         adminService.grantUserAdmin(userInfo.id)
             .then(res => {
                 console.log(res);
+                setFlashMessage({
+                    message: `user ${userInfo.username} has ben promoted to admin`,
+                    show: true,
+                    messageState: "success"});
+                    setForm({renderForm: "", show: false});
+                    promoteToAdminInList(userInfo.id);
+            })
+            .catch(err => {
+                console.log(err);
+                setFlashMessage({
+                    message: "can't promote user to admin",
+                    show: true,
+                    messageState: "warning"
+                })
             })
     }
 
     const banUser = () => {
-       console.log(userInfo.id);
+        adminService.banUserByID(userInfo.id)
+        .then(res => {
+            console.log(res);
+            setFlashMessage({
+                message: res.banned ? `user ${userInfo.username} has ben banned` : `user ${userInfo.username} has ben pardoned`,
+                show: true,
+                messageState: "success"});
+                setForm({renderForm: "", show: false});
+                banUserInList(userInfo.id, res.banned );
+        })
+        .catch(err => {
+            console.log(err);
+            setFlashMessage({
+                message: "can't ban user",
+                show: true,
+                messageState: "warning"
+            })
+        })
     }
 
-    const flashMessageOpen = () =>{
-        setFlashMessage({
-        message: "hello",
-        show: true,
-        messageState: "success"})
-      }
+
 
     return (
         <div className="user-profile-container">
@@ -91,7 +130,7 @@ const UserProfile = ({ userDetails }) => {
                 <Avatar imageLink={userInfo.avatarUrl} />
                 
                 {
-                    userInfo.isAdmin
+                    isAdmin
                     ? <div><i className="fas fa-star" /> Admin</div>
                     :  (userInfo.banned
                         ? null
@@ -120,12 +159,12 @@ const UserProfile = ({ userDetails }) => {
                 <p>{userInfo.datejoined}</p>
             </div>
             {
-                !userInfo.isAdmin 
+                !isAdmin 
                 && <EditButton
                 options={editState.delete}
                 activate={editDelete}
                 cancel={editDelete}
-                confirm={flashMessageOpen}
+                confirm={deleteAccount}
                 classes="delete"
                 tags
                 render={<><i className="far fa-trash-alt" />delete user</>} />
@@ -134,24 +173,26 @@ const UserProfile = ({ userDetails }) => {
            {
                userInfo.banned
                ? (
-                <EditButton
-                options={editState.ban}
-                activate={editBan}
-                cancel={editBan}
-                confirm={banUser}
-                classes="ban"
-                tags
-                render={<><i className="fas fa-ban" />unban</>} />
+                    <EditButton
+                    options={editState.ban}
+                    activate={editBan}
+                    cancel={editBan}
+                    confirm={banUser}
+                    classes="ban"
+                    tags
+                    render={<><i className="fas fa-ban" />unban</>} 
+                />
                )
                : (
                 <EditButton
-                options={editState.ban}
-                activate={editBan}
-                cancel={editBan}
-                confirm={banUser}
-                classes="ban"
-                tags
-                render={<><i className="fas fa-ban" />ban user</>} />
+                    options={editState.ban}
+                    activate={editBan}
+                    cancel={editBan}
+                    confirm={banUser}
+                    classes="ban"
+                    tags
+                    render={<><i className="fas fa-ban" />ban user</>}
+                    />
                )
            }
         </div>)

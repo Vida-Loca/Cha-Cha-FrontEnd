@@ -1,0 +1,35 @@
+.event-info-card-container{
+    background: rgb(216, 216, 216);
+    margin: 0.5rem;
+    padding:  0.4rem 0.6rem;
+    border-radius: 0.6rem;
+    box-shadow: 0 1px 1px rgba(0, 0, 0, 0.3);
+    cursor: pointer;
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-start;
+    font-size: 0.7rem;
+    max-width: 13rem;
+    text-align: start;
+    overflow: hidden;
+    transition: all 0.2s ease-in-out;
+    &:hover{
+        background:  rgb(184, 184, 184);;
+    }
+    .data-state{
+        margin: 0.2rem 0;
+        .eventState{
+            margin-left: 0.2rem;
+            font-size: 0.6rem;
+            font-style: italic;
+            color: rgb(84, 84, 84);
+        }
+    }
+    i{
+        margin-right: 0.3rem;
+    }
+    .event-name{
+        font-weight: bold;
+        font-size: 0.9rem;
+    }
+}
