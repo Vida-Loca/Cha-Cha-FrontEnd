@@ -2,6 +2,7 @@ import React, { useEffect, useState } from "react";
 import { Link } from "react-router-dom";
 import PropTypes from "prop-types";
 import "./EventCard.scss";
+import moment from "moment";
 
 const EventCard = ({ id, name, date, location, eventState, listIndex }) => {
 
@@ -55,7 +56,7 @@ const EventCard = ({ id, name, date, location, eventState, listIndex }) => {
             <h2>{name}</h2>
             <span className="date-cont">
               <i className="fas fa-calendar-alt" />
-              <span className="date">{!!date ? date.substring(0, 10) : ""}</span>
+              <span className="date">{moment(date).fromNow()}</span>
               <strong className="event-state">{eventState}</strong>
             </span>
             <span>

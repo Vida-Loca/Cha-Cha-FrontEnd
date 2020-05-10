@@ -4,7 +4,6 @@ import { FormContext } from "../../../context/FormContext";
 // import { allUsers } from "../../../mockData";
 import { adminService } from "../../../Authentication/service";
 
-// import { Button } from "../../../components/Button";
 import { SearchBar } from "../../../components/Inputs";
 import PaginatedContainer from "../../../components/PaginatedContainer";
 import Spinner from "../../../components/Spinner";
@@ -24,7 +23,6 @@ const UsersLayout = () => {
     let __isMounted = true;
     Promise.all([adminService.getAllUsers(), adminService.getAllAdmins()])
       .then(res => {
-        console.log(res);
         if (__isMounted) {
           const usersList = res[0].filter( user => res[1].findIndex( userT => userT.id === user.id) < 0);
           setUsers({ members: usersList, spinner: false });
@@ -102,7 +100,6 @@ const UsersLayout = () => {
 
   const searchForGivenUsername = () => {
     if (findUser.username !== "") {
-      console.log(`searching for ... ${findUser.username}`);
       setUsers({ ...users, spinner: true });
       setTimeout(() => {
         setUsers({ ...users, spinner: false });

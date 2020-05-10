@@ -3,6 +3,7 @@ import PropTypes from "prop-types";
 
 import { FormContext } from "../../../context/FormContext";
 import { UserContext } from "../../../context/UserContext";
+import { FlashMessageContext } from "../../../context/FlashMessageContext";
 // import { membersOfTheEvent, requestsFoThisEvent } from "../../../mockData";
 
 import "./Members.scss";
@@ -20,6 +21,7 @@ const Members = ({ eventId, eventType, isEventAdmin }) => {
 
 
   const [, setform] = useContext(FormContext);
+  const [, setFlashMessage] = useContext(FlashMessageContext);
   const [loggedInUser,] = useContext(UserContext);
   const [eventMemebers, setEventMemebers] = useState({ members: [], spinner: true });
   const [eventRequests, seEventRequests] = useState({ members: [], spinner: true });
@@ -62,34 +64,54 @@ const Members = ({ eventId, eventType, isEventAdmin }) => {
     setform({ show: true, renderForm: <InviteUserFormContainer id={eventId} /> });
   };
 
-  const kickUsers = (userId) => {
+  const kickUsers = (userId, username) => {
     eventService.kickUserFromEvent(eventId, userId)
-      .then(res => {
-        setEventMemebers({ members: eventMemebers.members.filter(prod => prod.id !== userId), spinner: false })
+      .then(_res => {
+        setEventMemebers({ members: eventMemebers.members.filter(prod => prod.id !== userId), spinner: false });
+        setFlashMessage({
+          message: `successfully kicked user ${username}`,
+          show: true,
+          messageState: "success"
+        });
       }, err => {
         console.log(err);
+        setFlashMessage({
+          message: `there has been a problem with kicking this user`,
+          show: true,
+          messageState: "error"
+        });
       })
 
   }
   const ignoreRequest = (userId, invitationId) => {
     eventService.rejectEventInvitation(invitationId)
-      .then(res => {
+      .then(_res => {
         seEventRequests({ members: eventRequests.members.filter(prod => prod.id !== userId), spinner: false })
       }, err => {
         console.log(err);
       })
 
   }
-  const acceptUsers = (userId, invitationId) => {
+  const acceptUsers = (userId, invitationId, username) => {
     eventService.acceptRequest(invitationId)
-      .then(res => {
+      .then(_res => {
         const tempMembersList = eventMemebers.members;
         const acceptedMember = eventRequests.members.filter(prod => prod.user.id === userId)[0];
         tempMembersList.push(acceptedMember.user);
         seEventRequests({ members: eventRequests.members.filter(prod => prod.user.id !== userId), spinner: false })
-        setEventMemebers({ members: tempMembersList, spinner: false })
+        setEventMemebers({ members: tempMembersList, spinner: false });
+        setFlashMessage({
+          message: `accepted ${username} request to join this event`,
+          show: true,
+          messageState: "success"
+        });
       }, err => {
         console.log(err);
+        setFlashMessage({
+          message: `there has been a problme accepting ${username} request to join this event`,
+          show: true,
+          messageState: "error"
+        });
       })
   }
 
@@ -117,7 +139,7 @@ const Members = ({ eventId, eventType, isEventAdmin }) => {
                     <Button clicked={() => ignoreRequest(ev.user.id, ev.id)} classes="btn-orangeGradient-icon btn-sm">
                       <i className="fas fa-times-circle" />
                     </Button>
-                    <Button clicked={() => acceptUsers(ev.user.id, ev.id)} classes="btn-blueGradient-icon btn-sm">
+                    <Button clicked={() => acceptUsers(ev.user.id, ev.id, ev.user.username)} classes="btn-blueGradient-icon btn-sm">
                       <i className="fas fa-check-circle" />
                     </Button>
                   </UserCard>
@@ -158,7 +180,7 @@ const Members = ({ eventId, eventType, isEventAdmin }) => {
               items.map(ev => (
                 <UserCard key={ev.username} username={ev.username} imageUrl={ev.picUrl} showControlls={isEventAdmin}>
                   {loggedInUser.user.id !== ev.id &&
-                  <Button clicked={() => kickUsers(ev.id)} classes="btn-orangeGradient-icon btn-sm">
+                  <Button clicked={() => kickUsers(ev.id, ev.username)} classes="btn-orangeGradient-icon btn-sm">
                      <i className="fas fa-user-times" />
                   </Button>}
                 </UserCard>

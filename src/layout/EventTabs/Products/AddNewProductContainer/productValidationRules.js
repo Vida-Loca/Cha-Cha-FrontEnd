@@ -7,8 +7,7 @@ const validationRules = [
         classes: "input-blue"
       },
       validation: {
-        required: true,
-        string: true
+        required: true
       }
     },
     {
@@ -20,7 +19,8 @@ const validationRules = [
       },
       validation: {
         required: true,
-        maxLength: 10
+        maxLength: 10,
+        min: 0.01
       }
     },
     {
@@ -32,7 +32,8 @@ const validationRules = [
       },
       validation: {
         required: true,
-        maxLength: 10
+        maxLength: 10,
+        min: 1
       }
     },
     {

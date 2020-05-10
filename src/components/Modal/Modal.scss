@@ -62,7 +62,9 @@
 }
 
 .modal-open{
-  animation: open-modal-animation 0.4s ease-out forwards;
+  @include breaking-point-1 {
+    animation: open-modal-animation 0.4s ease-out forwards;
+  }
 }
 
 @keyframes open-modal-animation{

@@ -9,10 +9,11 @@
     flex-direction: column;
     justify-content: flex-start;
     font-size: 0.7rem;
-    max-width: 13rem;
+    max-width: 14rem;
     text-align: start;
     overflow: hidden;
     transition: all 0.2s ease-in-out;
+    min-width: 10rem;
     &:hover{
         background:  rgb(184, 184, 184);;
     }

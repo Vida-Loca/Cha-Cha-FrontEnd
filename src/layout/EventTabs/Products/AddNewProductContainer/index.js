@@ -22,7 +22,7 @@ const AddNewProductContainer = ({ addProductToList, id, category }) => {
   const [product, setProduct] = useState({
     name: { value: "", isValid: false, err: "", touched: false },
     price: { value: "", isValid: false, err: "", touched: false },
-    quantity: { value: "", isValid: false, err: "", touched: false },
+    quantity: { value: "1", isValid: false, err: "", touched: false },
     productCategory: { value: "", isValid: false, err: "", touched: false }
   });
 
@@ -46,7 +46,7 @@ const AddNewProductContainer = ({ addProductToList, id, category }) => {
 
   const submitProduct = () => {
     const chosenCategory = !!category ? category : product.productCategory.value;
-    if (product.name.isValid && product.price.isValid && (product.productCategory.isValid || !!category)) {
+    if (product.name.isValid && product.price.isValid && product.quantity.isValid&& (product.productCategory.isValid || !!category)) {
       setSendingDataSpinner(true);
 
       productService.addProduct(id,
@@ -82,10 +82,7 @@ const AddNewProductContainer = ({ addProductToList, id, category }) => {
           setSendingDataSpinner(false);
         })
 
-    } else {
-      console.log("some fields are not valid");
-
-    }
+    } 
   }
 
   return (

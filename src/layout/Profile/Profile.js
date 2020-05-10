@@ -1,6 +1,7 @@
 import React, { useContext, useState, useEffect } from "react";
 
 import { FormContext } from "../../context/FormContext";
+import {FlashMessageContext} from "../../context/FlashMessageContext";
 import { authenticationService, profileService, userService } from "../../Authentication/service";
 
 import { editableProfileRules, profileRules } from "./validationCfg";
@@ -41,6 +42,7 @@ const Profile = () => {
   const [amountOfNewRequests, setNewRequests] = useState(0);
 
   const [, setform] = useContext(FormContext);
+  const [, setFlashMessage] = useContext(FlashMessageContext);
 
   useEffect(() => {
     let __isMounted = true;
@@ -122,12 +124,21 @@ const Profile = () => {
     if (editableUserInfo.name.isValid && editableUserInfo.surname.isValid) {
    
       userService.updateCredentials(
-       editableUserInfo.name.value,
-       editableUserInfo.surname.value
+        editableUserInfo.name.value,
+        editableUserInfo.surname.value
       ).then(_res =>{
         setEdit(false);
-      }, err =>{
-        console.log(err);
+        setFlashMessage({
+          message: "succesfully updated profile",
+          show: true,
+          messageState: "success"
+        });
+      }, _err =>{
+        setFlashMessage({
+          message: "there is a problem updating your profile",
+          show: true,
+          messageState: "warning"
+        });
       })
     }
   }

@@ -13,12 +13,11 @@ const MapBox = ({ latitude, longitude, markers, zoom, showPopups }) => {
         height: "30rem",
         zoom: zoom
     })
-    const [slectedMark, setSelectPark] = useState(8);
+    const [slectedMark, ] = useState(8);
     const [allMarker, setMarkers] = useState([]);
     useEffect(() => {
         const newMarkers = markers.map( mark => ({...mark, selected: false}))
         setMarkers(newMarkers);
-        console.log("discord")
     }, [slectedMark]);
 
 
@@ -69,7 +68,6 @@ const MapBox = ({ latitude, longitude, markers, zoom, showPopups }) => {
                 </div>)
             })
             }
-            {/* <Popup latitude={54.352024} longitude={18.646639}>opsie</Popup> */}
         </ReactMapGL>
         </>
     )

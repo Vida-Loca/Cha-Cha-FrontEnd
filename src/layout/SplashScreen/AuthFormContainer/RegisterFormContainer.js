@@ -134,7 +134,6 @@ const RegistrationFormContainer = () => {
         picUrl: ""
       }).then(res => {
         console.log(res);
-        console.log("smile");
 
         setRefistrationConfirm(true);
         setSendingDataSpinner(false);
@@ -142,7 +141,6 @@ const RegistrationFormContainer = () => {
       }, err => {
         console.log(err);
         setSendingDataSpinner(false);
-        console.log("not")
       });
 
     }

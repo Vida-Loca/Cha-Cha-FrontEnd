@@ -28,7 +28,6 @@ const [,setFlashMessage] = useContext(FlashMessageContext);
     useEffect(() => {
         eventService.getEventByID(eventId)
         .then(res => {
-            console.log(res);
             setEventInfo({
                 name: res.name,
                 eventType: res.eventType,

@@ -12,7 +12,6 @@ import "./inviteFriends.scss";
 
 
 const InviteUserFormContainer = ({ id }) => {
-  // const [forms, setForm] = useContext(FormContext);
 
   const [findUser, setfindUser] = useState({ username: "" });
   const [friendsList, setFriendList] = useState({ friends: [], spinner: true });

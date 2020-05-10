@@ -34,15 +34,17 @@ const EditButton = ({ activate, cancel, confirm, options, tags, render, classes 
 EditButton.defaultProps = {
   options: false,
   tags: false,
-  classes: ""
+  classes: "",
+  cancel: () => {},
+  confirm: () => {}
 };
 
 EditButton.propTypes = {
-  confirm: PropTypes.func.isRequired,
+  confirm: PropTypes.func,
   tags: PropTypes.bool,
   options: PropTypes.bool,
   activate: PropTypes.func.isRequired,
-  cancel: PropTypes.func.isRequired,
+  cancel: PropTypes.func,
   classes: PropTypes.string
 };
 

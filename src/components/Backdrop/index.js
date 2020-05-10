@@ -1,5 +1,5 @@
 import React from "react";
-import PropTypes from "prop-types";
+import PropTypes, { bool } from "prop-types";
 import "./Backdrop.scss";
 
 const Backdrop = ({ show, clicked }) => {
@@ -9,6 +9,7 @@ const Backdrop = ({ show, clicked }) => {
 };
 
 Backdrop.propTypes = {
+  show: PropTypes.bool.isRequired,
   clicked: PropTypes.func.isRequired
 };
 

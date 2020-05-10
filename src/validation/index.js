@@ -25,6 +25,14 @@ const checkValidation = (value, rules) => {
       errors.push(`must not be longer than ${rules.maxLength}`);
     }
   }
+  // min value
+  if (rules.min) {
+    const rule = parseFloat(value) >= rules.min;
+    isValid = rule && isValid;
+    if (!rule) {
+      errors.push(`value must be not less than ${rules.min}`);
+    }
+  }
   // is string
   if (rules.string) {
     const rule = /^([a-zA-Z ]*)$/.test(value);

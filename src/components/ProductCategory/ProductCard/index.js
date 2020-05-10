@@ -22,15 +22,16 @@ const ProductCard = ({removeProduct, updateProductList,eventId, product, categor
   const [tileState, tileStateSet] = useState(false);
 
   const EditProductModal = (id,name, quantity, price) => {
-    console.log(name);
-    setform({ ...forms, renderForm: <EditProductContainer 
-      updateProductInList={updateProductList}
-      eventId={eventId} 
-      prodId={id} 
-      category={category} 
-      name={name} 
-      quantity={quantity} 
-      price={price}  
+    setform({ ...forms, 
+      renderForm: 
+      <EditProductContainer 
+        updateProductInList={updateProductList}
+        eventId={eventId} 
+        prodId={id} 
+        category={category} 
+        name={name} 
+        quantity={quantity} 
+        price={price}  
       />, 
       show: true });
   };
@@ -105,7 +106,7 @@ const ProductCard = ({removeProduct, updateProductList,eventId, product, categor
 
 ProductCard.propTypes = {
   eventId: PropTypes.string.isRequired,
-  removeProduct: PropTypes.func.isRequired,
+  removeProduct: PropTypes.func,
   product: PropTypes.shape({
     id: PropTypes.number.isRequired,
     name: PropTypes.string.isRequired,

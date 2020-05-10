@@ -3,7 +3,7 @@ import PropTypes from "prop-types";
 
 import "./MyProducts.scss";
 
-import { ShowMore, Button } from "../Button";
+import { ShowMore } from "../Button";
 import MyProductCard from "./MyProductCard";
 import { OptionsInput } from "../Inputs";
 

@@ -5,7 +5,9 @@ import { userService } from "../../../Authentication/service";
 import PaginatedContainer from "../../../components/PaginatedContainer";
 import UserCard from "../../../components/UserCard";
 import Spinner from "../../../components/Spinner";
+
 import { UserContext } from "../../../context/UserContext";
+import { FlashMessageContext } from "../../../context/FlashMessageContext";
 // import { friends } from "../../../mockData";
 
 import "./inviteFriends.scss";
@@ -15,7 +17,9 @@ const SearchFriends = () => {
     const [findUser, setfindUser] = useState({ username: "" });
     const [friendsList, setFriendsList] = useState([]);
     const [dislpayFriends, setDislpayFreinds] = useState({ users: [], spinner: false });
+
     const [loggedInUser,] = useContext(UserContext);
+    const [, setFlashMessage] = useContext(FlashMessageContext);
 
     const onChangeHandler = event => {
         setfindUser({
@@ -26,7 +30,7 @@ const SearchFriends = () => {
 
     const sendAFriendRequest = (id) => {
         userService.inviteUserByID(id)
-            .then(_ => {
+            .then(_res => {
                 let newEl = dislpayFriends.users.map(user =>{
                     if(user.id === id){
                         return {...user, sent: true};
@@ -35,6 +39,17 @@ const SearchFriends = () => {
                     }
                 });
                 setDislpayFreinds({users: newEl, spinner: false});
+                setFlashMessage({
+                    message: "friend request sent",
+                    show: true,
+                    messageState: "success"
+                  });
+            }, _err =>{
+                setFlashMessage({
+                    message: "there is a problem with sending this friend request",
+                    show: true,
+                    messageState: "error"
+                  });
             });
     }
 

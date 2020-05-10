@@ -33,14 +33,11 @@ const Products = ({ eventId, isEventAdmin, currency }) => {
 
     productService.getTotalEventAmount(eventId)
     .then(res =>{
-      console.log(res);
       setTotalSum(res);
     })
     productService.getProductsFromEvent(eventId)
       .then(res => {
         if (__isMounted) {
-          console.log(res);
-          console.log(createSetOfCategories(res));
           setProduct({ products: createSetOfCategories(res), spinner: false });
         }
       }, _err => {
@@ -72,6 +69,7 @@ const Products = ({ eventId, isEventAdmin, currency }) => {
   const addProduct = (addedProduct) => {
     let tempProductsList = productList.products;
     
+    // check if given category exists
     let foundIndex = tempProductsList.findIndex(catList => catList.productCategory === addedProduct.productCategory);
     if (foundIndex < 0) {
       let tempProductCat = { productCategory: addedProduct.productCategory, products: [addedProduct.product] }
@@ -79,7 +77,13 @@ const Products = ({ eventId, isEventAdmin, currency }) => {
       setProduct({ ...productList, products: tempProductsList });
     }
     else {
-      tempProductsList[foundIndex].products.push(addedProduct.product);
+      let foundIndexOfProduct = tempProductsList[foundIndex].products.findIndex( prod => prod.id === addedProduct.product.id);
+      if(foundIndexOfProduct > -1){
+        tempProductsList[foundIndex].products[foundIndexOfProduct].quantity = addedProduct.product.quantity;
+      } else{
+        tempProductsList[foundIndex].products.push(addedProduct.product);
+      }
+     
       setProduct({ ...productList, products: tempProductsList });
     }
 
@@ -117,11 +121,11 @@ const Products = ({ eventId, isEventAdmin, currency }) => {
           loggedInUserProducts.spinner
           ? <Spinner />
           : <MyProducts 
-            currency={currency}
-            isEventAdmin={isEventAdmin} 
-            eventId={eventId} 
-            supCont={loggedInUserProducts.products} 
-            key="myProducts" 
+              currency={currency}
+              isEventAdmin={isEventAdmin} 
+              eventId={eventId} 
+              supCont={loggedInUserProducts.products} 
+              key="myProducts" 
            />
         }
         

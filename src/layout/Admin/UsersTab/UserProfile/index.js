@@ -62,7 +62,6 @@ const UserProfile = ({promoteToAdminInList, removeUserFromList, banUserInList, u
     const deleteAccount = () => {
         adminService.deleteUser(userInfo.id)
             .then(res => {
-                console.log(res);
                 setFlashMessage({
                     message: `user ${userInfo.username} has been succesfully deleted`,
                     show: true,
@@ -83,7 +82,6 @@ const UserProfile = ({promoteToAdminInList, removeUserFromList, banUserInList, u
     const promoteToAdmin = () => {
         adminService.grantUserAdmin(userInfo.id)
             .then(res => {
-                console.log(res);
                 setFlashMessage({
                     message: `user ${userInfo.username} has ben promoted to admin`,
                     show: true,
@@ -104,7 +102,6 @@ const UserProfile = ({promoteToAdminInList, removeUserFromList, banUserInList, u
     const banUser = () => {
         adminService.banUserByID(userInfo.id)
         .then(res => {
-            console.log(res);
             setFlashMessage({
                 message: res.banned ? `user ${userInfo.username} has ben banned` : `user ${userInfo.username} has ben pardoned`,
                 show: true,
@@ -171,28 +168,30 @@ const UserProfile = ({promoteToAdminInList, removeUserFromList, banUserInList, u
             }
 
            {
-               userInfo.banned
-               ? (
-                    <EditButton
-                    options={editState.ban}
-                    activate={editBan}
-                    cancel={editBan}
-                    confirm={banUser}
-                    classes="ban"
-                    tags
-                    render={<><i className="fas fa-ban" />unban</>} 
-                />
-               )
-               : (
-                <EditButton
-                    options={editState.ban}
-                    activate={editBan}
-                    cancel={editBan}
-                    confirm={banUser}
-                    classes="ban"
-                    tags
-                    render={<><i className="fas fa-ban" />ban user</>}
+               !isAdmin && (
+                userInfo.banned
+                ? (
+                        <EditButton
+                        options={editState.ban}
+                        activate={editBan}
+                        cancel={editBan}
+                        confirm={banUser}
+                        classes="ban"
+                        tags
+                        render={<><i className="fas fa-ban" />unban</>} 
                     />
+                )
+                : (
+                    <EditButton
+                        options={editState.ban}
+                        activate={editBan}
+                        cancel={editBan}
+                        confirm={banUser}
+                        classes="ban"
+                        tags
+                        render={<><i className="fas fa-ban" />ban user</>}
+                        />
+                )
                )
            }
         </div>)

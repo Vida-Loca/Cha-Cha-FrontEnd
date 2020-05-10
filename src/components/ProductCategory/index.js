@@ -19,7 +19,13 @@ const ProductCategory = ({ isEventAdmin, eventId, supCont, currency }) => {
 
   const addProduct = (addedProduct) => {
     let tempSup = supplyContainer.products;
-    tempSup.push(addedProduct.product);
+
+    let foundIndexOfProduct = tempSup.findIndex( prod => prod.id === addedProduct.product.id);
+    if(foundIndexOfProduct > -1){
+      tempSup[foundIndexOfProduct].quantity = addedProduct.product.quantity;
+    } else{
+      tempSup.push(addedProduct.product);
+    }
     setsupplyContainer({ ...supplyContainer, products: tempSup });
   }
 
@@ -38,7 +44,6 @@ const ProductCategory = ({ isEventAdmin, eventId, supCont, currency }) => {
   const removeProductFromCategory = (eventId, productId) => {
     productService.removeProduct(eventId, productId)
       .then(res => {
-        console.log(res);
         setsupplyContainer({ ...supplyContainer, products: supplyContainer.products.filter(prod => prod.id !== productId), show: true });
       }, err => {
         console.log(err);

@@ -2,25 +2,15 @@
 import React, { useState, useContext } from "react";
 import PropTypes from "prop-types";
 import { Button, EditButton } from "../../Button";
-import { TextInputNL, TextArea } from "../../Inputs";
 import EditProductContainer from "../../../layout/EventTabs/Products/EditProductContainer";
 
 import {FormContext} from "../../../context/FormContext";
 
-import { productService } from "../../../Authentication/service";
-
 import "./MyProductCard.scss";
 
 
-const MyProductCard = ({removeProduct,updateProductList, eventId, product, category, currency }) => {
+const MyProductCard = ({removeProduct, updateProductList, eventId, product, category, currency }) => {
 
-
-  const [tileSupply, setTileSuply] = useState({
-    supply: product.name,
-    price: String(product.price),
-    tempSupply: product.name,
-    tempPrice: String(product.price)
-  });
   const [forms,setform] = useContext(FormContext);
   const [editState, setEditState] = useState(false);
   const [deleteState, setDeleteState] = useState(false);
@@ -28,33 +18,10 @@ const MyProductCard = ({removeProduct,updateProductList, eventId, product, categ
   const [tileState, tileStateSet] = useState(false);
 
 
-
-  const onChangeHandlerPrice = event => {
-    if (event.target.value.length < 20) {
-      setTileSuply({
-        ...tileSupply,
-        [`${event.target.name}`]: event.target.value
-      });
-    };
-  }
-  const onChangeHandlerDescription = event => {
-    if (event.target.value.length < 250) {
-      setTileSuply({
-        ...tileSupply,
-        [`${event.target.name}`]: event.target.value
-      });
-    };
-  }
-
   const changeOptions = () => {
     tileStateSet(!tileState);
     setDeleteState(false);
     setEditState(false);
-    setTileSuply({
-      ...tileSupply,
-      supply: tileSupply.tempSupply,
-      price: tileSupply.tempPrice
-    });
   };
 
   const deleteHandler = () => {
@@ -67,38 +34,17 @@ const MyProductCard = ({removeProduct,updateProductList, eventId, product, categ
   };
 
 
-
-  // const updatingProduct = () => {
-  //   console.log(tileSupply);
-  //   if (tileSupply.supply.length > 0 && tileSupply.price.length > 0 && !isNaN(tileSupply.price)) {
-  //     console.log("updating");
-  //     productService.updateProduct(eventId, product.id, {
-  //       price: tileSupply.price,
-  //       name: tileSupply.supply,
-  //       productCategory: category
-  //     })
-  //       .then(_ => {
-  //         setEditState(false);
-  //         tileStateSet(false);
-  //       }, err => {
-  //         console.log(err);
-  //       })
-
-  //   } else {
-  //     console.log("can't be updatted")
-  //   }
-  // }
-
   const EditProductModal = (id,name, quantity, price) => {
-    console.log(name);
-    setform({ ...forms, renderForm: <EditProductContainer 
-      updateProductInList={updateProductList}
-      eventId={eventId} 
-      prodId={id} 
-      category={category} 
-      name={name} 
-      quantity={quantity} 
-      price={price}  
+    setform({ ...forms, 
+      renderForm: 
+      <EditProductContainer 
+        updateProductInList={updateProductList}
+        eventId={eventId} 
+        prodId={id} 
+        category={category} 
+        name={name} 
+        quantity={quantity} 
+        price={price}  
       />, 
       show: true });
   };
@@ -158,7 +104,8 @@ MyProductCard.propTypes = {
     price: PropTypes.number.isRequired
   }).isRequired,
   category: PropTypes.string.isRequired,
-  currency: PropTypes.string.isRequired
+  currency: PropTypes.string.isRequired,
+  updateProductInList: PropTypes.func
 
 };
 

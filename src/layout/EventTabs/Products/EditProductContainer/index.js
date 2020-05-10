@@ -8,13 +8,11 @@ import Spinner from "../../../../components/Spinner";
 import { productService } from "../../../../Authentication/service";
 
 import { FormContext } from "../../../../context/FormContext";
-import { UserContext } from "../../../../context/UserContext";
 import {validationRules} from "../AddNewProductContainer/productValidationRules";
 
 const EditProductContainer = ({ updateProductInList, eventId, prodId, category, name, quantity, price }) => {
 
   const [form, setform] = useContext(FormContext);
-  const [loggedInUser,] = useContext(UserContext);
   let [sendingDataSpinner, setSendingDataSpinner] = useState(false);
 
   const [product, setProduct] = useState({
@@ -56,9 +54,8 @@ const EditProductContainer = ({ updateProductInList, eventId, prodId, category, 
       
 
       productService.updateProduct(eventId,prodId,newProduct)
-        .then(res => {
+        .then(_res => {
           updateProductInList(prodId,newProduct);
-          console.log(res);
           setSendingDataSpinner(false);
           setform({ ...form, show: false });
           
@@ -67,10 +64,7 @@ const EditProductContainer = ({ updateProductInList, eventId, prodId, category, 
           setSendingDataSpinner(false);
         })
 
-    } else {
-      console.log("some fields are not valid");
-
-    }
+    } 
   }
 
   return (
@@ -97,13 +91,19 @@ const EditProductContainer = ({ updateProductInList, eventId, prodId, category, 
 };
 
 EditProductContainer.defaultProps = {
-  category: null
+  category: null,
+  addProductToList: () => {}
 };
 
 EditProductContainer.propTypes = {
   category: PropTypes.string,
-  addProductToList: PropTypes.func.isRequired,
-  id: PropTypes.string.isRequired
+  updateProductInList: PropTypes.func.isRequired,
+  eventId: PropTypes.string.isRequired,
+  prodId: PropTypes.number.isRequired,
+  name: PropTypes.string.isRequired,
+  quantity: PropTypes.number.isRequired,
+  price: PropTypes.number.isRequired,
+  
 };
 
 export default EditProductContainer;

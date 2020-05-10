@@ -33,10 +33,10 @@ const Forum = ({eventId, isEventAdmin}) => {
         let __isMounted = true;
         forumService.getAllCommentsFromAnEvent(eventId)
         .then(res =>{
-            console.log(res);
             if(__isMounted){
                 const tempComments = res.reverse().map( comment => {
-                    return {...comment, isLiked: comment.likers.length > 0 && comment.likers.findIndex( liker => liker.user.id === loggedInUser.user.id)}
+                    let didUserLikedThePost = comment.likers.length > 0 && comment.likers.findIndex( liker => liker.user.id === loggedInUser.user.id) > -1;
+                    return {...comment, isLiked: didUserLikedThePost}
                 })
                 setAllComments({comments: tempComments , loading: false});
             }
@@ -57,15 +57,13 @@ const Forum = ({eventId, isEventAdmin}) => {
     }
 
     const submitComment = () =>{
-        console.log(`sending: ${newComment} to event ${eventId}`);
         forumService.makeAComment(eventId, {post: newComment})
         .then(res =>{
-            console.log(res);
             const newCommentTemp = {
                 id: res.id,
                 likes: 0,
                 text: newComment,
-                timePosted: "now",
+                timePosted: res.timePosted,
                 updated: false,
                 eventUser: {
                     user: {
@@ -86,25 +84,21 @@ const Forum = ({eventId, isEventAdmin}) => {
     }
 
     const likeAcomment = (commentId) =>{
-        const commentIndex = allComments.comments.findIndex(comment => comment.id === commentId);
-        if(commentIndex > -1 && allComments.comments[commentIndex].isLiked !== true){
-            forumService.likeAComent(commentId)
-            .then(res =>{
-                console.log(res);
-                const modifiedComment = allComments.comments.map( comment => {
-                    if(comment.id === commentId){
-                        return {...comment, 
-                            isLiked: true, 
-                            likes: comment.likes+1
-                        }
+        forumService.likeAComent(commentId)
+        .then(_res =>{
+            const modifiedComment = allComments.comments.map( comment => {
+                if(comment.id === commentId){
+                    return {...comment, 
+                        isLiked: !comment.isLiked, 
+                        likes:  comment.isLiked ? comment.likes - 1 : comment.likes + 1
                     }
-                    return comment;
-                })
-                setAllComments({...allComments, comments: modifiedComment});
-            }, err =>{
-                console.log(err);
+                }
+                return comment;
             })
-        }
+            setAllComments({...allComments, comments: modifiedComment});
+        }, err =>{
+            console.log(err);
+        })
         
        
  
@@ -158,7 +152,7 @@ const Forum = ({eventId, isEventAdmin}) => {
                         text={comment.text}
                         edited={comment.updated}
                         likes={comment.likes}
-                        timeStamp={`${comment.timePosted.substring(0,10)} ${comment.timePosted.substring(12,16)}`}
+                        timeStamp={comment.timePosted}
                         openEditModal={() => editCommentOpenModal(comment.text, comment.id)}
                         deleteComment={() => deleteComment(comment.id)}
                     />
@@ -171,7 +165,7 @@ const Forum = ({eventId, isEventAdmin}) => {
                         isLiked={comment.isLiked}
                         text={comment.text}
                         edited={comment.updated}
-                        timeStamp={`${comment.timePosted.substring(0,10)} ${comment.timePosted.substring(12,16)}`}
+                        timeStamp={comment.timePosted}
                         user={{
                             id: comment.eventUser.user.id,
                             picUrl: comment.eventUser.user.picUrl,

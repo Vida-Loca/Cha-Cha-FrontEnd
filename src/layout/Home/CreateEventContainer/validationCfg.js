@@ -42,7 +42,7 @@ export const adressFormRules = [
     {
         name: "country",
         config: {
-            placeholder: "coutnry",
+            placeholder: "country",
             classes: "input-blue"
         },
         validation: {

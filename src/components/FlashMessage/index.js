@@ -7,7 +7,6 @@ import "./FlashMessage.scss";
 const FlashMessage = ({ show, flashClose, message, messageState }) => {
 const[flashMessage,setFlashMessage] = useContext(FlashMessageContext);
   useEffect(() =>{
-    console.log("check!!!");
     if(show){
       setTimeout(() => {
         setFlashMessage({...flashMessage, show: false});
@@ -27,7 +26,6 @@ const[flashMessage,setFlashMessage] = useContext(FlashMessageContext);
              return ""
      }
  }
-
   return (
     <>
       <div className="flash-message-container" >

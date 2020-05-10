@@ -1,6 +1,7 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useContext } from "react";
 import PropTypes from "prop-types";
 import { eventService } from "../../../Authentication/service";
+import { FlashMessageContext } from "../../../context/FlashMessageContext";
 
 // import { eventLocation } from "../../../mockData";
 import { TextInput } from "../../../components/Inputs";
@@ -16,7 +17,7 @@ import "./Location.scss";
 const Location = ({ eventId, isEventAdmin }) => {
   const [fetchedEvent, setFetchedEvent] = useState({});
 
-
+  const [,setFlashMessage] = useContext(FlashMessageContext);
   const [locationInfo, setLocationInfo] = useState({
     dateofevent: { value: "", isValid: true, err: [] },
     time: { value: "00:00", isValid: true, err: [] }
@@ -44,7 +45,6 @@ const Location = ({ eventId, isEventAdmin }) => {
         if (__isMounted) {
 
           setFetchedEvent(res);
-          console.log(res);
           setLocationInfo({
             dateofevent: { ...locationInfo.dateofevent, value: res.startTime.substring(0, 10) },
             time: { ...locationInfo.time, value: res.startTime.substring(11, 16) },
@@ -156,11 +156,20 @@ const Location = ({ eventId, isEventAdmin }) => {
             latitude:  address.lat.value === "" ? null : parseFloat(address.lat.value),
             longitude: address.long.value === "" ? null : parseFloat(address.long.value)
           }
-        }).then(res => {
-        console.log(res)
+        }).then(_res => {
+          setFlashMessage({
+            message: "location changes saved",
+            show: true,
+            messageState: "success"
+          });
         setEdit(false);
       }, err =>{
         console.log(err);
+        setFlashMessage({
+          message: "there has been a problem with saving thsese changes",
+          show: true,
+          messageState: "error"
+        });
       })
     } 
   }

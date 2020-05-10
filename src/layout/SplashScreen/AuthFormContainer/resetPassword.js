@@ -26,12 +26,8 @@ const ResetPassword = () => {
             setSendingDataSpinner(true);
             setTimeout(() => {
                 setResetPass(!resetPass);
-                console.log("sending reset pass request ...");
-                console.log({ email: email })
                 setSendingDataSpinner(false);
             }, 3000)
-        } else {
-            console.log("emial is not valid")
         }
 
     }

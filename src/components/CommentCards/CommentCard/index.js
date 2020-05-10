@@ -3,11 +3,12 @@ import React from "react";
 import PropTypes from "prop-types";
 import Avatar from "../../Avatar";
 import { Button } from "../../Button";
+import moment from "moment";
 
 
 import "./Commentcard.scss";
 
-const Commentcard = ({eventId, text, user,likes, edited, timeStamp,isLiked, likeComment}) => {
+const Commentcard = ({ text, user, likes, isLiked, edited, timeStamp, likeComment}) => {
 
 
   return (
@@ -23,7 +24,7 @@ const Commentcard = ({eventId, text, user,likes, edited, timeStamp,isLiked, like
         <Avatar imageLink={user.picUrl} />
         <div className="comment-content">
           {text}
-          <div className="time-stamp">{timeStamp} {edited 
+          <div className="time-stamp">{moment(timeStamp).fromNow()} {edited 
           ? <span className="edited">
               <i className="fas fa-pencil-alt"/>{"edited"}
             </span>
@@ -35,21 +36,25 @@ const Commentcard = ({eventId, text, user,likes, edited, timeStamp,isLiked, like
   );
 };
 
-// Commentcard.propTypes = {
-//   eventId: PropTypes.string.isRequired,
-//   removeProduct: PropTypes.func.isRequired,
-//   product: PropTypes.shape({
-//     id: PropTypes.number.isRequired,
-//     name: PropTypes.string.isRequired,
-//     price: PropTypes.number.isRequired
-//   }).isRequired,
-//   user: PropTypes.shape({
-//     id: PropTypes.number.isRequired,
-//     picUrl: PropTypes.string.isRequired,
-//     username: PropTypes.string.isRequired,
-//     isEventAdmin: PropTypes.bool.isRequired
-//   }).isRequired,
 
-// };
+Commentcard.defaultPropTypes = {
+  timeStamp: "now",
+  likeComment: () => {}
+}
+
+Commentcard.propTypes = {
+  text: PropTypes.string.isRequired,
+  user: PropTypes.shape({
+    id: PropTypes.number.isRequired,
+    picUrl: PropTypes.string.isRequired,
+    username: PropTypes.string.isRequired,
+    isEventAdmin: PropTypes.bool.isRequired
+  }).isRequired,
+  likes: PropTypes.number.isRequired,
+  isLiked: PropTypes.bool.isRequired,
+  edited: PropTypes.bool.isRequired,
+  timeStamp: PropTypes.string,
+  likeComment: PropTypes.func
+};
 
 export default Commentcard;

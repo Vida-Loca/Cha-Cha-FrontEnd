@@ -1,13 +1,18 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useContext } from "react";
+import {FlashMessageContext} from "../../../context/FlashMessageContext";
+
 import PaginatedContainer from "../../../components/PaginatedContainer";
 import UserCard from "../../../components/UserCard";
 import { Button } from "../../../components/Button";
 import Spinner from "../../../components/Spinner";
 import { userService } from "../../../Authentication/service";
 
+
 // import { friends, friendsRequests } from "../../../mockData";
 
 const FriendsList = () => {
+    const [,setFlashMessage] = useContext(FlashMessageContext);
+
     const [friendList, setFriendList] = useState({ friends: [], spinner: true })
     const [friendRequests, setFriendRequests] = useState({ requests: [], spinner: true })
 
@@ -37,13 +42,23 @@ const FriendsList = () => {
         };
     }, []);
 
-    const removeFromFriendsList = (userID) => {
+    const removeFromFriendsList = (userID, username) => {
         userService.removeFromFriends(userID)
-            .then(_ => {
+            .then(_res => {
                 setFriendList({ friends: friendList.friends.filter(user => user.id !== userID), spinner: false });
+                setFlashMessage({
+                    message: `succesfuly removed ${username} from friends list`,
+                    show: true,
+                    messageState: "success"
+                  });
             })
-            .catch(_ => {
+            .catch(_err => {
                 setFriendList({ ...friendList, spinner: false });
+                setFlashMessage({
+                    message: `there has been a problem removing user ${username} from friends list`,
+                    show: true,
+                    messageState: "error"
+                  });
             });
     }
     const ignoreRequestFriendsList = (invitationId) => {
@@ -51,8 +66,13 @@ const FriendsList = () => {
             .then(res => {
                 setFriendRequests({ requests: friendRequests.requests.filter(invitation => invitation.invitor.id !== res.invitor.id), spinner: false });
             })
-            .catch(_ => {
-                setFriendRequests({ ...friendRequests, spinner: false })
+            .catch(_err => {
+                setFriendRequests({ ...friendRequests, spinner: false });
+                setFlashMessage({
+                    message: "encoutered a problem",
+                    show: true,
+                    messageState: "warning"
+                  });
             });
     }
     const acceptFriendsList = (invitationId) => {
@@ -63,9 +83,19 @@ const FriendsList = () => {
                 tempFriedsList.push(acceptFriendsInvitation.invitor);
                 setFriendRequests({ requests: friendRequests.requests.filter(invitation => invitation.invitor.id !== res.relatedUserId), spinner: false });
                 setFriendList({ friends: tempFriedsList, spinner: false });
+                setFlashMessage({
+                    message: "accepted friend request",
+                    show: true,
+                    messageState: "success"
+                  });
             })
-            .catch(_ => {
+            .catch(err_ => {
                 setFriendList({ ...FriendsList, spinner: false });
+                setFlashMessage({
+                    message: "there has been a problem accepting a friend request",
+                    show: true,
+                    messageState: "error"
+                  });
             });
 
     }
@@ -83,7 +113,7 @@ const FriendsList = () => {
                         : ({ items }) =>
                             items.map(ev => (
                                 <UserCard key={ev.username} username={ev.username} imageUrl={ev.picUrl} showControlls>
-                                    <Button clicked={() => removeFromFriendsList(ev.id)} classes="btn-orangeGradient-icon btn-sm">
+                                    <Button clicked={() => removeFromFriendsList(ev.id, ev.username)} classes="btn-orangeGradient-icon btn-sm">
                                         <i className="fas fa-user-minus" />
                                     </Button>
                                 </UserCard>

@@ -1,83 +1,47 @@
-import React, {useContext, useState} from 'react'
+import React, { useState } from 'react';
+import moment from "moment";
 import PropTypes from "prop-types";
-import Avatar from "../../Avatar";
 import { Button, EditButton } from "../../Button";
 
 
 import "./MyCommentCard.scss";
 
-const MyCommentCard = ({eventId, text, likes, edited, timeStamp, openEditModal, deleteComment}) => {
+const MyCommentCard = ({text, likes, edited, timeStamp, openEditModal, deleteComment}) => {
 
-    const [editState, setEditState] = useState(false);
     const [deleteState, setDeleteState] = useState(false);
     const [containerState, setContainerState] = useState(false);
-  
-    const [tileState, tileStateSet] = useState(false);
-  
-  
-  
-    // const onChangeHandlerPrice = event => {
-    //   if (event.target.value.length < 20) {
-    //     setTileSuply({
-    //       ...tileSupply,
-    //       [`${event.target.name}`]: event.target.value
-    //     });
-    //   };
-    // }
-    // const onChangeHandlerDescription = event => {
-    //   if (event.target.value.length < 250) {
-    //     setTileSuply({
-    //       ...tileSupply,
-    //       [`${event.target.name}`]: event.target.value
-    //     });
-    //   };
-    // }
   
     const changeOptions = () => {
       setContainerState(!containerState);
       setDeleteState(false);
-      setEditState(false);
-     
     };
   
     const deleteHandler = () => {
       setDeleteState(!deleteState);
       
     };
-    const editHandler = () => {
-      setEditState(!editState);
-    };
   
     const cancelDelete = () => {
       setDeleteState(false);
-      tileStateSet(false);
     };
-  
-    const cancelEdit = () => {
-      setEditState(false);
-      tileStateSet(false);
-     
-    };
-  
 
     return (
         <div className={`comment-card-container tooltip ${containerState ? "options": ""}`}>
             {containerState && (
             <span className="tooltiptext">
-                {!editState &&
-                <EditButton
-                    options={deleteState}
-                    activate={deleteHandler}
-                    cancel={cancelDelete}
-                    render={<i className="far fa-trash-alt" />}
-                    confirm={deleteComment}
-                />}
+               <EditButton
+                  options={deleteState}
+                  activate={deleteHandler}
+                  cancel={cancelDelete}
+                  render={<i className="far fa-trash-alt" />}
+                  confirm={deleteComment}
+                />
     
                 {!deleteState &&
                 <EditButton
-                    options={editState}
+                    options={false}
                     activate={openEditModal}
-                    cancel={cancelEdit}
+                    cancel={() => {}}
                     render={<i className="far fa-edit" />}
                     confirm={() => {}}
                 />}
@@ -98,7 +62,7 @@ const MyCommentCard = ({eventId, text, likes, edited, timeStamp, openEditModal, 
             <div className="comment-body">
                 <div className="my-comment-content">
                     {text}
-                    <div className="time-stamp">{timeStamp}
+                    <div className="time-stamp">{moment(timeStamp).fromNow()}
                     {edited ? 
                     <span className="edited">
                       <i className="fas fa-pencil-alt"/>{"edited"}
@@ -115,5 +79,20 @@ const MyCommentCard = ({eventId, text, likes, edited, timeStamp, openEditModal, 
     )
 }
 
+MyCommentCard.defaultPropTypes = {
+  timeStamp: "now",
+  openEditModal: () => {},
+  deleteComment: () => {}
+}
+
+
+MyCommentCard.propTypes = {
+  text: PropTypes.string.isRequired,
+  likes: PropTypes.number.isRequired,
+  edited: PropTypes.bool.isRequired,
+  timeStamp: PropTypes.string,
+  openEditModal: PropTypes.func,
+  deleteComment: PropTypes.func
+} 
 
 export default MyCommentCard;
