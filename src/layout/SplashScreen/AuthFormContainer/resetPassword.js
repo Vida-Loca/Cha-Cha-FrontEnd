@@ -31,6 +31,7 @@ const ResetPassword = () => {
         }
 
     }
+   
     return (<div>
         {resetPass
             ? <p className="center">reset link has been sent to {email.value}</p>

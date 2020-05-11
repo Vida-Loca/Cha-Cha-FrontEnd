@@ -21,7 +21,6 @@ const Home = () => {
 
   useEffect(() => {
     let __isMounted = true;
-
     eventService.getAllPublicEvents()
       .then(res => {
         if (__isMounted) {

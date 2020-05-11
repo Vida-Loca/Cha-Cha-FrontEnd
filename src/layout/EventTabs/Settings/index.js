@@ -29,7 +29,6 @@ const Settings = ({ eventId, isEventAdmin }) => {
 
     const [members, setMembers] = useState({ users: [], spinner: true })
     const [admins, setAdmins] = useState({ users: [], spinner: true })
-    const [nameErr, setNameErr] = useState("");
 
     const [eventInfo, setEventInfo] = useState(
         { 
@@ -209,7 +208,7 @@ const Settings = ({ eventId, isEventAdmin }) => {
                             value={eventInfo.event.name}
                             size="input-md"
                             classes="input-blue"
-                            error={nameErr}
+                            error=""
                         />
                     </div>
                     <div className="privacy-box">

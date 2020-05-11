@@ -13,7 +13,7 @@ import "./EventTab.scss";
 import { eventService } from "../../../Authentication/service";
 
 const EventLayout = () => {
-  const [forms, setForms] = useContext(FormContext);
+  const [, setForms] = useContext(FormContext);
   const [allEventsList, setAllEventsList] = useState({ events: [], spinner: true });
   const [dislpayEvent, setDisplayEvent] = useState({ events: [], spinner: true });
 

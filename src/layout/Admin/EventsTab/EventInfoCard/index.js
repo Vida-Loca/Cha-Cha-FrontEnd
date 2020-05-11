@@ -22,5 +22,13 @@ const EventInfoCard = ({eventName, date, country, eventState, clicked}) => {
     )
 }
 
+EventInfoCard.propTypes = {
+    eventName: PropTypes.string.isRequired, 
+    date: PropTypes.string.isRequired, 
+    country: PropTypes.string.isRequired, 
+    eventState: PropTypes.bool.isRequired, 
+    clicked: PropTypes.func.isRequired
+}
+
 
 export default EventInfoCard;

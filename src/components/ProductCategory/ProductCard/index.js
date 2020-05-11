@@ -4,12 +4,10 @@ import PropTypes from "prop-types";
 import Avatar from "../../Avatar";
 import { Button, EditButton } from "../../Button";
 import "./ProductCard.scss";
-import { TextInputNL, TextArea } from "../../Inputs";
 import { UserContext } from "../../../context/UserContext";
 import { FormContext } from "../../../context/FormContext";
 import EditProductContainer from "../../../layout/EventTabs/Products/EditProductContainer";
 
-import { productService } from "../../../Authentication/service";
 
 const ProductCard = ({removeProduct, updateProductList,eventId, product, category, user, currency }) => {
 

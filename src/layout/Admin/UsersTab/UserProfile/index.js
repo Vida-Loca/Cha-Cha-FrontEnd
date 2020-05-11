@@ -1,6 +1,6 @@
 import React, { useState, useEffect, useContext } from "react";
 import Avatar from "../../../../components/Avatar";
-import { Button, EditButton } from "../../../../components/Button";
+import { EditButton } from "../../../../components/Button";
 // import { loggedInUser } from "../../../../mockData";
 import { adminService } from "../../../../Authentication/service";
 import { FlashMessageContext } from "../../../../context/FlashMessageContext";

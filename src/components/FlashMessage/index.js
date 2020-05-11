@@ -12,7 +12,7 @@ const[flashMessage,setFlashMessage] = useContext(FlashMessageContext);
         setFlashMessage({...flashMessage, show: false});
       }, 6000);
     }
-  }, []);
+  }, [show, flashMessage, setFlashMessage]);
 
  const fontAwesomeIcon = () =>{
      switch (messageState) {

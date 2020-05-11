@@ -1,16 +1,13 @@
 import React, { useState, useContext } from 'react'
 import { Button } from "../../../../components/Button";
 import { TextArea } from "../../../../components/Inputs";
-import Spinner from "../../../../components/Spinner";
 
 import { FormContext } from "../../../../context/FormContext";
-import { forumService } from "../../../../Authentication/service";
 
 import "./EditComment.scss";
 
 const EditCommentContainer = ({post,postId, editComment}) => {
     const [comment, setComment] = useState(post);
-    const [updateSent, setUpdateSent] = useState(false);
     const [, setChangedForm] = useContext(FormContext);
 
     const onChangeHandler = event =>{
@@ -33,11 +30,7 @@ const EditCommentContainer = ({post,postId, editComment}) => {
                 value={comment}
                 />
         </div>
-           
-            {updateSent
-                ? <Spinner classes={"spinner-container-h-sm"} size={"spinner-sm"} />
-                : <Button clicked={comfirmChanges} classes="form-btn btn-blueGradient btn-md">update</Button>
-            } 
+        <Button clicked={comfirmChanges} classes="form-btn btn-blueGradient btn-md">update</Button>
         </>
     )
 }

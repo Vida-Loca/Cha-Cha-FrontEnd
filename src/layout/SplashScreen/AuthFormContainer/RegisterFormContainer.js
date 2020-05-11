@@ -11,7 +11,7 @@ const RegistrationFormContainer = () => {
   const [sendingDataSpinner, setSendingDataSpinner] = useState(false);
   // const [changedForm, setChangedForm] = useContext(FormContext);
   // const [,setUser] = useContext(UserContext);
-  const [registrationConfrimed, setRefistrationConfirm] = useState(false);
+  const [registrationConfrimed, setRegistrationConfirm] = useState(false);
   const [registration, setRegistration] = useState({
     username: { value: "", isValid: false, err: [], touched: false },
     password: { value: "", isValid: false, err: [], touched: false },
@@ -31,7 +31,6 @@ const RegistrationFormContainer = () => {
       },
       validation: {
         required: true,
-        string: true,
         minLength: 3,
         maxLength: 25,
         spaces: true
@@ -118,31 +117,76 @@ const RegistrationFormContainer = () => {
     });
   };
 
+  const CheckIfPasswordIsCorrect = () =>{
+    if(registration.password.value === registration.matchingPassword.value){
+      return true;
+    } 
+    return false;
+  }
+
   const submitRegstartion = () => {
-    if (registration.username.isValid && registration.password.isValid &&
-      registration.matchingPassword.value === registration.password.value
-      && registration.name.isValid && registration.surname.isValid &&
-      registration.email.isValid) {
-      setSendingDataSpinner(true);
-      authenticationService.register({
-        username: registration.username.value,
-        name: registration.name.value,
-        surname: registration.surname.value,
-        email: registration.email.value,
-        password: registration.password.value,
-        matchingPassword: registration.matchingPassword.value,
-        picUrl: ""
-      }).then(res => {
-        console.log(res);
+      if(CheckIfPasswordIsCorrect()){
+        if (registration.username.isValid && registration.password.isValid &&
+          registration.matchingPassword.value === registration.password.value
+          && registration.name.isValid && registration.surname.isValid &&
+          registration.email.isValid) {
+          setSendingDataSpinner(true);
+          authenticationService.register({
+            username: registration.username.value,
+            name: registration.name.value,
+            surname: registration.surname.value,
+            email: registration.email.value,
+            password: registration.password.value,
+            matchingPassword: registration.matchingPassword.value,
+            picUrl: ""
+          }).then(res => {
+      
+            console.log(res);
 
-        setRefistrationConfirm(true);
-        setSendingDataSpinner(false);
+            if(res.err !== undefined){
+              if(res.err === "Email exists"){
+                setRegistration({
+                  ...registration,
+                  email: {
+                    ...registration.email,
+                    isValid: false,
+                    err: ["email not available"],
+                    touched: true
+                  }
+                });
+              } else if(res.err === "Username exists"){
+                setRegistration({
+                  ...registration,
+                  username: {
+                    ...registration.username,
+                    isValid: false,
+                    err: ["username not available"],
+                    touched: true
+                  }
+                });
+              }
+            } else{
+              setRegistrationConfirm(true);
+            }
+            setSendingDataSpinner(false);
 
-      }, err => {
-        console.log(err);
-        setSendingDataSpinner(false);
+          })
+          .catch(err => {
+            console.log(err);
+            setSendingDataSpinner(false);
+          })
+
+        }
+    } else{
+      setRegistration({
+        ...registration,
+        matchingPassword: {
+          ...registration.matchingPassword,
+          isValid: false,
+          err: ["password is not matching"],
+          touched: true
+        }
       });
-
     }
   }
 
