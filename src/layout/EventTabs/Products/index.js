@@ -25,12 +25,16 @@ const Products = ({ eventId, isEventAdmin, currency }) => {
   const [productList, setProduct] = useState({ products: [], spinner: true });
   const [loggedInUserProducts, setLoggedInUserProducts] = useState({ products: [], spinner: true });
   const [forms, setform] = useContext(FormContext);
-
+  const [totalSum, setTotalSum] = useState(0);
 
 
   useEffect(() => {
     let __isMounted = true;
 
+    productService.getTotalEventAmount(eventId)
+    .then(res =>{
+      setTotalSum(res);
+    })
     productService.getProductsFromEvent(eventId)
       .then(res => {
         if (__isMounted) {
@@ -58,29 +62,28 @@ const Products = ({ eventId, isEventAdmin, currency }) => {
     };
   }, [eventId]);
 
-  const calculateTotalPrice = () =>{
-    let money = 0;
-    productList.products.forEach(el =>{
-      el.supplies.forEach(prod =>{
-        money += prod.price;
-      })
-    })
-    return Number(money).toFixed(2);
-  }
+
 
 
 
   const addProduct = (addedProduct) => {
     let tempProductsList = productList.products;
     
+    // check if given category exists
     let foundIndex = tempProductsList.findIndex(catList => catList.productCategory === addedProduct.productCategory);
     if (foundIndex < 0) {
-      let tempProductCat = { productCategory: addedProduct.productCategory, supplies: [addedProduct.product] }
+      let tempProductCat = { productCategory: addedProduct.productCategory, products: [addedProduct.product] }
       tempProductsList.push(tempProductCat);
       setProduct({ ...productList, products: tempProductsList });
     }
     else {
-      tempProductsList[foundIndex].supplies.push(addedProduct.product);
+      let foundIndexOfProduct = tempProductsList[foundIndex].products.findIndex( prod => prod.id === addedProduct.product.id);
+      if(foundIndexOfProduct > -1){
+        tempProductsList[foundIndex].products[foundIndexOfProduct].quantity = addedProduct.product.quantity;
+      } else{
+        tempProductsList[foundIndex].products.push(addedProduct.product);
+      }
+     
       setProduct({ ...productList, products: tempProductsList });
     }
 
@@ -89,6 +92,7 @@ const Products = ({ eventId, isEventAdmin, currency }) => {
   const addNewProductModal = () => {
     setform({ ...forms, renderForm: <AddNewProductContainer addProductToList={addProduct} id={eventId} />, show: true });
   };
+
   const overviewOpenModal = () => {
     setform({ ...forms, renderForm: <Overview eventProducts={productList.products} eventId={eventId} currency={currency} />, show: true });
   };
@@ -104,7 +108,7 @@ const Products = ({ eventId, isEventAdmin, currency }) => {
       <div className="button-container">
         <p className="full-price-label">
           <span className="label">Total:</span>
-          <span className="price">{calculateTotalPrice()}<span className="currency"> {currency}</span></span>
+          <span className="price">{totalSum}<span className="currency"> {currency}</span></span>
         </p>
         <Button classes="btn-md btn-orangeGradient" clicked={overviewOpenModal}>
         <i className="fas fa-chart-bar" /> expenses
@@ -117,11 +121,11 @@ const Products = ({ eventId, isEventAdmin, currency }) => {
           loggedInUserProducts.spinner
           ? <Spinner />
           : <MyProducts 
-            currency={currency}
-            isEventAdmin={isEventAdmin} 
-            eventId={eventId} 
-            supCont={loggedInUserProducts.products} 
-            key="myProducts" 
+              currency={currency}
+              isEventAdmin={isEventAdmin} 
+              eventId={eventId} 
+              supCont={loggedInUserProducts.products} 
+              key="myProducts" 
            />
         }
         

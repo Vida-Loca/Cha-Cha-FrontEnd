@@ -10,6 +10,8 @@ import { productService } from "../../../../Authentication/service";
 import { FormContext } from "../../../../context/FormContext";
 import { UserContext } from "../../../../context/UserContext";
 
+import {validationRules} from "./productValidationRules";
+
 
 const AddNewProductContainer = ({ addProductToList, id, category }) => {
 
@@ -20,52 +22,15 @@ const AddNewProductContainer = ({ addProductToList, id, category }) => {
   const [product, setProduct] = useState({
     name: { value: "", isValid: false, err: "", touched: false },
     price: { value: "", isValid: false, err: "", touched: false },
+    quantity: { value: 1, isValid: true, err: "", touched: true },
     productCategory: { value: "", isValid: false, err: "", touched: false }
   });
 
-  const formProducts = useState([
-    {
-      name: "name",
-      config: {
-        type: "text",
-        placeholder: "name",
-        classes: "input-blue"
-      },
-      validation: {
-        required: true,
-        string: true
-      }
-    },
-    {
-      name: "price",
-      config: {
-        type: "number",
-        placeholder: "price",
-        classes: "input-blue"
-      },
-      validation: {
-        required: true,
-        maxLength: 10
-      }
-    },
-    {
-      name: "productCategory",
-      config: {
-        type: "text",
-        placeholder: "product category",
-        classes: "input-blue",
-        disabled: true
-      },
-      validation: {
-        required: true
-      }
-    }
-  ])[0];
 
   const onChangeHandler = event => {
     const validationResult = checkValidation(
       event.target.value,
-      formProducts.find(x => x.name === event.target.name).validation
+      validationRules.find(x => x.name === event.target.name).validation
     );
     setProduct({
       ...product,
@@ -81,13 +46,14 @@ const AddNewProductContainer = ({ addProductToList, id, category }) => {
 
   const submitProduct = () => {
     const chosenCategory = !!category ? category : product.productCategory.value;
-    if (product.name.isValid && product.price.isValid && (product.productCategory.isValid || !!category)) {
+    if (product.name.isValid && product.price.isValid && product.quantity.isValid&& (product.productCategory.isValid || !!category)) {
       setSendingDataSpinner(true);
 
       productService.addProduct(id,
         {
           name: product.name.value,
           price: product.price.value,
+          quantity: product.quantity.value,
           productCategory: chosenCategory.toUpperCase()
         })
         .then(res => {
@@ -101,9 +67,13 @@ const AddNewProductContainer = ({ addProductToList, id, category }) => {
               id: res.id,
               name: res.name,
               price: res.price,
-              user: loggedInUser.user.username,
-              quantity: 1,
-              picUrl: loggedInUser.user.picUrl
+              quantity: res.quantity,
+              user: {
+                id: loggedInUser.user.id,
+                username: loggedInUser.user.username,
+                picUrl: loggedInUser.user.picUrl
+              }
+              
             }
           });
 
@@ -112,15 +82,12 @@ const AddNewProductContainer = ({ addProductToList, id, category }) => {
           setSendingDataSpinner(false);
         })
 
-    } else {
-      console.log("some fields are not valid");
-
-    }
+    } 
   }
 
   return (
     <>
-      {formProducts.map(el => (
+      {validationRules.map(el => (
         <TextInput
           key={el.name}
           onChange={onChangeHandler}

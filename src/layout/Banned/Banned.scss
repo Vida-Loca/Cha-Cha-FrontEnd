@@ -1,0 +1,24 @@
+@import "../../style//globalVariabels.scss";
+
+.banned-container {
+    display: flex;
+    justify-content: flex-start;
+    align-items: center;
+    font-size: 0.6rem;
+    margin-top: 10%;
+    flex-direction: column;
+    @include mobile {
+        grid-column: 2/3;
+        font-size: 1rem;
+    }
+
+    .main-banned-title{
+        background: rgb(247, 169, 52);
+        color: white;
+        padding: 1rem 1.5rem;
+        border-radius: 1rem;
+        i {
+            margin-right: 0.5rem;
+        }
+    }
+}

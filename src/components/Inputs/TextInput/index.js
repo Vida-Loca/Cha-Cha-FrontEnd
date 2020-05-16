@@ -2,7 +2,7 @@ import React from "react";
 import PropTypes from "prop-types";
 import "./TextInput.scss";
 
-const TextInput = ({ name, type, placeholder, onChange, size, classes, disabled, value, error }) => {
+const TextInput = ({ name, type, min, placeholder, onChange, size, classes, disabled, value, error }) => {
   return (
     <>
       <div className={`text-input ${classes} ${size} `}>

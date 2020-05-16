@@ -5,11 +5,13 @@ import Spinner from "../../../components/Spinner";
 import { profileService } from "../../../Authentication/service";
 
 import { FormContext } from "../../../context/FormContext";
+import { FlashMessageContext } from "../../../context/FlashMessageContext";
 
 const ChangeAvatar = ({ changeAvatarState }) => {
   const [sendingDataSpinner, setSendingDataSpinner] = useState(false);
 
   const [, setChangedForm] = useContext(FormContext);
+  const [, setFlashMessage] = useContext(FlashMessageContext);
 
   const [avatarUrl, setAvatarUrl] = useState({ URL: "" });
   const onChangeHandler = event => {
@@ -32,7 +34,11 @@ const ChangeAvatar = ({ changeAvatarState }) => {
         });
 
     } else {
-      console.log("can't change avatar")
+      setFlashMessage({
+        message: "there ha sbeen a problem with updating your profile picture",
+        show: true,
+        messageState: "error"
+      });
     }
   }
 

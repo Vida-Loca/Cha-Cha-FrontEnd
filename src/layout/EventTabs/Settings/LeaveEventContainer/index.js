@@ -1,6 +1,7 @@
 import React, { useContext } from 'react'
 import { Button } from "../../../../components/Button";
 import { FormContext } from "../../../../context/FormContext";
+import {FlashMessageContext} from "../../../../context/FlashMessageContext";
 import { history } from "../../../../Authentication/helper";
 import { eventService } from "../../../../Authentication/service";
 
@@ -8,6 +9,7 @@ import "./leaveEvent.scss";
 
 const LeaveEventContainer = ({ eventId }) => {
     const [, setform] = useContext(FormContext);
+    const [, setFlashMessage] = useContext(FlashMessageContext);
 
     const cancelAction = () => {
         setform({ show: false, renderForm: "" });
@@ -18,8 +20,18 @@ const LeaveEventContainer = ({ eventId }) => {
             .then(res => {
                 setform({ show: false, renderForm: "" });
                 history.push("/");
+                setFlashMessage({
+                    message: "suceffully left this event",
+                    show: true,
+                    messageState: "success"
+                });
             }, err => {
                 console.log(err);
+                setFlashMessage({
+                    message: "error",
+                    show: true,
+                    messageState: "error"
+                });
             })
 
     }

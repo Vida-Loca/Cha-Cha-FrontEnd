@@ -37,11 +37,29 @@ const getProductsOfCurrentUser = (eventId) => {
     return fetch(`${serverURL}/event/${eventId}/myproducts`, requestOptions).then(handleResponse);
 }
 
+const getTotalEventAmount = (eventId) => {
+    const requestOptions = { method: "GET", headers: authHeader() };
+    return fetch(`${serverURL}/event/${eventId}/amount`, requestOptions).then(handleResponse);
+}
+
+const getUserExpenses = (eventId,userId) => {
+    const requestOptions = { method: "GET", headers: authHeader() };
+    return fetch(`${serverURL}/event/${eventId}/user/${userId}/amount`, requestOptions).then(handleResponse);
+}
+const getAllUSerExpenses = (eventId) => {
+    const requestOptions = { method: "GET", headers: authHeader() };
+    return fetch(`${serverURL}/event/${eventId}/users_expenses`, requestOptions).then(handleResponse);
+}
+
+
 
 export const productService = {
     addProduct,
     getProductsFromEvent,
     removeProduct,
     updateProduct,
-    getProductsOfCurrentUser
+    getProductsOfCurrentUser,
+    getTotalEventAmount,
+    getUserExpenses,
+    getAllUSerExpenses
 }

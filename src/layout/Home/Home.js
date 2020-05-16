@@ -21,14 +21,13 @@ const Home = () => {
 
   useEffect(() => {
     let __isMounted = true;
-
     eventService.getAllPublicEvents()
       .then(res => {
         if (__isMounted) {
           setPublicEventsList({ events: res, spinner: false });
           const markers = res.map(event => {
             if(event.address.longitude !== null && event.address.latitude !== null){
-              return({lat: event.address.latitude, long: event.address.longitude})
+              return({lat: event.address.latitude, long: event.address.longitude, eventId: event.id, eventName: event.name})
             }
           }).filter(el => el !== undefined);
           setPublicEventMarkers({markers: markers, loaded: true });
@@ -115,8 +114,9 @@ const Home = () => {
         />
         <div className="map-cont">
           {
-            (publicEventMarkers.loaded && publicEventMarkers.markers.lnegth > 0) &&
+            (publicEventMarkers.loaded && publicEventMarkers.markers.length > 0) &&
             <MapBox 
+              zoom={5} showPopups={true}
               latitude={publicEventMarkers.markers[0].lat} longitude={publicEventMarkers.markers[0].long} 
               markers={publicEventMarkers.markers} 
             />

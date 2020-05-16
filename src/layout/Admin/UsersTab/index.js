@@ -1,9 +1,9 @@
 import React, { useState, useContext, useEffect } from "react";
 import { FormContext } from "../../../context/FormContext";
+
 // import { allUsers } from "../../../mockData";
 import { adminService } from "../../../Authentication/service";
 
-// import { Button } from "../../../components/Button";
 import { SearchBar } from "../../../components/Inputs";
 import PaginatedContainer from "../../../components/PaginatedContainer";
 import Spinner from "../../../components/Spinner";
@@ -13,17 +13,21 @@ import "./Users.scss";
 
 const UsersLayout = () => {
   const [findUser, setFindUser] = useState({ username: "" });
-  const [eventMemebers, seEventMemebers] = useState({ members: [], spinner: true });
+  const [users, setUsers] = useState({ members: [], spinner: true });
+  const [admins, setAdmins] = useState({ members: [], spinner: true });
   const [dislpayUsers, setDislpayUsers] = useState({ members: [], spinner: true });
   const [, setform] = useContext(FormContext);
 
+
   useEffect(() => {
     let __isMounted = true;
-    adminService.getAllUsers()
+    Promise.all([adminService.getAllUsers(), adminService.getAllAdmins()])
       .then(res => {
         if (__isMounted) {
-          seEventMemebers({ members: res, spinner: false });
-          setDislpayUsers({ members: res, spinner: false });
+          const usersList = res[0].filter( user => res[1].findIndex( userT => userT.id === user.id) < 0);
+          setUsers({ members: usersList, spinner: false });
+          setDislpayUsers({ members: usersList, spinner: false });
+          setAdmins({members: res[1], spinner: false})
         }
       })
       .catch(err => {
@@ -41,7 +45,7 @@ const UsersLayout = () => {
       [`${event.target.name}`]: event.target.value
     });
     let searchQuery = event.target.value.toLowerCase();
-    let displayUsers = eventMemebers.members.filter((el) => {
+    let displayUsers = users.members.filter((el) => {
       let searchValue = el.username.toLowerCase();
       return searchValue.indexOf(searchQuery) !== -1;
     });
@@ -49,19 +53,56 @@ const UsersLayout = () => {
 
   }
 
+  const removeUserFromList = (userId) =>{
+    let tempListOfUser = users.members;
+    tempListOfUser = tempListOfUser.filter(user => user.id !== userId);
+    setUsers({...users, memebers:  tempListOfUser});
+    setDislpayUsers({ members: tempListOfUser, spinner: false });
+  }
+  const banUserInList = (userId, isban) =>{
+    let tempListOfUser = users.members;
+    tempListOfUser = tempListOfUser.map(user => {
+      if(user.id === userId){
+        return {...user, banned: isban}
+      }
+      return user;
+    });
+    setUsers({...users, memebers:  tempListOfUser});
+    setDislpayUsers({ members: tempListOfUser, spinner: false });
+  }
 
-  const openUserProfileModal = (userDetails) => {
-    setform({ show: true, renderForm: <UserProfile userDetails={userDetails} /> });
+  const promoteToAdminInList = (userId) =>{
+    let tempListOfUser = users.members;
+    let indexOfUser = tempListOfUser.findIndex(user => user.id === userId);
+    if(indexOfUser > -1){
+      const adminList = admins.members;
+      adminList.push(tempListOfUser[indexOfUser]);
+      setAdmins({...admins, memebers: adminList })
+    }
+    removeUserFromList(userId);
+  }
+
+
+  const openUserProfileModal = (userDetails, isAdmin) => {
+    setform({ 
+        show: true,
+       renderForm: 
+       <UserProfile 
+          isAdmin={isAdmin}
+          promoteToAdminInList={promoteToAdminInList}
+          banUserInList={banUserInList}
+          removeUserFromList={removeUserFromList} 
+          userDetails={userDetails} 
+        /> });
   };
 
 
 
   const searchForGivenUsername = () => {
     if (findUser.username !== "") {
-      console.log(`searching for ... ${findUser.username}`);
-      seEventMemebers({ ...eventMemebers, spinner: true });
+      setUsers({ ...users, spinner: true });
       setTimeout(() => {
-        seEventMemebers({ ...eventMemebers, spinner: false });
+        setUsers({ ...users, spinner: false });
       }, 1000);
     }
   }
@@ -78,7 +119,26 @@ const UsersLayout = () => {
         />
       </div>
       <PaginatedContainer
-        title={`Members ● ${eventMemebers.members.length}`}
+        title={`Admins ● ${admins.members.length}`}
+        items={admins.members}
+        perPage={10}
+        render={
+          admins.spinner
+            ? () => <Spinner />
+            : ({ items }) =>
+              items.map(ev => (
+                <UserCard
+                  imageUrl={ev.picUrl}
+                  key={ev.username}
+                  username={ev.username}
+                  showControlls={true}
+                  clicked={() => openUserProfileModal(ev, true)} />
+        
+              ))
+        }
+      />
+      <PaginatedContainer
+        title={`Members ● ${users.members.length}`}
         items={dislpayUsers.members}
         perPage={10}
         render={
@@ -91,11 +151,12 @@ const UsersLayout = () => {
                   key={ev.username}
                   username={ev.username}
                   showControlls={true}
-                  clicked={() => openUserProfileModal(ev)}>
-                </UserCard>
+                  clicked={() => openUserProfileModal(ev, false)} />
+         
               ))
         }
       />
+     
     </div>
   );
 };

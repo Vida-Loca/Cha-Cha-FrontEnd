@@ -1,0 +1,119 @@
+@import "../../../../style/globalVariabels.scss";
+
+.event-info-container-box{
+    display: grid;
+    grid-template-columns: 1fr;
+
+    @include breaking-point-1 {
+        grid-template-columns: 1fr 1fr;
+    }
+    .pagination-title{
+        font-size: 1.1rem;
+    }
+
+    button{
+        cursor: pointer;
+    }
+    
+    .admin{
+
+        &:hover{
+            color: rgb(95, 62, 12);
+            transition: 0.3s all ease-in-out;
+        }
+        &.active{
+            color: rgb(255, 164, 28);
+            background: transparent;
+            &:hover{
+                color: rgb(95, 62, 12);
+            }
+        }
+    }
+
+    
+    .event-memeber-list{
+        .paginated-content-column {
+            .pagination-title{
+                grid-column-start: 1;
+                grid-column-end: 3;
+            }
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+        }
+
+        @include breaking-point-1 {
+            grid-column-start: 1;
+            grid-column-end: 3;
+        }
+
+    }
+
+
+
+    .event-quick-info{
+        font-style: 0.8rem;
+        span{
+            font-size: 0.6rem;
+        }
+        p{
+            margin: 0;
+            margin-bottom: 0.3rem;
+            font-weight: bold;
+            font-size: 0.8rem;
+        }
+    }
+ 
+
+    .settings {
+        display: grid;
+        grid-template-columns: repeat(2, 1fr);
+        width: 100%;
+        margin: 0.5rem 0;
+        max-width: 15rem;
+        justify-self: center;
+        @include breaking-point-1 {
+          }
+        & > .edit-btn {
+          grid-column-start: 1;
+          grid-column-end: 3;
+          border-radius: 0.5rem;
+        }
+        & > .cancel-btn {
+          transition: color 0.2s, background 0.2s;
+          border-radius: 0.5rem 0 0 0.5rem;
+        }
+        & > .confirm-btn {
+          transition: color 0.2s, background 0.2s;
+          border-radius: 0 0.5rem 0.5rem 0;
+        }
+
+        &.delete>.edit-btn:hover{
+          background: rgb(241, 201, 201);
+          color: rgb(57, 39, 39);
+        }
+
+        &.ban>.edit-btn:hover{
+          background: rgb(182, 205, 245);
+          color: rgb(44, 56, 66);
+        }
+      }
+
+  
+
+    .user-card{
+        background: rgb(220, 220, 220);
+        display: flex;
+        border-radius: 0.3rem;
+        padding: 0.2rem 0.4rem;
+        justify-content: flex-start;
+        align-items: center;
+        margin: 0.2rem 0.3rem;
+        .username{
+            font-size: 0.8rem;
+            font-weight: bold;
+            flex-grow: 1;
+            display: flex;
+            justify-content: flex-start;
+        }
+    }
+}

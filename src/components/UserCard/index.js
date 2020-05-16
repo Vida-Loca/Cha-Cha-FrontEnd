@@ -3,11 +3,16 @@ import PropTypes from "prop-types";
 import Avatar from "../Avatar";
 import "./UserCard.scss";
 
-const UserCard = ({ username, imageUrl, showControlls, clicked, children }) => {
+const UserCard = ({ username, imageUrl, isBanned, showControlls, clicked, children }) => {
   return (
-    <div style={{ cursor: `${clicked ? "pointer" : "auto"}` }} className="user-card-container" onClick={clicked}>
+    <div style={{ cursor: `${clicked ? "pointer" : "auto"}` }} className={`user-card-container ${isBanned ? "user-card-banned" : ""}`} onClick={clicked}>
       <div>
-        <Avatar imageLink={imageUrl} />
+        {
+          isBanned
+          ? <i class="fas fa-ban" />
+          : <Avatar imageLink={imageUrl} />
+        }
+        
         <strong>{username}</strong>
       </div>
       {showControlls ? <div className="controlls">{children}</div> : null}

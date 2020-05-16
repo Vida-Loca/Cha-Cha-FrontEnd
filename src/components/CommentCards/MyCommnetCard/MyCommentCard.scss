@@ -1,0 +1,68 @@
+.comment-card-container{
+    display: flex;
+    flex-direction: column;
+    margin-bottom: 0.7rem;
+    transition: all 0.2s ease-in-out;
+
+
+    @keyframes tools-slide-left{
+        0%{
+          left: 100%;
+        }
+        100%{
+          left: 102%;
+        }
+      }
+      
+      .tooltip .tooltiptext {
+        animation: tools-slide-left 0.3s ease-in forwards;
+      
+      }
+
+    &.options{
+        margin-right: 3rem;
+    }
+
+    .comment-header{
+        margin-right: 1.5rem;
+        height: 0.7rem;
+        display: flex;
+        flex-direction: row;
+        justify-content: flex-end;
+        align-items: center;
+        font-size: 0.7rem;
+        i{
+            margin-left: 0.2rem;
+        }
+    }
+    .comment-body{
+        display: flex;
+        flex-direction: row;
+        justify-content: flex-end;
+
+        .options-btn{
+            width: 1rem;
+            display: flex;
+            justify-content: flex-start;
+        }
+        .my-comment-content{
+            background: rgb(255, 198, 91);
+            display: flex;
+            padding: 0.5rem;
+            border-radius: 0.3rem;
+            flex-direction: column;
+            .time-stamp{
+                font-style: italic;
+                font-size: 0.5rem;
+                color: rgb(93, 58, 29);
+                justify-self: flex-end;
+                .edited{
+                    i{
+                      margin:0 0.25rem;
+                    }
+                  }
+            }
+        }
+    }
+    
+}

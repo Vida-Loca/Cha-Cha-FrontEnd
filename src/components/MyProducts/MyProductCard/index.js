@@ -1,64 +1,31 @@
 /* eslint-disable no-nested-ternary */
-import React, { useState } from "react";
+import React, { useState, useContext } from "react";
 import PropTypes from "prop-types";
 import { Button, EditButton } from "../../Button";
-import { TextInputNL, TextArea } from "../../Inputs";
+import EditProductContainer from "../../../layout/EventTabs/Products/EditProductContainer";
 
-import { productService } from "../../../Authentication/service";
+import {FormContext} from "../../../context/FormContext";
 
 import "./MyProductCard.scss";
 
 
-const MyProductCard = ({removeProduct, eventId, product, category, currency }) => {
+const MyProductCard = ({removeProduct, updateProductList, eventId, product, category, currency }) => {
 
-
-  const [tileSupply, setTileSuply] = useState({
-    supply: product.name,
-    price: String(product.price),
-    tempSupply: product.name,
-    tempPrice: String(product.price)
-  });
-
+  const [forms,setform] = useContext(FormContext);
   const [editState, setEditState] = useState(false);
   const [deleteState, setDeleteState] = useState(false);
 
   const [tileState, tileStateSet] = useState(false);
 
 
-
-  const onChangeHandlerPrice = event => {
-    if (event.target.value.length < 20) {
-      setTileSuply({
-        ...tileSupply,
-        [`${event.target.name}`]: event.target.value
-      });
-    };
-  }
-  const onChangeHandlerDescription = event => {
-    if (event.target.value.length < 250) {
-      setTileSuply({
-        ...tileSupply,
-        [`${event.target.name}`]: event.target.value
-      });
-    };
-  }
-
   const changeOptions = () => {
     tileStateSet(!tileState);
     setDeleteState(false);
     setEditState(false);
-    setTileSuply({
-      ...tileSupply,
-      supply: tileSupply.tempSupply,
-      price: tileSupply.tempPrice
-    });
   };
 
   const deleteHandler = () => {
     setDeleteState(!deleteState);
-  };
-  const editHandler = () => {
-    setEditState(!editState);
   };
 
   const cancelDelete = () => {
@@ -66,36 +33,21 @@ const MyProductCard = ({removeProduct, eventId, product, category, currency }) =
     tileStateSet(false);
   };
 
-  const cancelEdit = () => {
-    setEditState(false);
-    tileStateSet(false);
-    setTileSuply({
-      ...tileSupply,
-      supply: tileSupply.tempSupply,
-      price: tileSupply.tempPrice
-    });
+
+  const EditProductModal = (id,name, quantity, price) => {
+    setform({ ...forms, 
+      renderForm: 
+      <EditProductContainer 
+        updateProductInList={updateProductList}
+        eventId={eventId} 
+        prodId={id} 
+        category={category} 
+        name={name} 
+        quantity={quantity} 
+        price={price}  
+      />, 
+      show: true });
   };
-
-  const updatingProduct = () => {
-    console.log(tileSupply);
-    if (tileSupply.supply.length > 0 && tileSupply.price.length > 0 && !isNaN(tileSupply.price)) {
-      console.log("updating");
-      productService.updateProduct(eventId, product.id, {
-        price: tileSupply.price,
-        name: tileSupply.supply,
-        productCategory: category
-      })
-        .then(_ => {
-          setEditState(false);
-          tileStateSet(false);
-        }, err => {
-          console.log(err);
-        })
-
-    } else {
-      console.log("can't be updatted")
-    }
-  }
 
   return (
       <div className="my-product-card-container tooltip">
@@ -113,35 +65,27 @@ const MyProductCard = ({removeProduct, eventId, product, category, currency }) =
             {!deleteState &&
               <EditButton
                 options={editState}
-                activate={editHandler}
-                cancel={cancelEdit}
+                activate={() => EditProductModal(product.id, product.name, product.quantity, product.price)}
+                cancel={() => {}}
                 render={<i className="far fa-edit" />}
-                confirm={updatingProduct}
+                confirm={() => {}}
               />}
 
           </span>
         )}
 
-        <div className="my-product-info">
-          <div className="my-product-card-header">
-            <span className="my-product-price">
-              <span className="product-currency">{currency}</span>
-              <TextInputNL
-                onChange={onChangeHandlerPrice}
-                value={tileSupply.price}
-                placeholder="price"
-                name="price"
-                size="input-sm"
-                classes="product-price"
-                disabled={!editState}
-              />
-            </span>
-            <div className="category-label-product-card">
-                {category}
-            </div>
+        <div className="product-info">
+          <span className="price-header">
+            <span className="product-quantity">{product.quantity}</span>
+            <span className="product-times"><i className="fas fa-times"/></span>
+            <span className="product-price">{product.price}</span>
+            <span className="product-currency">{currency}</span>
+            <span className="product-category">{category}</span>
+
+          </span>
+          <div className="product-name">
+            {product.name}
           </div>
-          
-          <TextArea value={tileSupply.supply} name="supply" onChange={onChangeHandlerDescription} disabled={!editState} />
         </div>
         <Button classes="options-btn" clicked={changeOptions}>
           {tileState ? <i className="fas fa-times" /> : <i className="fas fa-ellipsis-v" />}
@@ -160,7 +104,8 @@ MyProductCard.propTypes = {
     price: PropTypes.number.isRequired
   }).isRequired,
   category: PropTypes.string.isRequired,
-  currency: PropTypes.string.isRequired
+  currency: PropTypes.string.isRequired,
+  updateProductInList: PropTypes.func
 
 };
 

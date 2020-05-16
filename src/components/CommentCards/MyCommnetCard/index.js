@@ -1,29 +1,98 @@
-import React from 'react'
+import React, { useState } from 'react';
+import moment from "moment";
 import PropTypes from "prop-types";
-import Avatar from "../../Avatar";
-import { Button } from "../../Button";
+import { Button, EditButton } from "../../Button";
 
 
 import "./MyCommentCard.scss";
 
-const MyCommentCard = ({eventId, text, user, likes,isLiked, timeStamp, likeComment}) => {
+const MyCommentCard = ({text, likes, edited, timeStamp, openEditModal, deleteComment}) => {
+
+    const [deleteState, setDeleteState] = useState(false);
+    const [containerState, setContainerState] = useState(false);
+  
+    const changeOptions = () => {
+      setContainerState(!containerState);
+      setDeleteState(false);
+    };
+  
+    const deleteHandler = () => {
+      setDeleteState(!deleteState);
+      
+    };
+  
+    const cancelDelete = () => {
+      setDeleteState(false);
+    };
+
     return (
-        <div className="my-comment-card-container">
+        <div className={`comment-card-container tooltip ${containerState ? "options": ""}`}>
+            {containerState && (
+            <span className="tooltiptext">
+               <EditButton
+                  options={deleteState}
+                  activate={deleteHandler}
+                  cancel={cancelDelete}
+                  render={<i className="far fa-trash-alt" />}
+                  confirm={deleteComment}
+                />
+    
+                {!deleteState &&
+                <EditButton
+                    options={false}
+                    activate={openEditModal}
+                    cancel={() => {}}
+                    render={<i className="far fa-edit" />}
+                    confirm={() => {}}
+                />}
+  
+          </span>
+        )}
             <div className="comment-header">
-                <span className="username">{user.username}</span>
-                <Button clicked={likeComment}>
-                    <i className={`fas fa-heart ${isLiked? "liked": ""}`}/>
-                </Button>
-                {likes}
+                  {
+                    likes > 0
+                    ? <> 
+                      {likes}
+                      <i className={`fas fa-heart`}/>
+                    </>
+                    : ""
+                  }
+                
             </div>
-             <Avatar imageLink={user.picUrl} />
-             <div className="comment-content">
-                {text}
-                 <div className="time-stamp">{timeStamp}</div>
-             </div>
-        </div>
+            <div className="comment-body">
+                <div className="my-comment-content">
+                    {text}
+                    <div className="time-stamp">{moment(timeStamp).fromNow()}
+                    {edited ? 
+                    <span className="edited">
+                      <i className="fas fa-pencil-alt"/>{"edited"}
+                    </span>
+                    : ""}
+              </div>
+                </div>
+                <Button classes="options-btn" clicked={changeOptions}>
+                    {containerState ? <i className="fas fa-times" /> : <i className="fas fa-ellipsis-v" />}
+                </Button>
+            </div>
+            
+    </div>
     )
 }
 
+MyCommentCard.defaultPropTypes = {
+  timeStamp: "now",
+  openEditModal: () => {},
+  deleteComment: () => {}
+}
+
+
+MyCommentCard.propTypes = {
+  text: PropTypes.string.isRequired,
+  likes: PropTypes.number.isRequired,
+  edited: PropTypes.bool.isRequired,
+  timeStamp: PropTypes.string,
+  openEditModal: PropTypes.func,
+  deleteComment: PropTypes.func
+} 
 
 export default MyCommentCard;

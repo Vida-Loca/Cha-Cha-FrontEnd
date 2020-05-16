@@ -3,7 +3,7 @@ import PropTypes from "prop-types";
 
 import "./MyProducts.scss";
 
-import { ShowMore, Button } from "../Button";
+import { ShowMore } from "../Button";
 import MyProductCard from "./MyProductCard";
 import { OptionsInput } from "../Inputs";
 
@@ -46,9 +46,19 @@ const MyProducts = ({ isEventAdmin, eventId, supCont, currency }) => {
 
   const calculateTotalPrice = () =>{
     const totalPrice = productContainer.products.reduce((acc, val) =>{
-      return acc += val.price;
+      return acc += val.price * val.quantity;
     }, 0);
     return Number(totalPrice).toFixed(2);
+  }
+
+  const updateProductInList = (productId, newProd) => {
+    setProductContainer({ ...productContainer, products: productContainer.products.map(prod => {
+      if( prod.id === productId){
+        return {...prod, name: newProd.name, price: newProd.price, quantity: newProd.quantity }
+      }else{
+        return prod;
+      }
+     }), show: true });
   }
 
 
@@ -73,11 +83,13 @@ const MyProducts = ({ isEventAdmin, eventId, supCont, currency }) => {
             <MyProductCard
               currency={currency}
               removeProduct={() => removeProductFromCategory(eventId, sup.id)}
+              updateProductList={updateProductInList}
               eventId={eventId}
               product={{
                 id: sup.id,
                 name: sup.name,
-                price: sup.price
+                price: sup.price,
+                quantity: sup.quantity
               }}
               user={{
                 id: sup.userId,

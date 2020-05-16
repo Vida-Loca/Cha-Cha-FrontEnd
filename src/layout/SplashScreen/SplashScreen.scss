@@ -4,9 +4,9 @@
   flex-direction: column;
   text-align: center;
   background: $dark-blue;
-  min-height: 700px;
   border-radius: $border-radius-md;
-  margin-top: 2rem;
+  height: 90vh;
+
 }
 
 .SignContent {
@@ -16,10 +16,27 @@
   flex-direction: column;
   height: 100%;
   z-index: 500;
-  padding-top: 11rem;
-  h1 {
-    color: white;
+  overflow: hidden;
+  .logo{
+    top: 20%;
+    position: absolute ;
+    display: flex;
+    flex-direction: row;
+    justify-content: center;
+    align-items: center;
+    img{
+      height: 4rem;
+      width: 4rem;
+    }
+    h1 {
+      pad: 0;
+      margin: 0;
+      color: white;
+      font-size: 3rem;
+      margin-left: 0.5rem;
+    }
   }
+ 
   button {
     margin-top: 1rem;
   }

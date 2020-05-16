@@ -1,6 +1,7 @@
 import React, { useState, useEffect, useContext } from "react";
 import PropTypes from "prop-types";
 import { FormContext } from "../../../context/FormContext";
+import { FlashMessageContext } from "../../../context/FlashMessageContext";
 
 import { history } from "../../../Authentication/helper";
 import { OptionsInput, TextInput } from "../../../components/Inputs";
@@ -22,12 +23,12 @@ import "./settings.scss";
 const Settings = ({ eventId, isEventAdmin }) => {
 
     const [, setform] = useContext(FormContext);
+    const [, setFlashMessage] = useContext(FlashMessageContext);
 
     const [editState, setEdit] = useState(false);
 
     const [members, setMembers] = useState({ users: [], spinner: true })
     const [admins, setAdmins] = useState({ users: [], spinner: true })
-    const [nameErr, setNameErr] = useState("");
 
     const [eventInfo, setEventInfo] = useState(
         { 
@@ -46,7 +47,6 @@ const Settings = ({ eventId, isEventAdmin }) => {
 
         eventService.getEventByID(eventId)
             .then(res => {
-                console.log(res);
                 if(__isMounted){
                     setEventInfo({ 
                         event: {
@@ -96,12 +96,22 @@ const Settings = ({ eventId, isEventAdmin }) => {
 
     const confirmEventDeletion = () => {
         eventService.deleteEvent(eventId)
-            .then(res => {
+            .then(_res => {
+                setFlashMessage({
+                    message: "event successfully deleted",
+                    show: true,
+                    messageState: "success"
+                });
                 history.push("/");
             })
             .catch(err => {
                 console.log(err);
                 editHandler();
+                setFlashMessage({
+                    message: "there has been a problem with deleting this event",
+                    show: true,
+                    messageState: "error"
+                });
             })
     }
 
@@ -111,9 +121,9 @@ const Settings = ({ eventId, isEventAdmin }) => {
 
 
 
-    const promoteToAdmin = (userId) => {
+    const promoteToAdmin = (userId, username) => {
         eventService.promoteToEventAdmin(eventId, userId)
-            .then(res => {
+            .then(_res => {
                 const tempAdminsList = admins.users;
                 const foundUser = members.users.filter(user => user.id === userId)[0];
                 tempAdminsList.push(foundUser);
@@ -121,6 +131,11 @@ const Settings = ({ eventId, isEventAdmin }) => {
                 setAdmins({ users: tempAdminsList, spinner: false });
             }, err => {
                 console.log(err);
+                setFlashMessage({
+                    message: `there has been a problem promoting user ${username} to admin`,
+                    show: true,
+                    messageState: "error"
+                });
             })
     }
 
@@ -136,12 +151,26 @@ const Settings = ({ eventId, isEventAdmin }) => {
             }
             eventService.updateEvent(eventId, updatedEvent).then(res =>{
                 setEventInfo({...eventInfo, spinner: false});
+                setFlashMessage({
+                    message: `changes saved`,
+                    show: true,
+                    messageState: "success"
+                });
             }, err =>{
                 console.log(err);
                 setEventInfo({ ...eventInfo,  spinner: false,});
+                setFlashMessage({
+                    message: `there has been a problem with saving changes`,
+                    show: true,
+                    messageState: "error"
+                });
             })
         } else{
-            setNameErr("is required");
+            setFlashMessage({
+                message: `some fields are invalid`,
+                show: true,
+                messageState: "warning"
+            });
         }
        
 
@@ -174,7 +203,7 @@ const Settings = ({ eventId, isEventAdmin }) => {
                             value={eventInfo.event.name}
                             size="input-md"
                             classes="input-blue"
-                            error={nameErr}
+                            error=""
                         />
                     </div>
                     <div className="privacy-box">
@@ -227,8 +256,8 @@ const Settings = ({ eventId, isEventAdmin }) => {
                                     ? () => <Spinner/>
                                     : ({ items }) =>
                                         items.map(ev => (
-                                            <UserCard key={ev.username} username={ev.username} showControlls={true}>
-                                                <Button clicked={() => promoteToAdmin(ev.id)} classes="btn-secondary-orange btn-sm">promote</Button>
+                                            <UserCard key={ev.username} isBanned={ev.banned} username={ev.username} showControlls={true}>
+                                                {!ev.banned && <Button clicked={() => promoteToAdmin(ev.id, ev.username)} classes="btn-secondary-orange btn-sm">promote</Button>}
                                             </UserCard>
                                         ))} />
                     </div>

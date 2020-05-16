@@ -3,11 +3,12 @@ import { TextInput } from "../../../components/Inputs";
 import { Button } from "../../../components/Button";
 // import { authenticationService } from "../../../Authentication/service";
 // import { FormContext } from "../../../context/FormContext";
+import checkValidation from "../../../validation";
 import Spinner from "../../../components/Spinner";
 
 import "./authStyle.scss";
 
-const ChangePassword = () => {
+const ChangePassword = ({token}) => {
     const [sendingDataSpinner, setSendingDataSpinner] = useState(false);
 
     // const [, setChangedForm] = useContext(FormContext);
@@ -23,6 +24,10 @@ const ChangePassword = () => {
                 type: 'text',
                 placeholder: "password",
                 classes: "input-blue"
+            },
+            validation: {
+                required: true,
+                minLength: 8
             }
         },
         {
@@ -31,6 +36,10 @@ const ChangePassword = () => {
                 type: 'text',
                 placeholder: "retype password",
                 classes: "input-blue"
+            },
+            validation: {
+                required: true,
+                minLength: 8
             }
         }
     ];
@@ -39,13 +48,22 @@ const ChangePassword = () => {
         if (login.password.isValid && login.retypePassword.isValid) {
             setSendingDataSpinner(true);
             setSendingDataSpinner(false);
+            console.log(`this is the token: ${token}`);
         }
     }
 
     const onChangeHandler = event => {
+        const validationResult = checkValidation(
+            event.target.value,
+            changePassForm.find(x => x.name === event.target.name).validation
+          );
         setLogin({
             ...login,
-            [`${event.target.name}`]: { ...login[`${event.target.name}`], isValid: true, err: [], value: event.target.value }
+            [`${event.target.name}`]: { 
+            isValid: true, 
+            err: validationResult[1],
+            value: event.target.value 
+        }
         });
     };
 

@@ -1,16 +1,6 @@
 @import "../../../style/globalVariabels.scss";
 
-@keyframes product-card-animation{
-  0%{
-    height: 0;
-  }
-  90%{
-    height: 6rem;
-  }
-  100%{
-    height: auto;
-  }
-}
+
 
 @keyframes product-card-apear-animation{
   0%{
@@ -35,22 +25,68 @@
   align-items: center;
   border-bottom: 1px solid $grey-3;
   transition: 0.2s all;
-  animation: product-card-animation 0.3s ease-in forwards;
-  & > div:nth-child(1) {
+
+
+
+  .price-header{
+    width: 100%;
     display: flex;
-    justify-content: center;
-    align-items: center;
+    flex-direction: row;
+    font-size: 0.9rem;
+    justify-content: flex-start;
+    align-items: flex-end;
+    .product-price{
+      margin-left: 0.2rem;
+      font-weight: bold;
+    }
+    .product-currency{
+      font-size: 0.6rem;
+      margin-left: 0.3rem;
+    }
+
+    .fa-times{
+      margin: 0 0.2rem;
+      font-size: 0.6rem;
+    }
+    .product-category{
+      margin-right: 0;
+      margin-left: auto;
+      background: rgb(140, 140, 140);
+      border-radius: 0.4rem;
+      padding: 0.2rem;
+      font-size: 0.7rem;
+      font-weight: bold;
+    }
+
+  }
+  .product-name{
+    font-size: 0.8rem;
+  }
+
+  .options-btn{
+    cursor: pointer;
   }
 
 
+  
+.product-info {
+  display: flex;
+  flex-direction: column;
+  box-sizing: border-box;
+  justify-content: flex-start;
+  align-items: flex-start;
+  width: 100%;
+  animation: product-card-apear-animation 0.3s ease-in forwards;
+  margin: 0 0.5rem;
 
-
-
+}
 
   .options-btn{
     cursor: pointer;
     width: 1rem;
   }
+
+  
 
 }
 
@@ -95,54 +131,5 @@
 
 }
 
-.my-product-info {
-  display: flex;
-  flex-direction: column;
-  box-sizing: border-box;
-  justify-content: flex-start;
-  align-items: flex-start;
-  width: 100%;
-
-  .my-product-card-header{
-    display: flex;
-    flex-direction: row;
-    align-items: center;
-    justify-content: space-between;
-    flex-wrap: wrap;
-    width: 100%;
-
-    .my-product-price{
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      height: 2rem;
-      animation: product-card-apear-animation 0.5s ease-in forwards;
-  
-      .Text-Input-NL{
-        margin: 0;
-      }
-      .product-currency {
-        font-size: 0.7rem;
-        margin-left: 0.5rem;
-        margin-right: 0.2rem;
-      }
-    }
-    .category-label-product-card{
-      color: white;
-      font-weight: bold;
-      background: $grey-3;
-      font-size: 0.6rem;
-      padding: 0.1rem 0.2rem;
-      border-radius: 0.2rem;
-      transition: 0.2s all;
-      animation: product-card-apear-animation 0.3s ease-in forwards;
-    }
-  }
-
 
  
-  p,span {
-    margin: 0;
-    padding: 0;
-  }
-}

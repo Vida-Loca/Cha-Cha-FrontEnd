@@ -14,5 +14,12 @@
       }
     }
 
+    .user-card-container{
+      transition: ease-in-out all 0.2s;
+      &:hover{
+        background: rgb(199, 199, 199);;
+      }
+    }
+
   }
 }
