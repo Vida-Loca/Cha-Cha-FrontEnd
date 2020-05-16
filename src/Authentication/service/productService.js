@@ -46,6 +46,10 @@ const getUserExpenses = (eventId,userId) => {
     const requestOptions = { method: "GET", headers: authHeader() };
     return fetch(`${serverURL}/event/${eventId}/user/${userId}/amount`, requestOptions).then(handleResponse);
 }
+const getAllUSerExpenses = (eventId) => {
+    const requestOptions = { method: "GET", headers: authHeader() };
+    return fetch(`${serverURL}/event/${eventId}/users_expenses`, requestOptions).then(handleResponse);
+}
 
 
 
@@ -56,5 +60,6 @@ export const productService = {
     updateProduct,
     getProductsOfCurrentUser,
     getTotalEventAmount,
-    getUserExpenses
+    getUserExpenses,
+    getAllUSerExpenses
 }

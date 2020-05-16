@@ -22,7 +22,7 @@ const AddNewProductContainer = ({ addProductToList, id, category }) => {
   const [product, setProduct] = useState({
     name: { value: "", isValid: false, err: "", touched: false },
     price: { value: "", isValid: false, err: "", touched: false },
-    quantity: { value: "1", isValid: false, err: "", touched: false },
+    quantity: { value: 1, isValid: true, err: "", touched: true },
     productCategory: { value: "", isValid: false, err: "", touched: false }
   });
 

@@ -44,6 +44,7 @@ const ProductCategory = ({ isEventAdmin, eventId, supCont, currency }) => {
   const removeProductFromCategory = (eventId, productId) => {
     productService.removeProduct(eventId, productId)
       .then(res => {
+        console.log(res);
         setsupplyContainer({ ...supplyContainer, products: supplyContainer.products.filter(prod => prod.id !== productId), show: true });
       }, err => {
         console.log(err);

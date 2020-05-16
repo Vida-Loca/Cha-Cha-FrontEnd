@@ -1,5 +1,5 @@
 import React, {useState, useEffect, useContext} from 'react'
-import { eventService } from "../../../../Authentication/service";
+import { eventService, adminService } from "../../../../Authentication/service";
 import Spinner from "../../../../components/Spinner";
 import { Button, EditButton } from "../../../../components/Button";
 import PaginatedContainer from "../../../../components/PaginatedContainer";
@@ -26,7 +26,7 @@ const [,setFlashMessage] = useContext(FlashMessageContext);
     const [deleteState, setDeleteState] = useState(false);
 
     useEffect(() => {
-        eventService.getEventByID(eventId)
+        adminService.getEventById(eventId)
         .then(res => {
             setEventInfo({
                 name: res.name,
@@ -37,13 +37,19 @@ const [,setFlashMessage] = useContext(FlashMessageContext);
         }, err => {
             console.log(err);
         })
-        Promise.all([eventService.getEventMembers(eventId), eventService.getAllEventAdmins(eventId)])
+
+        Promise.all([adminService.getAllEventUsers(eventId), adminService.getAllEventAdmins(eventId)])
         .then(res =>{
             const filterMembersList = res[0].filter( memeber => res[1].findIndex( user => user.id === memeber.id) < 0);
             setEventMembers({users: filterMembersList, spinner: false});
             setEventAdmins({users: res[1], spinner: false});
         }, err => {
             console.log(err);
+            setFlashMessage({  
+                message: `there has been a problem fetching event members`,
+                show: true,
+                messageState: "error"
+            });
         });
 
         return () => {
@@ -55,36 +61,80 @@ const [,setFlashMessage] = useContext(FlashMessageContext);
         setDeleteState(!deleteState);
     }
 
-    const confirmDleteEvent = () =>{
-        console.log(`deleting event ${eventId}`);
-        setForm({renderForm: "", show: false});
-        setFlashMessage({  
-            message: `successfuly deleted event id: ${eventId}`,
-            show: true,
-            messageState: "success"
-        })
+    const confirmDeleteEvent = () =>{
+        adminService.deleteEvent(eventId)
+        .then(res => {
+            setForm({renderForm: "", show: false});
+            setFlashMessage({  
+                message: `successfuly deleted event id: ${eventId}`,
+                show: true,
+                messageState: "success"
+            });
+        }, err =>{
+            console.log(err)
+            setFlashMessage({  
+                message: `error - there is a problem deleting event id: ${eventId}`,
+                show: true,
+                messageState: "error"
+            });
+        });
+       
     }
 
     const kickUser = (userId) =>{
-        console.log(`kicking user ${userId} from event ${eventId}`);
-        setEventMembers({users: eventMembers.users.filter( user => user.id !== userId), spinner: false});
-        setEventAdmins({users: eventAdmins.users.filter( user => user.id !== userId), spinner: false});
+        adminService.removeUserFromEvent(eventId,userId)
+        .then(res =>{
+            setEventMembers({users: eventMembers.users.filter( user => user.id !== userId), spinner: false});
+            setEventAdmins({users: eventAdmins.users.filter( user => user.id !== userId), spinner: false});
+        }, err =>{
+            console.log(err);   
+            setFlashMessage({  
+                message: `error - there has beena problem with removing user ${userId} from event ${eventId}`,
+                show: true,
+                messageState: "error"
+            });
+        })
+       
     }
 
     const promoteUserToAdmin = (userId) =>{
-        const foundUser = eventMembers.users.findIndex(user => user.id === userId);
-        const tempAdminList = eventAdmins.users;
-        tempAdminList.push(eventMembers.users[foundUser]);
-        setEventAdmins({users: tempAdminList, spinner: false});
-        setEventMembers({users: eventMembers.users.filter( (user) => user.id !== userId), spinner: false});
+        adminService.giveTakeUserAdmin(eventId,userId)
+        .then(_res => {
+            const foundUser = eventMembers.users.findIndex(user => user.id === userId);
+            const tempAdminList = eventAdmins.users;
+            tempAdminList.push(eventMembers.users[foundUser]);
+            setEventAdmins({users: tempAdminList, spinner: false});
+            setEventMembers({users: eventMembers.users.filter( (user) => user.id !== userId), spinner: false});
+        }, err =>{
+            console.log(err);
+            setFlashMessage({  
+                message: `error - there has beena problem with promoting user to amdmin`,
+                show: true,
+                messageState: "error"
+            });
+
+        })
+
+      
     }
 
     const demoteUserFromAdmin = (userId) =>{
-        const foundUser = eventAdmins.users.findIndex(user => user.id === userId);
-        const tempMemebrsList = eventMembers.users;
-        tempMemebrsList.push(eventAdmins.users[foundUser]);
-        setEventMembers({users: tempMemebrsList, spinner: false});
-        setEventAdmins({users: eventMembers.users.filter((user) => user.id !== userId), spinner: false});
+
+        adminService.giveTakeUserAdmin(eventId,userId)
+        .then(_res => {
+            const foundUser = eventAdmins.users.findIndex(user => user.id === userId);
+            const tempMemberList = eventMembers.users;
+            tempMemberList.push(eventAdmins.users[foundUser]);
+            setEventMembers({users: tempMemberList, spinner: false});
+            setEventAdmins({users: eventAdmins.users.filter( (user) => user.id !== userId), spinner: false});
+        }, err =>{
+            console.log(err);
+            setFlashMessage({  
+                message: `error - there has beena problem with promoting user to amdmin`,
+                show: true,
+                messageState: "error"
+            });
+        })
     }
 
     return (
@@ -102,7 +152,7 @@ const [,setFlashMessage] = useContext(FlashMessageContext);
                     options={deleteState}
                     activate={toggleDeleteState}
                     cancel={toggleDeleteState}
-                    confirm={confirmDleteEvent}
+                    confirm={confirmDeleteEvent}
                     classes="delete"
                     tags
                     render={<><i className="fas fa-trash-alt" />delete</>} 

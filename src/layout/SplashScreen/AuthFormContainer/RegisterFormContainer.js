@@ -9,8 +9,6 @@ import RegistrationComplete from "./RegistrationComplete";
 
 const RegistrationFormContainer = () => {
   const [sendingDataSpinner, setSendingDataSpinner] = useState(false);
-  // const [changedForm, setChangedForm] = useContext(FormContext);
-  // const [,setUser] = useContext(UserContext);
   const [registrationConfrimed, setRegistrationConfirm] = useState(false);
   const [registration, setRegistration] = useState({
     username: { value: "", isValid: false, err: [], touched: false },

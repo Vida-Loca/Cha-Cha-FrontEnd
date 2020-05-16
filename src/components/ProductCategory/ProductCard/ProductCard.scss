@@ -31,6 +31,15 @@
     align-items: center;
   }
 
+  &.product-card-banned{
+    background: rgb(240, 195, 111);
+  }
+
+  .fa-ban{
+    font-size: 2rem;
+    margin-right: 0.5rem;
+  }
+
   .avatar{
     width: 2rem;
     height: 2rem;

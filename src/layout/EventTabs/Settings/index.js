@@ -117,11 +117,6 @@ const Settings = ({ eventId, isEventAdmin }) => {
 
     const endEventOpenModal = () =>{
         setform({ show: true, renderForm: <EndEventContainer eventId={eventId} currentEvent={eventInfo.fullEvent} /> });
-        setFlashMessage({
-            message: "event is successfully finished",
-            show: true,
-            messageState: "success"
-        });
     }
 
 
@@ -261,8 +256,8 @@ const Settings = ({ eventId, isEventAdmin }) => {
                                     ? () => <Spinner/>
                                     : ({ items }) =>
                                         items.map(ev => (
-                                            <UserCard key={ev.username} username={ev.username} showControlls={true}>
-                                                <Button clicked={() => promoteToAdmin(ev.id, ev.username)} classes="btn-secondary-orange btn-sm">promote</Button>
+                                            <UserCard key={ev.username} isBanned={ev.banned} username={ev.username} showControlls={true}>
+                                                {!ev.banned && <Button clicked={() => promoteToAdmin(ev.id, ev.username)} classes="btn-secondary-orange btn-sm">promote</Button>}
                                             </UserCard>
                                         ))} />
                     </div>

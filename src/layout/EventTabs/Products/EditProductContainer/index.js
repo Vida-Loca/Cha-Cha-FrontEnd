@@ -23,7 +23,6 @@ const EditProductContainer = ({ updateProductInList, eventId, prodId, category, 
   });
 
 
-
   const onChangeHandler = event => {
     const validationResult = checkValidation(
       event.target.value,

@@ -102,6 +102,7 @@ const UserProfile = ({promoteToAdminInList, removeUserFromList, banUserInList, u
     const banUser = () => {
         adminService.banUserByID(userInfo.id)
         .then(res => {
+            console.log(res);
             setFlashMessage({
                 message: res.banned ? `user ${userInfo.username} has ben banned` : `user ${userInfo.username} has ben pardoned`,
                 show: true,

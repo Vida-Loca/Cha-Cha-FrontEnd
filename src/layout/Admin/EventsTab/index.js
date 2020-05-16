@@ -121,7 +121,7 @@ const EventLayout = () => {
                   eventName={ev.name}
                   date={ev.startTime.substring(0,10)}
                   country={ev.address.country}
-                  eventState={ev.isComplete}
+                  eventState={ev.over}
                 />
               ))} />
 

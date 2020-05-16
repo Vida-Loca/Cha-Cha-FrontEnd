@@ -178,7 +178,7 @@ const Members = ({ eventId, eventType, isEventAdmin }) => {
             ? () => <Spinner />
             : ({ items }) =>
               items.map(ev => (
-                <UserCard key={ev.username} username={ev.username} imageUrl={ev.picUrl} showControlls={isEventAdmin}>
+                <UserCard key={ev.username} username={ev.username} isBanned={eventId.banned} imageUrl={ev.picUrl} showControlls={isEventAdmin}>
                   {loggedInUser.user.id !== ev.id &&
                   <Button clicked={() => kickUsers(ev.id, ev.username)} classes="btn-orangeGradient-icon btn-sm">
                      <i className="fas fa-user-times" />

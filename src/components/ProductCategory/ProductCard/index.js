@@ -56,7 +56,7 @@ const ProductCard = ({removeProduct, updateProductList,eventId, product, categor
 
   return (
     <>
-      <div className="product-card-container tooltip">
+      <div className={`product-card-container tooltip ${user.banned ? "product-card-banned" : ""}`}>
         {tileState && (
           <span className="tooltiptext">
             {!editState &&
@@ -79,8 +79,11 @@ const ProductCard = ({removeProduct, updateProductList,eventId, product, categor
 
           </span>
         )}
-
-        <Avatar title={user.username} imageLink={user.picUrl} />
+        {
+          user.banned 
+          ? <i className="fas fa-ban" title={`${user.username} is banned`} />
+          : <Avatar title={user.username} imageLink={user.picUrl} />
+        }
         <div className="product-info">
           <span className="price-header">
             <span className="product-quantity">{product.quantity}</span>
