@@ -143,6 +143,7 @@ const Members = ({ eventId, eventType, isEventAdmin }) => {
                   key={ev.user.username}
                   username={ev.user.username}
                   imageUrl={ev.user.picUrl}
+                  isBanned={ev.user.banned}
                   showControlls
                 >
                   <Button clicked={() => ignoreRequest(ev.user.id, ev.id)} classes="btn-orangeGradient-icon btn-sm">
@@ -171,6 +172,7 @@ const Members = ({ eventId, eventType, isEventAdmin }) => {
                   key={ev.user.username}
                   username={ev.user.username}
                   imageUrl={ev.user.picUrl}
+                  isBanned={ev.user.banned}
                   showControlls
                 >
                   <Button clicked={() => ignoreRequest(ev.user.id, ev.id)} classes="btn-orangeGradient-icon btn-sm">
@@ -194,7 +196,7 @@ const Members = ({ eventId, eventType, isEventAdmin }) => {
               <UserCard
                 key={ev.username}
                 username={ev.username}
-                isBanned={eventId.banned}
+                isBanned={ev.banned}
                 imageUrl={ev.picUrl}
                 showControlls={isEventAdmin}
               >

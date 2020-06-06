@@ -90,8 +90,14 @@ const SearchFriends = () => {
             : ({ items }) => items.map((ev) => {
               const isUserAFriend = friendsList.filter((user) => user.id === ev.id);
               return (
-                <UserCard key={ev.id} username={ev.username} imageUrl={ev.picUrl} showControlls>
-                  {!isUserAFriend.length > 0 && (
+                <UserCard
+                  key={ev.id}
+                  isBanned={ev.banned}
+                  username={ev.username}
+                  imageUrl={ev.picUrl}
+                  showControlls
+                >
+                  {(!isUserAFriend.length > 0 && !ev.banned) && (
                     <Button clicked={() => sendAFriendRequest(ev.id)} classes="btn-blueGradient-icon btn-sm">
                       {
                         ev.sent

@@ -127,7 +127,7 @@ ProductCard.propTypes = {
     picUrl: PropTypes.string.isRequired,
     username: PropTypes.string.isRequired,
     isEventAdmin: PropTypes.bool.isRequired,
-    banned: PropTypes.bool.isRequired,
+    banned: PropTypes.bool,
   }).isRequired,
   category: PropTypes.string.isRequired,
   currency: PropTypes.string.isRequired,

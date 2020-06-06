@@ -130,6 +130,7 @@ const UsersLayout = () => {
                 imageUrl={ev.picUrl}
                 key={ev.username}
                 username={ev.username}
+                isBanned={ev.banned}
                 showControlls
                 clicked={() => openUserProfileModal(ev, true)}
               />
@@ -148,6 +149,7 @@ const UsersLayout = () => {
               <UserCard
                 imageUrl={ev.picUrl}
                 key={ev.username}
+                isBanned={ev.banned}
                 username={ev.username}
                 showControlls
                 clicked={() => openUserProfileModal(ev, false)}

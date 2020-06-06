@@ -36,10 +36,11 @@ const Overview = ({ eventId, currency }) => {
                   key={user.eventUser.user.username}
                   username={user.eventUser.user.username}
                   imageUrl={user.eventUser.user.picUrl}
+                  isBanned={user.eventUser.user.banned}
                   showControlls
                 >
                   <span className="money-lable">
-                    {`user.expenses ${currency}`}
+                    {`${user.expenses} ${currency}`}
                   </span>
                 </UserCard>
               ))

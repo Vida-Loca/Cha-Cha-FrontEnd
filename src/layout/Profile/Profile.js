@@ -229,9 +229,10 @@ const Profile = () => {
           render={
             myEvents.spinner
               ? () => <Spinner />
-              : ({ items }) => items.map((ev) => (
+              : ({ items }) => items.map((ev, index) => (
                 <EventCard
                   id={ev.id}
+                  listIndex={index}
                   key={ev.id}
                   name={ev.name}
                   date={ev.startTime}
@@ -249,10 +250,11 @@ const Profile = () => {
           render={
             invitations.spinner
               ? () => <Spinner />
-              : ({ items }) => items.map((ev) => (
+              : ({ items }) => items.map((ev, index) => (
                 <EventCard
                   id={ev.event.id}
                   key={ev.event.id}
+                  listIndex={index}
                   name={ev.event.name}
                   date={ev.event.startTime}
                   location={ev.event.address}

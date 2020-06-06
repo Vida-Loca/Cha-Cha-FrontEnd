@@ -38,7 +38,7 @@ const EditCommentContainer = ({ post, postId, editComment }) => {
 
 EditCommentContainer.propTypes = {
   post: PropTypes.string.isRequired,
-  postId: PropTypes.string.isRequired,
+  postId: PropTypes.number.isRequired,
   editComment: PropTypes.func.isRequired,
 };
 

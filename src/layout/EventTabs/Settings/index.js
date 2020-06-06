@@ -248,7 +248,12 @@ const Settings = ({ eventId, isEventAdmin }) => {
                 admins.spinner
                   ? () => <Spinner />
                   : ({ items }) => items.map((ev) => (
-                    <UserCard key={ev.username} username={ev.username} showControlls>
+                    <UserCard
+                      key={ev.username}
+                      username={ev.username}
+                      showControlls
+                      isBanned={ev.banned}
+                    >
                     </UserCard>
                   ))
               }

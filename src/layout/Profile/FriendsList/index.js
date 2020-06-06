@@ -122,7 +122,13 @@ const FriendsList = () => {
           friendList.spinner
             ? () => <Spinner />
             : ({ items }) => items.map((ev) => (
-              <UserCard key={ev.username} username={ev.username} imageUrl={ev.picUrl} showControlls>
+              <UserCard
+                key={ev.username}
+                username={ev.username}
+                imageUrl={ev.picUrl}
+                isBanned={ev.banned}
+                showControlls
+              >
                 <Button clicked={() => removeFromFriendsList(ev.id, ev.username)} classes="btn-orangeGradient-icon btn-sm">
                   <i className="fas fa-user-minus" />
                 </Button>
@@ -143,6 +149,7 @@ const FriendsList = () => {
                 key={ev.invitor.id}
                 username={ev.invitor.username}
                 imageUrl={ev.invitor.picUrl}
+                isBanned={ev.invitor.banned}
                 showControlls
               >
                 <Button clicked={() => ignoreRequestFriendsList(ev.id)} classes="btn-orangeGradient-icon btn-sm">

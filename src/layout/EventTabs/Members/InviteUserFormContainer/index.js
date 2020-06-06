@@ -73,7 +73,13 @@ const InviteUserFormContainer = ({ id }) => {
           dislpayFriends.spinner
             ? () => <Spinner />
             : ({ items }) => items.map((ev) => (
-              <UserCard key={ev.username} username={ev.username} imageUrl={ev.picUrl} showControlls>
+              <UserCard
+                key={ev.username}
+                isBanned={ev.banned}
+                username={ev.username}
+                imageUrl={ev.picUrl}
+                showControlls
+              >
                 <Button clicked={() => sendInvitation(ev.id)} classes="btn-blueGradient btn-sm">invite</Button>
               </UserCard>
             ))
