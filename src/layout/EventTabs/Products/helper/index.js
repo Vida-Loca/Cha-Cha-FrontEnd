@@ -1,71 +1,32 @@
-// const createSetOfCategories = array => {
-//   const newArray = [];
-
-//   const ListOfCategories = [];
-//   array.forEach(catgory => {
-//     ListOfCategories.push(catgory.productCategory.name);
-//   });
-
-//   const uniqCategory = [...new Set(ListOfCategories)];
-
-//   uniqCategory.forEach(cate => {
-//     const tempObject = { productCategory: cate, supplies: [] };
-
-//     for (let i = 0; i < array.length; i += 1) {
-//       let tempSupply = {};
-//       if (cate === array[i].productCategory.name) {
-//         array[i].eventUsers.forEach(user => {
-//           tempSupply = {
-//             id: array[i].id,
-//             name: array[i].name,
-//             userId: user.user.id,
-//             user: user.user.username,
-//             price: array[i].price,
-//             picUrl: user.user.picUrl
-//           };
-//         });
-//         tempObject.supplies.push(tempSupply);
-//       }
-//     }
-//     newArray.push(tempObject);
-//   });
-//   return newArray;
-// };
-const createSetOfCategories = array => {
+const createSetOfCategories = (array) => {
   const newArray = [];
 
   const ListOfCategories = [];
-  array.forEach(catgory => {
+  array.forEach((catgory) => {
     ListOfCategories.push(catgory.productCategory.name);
   });
 
   const uniqCategory = [...new Set(ListOfCategories)];
 
-  uniqCategory.forEach(cate => {
+  uniqCategory.forEach((cate) => {
     const tempObject = { productCategory: cate, products: [] };
 
-    let categoryFiltered = array.filter( product => product.productCategory.name === cate);
-    let modifiedProductList = categoryFiltered.map( product =>{
-      return {
-        id: product.id,
-        name: product.name,
-        price: product.price,
-        quantity: product.quantity,
-        user: {
-          id: product.eventUser.user.id,
-          username: product.eventUser.user.username,
-          picUrl: product.eventUser.user.picUrl,
-        }
-      }
-    });
+    const categoryFiltered = array.filter((product) => product.productCategory.name === cate);
+    const modifiedProductList = categoryFiltered.map((product) => ({
+      id: product.id,
+      name: product.name,
+      price: product.price,
+      quantity: product.quantity,
+      user: {
+        id: product.eventUser.user.id,
+        username: product.eventUser.user.username,
+        picUrl: product.eventUser.user.picUrl,
+      },
+    }));
     tempObject.products = [...modifiedProductList];
     newArray.push(tempObject);
-
   });
   return newArray;
 };
-
-
-
 
 export default createSetOfCategories;

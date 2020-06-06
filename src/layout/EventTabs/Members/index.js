@@ -1,3 +1,5 @@
+/* eslint-disable react-hooks/exhaustive-deps */
+/* eslint-disable no-underscore-dangle */
 import React, { useState, useContext, useEffect } from "react";
 import PropTypes from "prop-types";
 
@@ -18,11 +20,9 @@ import Spinner from "../../../components/Spinner";
 
 
 const Members = ({ eventId, eventType, isEventAdmin }) => {
-
-
   const [, setform] = useContext(FormContext);
   const [, setFlashMessage] = useContext(FlashMessageContext);
-  const [loggedInUser,] = useContext(UserContext);
+  const [loggedInUser] = useContext(UserContext);
   const [eventMemebers, setEventMemebers] = useState({ members: [], spinner: true });
   const [eventRequests, seEventRequests] = useState({ members: [], spinner: true });
   const [sentRequests, seSentRequests] = useState({ members: [], spinner: true });
@@ -31,29 +31,29 @@ const Members = ({ eventId, eventType, isEventAdmin }) => {
     let __isMounted = true;
     if (isEventAdmin) {
       eventService.getEventPendingInvitations(eventId)
-        .then(res => {
+        .then((res) => {
           if (__isMounted) {
             seSentRequests({ members: res, spinner: false });
           }
-        }, err => {
+        }, (err) => {
           console.log(err);
-        })
+        });
       eventService.getAllEventsRequests(eventId)
-        .then(res => {
+        .then((res) => {
           if (__isMounted) {
             seEventRequests({ members: res, spinner: false });
           }
-        })
+        });
     }
 
     eventService.getEventMembers(eventId)
-      .then(res => {
+      .then((res) => {
         if (__isMounted) {
           setEventMemebers({ members: res, spinner: false });
         }
-      }, err => {
+      }, (err) => {
         console.log(err);
-      })
+      });
 
     return () => {
       __isMounted = false;
@@ -66,66 +66,76 @@ const Members = ({ eventId, eventType, isEventAdmin }) => {
 
   const kickUsers = (userId, username) => {
     eventService.kickUserFromEvent(eventId, userId)
-      .then(_res => {
-        setEventMemebers({ members: eventMemebers.members.filter(prod => prod.id !== userId), spinner: false });
+      .then(() => {
+        setEventMemebers({
+          members: eventMemebers.members.filter((prod) => prod.id !== userId),
+          spinner: false,
+        });
         setFlashMessage({
           message: `successfully kicked user ${username}`,
           show: true,
-          messageState: "success"
+          messageState: "success",
         });
-      }, err => {
+      }, (err) => {
         console.log(err);
         setFlashMessage({
-          message: `there has been a problem with kicking this user`,
+          message: "there has been a problem with kicking this user",
           show: true,
-          messageState: "error"
+          messageState: "error",
         });
-      })
-
-  }
+      });
+  };
   const ignoreRequest = (userId, invitationId) => {
     eventService.rejectEventInvitation(invitationId)
-      .then(_res => {
-        seEventRequests({ members: eventRequests.members.filter(prod => prod.id !== userId), spinner: false })
-      }, err => {
+      .then(() => {
+        seEventRequests({
+          members: eventRequests.members.filter((prod) => prod.id !== userId),
+          spinner: false,
+        });
+      }, (err) => {
         console.log(err);
-      })
-
-  }
+      });
+  };
   const acceptUsers = (userId, invitationId, username) => {
     eventService.acceptRequest(invitationId)
-      .then(_res => {
+      .then(() => {
         const tempMembersList = eventMemebers.members;
-        const acceptedMember = eventRequests.members.filter(prod => prod.user.id === userId)[0];
+        const acceptedMember = eventRequests.members.filter((prod) => prod.user.id === userId)[0];
         tempMembersList.push(acceptedMember.user);
-        seEventRequests({ members: eventRequests.members.filter(prod => prod.user.id !== userId), spinner: false })
+        seEventRequests({
+          members: eventRequests.members.filter((prod) => prod.user.id !== userId),
+          spinner: false,
+        });
         setEventMemebers({ members: tempMembersList, spinner: false });
         setFlashMessage({
           message: `accepted ${username} request to join this event`,
           show: true,
-          messageState: "success"
+          messageState: "success",
         });
-      }, err => {
+      }, (err) => {
         console.log(err);
         setFlashMessage({
           message: `there has been a problme accepting ${username} request to join this event`,
           show: true,
-          messageState: "error"
+          messageState: "error",
         });
-      })
-  }
+      });
+  };
 
 
   return (
     <div className="members-container">
       {
         (isEventAdmin || eventType === "NORMAL" || eventType === "PUBLIC")
-        && <Button clicked={openModalToInviteUser} classes="btn-blueGradient btn-md">
+        && (
+        <Button clicked={openModalToInviteUser} classes="btn-blueGradient btn-md">
           + Invite User
         </Button>
+        )
       }
 
-      {(isEventAdmin && eventRequests.members.length > 0) &&
+      {(isEventAdmin && eventRequests.members.length > 0)
+        && (
         <PaginatedContainer
           title={`Requests to join ● ${eventRequests.members.length}`}
           items={eventRequests.members}
@@ -133,22 +143,27 @@ const Members = ({ eventId, eventType, isEventAdmin }) => {
           render={
             eventRequests.spinner
               ? () => <Spinner />
-              : ({ items }) =>
-                items.map(ev => (
-                  <UserCard key={ev.user.username} username={ev.user.username} imageUrl={ev.user.picUrl} showControlls>
-                    <Button clicked={() => ignoreRequest(ev.user.id, ev.id)} classes="btn-orangeGradient-icon btn-sm">
-                      <i className="fas fa-times-circle" />
-                    </Button>
-                    <Button clicked={() => acceptUsers(ev.user.id, ev.id, ev.user.username)} classes="btn-blueGradient-icon btn-sm">
-                      <i className="fas fa-check-circle" />
-                    </Button>
-                  </UserCard>
-                ))
+              : ({ items }) => items.map((ev) => (
+                <UserCard
+                  key={ev.user.username}
+                  username={ev.user.username}
+                  imageUrl={ev.user.picUrl}
+                  showControlls
+                >
+                  <Button clicked={() => ignoreRequest(ev.user.id, ev.id)} classes="btn-orangeGradient-icon btn-sm">
+                    <i className="fas fa-times-circle" />
+                  </Button>
+                  <Button clicked={() => acceptUsers(ev.user.id, ev.id, ev.user.username)} classes="btn-blueGradient-icon btn-sm">
+                    <i className="fas fa-check-circle" />
+                  </Button>
+                </UserCard>
+              ))
           }
         />
-      }
+        )}
 
-      {(isEventAdmin && sentRequests.members.length > 0) &&
+      {(isEventAdmin && sentRequests.members.length > 0)
+        && (
         <PaginatedContainer
           title={`Sent requests ● ${sentRequests.members.length}`}
           items={sentRequests.members}
@@ -156,17 +171,21 @@ const Members = ({ eventId, eventType, isEventAdmin }) => {
           render={
             sentRequests.spinner
               ? () => <Spinner />
-              : ({ items }) =>
-                items.map(ev => (
-                  <UserCard key={ev.user.username} username={ev.user.username} imageUrl={ev.user.picUrl} showControlls>
-                    <Button clicked={() => ignoreRequest(ev.user.id, ev.id)} classes="btn-orangeGradient-icon btn-sm">
-                      <i className="fas fa-times-circle" />
-                    </Button>
-                  </UserCard>
-                ))
+              : ({ items }) => items.map((ev) => (
+                <UserCard
+                  key={ev.user.username}
+                  username={ev.user.username}
+                  imageUrl={ev.user.picUrl}
+                  showControlls
+                >
+                  <Button clicked={() => ignoreRequest(ev.user.id, ev.id)} classes="btn-orangeGradient-icon btn-sm">
+                    <i className="fas fa-times-circle" />
+                  </Button>
+                </UserCard>
+              ))
           }
         />
-      }
+        )}
 
 
       <PaginatedContainer
@@ -176,15 +195,21 @@ const Members = ({ eventId, eventType, isEventAdmin }) => {
         render={
           eventMemebers.spinner
             ? () => <Spinner />
-            : ({ items }) =>
-              items.map(ev => (
-                <UserCard key={ev.username} username={ev.username} isBanned={eventId.banned} imageUrl={ev.picUrl} showControlls={isEventAdmin}>
-                  {loggedInUser.user.id !== ev.id &&
-                  <Button clicked={() => kickUsers(ev.id, ev.username)} classes="btn-orangeGradient-icon btn-sm">
-                     <i className="fas fa-user-times" />
-                  </Button>}
-                </UserCard>
-              ))
+            : ({ items }) => items.map((ev) => (
+              <UserCard
+                key={ev.username}
+                username={ev.username}
+                isBanned={eventId.banned}
+                imageUrl={ev.picUrl}
+                showControlls={isEventAdmin}
+              >
+                {loggedInUser.user.id !== ev.id && (
+                <Button clicked={() => kickUsers(ev.id, ev.username)} classes="btn-orangeGradient-icon btn-sm">
+                  <i className="fas fa-user-times" />
+                </Button>
+                )}
+              </UserCard>
+            ))
         }
       />
     </div>
@@ -193,7 +218,8 @@ const Members = ({ eventId, eventType, isEventAdmin }) => {
 
 Members.propTypes = {
   eventId: PropTypes.string.isRequired,
-  isEventAdmin: PropTypes.bool.isRequired
+  eventType: PropTypes.string.isRequired,
+  isEventAdmin: PropTypes.bool.isRequired,
 };
 
 export default Members;

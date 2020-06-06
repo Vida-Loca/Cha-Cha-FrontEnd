@@ -21,14 +21,15 @@ const SplashScreen = () => {
 
   const changePassword = (token) => {
     setChangedForm({ renderForm: <ChangePassword token={token} />, show: true });
+    console.log(token);
     return <Redirect to="/" />;
-  }
+  };
 
   return (
     <div className="FirstLayout">
       <div className="SignContent">
         <div className="logo">
-          <img src="/logo.svg"></img>
+          <img src="/logo.svg" alt="skibidi"></img>
           <h1>Skibidi</h1>
         </div>
         <Button clicked={openLogIn} classes="btn-blueGradient btn-lg btn-blue-animated">
@@ -37,7 +38,7 @@ const SplashScreen = () => {
         <Button clicked={openRegister} classes="btn-orangeGradient btn-orange-animated btn-lg">
           Sign Up
         </Button>
-        <Route path="/changePassword/:token" exact render={({match}) => changePassword(match.params.token)} />
+        <Route path="/changePassword" render={({ match }) => changePassword(match)} />
       </div>
     </div>
   );

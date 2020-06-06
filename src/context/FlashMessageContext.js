@@ -7,8 +7,9 @@ export const FlashMessageProvider = ({ children }) => {
   const [flashMessage, setFlashMessage] = useState({
     message: "",
     show: false,
-    messageState: ""
+    messageState: "",
   });
 
+  // eslint-disable-next-line max-len
   return <FlashMessageContext.Provider value={[flashMessage, setFlashMessage]}>{children}</FlashMessageContext.Provider>;
 };

@@ -1,58 +1,80 @@
-import React, { useState } from "react";
+import React, { useState, useContext } from "react";
 import { TextInput } from "../../../components/Inputs";
 import { Button } from "../../../components/Button";
 import Spinner from "../../../components/Spinner";
 import checkValidation from "../../../validation";
+import { profileService } from "../../../Authentication/service";
+import { FlashMessageContext } from "../../../context/FlashMessageContext";
 
 const ResetPassword = () => {
-    const [sendingDataSpinner, setSendingDataSpinner] = useState(false);
-    const [resetPass, setResetPass] = useState(false);
-    const [email, setEmail] = useState({ value: "", isValid: false, touched: false, err: [] })
+  const [sendingDataSpinner, setSendingDataSpinner] = useState(false);
+  const [resetPass, setResetPass] = useState(false);
+  const [email, setEmail] = useState({
+    value: "", isValid: false, touched: false, err: [],
+  });
+  const [, setFlashMessage] = useContext(FlashMessageContext);
 
-    const onChangeHandler = event => {
-        const validationResult = checkValidation(
-            event.target.value,
-            { email: true }
-        );
-        setEmail({
-            value: event.target.value,
-            isValid: validationResult[0],
-            err: validationResult[1],
-            touched: true
+  const onChangeHandler = (event) => {
+    const validationResult = checkValidation(
+      event.target.value,
+      { email: true },
+    );
+    setEmail({
+      value: event.target.value,
+      isValid: validationResult[0],
+      err: validationResult[1],
+      touched: true,
+    });
+  };
+  const submitResetPassword = () => {
+    if (email.isValid) {
+      setSendingDataSpinner(true);
+
+      profileService.sendRequestToChangePassword(email.value)
+        .then((res) => {
+          console.log(res);
+          setResetPass(!resetPass);
+          setSendingDataSpinner(false);
+        }, (err) => {
+          console.log(err);
+          setSendingDataSpinner(false);
+          setFlashMessage({
+            message: "error - we have encountered a problem",
+            show: true,
+            messageState: "error",
+          });
         });
-    };
-    const submitResetPassword = () => {
-        if (email.isValid) {
-            setSendingDataSpinner(true);
-            setTimeout(() => {
-                setResetPass(!resetPass);
-                setSendingDataSpinner(false);
-            }, 3000)
-        }
-
     }
-   
-    return (<div>
-        {resetPass
-            ? <p className="center">reset link has been sent to {email.value}</p>
-            : <>
-                <TextInput
-                    onChange={onChangeHandler}
-                    placeholder="E-mail"
-                    name="email"
-                    value={email.value}
-                    classes={email.touched ^ email.isValid ? "input-orange" : "input-blue"}
-                    error={email.err[0]}
+  };
 
-                />
-                {sendingDataSpinner
-                    ? <Spinner classes={"spinner-container-h-sm"} size={"spinner-sm"} />
-                    : <Button clicked={submitResetPassword} classes="btn-blueGradient btn-md submit-btn">Submit</Button>
-                }
+  return (
+    <div>
+      {resetPass
+        ? (
+          <p className="center">
+            reset link has been sent to
+            {email.value}
+          </p>
+        )
+        : (
+          <>
+            <TextInput
+              onChange={onChangeHandler}
+              placeholder="E-mail"
+              name="email"
+              value={email.value}
+              // eslint-disable-next-line no-bitwise
+              classes={email.touched ^ email.isValid ? "input-orange" : "input-blue"}
+              error={email.err[0]}
+            />
+            {sendingDataSpinner
+              ? <Spinner classes="spinner-container-h-sm" size="spinner-sm" />
+              : <Button clicked={submitResetPassword} classes="btn-blueGradient btn-md submit-btn">Submit</Button>}
 
-            </>
-        }
-    </div>)
-}
+          </>
+        )}
+    </div>
+  );
+};
 
 export default ResetPassword;

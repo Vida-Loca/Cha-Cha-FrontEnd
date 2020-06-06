@@ -1,6 +1,10 @@
+/* eslint-disable react-hooks/exhaustive-deps */
+/* eslint-disable no-underscore-dangle */
 import React, { useEffect, useContext } from "react";
 import { Switch, Route, Redirect } from "react-router-dom";
-import { mainNav, adminNav, adminEventNav, mainNavNoAdmin } from "./Navs";
+import {
+  mainNav, adminNav, adminEventNav, mainNavNoAdmin,
+} from "./Navs";
 import { adminService, profileService } from "../../Authentication/service";
 import { UserContext } from "../../context/UserContext";
 import { FlashMessageContext } from "../../context/FlashMessageContext";
@@ -11,7 +15,6 @@ import Home from "../Home/Home";
 import Profile from "../Profile/Profile";
 import Admin from "../Admin/Admin";
 import Event from "../EventTabs/Event";
-import Banned from "../Banned";
 
 const MainLayout = () => {
   const [loggedinUser, setLoggedInUser] = useContext(UserContext);
@@ -20,35 +23,32 @@ const MainLayout = () => {
   useEffect(() => {
     let _isMounted = true;
     Promise.all([adminService.isLoggedInUserAdmin(), profileService.getCurrentUserInfo()])
-      .then(res => {
+      .then((res) => {
         console.log(res);
         if (_isMounted) {
           setLoggedInUser({ ...loggedinUser, user: res[1], isAdmin: res[0] });
-          if(res[1].banned){
-            setFlashMessage({
-              message: "you are banned",
-              show: true,
-              messageState: "error"
-            })
-          }
         }
-      }).catch(err => {
+      }).catch((err) => {
         console.log(err);
-      })
+        if (err.status === 403) {
+          setFlashMessage({
+            message: "you are banned",
+            show: true,
+            messageState: "error",
+          });
+        }
+      });
 
     return () => {
       _isMounted = false;
-    }
+    };
   }, []);
 
   return (
     <div className="MainLayout">
-      {
-      loggedinUser.user.banned 
-      ? <Banned />  
-      : <>
-        <Sidebar classes="SideBar-orange" navlinks={loggedinUser.isAdmin ? mainNav : mainNavNoAdmin} />
-        <Switch>
+
+      <Sidebar classes="SideBar-orange" navlinks={loggedinUser.isAdmin ? mainNav : mainNavNoAdmin} />
+      <Switch>
         <Route path="/" exact render={() => <Redirect to="/home" />} />
         <Route path="/home" exact render={() => <Home />} />
         <Route path="/profile" exact render={() => <Profile />} />
@@ -72,9 +72,7 @@ const MainLayout = () => {
           render={() => <Sidebar beforeLink="/admin" classes="SideBar-darkBlue" navlinks={adminNav} />}
         />
       ) : null}
-       </>
-    }
-      
+
     </div>
   );
 };

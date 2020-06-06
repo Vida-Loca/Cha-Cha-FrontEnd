@@ -1,10 +1,13 @@
 {
-  "extends": ["airbnb", "airbnb/hooks", "plugin:prettier/recommended"],
+  "extends": ["airbnb", "airbnb/hooks"],
   "rules": {
-    "no-unused-vars": "warn",
+    "no-unused-vars": [2, {"vars": "all", "args": "after-used"}],
     "no-console": "off",
     "react/jsx-filename-extension": [1, { "extensions": [".js", ".jsx"] }],
     "react/button-has-type": "off",
-    "printWidth": 120
+    "quotes": ["error", "double"],
+    "linebreak-style": ["error","windows"],
+    "react/self-closing-comp": "off"
+    // "printWidth": 120
   }
 }

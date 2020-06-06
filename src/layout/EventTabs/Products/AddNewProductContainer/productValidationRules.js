@@ -1,53 +1,51 @@
-const validationRules = [
-    {
-      name: "name",
-      config: {
-        type: "text",
-        placeholder: "name",
-        classes: "input-blue"
-      },
-      validation: {
-        required: true
-      }
+export default [
+  {
+    name: "name",
+    config: {
+      type: "text",
+      placeholder: "name",
+      classes: "input-blue",
     },
-    {
-      name: "price",
-      config: {
-        type: "number",
-        placeholder: "price",
-        classes: "input-blue"
-      },
-      validation: {
-        required: true,
-        maxLength: 10,
-        min: 0.01
-      }
+    validation: {
+      required: true,
     },
-    {
-      name: "quantity",
-      config: {
-        type: "number",
-        placeholder: "quantity",
-        classes: "input-blue"
-      },
-      validation: {
-        required: true,
-        maxLength: 10,
-        min: 1
-      }
+  },
+  {
+    name: "price",
+    config: {
+      type: "number",
+      placeholder: "price",
+      classes: "input-blue",
     },
-    {
-      name: "productCategory",
-      config: {
-        type: "text",
-        placeholder: "product category",
-        classes: "input-blue",
-        disabled: true
-      },
-      validation: {
-        required: true
-      }
-    }
-  ];
-
-  export {validationRules};
+    validation: {
+      required: true,
+      maxLength: 10,
+      min: 0.01,
+    },
+  },
+  {
+    name: "quantity",
+    config: {
+      type: "number",
+      placeholder: "quantity",
+      classes: "input-blue",
+    },
+    validation: {
+      required: true,
+      maxLength: 10,
+      min: 1,
+    },
+  },
+  {
+    name: "productCategory",
+    config: {
+      type: "text",
+      placeholder: "product category",
+      classes: "input-blue",
+      disabled: true,
+    },
+    validation: {
+      required: true,
+    },
+  },
+];

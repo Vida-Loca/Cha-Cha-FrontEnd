@@ -1,3 +1,4 @@
+/* eslint-disable no-underscore-dangle */
 import React, { useState, useContext, useEffect } from "react";
 import { FormContext } from "../../../context/FormContext";
 
@@ -22,15 +23,17 @@ const UsersLayout = () => {
   useEffect(() => {
     let __isMounted = true;
     Promise.all([adminService.getAllUsers(), adminService.getAllAdmins()])
-      .then(res => {
+      .then((res) => {
         if (__isMounted) {
-          const usersList = res[0].filter( user => res[1].findIndex( userT => userT.id === user.id) < 0);
+          const usersList = res[0]
+            .filter((user) => res[1]
+              .findIndex((userT) => userT.id === user.id) < 0);
           setUsers({ members: usersList, spinner: false });
           setDislpayUsers({ members: usersList, spinner: false });
-          setAdmins({members: res[1], spinner: false})
+          setAdmins({ members: res[1], spinner: false });
         }
       })
-      .catch(err => {
+      .catch((err) => {
         console.log(err);
       });
 
@@ -42,60 +45,59 @@ const UsersLayout = () => {
   const handleSearch = (event) => {
     setFindUser({
       ...findUser,
-      [`${event.target.name}`]: event.target.value
+      [`${event.target.name}`]: event.target.value,
     });
-    let searchQuery = event.target.value.toLowerCase();
-    let displayUsers = users.members.filter((el) => {
-      let searchValue = el.username.toLowerCase();
+    const searchQuery = event.target.value.toLowerCase();
+    const displayUsers = users.members.filter((el) => {
+      const searchValue = el.username.toLowerCase();
       return searchValue.indexOf(searchQuery) !== -1;
     });
-    setDislpayUsers({ ...dislpayUsers, members: displayUsers })
+    setDislpayUsers({ ...dislpayUsers, members: displayUsers });
+  };
 
-  }
-
-  const removeUserFromList = (userId) =>{
+  const removeUserFromList = (userId) => {
     let tempListOfUser = users.members;
-    tempListOfUser = tempListOfUser.filter(user => user.id !== userId);
-    setUsers({...users, memebers:  tempListOfUser});
+    tempListOfUser = tempListOfUser.filter((user) => user.id !== userId);
+    setUsers({ ...users, memebers: tempListOfUser });
     setDislpayUsers({ members: tempListOfUser, spinner: false });
-  }
-  const banUserInList = (userId, isban) =>{
+  };
+  const banUserInList = (userId, isban) => {
     let tempListOfUser = users.members;
-    tempListOfUser = tempListOfUser.map(user => {
-      if(user.id === userId){
-        return {...user, banned: isban}
+    tempListOfUser = tempListOfUser.map((user) => {
+      if (user.id === userId) {
+        return { ...user, banned: isban };
       }
       return user;
     });
-    setUsers({...users, memebers:  tempListOfUser});
+    setUsers({ ...users, memebers: tempListOfUser });
     setDislpayUsers({ members: tempListOfUser, spinner: false });
-  }
+  };
 
-  const promoteToAdminInList = (userId) =>{
-    let tempListOfUser = users.members;
-    let indexOfUser = tempListOfUser.findIndex(user => user.id === userId);
-    if(indexOfUser > -1){
+  const promoteToAdminInList = (userId) => {
+    const tempListOfUser = users.members;
+    const indexOfUser = tempListOfUser.findIndex((user) => user.id === userId);
+    if (indexOfUser > -1) {
       const adminList = admins.members;
       adminList.push(tempListOfUser[indexOfUser]);
-      setAdmins({...admins, memebers: adminList })
+      setAdmins({ ...admins, memebers: adminList });
     }
     removeUserFromList(userId);
-  }
+  };
 
 
   const openUserProfileModal = (userDetails, isAdmin) => {
-    setform({ 
-        show: true,
-       renderForm: 
-       <UserProfile 
-          isAdmin={isAdmin}
-          promoteToAdminInList={promoteToAdminInList}
-          banUserInList={banUserInList}
-          removeUserFromList={removeUserFromList} 
-          userDetails={userDetails} 
-        /> });
+    setform({
+      show: true,
+      renderForm:
+  <UserProfile
+    isAdmin={isAdmin}
+    promoteToAdminInList={promoteToAdminInList}
+    banUserInList={banUserInList}
+    removeUserFromList={removeUserFromList}
+    userDetails={userDetails}
+  />,
+    });
   };
-
 
 
   const searchForGivenUsername = () => {
@@ -105,7 +107,7 @@ const UsersLayout = () => {
         setUsers({ ...users, spinner: false });
       }, 1000);
     }
-  }
+  };
 
   return (
     <div className="user-container">
@@ -125,16 +127,16 @@ const UsersLayout = () => {
         render={
           admins.spinner
             ? () => <Spinner />
-            : ({ items }) =>
-              items.map(ev => (
-                <UserCard
-                  imageUrl={ev.picUrl}
-                  key={ev.username}
-                  username={ev.username}
-                  showControlls={true}
-                  clicked={() => openUserProfileModal(ev, true)} />
-        
-              ))
+            : ({ items }) => items.map((ev) => (
+              <UserCard
+                imageUrl={ev.picUrl}
+                key={ev.username}
+                username={ev.username}
+                showControlls
+                clicked={() => openUserProfileModal(ev, true)}
+              />
+
+            ))
         }
       />
       <PaginatedContainer
@@ -144,19 +146,19 @@ const UsersLayout = () => {
         render={
           dislpayUsers.spinner
             ? () => <Spinner />
-            : ({ items }) =>
-              items.map(ev => (
-                <UserCard
-                  imageUrl={ev.picUrl}
-                  key={ev.username}
-                  username={ev.username}
-                  showControlls={true}
-                  clicked={() => openUserProfileModal(ev, false)} />
-         
-              ))
+            : ({ items }) => items.map((ev) => (
+              <UserCard
+                imageUrl={ev.picUrl}
+                key={ev.username}
+                username={ev.username}
+                showControlls
+                clicked={() => openUserProfileModal(ev, false)}
+              />
+
+            ))
         }
       />
-     
+
     </div>
   );
 };

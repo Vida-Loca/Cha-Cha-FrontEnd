@@ -1,3 +1,4 @@
+/* eslint-disable no-underscore-dangle */
 import React, { useState, useEffect } from "react";
 import PropTypes from "prop-types";
 import { Redirect } from "react-router-dom";
@@ -8,8 +9,9 @@ import Spinner from "../../../components/Spinner";
 
 import "./MainPage.scss";
 
-const MainPage = ({ eventPath, eventId, isAuth, type }) => {
-
+const MainPage = ({
+  eventPath, eventId, isAuth, type,
+}) => {
   const [userStatus, setUserStatus] = useState(2);
   const [invitationId, setInvitationId] = useState("");
   const [actionComplete, setactionComplete] = useState(false);
@@ -17,8 +19,9 @@ const MainPage = ({ eventPath, eventId, isAuth, type }) => {
   useEffect(() => {
     let __isMounted = true;
     profileService.getEventInvitations()
-      .then(res => {
-        const found = res === [] ? false : res.find(el => el.event.id.toString() === eventId.toString());
+      .then((res) => {
+        const found = res === []
+          ? false : res.find((el) => el.event.id.toString() === eventId.toString());
         if (found) {
           // if found invitation for this event
           if (__isMounted) {
@@ -35,60 +38,57 @@ const MainPage = ({ eventPath, eventId, isAuth, type }) => {
           if (__isMounted) {
             setUserStatus(3);
           }
-        }
-        else {
           // None of the above -return error page
-          if (__isMounted) {
-            setUserStatus(4);
-          }
+        } else if (__isMounted) {
+          setUserStatus(4);
         }
-      }, err => {
+      }, (err) => {
         console.log(err);
       });
 
     return () => {
       __isMounted = false;
     };
-  }, [eventId, type])
+  }, [eventId, type]);
 
   const joinCurrentEvent = () => {
     setactionComplete(true);
     eventService.joinEvent(eventId)
-      .then(_ => {
+      .then(() => {
         history.go(0);
         setactionComplete(false);
-      }, err => {
+      }, (err) => {
         console.log(err);
         setactionComplete(false);
-      })
-  }
+      });
+  };
   const requestToJoinEvent = () => {
     setactionComplete(true);
     eventService.sendRequestToJoinEvent(eventId)
-      .then(res => {
+      .then(() => {
         history.push("/");
         setactionComplete(false);
-      }, err => {
+      }, (err) => {
         console.log(err);
         setactionComplete(false);
-      })
-  }
+      });
+  };
   const acceptInvitationToEvent = () => {
     eventService.acceptEventInvitation(invitationId)
-      .then(_ => {
+      .then(() => {
         history.go(0);
-      }, err => {
+      }, (err) => {
         console.log(err);
-      })
-  }
+      });
+  };
   const rejectInvitationToEvent = () => {
     eventService.rejectEventInvitation(invitationId)
-      .then(_ => {
+      .then(() => {
         history.push("/");
-      }, err => {
+      }, (err) => {
         console.log(err);
-      })
-  }
+      });
+  };
 
   const conditionalRender = () => {
     switch (userStatus) {
@@ -107,9 +107,9 @@ const MainPage = ({ eventPath, eventId, isAuth, type }) => {
           <>
             <h2>This event is public so join us</h2>
             {
-              actionComplete 
-              ? <Spinner size="spinner-sm" classes="spinner-container-h-sm" />
-              : <Button clicked={joinCurrentEvent} classes="btn-blueGradient btn-md">join event</Button>
+              actionComplete
+                ? <Spinner size="spinner-sm" classes="spinner-container-h-sm" />
+                : <Button clicked={joinCurrentEvent} classes="btn-blueGradient btn-md">join event</Button>
             }
           </>
         );
@@ -118,11 +118,11 @@ const MainPage = ({ eventPath, eventId, isAuth, type }) => {
           <>
             <h2>Request to join this event</h2>
             {
-              actionComplete 
-              ? <Spinner size="spinner-sm" classes="spinner-container-h-sm" />
-              : <Button clicked={requestToJoinEvent} classes="btn-blueGradient btn-md">send request</Button>
+              actionComplete
+                ? <Spinner size="spinner-sm" classes="spinner-container-h-sm" />
+                : <Button clicked={requestToJoinEvent} classes="btn-blueGradient btn-md">send request</Button>
             }
-            
+
           </>
         );
 
@@ -139,14 +139,15 @@ const MainPage = ({ eventPath, eventId, isAuth, type }) => {
   return isAuth ? (
     <Redirect to={`${eventPath.substring(0, eventPath.length - 4)}/${eventId}/products`} />
   ) : (
-      <div className="MainPage">{conditionalRender()}</div>
-    );
+    <div className="MainPage">{conditionalRender()}</div>
+  );
 };
 
 MainPage.propTypes = {
+  type: PropTypes.string.isRequired,
   eventPath: PropTypes.string.isRequired,
   eventId: PropTypes.string.isRequired,
-  isAuth: PropTypes.bool.isRequired
+  isAuth: PropTypes.bool.isRequired,
 };
 
 export default MainPage;

@@ -1,3 +1,4 @@
+/* eslint-disable no-underscore-dangle */
 import React, { useState, useEffect } from "react";
 import PropTypes from "prop-types";
 import { TextInput } from "../../../../components/Inputs";
@@ -10,9 +11,7 @@ import Spinner from "../../../../components/Spinner";
 
 import "./inviteFriends.scss";
 
-
 const InviteUserFormContainer = ({ id }) => {
-
   const [findUser, setfindUser] = useState({ username: "" });
   const [friendsList, setFriendList] = useState({ friends: [], spinner: true });
   const [dislpayFriends, setDislpayFreinds] = useState({ friends: [], spinner: true });
@@ -20,12 +19,12 @@ const InviteUserFormContainer = ({ id }) => {
   useEffect(() => {
     let __isMounted = true;
     userService.getFriendsList()
-      .then(res => {
+      .then((res) => {
         if (__isMounted) {
           setFriendList({ friends: res, spinner: false });
           setDislpayFreinds({ friends: res, spinner: false });
         }
-      }).catch(err => {
+      }).catch((err) => {
         if (__isMounted) {
           console.log(err);
           setFriendList({ friends: [], spinner: false });
@@ -38,12 +37,15 @@ const InviteUserFormContainer = ({ id }) => {
     };
   }, []);
 
-  const onChangeHandler = event => {
+  const onChangeHandler = (event) => {
     setfindUser({
       ...findUser,
-      [`${event.target.name}`]: event.target.value
+      [`${event.target.name}`]: event.target.value,
     });
-    const foundUsers = friendsList.friends.filter(user => user.username.includes(findUser.username));
+    const foundUsers = friendsList.friends
+      .filter((user) => user.username.includes(findUser.username));
+
+    // eslint-disable-next-line no-unused-expressions
     foundUsers.length !== 0 && findUser.username.length > 1
       ? setDislpayFreinds({ ...dislpayFriends, friends: foundUsers })
       : setDislpayFreinds({ ...dislpayFriends, friends: friendsList.friends });
@@ -52,12 +54,15 @@ const InviteUserFormContainer = ({ id }) => {
 
   const sendInvitation = (userId) => {
     eventService.inviteUserToAnEvent(id, userId)
-      .then(_ => {
-        setDislpayFreinds({ friends: dislpayFriends.friends.filter(prod => prod.id !== userId), spinner: false })
-      }, err => {
+      .then(() => {
+        setDislpayFreinds({
+          friends: dislpayFriends.friends.filter((prod) => prod.id !== userId),
+          spinner: false,
+        });
+      }, (err) => {
         console.log(err);
       });
-  }
+  };
 
   return (
     <div className="invite-friends">
@@ -69,12 +74,11 @@ const InviteUserFormContainer = ({ id }) => {
         render={
           dislpayFriends.spinner
             ? () => <Spinner />
-            : ({ items }) =>
-              items.map(ev => (
-                <UserCard key={ev.username} username={ev.username} imageUrl={ev.picUrl} showControlls>
-                  <Button clicked={() => sendInvitation(ev.id)} classes="btn-blueGradient btn-sm">invite</Button>
-                </UserCard>
-              ))
+            : ({ items }) => items.map((ev) => (
+              <UserCard key={ev.username} username={ev.username} imageUrl={ev.picUrl} showControlls>
+                <Button clicked={() => sendInvitation(ev.id)} classes="btn-blueGradient btn-sm">invite</Button>
+              </UserCard>
+            ))
         }
       />
     </div>
@@ -83,7 +87,7 @@ const InviteUserFormContainer = ({ id }) => {
 
 
 InviteUserFormContainer.propTypes = {
-  id: PropTypes.string.isRequired
+  id: PropTypes.string.isRequired,
 };
 
 

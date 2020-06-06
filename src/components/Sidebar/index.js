@@ -15,10 +15,10 @@ const Sidebar = ({ navlinks, classes, beforeLink }) => {
   };
   return (
     <div className={`${classes} ${showNavBar.show ? "show" : ""}`}>
-      <Button clicked={toggleNavBarHandler} >
+      <Button clicked={toggleNavBarHandler}>
         <i className="fas fa-bars" />
       </Button>
-      {navlinks.map(navLink => {
+      {navlinks.map((navLink) => {
         const tempBeforeLink = beforeLink !== undefined ? beforeLink : "";
         return (
           <SideBarItem
@@ -37,13 +37,13 @@ const Sidebar = ({ navlinks, classes, beforeLink }) => {
 };
 Sidebar.defaultProps = {
   classes: "",
-  beforeLink: ""
+  beforeLink: "",
 };
 
 Sidebar.propTypes = {
   navlinks: PropTypes.arrayOf(String).isRequired,
   classes: PropTypes.string,
-  beforeLink: PropTypes.string
+  beforeLink: PropTypes.string,
 };
 
 export default Sidebar;

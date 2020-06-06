@@ -1,7 +1,8 @@
+/* eslint-disable no-underscore-dangle */
 import React, { useContext, useState, useEffect } from "react";
 
 import { FormContext } from "../../context/FormContext";
-import {FlashMessageContext} from "../../context/FlashMessageContext";
+import { FlashMessageContext } from "../../context/FlashMessageContext";
 import { authenticationService, profileService, userService } from "../../Authentication/service";
 
 import { editableProfileRules, profileRules } from "./validationCfg";
@@ -21,18 +22,17 @@ import "./Profile.scss";
 // import { events } from "../../mockData";
 
 const Profile = () => {
-
   const [userInfo, setUserInfo] = useState({
     username: "Loading ...",
     email: "Loading ...",
     datejoined: "Loading ...",
-    avatarUrl: {link: "", loaded: false}
+    avatarUrl: { link: "", loaded: false },
   });
   const [editableUserInfo, setEditableUserInfo] = useState({
     name: { value: "Loading ...", isValid: true, err: "" },
     surname: { value: "Loading ...", isValid: true, err: "" },
     tempName: "Loading ...",
-    tempSurname: "Loading ..."
+    tempSurname: "Loading ...",
   });
 
   const [myEvents, setMyEvents] = useState({ events: [], spinner: true });
@@ -48,45 +48,44 @@ const Profile = () => {
     let __isMounted = true;
 
     userService.getFriendRequestList()
-      .then(res => {
+      .then((res) => {
         if (__isMounted) {
-          setNewRequests(res.filter(invite => invite.invitationStatus === "PROCESSING").length);
+          setNewRequests(res.filter((invite) => invite.invitationStatus === "PROCESSING").length);
         }
       });
 
     profileService.getCurrentUserInfo()
-      .then(res => {
+      .then((res) => {
         if (__isMounted) {
           setUserInfo({
             username: res.username,
             email: res.email,
             datejoined: res.joined.substring(0, 10),
-            avatarUrl: {link: res.picUrl, loaded: true}
-          })
+            avatarUrl: { link: res.picUrl, loaded: true },
+          });
           setEditableUserInfo({
             name: { value: res.name, isValid: true, err: "" },
             surname: { value: res.surname, isValid: true, err: "" },
             tempName: res.name,
-            tempSurname: res.surname
-          })
+            tempSurname: res.surname,
+          });
         }
       });
 
     profileService.getAllUserEvents()
-      .then(res => {
+      .then((res) => {
         setMyEvents({ events: res, spinner: false });
       });
 
     profileService.getEventInvitations()
-      .then(res => {
-        setInvitations({ events: res.filter(invitation => invitation.accessStatus === "PROCESSING"), spinner: false });
+      .then((res) => {
+        setInvitations({ events: res.filter((invitation) => invitation.accessStatus === "PROCESSING"), spinner: false });
       });
 
     return () => {
       __isMounted = false;
     };
   }, []);
-
 
 
   const editHandler = () => {
@@ -97,22 +96,22 @@ const Profile = () => {
     setEditableUserInfo({
       ...editableUserInfo,
       name: { ...editableUserInfo.name, value: editableUserInfo.tempName, err: [] },
-      surname: { ...editableUserInfo.surname, value: editableUserInfo.tempSurname, err: [] }
+      surname: { ...editableUserInfo.surname, value: editableUserInfo.tempSurname, err: [] },
     });
   };
 
-  const onChangeHandler = event => {
+  const onChangeHandler = (event) => {
     const validationResult = checkValidation(
       event.target.value,
-      editableProfileRules.find(x => x.name === event.target.name).validation
+      editableProfileRules.find((x) => x.name === event.target.name).validation,
     );
     setEditableUserInfo({
       ...editableUserInfo,
       [`${event.target.name}`]: {
         value: event.target.value,
         isValid: validationResult[0],
-        err: validationResult[1]
-      }
+        err: validationResult[1],
+      },
     });
   };
 
@@ -122,30 +121,29 @@ const Profile = () => {
 
   const submitUpdateProfile = () => {
     if (editableUserInfo.name.isValid && editableUserInfo.surname.isValid) {
-   
       userService.updateCredentials(
         editableUserInfo.name.value,
-        editableUserInfo.surname.value
-      ).then(_res =>{
+        editableUserInfo.surname.value,
+      ).then(() => {
         setEdit(false);
         setFlashMessage({
           message: "succesfully updated profile",
           show: true,
-          messageState: "success"
+          messageState: "success",
         });
-      }, _err =>{
+      }, () => {
         setFlashMessage({
           message: "there is a problem updating your profile",
           show: true,
-          messageState: "warning"
+          messageState: "warning",
         });
-      })
+      });
     }
-  }
+  };
 
   const changeAvatarInApp = (imageLink) => {
-    setUserInfo({ ...userInfo, avatarUrl:{link: imageLink, loaded: true} });
-  }
+    setUserInfo({ ...userInfo, avatarUrl: { link: imageLink, loaded: true } });
+  };
 
 
   const showFriendsInModal = () => {
@@ -153,14 +151,16 @@ const Profile = () => {
   };
 
   const changeAvatarInModal = () => {
-    setform({ renderForm: <ChangeAvatarContainer changeAvatarState={changeAvatarInApp} />, show: true });
+    setform({
+      renderForm: <ChangeAvatarContainer changeAvatarState={changeAvatarInApp} />, show: true,
+    });
   };
 
   return (
     <div className="profile-container">
       <div className="profile-card">
         <div className="avatar-section">
-          {userInfo.avatarUrl.loaded &&  <Avatar imageLink={userInfo.avatarUrl.link} />}
+          {userInfo.avatarUrl.loaded && <Avatar imageLink={userInfo.avatarUrl.link} />}
 
           <div className="edit-btn">
             <Button clicked={changeAvatarInModal} classes="change-avatar-icon"><i className="fas fa-image" /></Button>
@@ -179,14 +179,14 @@ const Profile = () => {
             cancel={cancelEdit}
             confirm={submitUpdateProfile}
             tags
-            render={
+            render={(
               <>
                 <i className="far fa-edit" />
                 Edit
               </>
-            }
+            )}
           />
-          {editableProfileRules.map(el => (
+          {editableProfileRules.map((el) => (
             <TextInput
               key={el.name}
               onChange={onChangeHandler}
@@ -199,7 +199,7 @@ const Profile = () => {
               disabled={!isEditable}
             />
           ))}
-          {profileRules.map(el => (
+          {profileRules.map((el) => (
             <TextInput
               key={el.name}
               onChange={onChangeHandler}
@@ -207,7 +207,7 @@ const Profile = () => {
               name={el.name}
               value={userInfo[el.name]}
               size="input-sm"
-              disabled={true}
+              disabled
             />
           ))}
         </div>
@@ -229,17 +229,16 @@ const Profile = () => {
           render={
             myEvents.spinner
               ? () => <Spinner />
-              : ({ items }) =>
-                items.map(ev => (
-                  <EventCard
-                    id={ev.id}
-                    key={ev.id}
-                    name={ev.name}
-                    date={ev.startTime}
-                    location={ev.address}
-                    eventState={ev.over ? "finished" : "ongoing"}
-                  />
-                ))
+              : ({ items }) => items.map((ev) => (
+                <EventCard
+                  id={ev.id}
+                  key={ev.id}
+                  name={ev.name}
+                  date={ev.startTime}
+                  location={ev.address}
+                  eventState={ev.over ? "finished" : "ongoing"}
+                />
+              ))
           }
         />
         <PaginatedContainer
@@ -250,17 +249,16 @@ const Profile = () => {
           render={
             invitations.spinner
               ? () => <Spinner />
-              : ({ items }) =>
-                items.map(ev => (
-                  <EventCard
-                    id={ev.event.id}
-                    key={ev.event.id}
-                    name={ev.event.name}
-                    date={ev.event.startTime}
-                    location={ev.event.address}
-                    eventState="invite"
-                  />
-                ))
+              : ({ items }) => items.map((ev) => (
+                <EventCard
+                  id={ev.event.id}
+                  key={ev.event.id}
+                  name={ev.event.name}
+                  date={ev.event.startTime}
+                  location={ev.event.address}
+                  eventState="invite"
+                />
+              ))
           }
         />
       </div>

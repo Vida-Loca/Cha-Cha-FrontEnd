@@ -1,4 +1,5 @@
 import React, { useState, useContext } from "react";
+import PropTypes from "prop-types";
 import { TextInput } from "../../../components/Inputs";
 import { Button } from "../../../components/Button";
 import Spinner from "../../../components/Spinner";
@@ -14,10 +15,10 @@ const ChangeAvatar = ({ changeAvatarState }) => {
   const [, setFlashMessage] = useContext(FlashMessageContext);
 
   const [avatarUrl, setAvatarUrl] = useState({ URL: "" });
-  const onChangeHandler = event => {
+  const onChangeHandler = (event) => {
     setAvatarUrl({
       ...avatarUrl,
-      [`${event.target.name}`]: event.target.value
+      [`${event.target.name}`]: event.target.value,
     });
   };
 
@@ -25,22 +26,21 @@ const ChangeAvatar = ({ changeAvatarState }) => {
     if (avatarUrl.URL.length > 5) {
       setSendingDataSpinner(true);
       profileService.changeAvatar(avatarUrl.URL)
-        .then(_ => {
-          setSendingDataSpinner(false)
+        .then(() => {
+          setSendingDataSpinner(false);
           changeAvatarState(avatarUrl.URL);
           setChangedForm({ renderForm: "", show: false });
-        }, _ => {
-          setSendingDataSpinner(false)
+        }, () => {
+          setSendingDataSpinner(false);
         });
-
     } else {
       setFlashMessage({
         message: "there ha sbeen a problem with updating your profile picture",
         show: true,
-        messageState: "error"
+        messageState: "error",
       });
     }
-  }
+  };
 
   return (
     <>
@@ -51,11 +51,14 @@ const ChangeAvatar = ({ changeAvatarState }) => {
         classes="input-blue"
       />
       {sendingDataSpinner
-        ? <Spinner classes={"spinner-container-h-sm"} size={"spinner-sm"} />
-        : <Button clicked={changeAvatar} classes="form-btn btn-blueGradient btn-md">update</Button>
-      }
+        ? <Spinner classes="spinner-container-h-sm" size="spinner-sm" />
+        : <Button clicked={changeAvatar} classes="form-btn btn-blueGradient btn-md">update</Button>}
     </>
   );
+};
+
+ChangeAvatar.propTypes = {
+  changeAvatarState: PropTypes.func.isRequired,
 };
 
 export default ChangeAvatar;

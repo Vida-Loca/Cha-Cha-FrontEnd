@@ -1,3 +1,5 @@
+/* eslint-disable comma-dangle */
+/* eslint-disable no-bitwise */
 import React, { useState, useContext } from "react";
 import PropTypes from "prop-types";
 import { TextInput } from "../../../../components/Inputs";
@@ -10,27 +12,35 @@ import { productService } from "../../../../Authentication/service";
 import { FormContext } from "../../../../context/FormContext";
 import { UserContext } from "../../../../context/UserContext";
 
-import {validationRules} from "./productValidationRules";
+import validationRules from "./productValidationRules";
 
 
 const AddNewProductContainer = ({ addProductToList, id, category }) => {
-
   const [form, setform] = useContext(FormContext);
+  // eslint-disable-next-line comma-spacing
   const [loggedInUser,] = useContext(UserContext);
-  let [sendingDataSpinner, setSendingDataSpinner] = useState(false);
+  const [sendingDataSpinner, setSendingDataSpinner] = useState(false);
 
   const [product, setProduct] = useState({
-    name: { value: "", isValid: false, err: "", touched: false },
-    price: { value: "", isValid: false, err: "", touched: false },
-    quantity: { value: 1, isValid: true, err: "", touched: true },
-    productCategory: { value: "", isValid: false, err: "", touched: false }
+    name: {
+      value: "", isValid: false, err: "", touched: false,
+    },
+    price: {
+      value: "", isValid: false, err: "", touched: false,
+    },
+    quantity: {
+      value: 1, isValid: true, err: "", touched: true,
+    },
+    productCategory: {
+      value: "", isValid: false, err: "", touched: false,
+    },
   });
 
 
-  const onChangeHandler = event => {
+  const onChangeHandler = (event) => {
     const validationResult = checkValidation(
       event.target.value,
-      validationRules.find(x => x.name === event.target.name).validation
+      validationRules.find((x) => x.name === event.target.name).validation,
     );
     setProduct({
       ...product,
@@ -38,15 +48,17 @@ const AddNewProductContainer = ({ addProductToList, id, category }) => {
         value: event.target.value,
         isValid: validationResult[0],
         err: validationResult[1],
-        touched: true
-      }
+        touched: true,
+      },
     });
-
   };
 
   const submitProduct = () => {
-    const chosenCategory = !!category ? category : product.productCategory.value;
-    if (product.name.isValid && product.price.isValid && product.quantity.isValid&& (product.productCategory.isValid || !!category)) {
+    const chosenCategory = category || product.productCategory.value;
+    if (product.name.isValid
+      && product.price.isValid
+      && product.quantity.isValid
+      && (product.productCategory.isValid || !!category)) {
       setSendingDataSpinner(true);
 
       productService.addProduct(id,
@@ -54,13 +66,13 @@ const AddNewProductContainer = ({ addProductToList, id, category }) => {
           name: product.name.value,
           price: product.price.value,
           quantity: product.quantity.value,
-          productCategory: chosenCategory.toUpperCase()
+          productCategory: chosenCategory.toUpperCase(),
         })
-        .then(res => {
+        .then((res) => {
           console.log(res);
           setSendingDataSpinner(false);
           setform({ ...form, show: false });
-          
+
           addProductToList({
             productCategory: chosenCategory.toUpperCase(),
             product: {
@@ -71,23 +83,21 @@ const AddNewProductContainer = ({ addProductToList, id, category }) => {
               user: {
                 id: loggedInUser.user.id,
                 username: loggedInUser.user.username,
-                picUrl: loggedInUser.user.picUrl
-              }
-              
-            }
-          });
+                picUrl: loggedInUser.user.picUrl,
+              },
 
-        }).catch(err => {
+            },
+          });
+        }).catch((err) => {
           console.log(err);
           setSendingDataSpinner(false);
-        })
-
-    } 
-  }
+        });
+    }
+  };
 
   return (
     <>
-      {validationRules.map(el => (
+      {validationRules.map((el) => (
         <TextInput
           key={el.name}
           onChange={onChangeHandler}
@@ -102,21 +112,20 @@ const AddNewProductContainer = ({ addProductToList, id, category }) => {
       ))}
 
       {sendingDataSpinner
-        ? <Spinner classes={"spinner-container-h-sm"} size={"spinner-sm"} />
-        : <Button clicked={submitProduct} classes="form-btn btn-blueGradient btn-md"> Add</Button>
-      }
+        ? <Spinner classes="spinner-container-h-sm" size="spinner-sm" />
+        : <Button clicked={submitProduct} classes="form-btn btn-blueGradient btn-md"> Add</Button>}
     </>
   );
 };
 
 AddNewProductContainer.defaultProps = {
-  category: null
+  category: null,
 };
 
 AddNewProductContainer.propTypes = {
   category: PropTypes.string,
   addProductToList: PropTypes.func.isRequired,
-  id: PropTypes.string.isRequired
+  id: PropTypes.string.isRequired,
 };
 
 export default AddNewProductContainer;

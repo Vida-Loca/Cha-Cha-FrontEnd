@@ -1,3 +1,4 @@
+/* eslint-disable no-underscore-dangle */
 import React, { useState, useContext, useEffect } from "react";
 import PropTypes from "prop-types";
 
@@ -32,30 +33,31 @@ const Products = ({ eventId, isEventAdmin, currency }) => {
     let __isMounted = true;
 
     productService.getTotalEventAmount(eventId)
-    .then(res =>{
-      setTotalSum(res);
-    })
+      .then((res) => {
+        setTotalSum(res);
+      });
     productService.getProductsFromEvent(eventId)
-      .then(res => {
+      .then((res) => {
         if (__isMounted) {
           setProduct({ products: createSetOfCategories(res), spinner: false });
         }
-      }, _err => {
+      }, () => {
         if (__isMounted) {
           setProduct({ products: [], spinner: false });
         }
-      })
+      });
 
     productService.getProductsOfCurrentUser(eventId)
-    .then(res =>{
-      const newMyProductList = res.map(el =>({...el, productCategory: el.productCategory.name}));
+      .then((res) => {
+        const newMyProductList = res.map((el) => ({
+          ...el,
+          productCategory: el.productCategory.name,
+        }));
 
-      setLoggedInUserProducts({ products: newMyProductList, spinner: false });
-      
-    }, _err =>{
-      setLoggedInUserProducts({ products: [], spinner: false })
-    })
-
+        setLoggedInUserProducts({ products: newMyProductList, spinner: false });
+      }, () => {
+        setLoggedInUserProducts({ products: [], spinner: false });
+      });
 
     return () => {
       __isMounted = false;
@@ -63,38 +65,52 @@ const Products = ({ eventId, isEventAdmin, currency }) => {
   }, [eventId]);
 
 
-
-
-
   const addProduct = (addedProduct) => {
-    let tempProductsList = productList.products;
-    
+    const tempProductsList = productList.products;
+
     // check if given category exists
-    let foundIndex = tempProductsList.findIndex(catList => catList.productCategory === addedProduct.productCategory);
+    const foundIndex = tempProductsList
+      .findIndex((catList) => catList.productCategory === addedProduct.productCategory);
     if (foundIndex < 0) {
-      let tempProductCat = { productCategory: addedProduct.productCategory, products: [addedProduct.product] }
+      const tempProductCat = {
+        productCategory: addedProduct.productCategory,
+        products: [addedProduct.product],
+      };
       tempProductsList.push(tempProductCat);
       setProduct({ ...productList, products: tempProductsList });
-    }
-    else {
-      let foundIndexOfProduct = tempProductsList[foundIndex].products.findIndex( prod => prod.id === addedProduct.product.id);
-      if(foundIndexOfProduct > -1){
+    } else {
+      const foundIndexOfProduct = tempProductsList[foundIndex].products
+        .findIndex((prod) => prod.id === addedProduct.product.id);
+      if (foundIndexOfProduct > -1) {
+        // eslint-disable-next-line max-len
         tempProductsList[foundIndex].products[foundIndexOfProduct].quantity = addedProduct.product.quantity;
-      } else{
+      } else {
         tempProductsList[foundIndex].products.push(addedProduct.product);
       }
-     
+
       setProduct({ ...productList, products: tempProductsList });
     }
-
-  }
+  };
 
   const addNewProductModal = () => {
-    setform({ ...forms, renderForm: <AddNewProductContainer addProductToList={addProduct} id={eventId} />, show: true });
+    setform({
+      ...forms,
+      renderForm: <AddNewProductContainer addProductToList={addProduct} id={eventId} />,
+      show: true,
+    });
   };
 
   const overviewOpenModal = () => {
-    setform({ ...forms, renderForm: <Overview eventProducts={productList.products} eventId={eventId} currency={currency} />, show: true });
+    setform({
+      ...forms,
+      renderForm:
+  <Overview
+    eventProducts={productList.products}
+    eventId={eventId}
+    currency={currency}
+  />,
+      show: true,
+    });
   };
 
 
@@ -108,27 +124,37 @@ const Products = ({ eventId, isEventAdmin, currency }) => {
       <div className="button-container">
         <p className="full-price-label">
           <span className="label">Total:</span>
-          <span className="price">{totalSum}<span className="currency"> {currency}</span></span>
+          <span className="price">
+            {totalSum}
+            <span className="currency">
+              {" "}
+              {currency}
+            </span>
+          </span>
         </p>
         <Button classes="btn-md btn-orangeGradient" clicked={overviewOpenModal}>
-        <i className="fas fa-chart-bar" /> expenses
+          <i className="fas fa-chart-bar" />
+          {" "}
+          expenses
         </Button>
       </div>
 
       <div className="my-products">
-        <h2 style={{textAlign: "center"}}>My products</h2>
+        <h2 style={{ textAlign: "center" }}>My products</h2>
         {
           loggedInUserProducts.spinner
-          ? <Spinner />
-          : <MyProducts 
-              currency={currency}
-              isEventAdmin={isEventAdmin} 
-              eventId={eventId} 
-              supCont={loggedInUserProducts.products} 
-              key="myProducts" 
-           />
+            ? <Spinner />
+            : (
+              <MyProducts
+                currency={currency}
+                isEventAdmin={isEventAdmin}
+                eventId={eventId}
+                supCont={loggedInUserProducts.products}
+                key="myProducts"
+              />
+            )
         }
-        
+
 
       </div>
 
@@ -139,14 +165,15 @@ const Products = ({ eventId, isEventAdmin, currency }) => {
         render={
           productList.spinner
             ? (() => <Spinner />)
-            : (({ items }) => items.map(supCont => 
-            <ProductCategory 
-              currency={currency}
-              isEventAdmin={isEventAdmin} 
-              eventId={eventId} 
-              supCont={supCont} 
-              key={supCont.productCategory} 
-            />))
+            : (({ items }) => items.map((supCont) => (
+              <ProductCategory
+                currency={currency}
+                isEventAdmin={isEventAdmin}
+                eventId={eventId}
+                supCont={supCont}
+                key={supCont.productCategory}
+              />
+            )))
         }
       />
 
@@ -157,7 +184,7 @@ const Products = ({ eventId, isEventAdmin, currency }) => {
 Products.propTypes = {
   eventId: PropTypes.string.isRequired,
   isEventAdmin: PropTypes.bool.isRequired,
-  currency: PropTypes.string.isRequired
+  currency: PropTypes.string.isRequired,
 };
 
 export default Products;
