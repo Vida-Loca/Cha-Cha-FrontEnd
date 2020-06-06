@@ -24,12 +24,10 @@ const MainLayout = () => {
     let _isMounted = true;
     Promise.all([adminService.isLoggedInUserAdmin(), profileService.getCurrentUserInfo()])
       .then((res) => {
-        console.log(res);
         if (_isMounted) {
           setLoggedInUser({ ...loggedinUser, user: res[1], isAdmin: res[0] });
         }
       }).catch((err) => {
-        console.log(err);
         if (err.status === 403) {
           setFlashMessage({
             message: "you are banned",

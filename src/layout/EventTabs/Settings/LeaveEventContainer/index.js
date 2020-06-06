@@ -26,8 +26,7 @@ const LeaveEventContainer = ({ eventId }) => {
           show: true,
           messageState: "success",
         });
-      }, (err) => {
-        console.log(err);
+      }, () => {
         setFlashMessage({
           message: "error",
           show: true,

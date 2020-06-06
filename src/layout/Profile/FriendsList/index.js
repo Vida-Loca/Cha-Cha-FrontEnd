@@ -21,7 +21,6 @@ const FriendsList = () => {
     let __isMounted = true;
     userService.getFriendsList()
       .then((res) => {
-        console.log(res);
         if (__isMounted) {
           setFriendList({ friends: res, spinner: false });
         }
@@ -31,9 +30,8 @@ const FriendsList = () => {
         if (__isMounted) {
           setFriendRequests({ requests: res, spinner: false });
         }
-      }).catch((err) => {
+      }).catch(() => {
         if (__isMounted) {
-          console.log(err);
           setFriendRequests({ requests: [], spinner: false });
         }
       });

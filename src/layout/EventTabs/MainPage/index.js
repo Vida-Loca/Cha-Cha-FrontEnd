@@ -42,9 +42,8 @@ const MainPage = ({
         } else if (__isMounted) {
           setUserStatus(4);
         }
-      }, (err) => {
-        console.log(err);
-      });
+      })
+      .catch(() => {});
 
     return () => {
       __isMounted = false;
@@ -57,8 +56,7 @@ const MainPage = ({
       .then(() => {
         history.go(0);
         setactionComplete(false);
-      }, (err) => {
-        console.log(err);
+      }, () => {
         setactionComplete(false);
       });
   };
@@ -68,8 +66,7 @@ const MainPage = ({
       .then(() => {
         history.push("/");
         setactionComplete(false);
-      }, (err) => {
-        console.log(err);
+      }, () => {
         setactionComplete(false);
       });
   };
@@ -77,16 +74,14 @@ const MainPage = ({
     eventService.acceptEventInvitation(invitationId)
       .then(() => {
         history.go(0);
-      }, (err) => {
-        console.log(err);
+      }, () => {
       });
   };
   const rejectInvitationToEvent = () => {
     eventService.rejectEventInvitation(invitationId)
       .then(() => {
         history.push("/");
-      }, (err) => {
-        console.log(err);
+      }, () => {
       });
   };
 

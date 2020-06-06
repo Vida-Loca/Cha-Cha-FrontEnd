@@ -178,8 +178,7 @@ const Location = ({ eventId, isEventAdmin }) => {
           messageState: "success",
         });
         setEdit(false);
-      }, (err) => {
-        console.log(err);
+      }, () => {
         setFlashMessage({
           message: "there has been a problem with saving thsese changes",
           show: true,

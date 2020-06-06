@@ -24,9 +24,8 @@ const InviteUserFormContainer = ({ id }) => {
           setFriendList({ friends: res, spinner: false });
           setDislpayFreinds({ friends: res, spinner: false });
         }
-      }).catch((err) => {
+      }).catch(() => {
         if (__isMounted) {
-          console.log(err);
           setFriendList({ friends: [], spinner: false });
           setDislpayFreinds({ friends: [], spinner: false });
         }
@@ -59,9 +58,8 @@ const InviteUserFormContainer = ({ id }) => {
           friends: dislpayFriends.friends.filter((prod) => prod.id !== userId),
           spinner: false,
         });
-      }, (err) => {
-        console.log(err);
-      });
+      })
+      .catch(() => {});
   };
 
   return (

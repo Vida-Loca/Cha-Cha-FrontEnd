@@ -35,9 +35,8 @@ const EventInfoContainer = ({ eventId }) => {
           over: res.over,
           startTime: res.startTime,
         });
-      }, (err) => {
-        console.log(err);
-      });
+      })
+      .catch(() => {});
 
     Promise.all([adminService.getAllEventUsers(eventId), adminService.getAllEventAdmins(eventId)])
       .then((res) => {
@@ -46,8 +45,7 @@ const EventInfoContainer = ({ eventId }) => {
             .findIndex((user) => user.id === memeber.id) < 0);
         setEventMembers({ users: filterMembersList, spinner: false });
         setEventAdmins({ users: res[1], spinner: false });
-      }, (err) => {
-        console.log(err);
+      }, () => {
         setFlashMessage({
           message: "there has been a problem fetching event members",
           show: true,
@@ -73,8 +71,7 @@ const EventInfoContainer = ({ eventId }) => {
           show: true,
           messageState: "success",
         });
-      }, (err) => {
-        console.log(err);
+      }, () => {
         setFlashMessage({
           message: `error - there is a problem deleting event id: ${eventId}`,
           show: true,
@@ -94,8 +91,7 @@ const EventInfoContainer = ({ eventId }) => {
           users: eventAdmins.users.filter((user) => user.id !== userId),
           spinner: false,
         });
-      }, (err) => {
-        console.log(err);
+      }, () => {
         setFlashMessage({
           message: `error - there has beena problem with removing user ${userId} from event ${eventId}`,
           show: true,
@@ -115,8 +111,7 @@ const EventInfoContainer = ({ eventId }) => {
           users: eventMembers.users.filter((user) => user.id !== userId),
           spinner: false,
         });
-      }, (err) => {
-        console.log(err);
+      }, () => {
         setFlashMessage({
           message: "error - there has beena problem with promoting user to amdmin",
           show: true,
@@ -136,8 +131,7 @@ const EventInfoContainer = ({ eventId }) => {
           users: eventAdmins.users.filter((user) => user.id !== userId),
           spinner: false,
         });
-      }, (err) => {
-        console.log(err);
+      }, () => {
         setFlashMessage({
           message: "error - there has beena problem with promoting user to amdmin",
           show: true,

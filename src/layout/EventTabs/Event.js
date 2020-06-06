@@ -42,7 +42,7 @@ const Event = ({ eventId, eventPath }) => {
           setAuthorization({ auth: true, isEventAdmin: res[1] });
         }
       })
-      .catch((err) => console.log("Catch", err))
+      .catch(() => {})
       .finally(() => {
         if (__isMounted) {
           setLoaded(true);

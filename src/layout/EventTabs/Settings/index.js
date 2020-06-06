@@ -61,8 +61,7 @@ const Settings = ({ eventId, isEventAdmin }) => {
             fullEvent: res,
           });
         }
-      }, (err) => {
-        console.log(err);
+      }, () => {
         setEventInfo({ ...eventInfo, spinner: false });
       });
     if (isEventAdmin) {
@@ -105,8 +104,7 @@ const Settings = ({ eventId, isEventAdmin }) => {
         });
         history.push("/");
       })
-      .catch((err) => {
-        console.log(err);
+      .catch(() => {
         editHandler();
         setFlashMessage({
           message: "there has been a problem with deleting this event",
@@ -131,8 +129,7 @@ const Settings = ({ eventId, isEventAdmin }) => {
         tempAdminsList.push(foundUser);
         setMembers({ users: members.users.filter((user) => user.id !== userId), spinner: false });
         setAdmins({ users: tempAdminsList, spinner: false });
-      }, (err) => {
-        console.log(err);
+      }, () => {
         setFlashMessage({
           message: `there has been a problem promoting user ${username} to admin`,
           show: true,
@@ -158,8 +155,7 @@ const Settings = ({ eventId, isEventAdmin }) => {
           show: true,
           messageState: "success",
         });
-      }, (err) => {
-        console.log(err);
+      }, () => {
         setEventInfo({ ...eventInfo, spinner: false });
         setFlashMessage({
           message: "there has been a problem with saving changes",

@@ -46,9 +46,8 @@ const MyProducts = ({
           products: productContainer.products.filter((prod) => prod.id !== productId),
           show: true,
         });
-      }, (err) => {
-        console.log(err);
-      });
+      })
+      .catch(() => {});
   };
 
   const calculateTotalPrice = () => {

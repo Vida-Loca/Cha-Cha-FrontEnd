@@ -67,8 +67,7 @@ const EditProductContainer = ({
           updateProductInList(prodId, newProduct);
           setSendingDataSpinner(false);
           setform({ ...form, show: false });
-        }).catch((err) => {
-          console.log(err);
+        }).catch(() => {
           setSendingDataSpinner(false);
         });
     }

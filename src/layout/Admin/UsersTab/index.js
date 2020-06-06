@@ -33,9 +33,7 @@ const UsersLayout = () => {
           setAdmins({ members: res[1], spinner: false });
         }
       })
-      .catch((err) => {
-        console.log(err);
-      });
+      .catch(() => {});
 
     return () => {
       __isMounted = false;

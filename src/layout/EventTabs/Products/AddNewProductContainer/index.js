@@ -69,7 +69,6 @@ const AddNewProductContainer = ({ addProductToList, id, category }) => {
           productCategory: chosenCategory.toUpperCase(),
         })
         .then((res) => {
-          console.log(res);
           setSendingDataSpinner(false);
           setform({ ...form, show: false });
 
@@ -88,8 +87,7 @@ const AddNewProductContainer = ({ addProductToList, id, category }) => {
 
             },
           });
-        }).catch((err) => {
-          console.log(err);
+        }).catch(() => {
           setSendingDataSpinner(false);
         });
     }

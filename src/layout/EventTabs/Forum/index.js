@@ -43,8 +43,7 @@ const Forum = ({ eventId }) => {
           });
           setAllComments({ comments: tempComments, loading: false });
         }
-      }, (err) => {
-        console.log(err);
+      }, () => {
         if (__isMounted) {
           setAllComments({ comments: [], loading: false });
         }
@@ -81,9 +80,8 @@ const Forum = ({ eventId }) => {
         tempComments.push(newCommentTemp);
         setAllComments({ ...allComments, comments: tempComments });
         setNewComment("");
-      }, (err) => {
-        console.log(err);
-      });
+      })
+      .catch(() => {});
   };
 
   const likeAcomment = (commentId) => {
@@ -100,9 +98,8 @@ const Forum = ({ eventId }) => {
           return comment;
         });
         setAllComments({ ...allComments, comments: modifiedComment });
-      }, (err) => {
-        console.log(err);
-      });
+      })
+      .catch(() => {});
   };
   const deleteComment = (postId) => {
     forumService.deleteComment(postId)
@@ -110,9 +107,8 @@ const Forum = ({ eventId }) => {
         let tempComments = allComments.comments;
         tempComments = tempComments.filter((comment) => comment.id !== postId);
         setAllComments({ ...allComments, comments: tempComments });
-      }, (err) => {
-        console.log(err);
-      });
+      })
+      .catch(() => {});
   };
 
   const editComment = (commentId, text) => {
@@ -128,9 +124,8 @@ const Forum = ({ eventId }) => {
           return { ...comment };
         });
         setAllComments({ ...allComments, comments: tempComments });
-      }, (err) => {
-        console.log(err);
-      });
+      })
+      .catch(() => {});
   };
 
   const editCommentOpenModal = (post, postId) => {

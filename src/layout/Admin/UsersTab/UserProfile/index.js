@@ -82,8 +82,7 @@ const UserProfile = ({
         setForm({ renderForm: "", show: false });
         removeUserFromList(userInfo.id);
       })
-      .catch((err) => {
-        console.log(err);
+      .catch(() => {
         setFlashMessage({
           message: "there has been a problem with deleting this user",
           show: true,
@@ -103,8 +102,7 @@ const UserProfile = ({
         setForm({ renderForm: "", show: false });
         promoteToAdminInList(userInfo.id);
       })
-      .catch((err) => {
-        console.log(err);
+      .catch(() => {
         setFlashMessage({
           message: "can't promote user to admin",
           show: true,
@@ -116,7 +114,6 @@ const UserProfile = ({
   const banUser = () => {
     adminService.banUserByID(userInfo.id)
       .then((res) => {
-        console.log(res);
         setFlashMessage({
           message: res.banned ? `user ${userInfo.username} has ben banned` : `user ${userInfo.username} has ben pardoned`,
           show: true,
@@ -125,8 +122,7 @@ const UserProfile = ({
         setForm({ renderForm: "", show: false });
         banUserInList(userInfo.id, res.banned);
       })
-      .catch((err) => {
-        console.log(err);
+      .catch(() => {
         setFlashMessage({
           message: "can't ban user",
           show: true,

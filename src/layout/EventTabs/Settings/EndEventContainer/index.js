@@ -26,9 +26,8 @@ const EndEventContainer = ({ eventId, currentEvent }) => {
         show: true,
         messageState: "success",
       });
-    }, (err) => {
-      console.log(err);
-    });
+    })
+      .catch(() => {});
   };
   return (
     <div className="leave-event-container">

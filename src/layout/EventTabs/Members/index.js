@@ -35,9 +35,8 @@ const Members = ({ eventId, eventType, isEventAdmin }) => {
           if (__isMounted) {
             seSentRequests({ members: res, spinner: false });
           }
-        }, (err) => {
-          console.log(err);
-        });
+        })
+        .catch(() => {});
       eventService.getAllEventsRequests(eventId)
         .then((res) => {
           if (__isMounted) {
@@ -51,9 +50,8 @@ const Members = ({ eventId, eventType, isEventAdmin }) => {
         if (__isMounted) {
           setEventMemebers({ members: res, spinner: false });
         }
-      }, (err) => {
-        console.log(err);
-      });
+      })
+      .catch(() => {});
 
     return () => {
       __isMounted = false;
@@ -76,8 +74,7 @@ const Members = ({ eventId, eventType, isEventAdmin }) => {
           show: true,
           messageState: "success",
         });
-      }, (err) => {
-        console.log(err);
+      }, () => {
         setFlashMessage({
           message: "there has been a problem with kicking this user",
           show: true,
@@ -92,9 +89,8 @@ const Members = ({ eventId, eventType, isEventAdmin }) => {
           members: eventRequests.members.filter((prod) => prod.id !== userId),
           spinner: false,
         });
-      }, (err) => {
-        console.log(err);
-      });
+      })
+      .catch(() => {});
   };
   const acceptUsers = (userId, invitationId, username) => {
     eventService.acceptRequest(invitationId)
@@ -112,8 +108,7 @@ const Members = ({ eventId, eventType, isEventAdmin }) => {
           show: true,
           messageState: "success",
         });
-      }, (err) => {
-        console.log(err);
+      }, () => {
         setFlashMessage({
           message: `there has been a problme accepting ${username} request to join this event`,
           show: true,

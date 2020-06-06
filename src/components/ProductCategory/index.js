@@ -46,16 +46,14 @@ const ProductCategory = ({
 
   const removeProductFromCategory = (productId) => {
     productService.removeProduct(productId)
-      .then((res) => {
-        console.log(res);
+      .then(() => {
         setsupplyContainer({
           ...supplyContainer,
           products: supplyContainer.products.filter((prod) => prod.id !== productId),
           show: true,
         });
-      }, (err) => {
-        console.log(err);
-      });
+      })
+      .catch(() => {});
   };
 
   const updateProductInList = (productId, newProd) => {
