@@ -39,8 +39,9 @@ const Overview = ({ eventId, currency }) => {
                   isBanned={user.eventUser.user.banned}
                   showControlls
                 >
-                  <span className="money-lable">
-                    {`${user.expenses} ${currency}`}
+                  <span className="money-label">
+                    <span className="money">{user.expenses}</span>
+                    <span className="currency">{currency}</span>
                   </span>
                 </UserCard>
               ))

@@ -59,29 +59,31 @@ const Forum = ({ eventId }) => {
   };
 
   const submitComment = () => {
-    forumService.makeAComment(eventId, { post: newComment })
-      .then((res) => {
-        const newCommentTemp = {
-          id: res.id,
-          likes: 0,
-          text: newComment,
-          timePosted: res.timePosted,
-          updated: false,
-          eventUser: {
-            user: {
-              id: loggedInUser.user.id,
-              username: loggedInUser.user.username,
-              picUrl: loggedInUser.user.picUrl,
-            },
+    if (newComment !== "") {
+      forumService.makeAComment(eventId, { post: newComment })
+        .then((res) => {
+          const newCommentTemp = {
+            id: res.id,
+            likes: 0,
+            text: newComment,
+            timePosted: res.timePosted,
+            updated: false,
+            eventUser: {
+              user: {
+                id: loggedInUser.user.id,
+                username: loggedInUser.user.username,
+                picUrl: loggedInUser.user.picUrl,
+              },
 
-          },
-        };
-        const tempComments = allComments.comments;
-        tempComments.push(newCommentTemp);
-        setAllComments({ ...allComments, comments: tempComments });
-        setNewComment("");
-      })
-      .catch(() => {});
+            },
+          };
+          const tempComments = allComments.comments;
+          tempComments.push(newCommentTemp);
+          setAllComments({ ...allComments, comments: tempComments });
+          setNewComment("");
+        })
+        .catch(() => {});
+    }
   };
 
   const likeAcomment = (commentId) => {

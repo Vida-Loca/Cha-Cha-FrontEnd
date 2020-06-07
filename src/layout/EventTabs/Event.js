@@ -4,7 +4,6 @@ import React, { useState, useEffect } from "react";
 import { Route, Redirect } from "react-router-dom";
 import PropTypes from "prop-types";
 
-
 import { eventService } from "../../Authentication/service";
 
 import Spinner from "../../components/Spinner";
@@ -19,7 +18,7 @@ import Forum from "./Forum";
 import "./Event.scss";
 
 const Event = ({ eventId, eventPath }) => {
-  const [eventInfo, setEventInfo] = useState({ name: "Loading...", type: "None" });
+  const [eventInfo, setEventInfo] = useState({ name: "Loading...", type: "None", status: false });
 
   const [hasAuthorization, setAuthorization] = useState({ auth: false, isEventAdmin: false });
   const [loaded, setLoaded] = useState(false);
@@ -32,7 +31,13 @@ const Event = ({ eventId, eventPath }) => {
 
     Promise.all([a.catch((e) => e), b.catch((e) => e)])
       .then((res) => {
-        setEventInfo({ name: res[0].name, type: res[0].eventType, currency: res[0].currency });
+        console.log(res);
+        setEventInfo({
+          name: res[0].name,
+          type: res[0].eventType,
+          currency: res[0].currency,
+          status: res[0].over,
+        });
 
         if (res[1].err !== undefined) {
           // user is not a part of this event
@@ -56,8 +61,10 @@ const Event = ({ eventId, eventPath }) => {
 
   return (
     <div className="event-container">
-
-      <h1 className="event-name">{eventInfo.name}</h1>
+      <div className="event-name">
+        <h1>{eventInfo.name}</h1>
+        <p>{eventInfo.status ? "event is over" : "ongoing"}</p>
+      </div>
       <Route
         path={`${eventPath}/`}
         exact

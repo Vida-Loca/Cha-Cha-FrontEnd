@@ -4,10 +4,15 @@
 .product-container{
   width: 100%;
 
-
   .button-container-add-new{
     display: flex;
     justify-content: center;
+  }
+
+  .category-container {
+    display: flex;
+    flex-direction: column;
+    margin: 0.5rem 3rem;
   }
   .button-container {
     display: flex;

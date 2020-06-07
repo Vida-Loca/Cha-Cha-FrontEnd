@@ -45,7 +45,7 @@ const ProductCategory = ({
   };
 
   const removeProductFromCategory = (productId) => {
-    productService.removeProduct(productId)
+    productService.removeProduct(eventId, productId)
       .then(() => {
         setsupplyContainer({
           ...supplyContainer,

@@ -151,9 +151,11 @@ const RegistrationFormContainer = () => {
           password: registration.password.value,
           matchingPassword: registration.matchingPassword.value,
           picUrl: "",
-        }).then((res) => {
-          if (res.err !== undefined) {
-            if (res.err === "Email exists") {
+        }).then(() => {
+          setRegistrationConfirm(true);
+        })
+          .catch((error) => {
+            if (error.err.includes("Account with email:")) {
               setRegistration({
                 ...registration,
                 email: {
@@ -163,7 +165,7 @@ const RegistrationFormContainer = () => {
                   touched: true,
                 },
               });
-            } else if (res.err === "Username exists") {
+            } else if (error.err.includes("Account with username:")) {
               setRegistration({
                 ...registration,
                 username: {
@@ -174,13 +176,6 @@ const RegistrationFormContainer = () => {
                 },
               });
             }
-          } else {
-            setRegistrationConfirm(true);
-          }
-          setSendingDataSpinner(false);
-        })
-          .catch((err) => {
-            console.log(err);
             setSendingDataSpinner(false);
           });
       }

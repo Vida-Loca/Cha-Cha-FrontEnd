@@ -39,7 +39,7 @@ const MyProducts = ({
   };
 
   const removeProductFromCategory = (productId) => {
-    productService.removeProduct(productId)
+    productService.removeProduct(eventId, productId)
       .then(() => {
         setProductContainer({
           ...productContainer,

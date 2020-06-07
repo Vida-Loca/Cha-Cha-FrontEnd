@@ -59,6 +59,7 @@ const UsersLayout = () => {
     setUsers({ ...users, memebers: tempListOfUser });
     setDislpayUsers({ members: tempListOfUser, spinner: false });
   };
+
   const banUserInList = (userId, isban) => {
     let tempListOfUser = users.members;
     tempListOfUser = tempListOfUser.map((user) => {
@@ -67,7 +68,7 @@ const UsersLayout = () => {
       }
       return user;
     });
-    setUsers({ ...users, memebers: tempListOfUser });
+    setUsers({ spinner: false, members: tempListOfUser });
     setDislpayUsers({ members: tempListOfUser, spinner: false });
   };
 
@@ -82,7 +83,6 @@ const UsersLayout = () => {
     removeUserFromList(userId);
   };
 
-
   const openUserProfileModal = (userDetails, isAdmin) => {
     setform({
       show: true,
@@ -96,7 +96,6 @@ const UsersLayout = () => {
   />,
     });
   };
-
 
   const searchForGivenUsername = () => {
     if (findUser.username !== "") {
