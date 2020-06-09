@@ -1,53 +1,53 @@
 export const mainNav = [
   { navLink: "Home", iconClass: "fas fa-home" },
   { navLink: "Profile", iconClass: "fas fa-user-alt" },
-  { navLink: "Admin", iconClass: "fas fa-user-shield" }
+  { navLink: "Admin", iconClass: "fas fa-user-shield" },
 ];
 
 export const mainNavNoAdmin = [
   { navLink: "Home", iconClass: "fas fa-home" },
-  { navLink: "Profile", iconClass: "fas fa-user-alt" }
+  { navLink: "Profile", iconClass: "fas fa-user-alt" },
 ];
 
 export const adminNav = [
   { navLink: "Users", iconClass: "fas fa-home" },
-  { navLink: "Events", iconClass: "fas fa-user-alt" }
+  { navLink: "Events", iconClass: "fas fa-user-alt" },
 ];
 
 export const eventNav = [
   {
     navLink: "Products",
-    iconClass: "fas fa-box-open"
+    iconClass: "fas fa-box-open",
   },
   {
     navLink: "Location",
-    iconClass: "fas fa-map-marker-alt"
+    iconClass: "fas fa-map-marker-alt",
   },
   {
     navLink: "Members",
-    iconClass: "fas fa-users"
-  }
+    iconClass: "fas fa-users",
+  },
 ];
 
 export const adminEventNav = [
   {
     navLink: "Products",
-    iconClass: "fas fa-box-open"
+    iconClass: "fas fa-box-open",
   },
   {
     navLink: "Location",
-    iconClass: "fas fa-map-marker-alt"
+    iconClass: "fas fa-map-marker-alt",
   },
   {
     navLink: "Members",
-    iconClass: "fas fa-users"
+    iconClass: "fas fa-users",
   },
   {
     navLink: "Forum",
-    iconClass: "fas fa-comments"
+    iconClass: "fas fa-comments",
   },
   {
     navLink: "Settings",
-    iconClass: "fas fa-cog"
-  }
+    iconClass: "fas fa-cog",
+  },
 ];

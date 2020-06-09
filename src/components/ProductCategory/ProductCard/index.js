@@ -9,38 +9,39 @@ import { FormContext } from "../../../context/FormContext";
 import EditProductContainer from "../../../layout/EventTabs/Products/EditProductContainer";
 
 
-const ProductCard = ({removeProduct, updateProductList,eventId, product, category, user, currency }) => {
-
-  const [loggedInUser,] = useContext(UserContext);
-  const [forms,setform] = useContext(FormContext);
+const ProductCard = ({
+  removeProduct, updateProductList, eventId, product, category, user, currency,
+}) => {
+  const [loggedInUser] = useContext(UserContext);
+  const [forms, setform] = useContext(FormContext);
 
   const [editState, setEditState] = useState(false);
   const [deleteState, setDeleteState] = useState(false);
 
   const [tileState, tileStateSet] = useState(false);
 
-  const EditProductModal = (id,name, quantity, price) => {
-    setform({ ...forms, 
-      renderForm: 
-      <EditProductContainer 
-        updateProductInList={updateProductList}
-        eventId={eventId} 
-        prodId={id} 
-        category={category} 
-        name={name} 
-        quantity={quantity} 
-        price={price}  
-      />, 
-      show: true });
+  const EditProductModal = (id, name, quantity, price) => {
+    setform({
+      ...forms,
+      renderForm:
+  <EditProductContainer
+    updateProductInList={updateProductList}
+    eventId={eventId}
+    prodId={id}
+    category={category}
+    name={name}
+    quantity={quantity}
+    price={price}
+  />,
+      show: true,
+    });
   };
-
 
 
   const changeOptions = () => {
     tileStateSet(!tileState);
     setDeleteState(false);
     setEditState(false);
-    
   };
 
   const deleteHandler = () => {
@@ -53,41 +54,45 @@ const ProductCard = ({removeProduct, updateProductList,eventId, product, categor
   };
 
 
-
   return (
     <>
       <div className={`product-card-container tooltip ${user.banned ? "product-card-banned" : ""}`}>
         {tileState && (
           <span className="tooltiptext">
-            {!editState &&
+            {!editState
+              && (
               <EditButton
                 options={deleteState}
                 activate={deleteHandler}
                 cancel={cancelDelete}
                 render={<i className="far fa-trash-alt" />}
                 confirm={removeProduct}
-              />}
+              />
+              )}
 
-            {!deleteState &&
+            {!deleteState
+              && (
               <EditButton
                 options={editState}
+                // eslint-disable-next-line max-len
                 activate={() => EditProductModal(product.id, product.name, product.quantity, product.price)}
-                cancel={() => {}}
+                cancel={() => { }}
                 render={<i className="far fa-edit" />}
-                confirm={() => {}}
-              />}
+                confirm={() => { }}
+              />
+              )}
 
           </span>
         )}
         {
-          user.banned 
-          ? <i className="fas fa-ban" title={`${user.username} is banned`} />
-          : <Avatar title={user.username} imageLink={user.picUrl} />
+          user.banned
+            ? <i className="fas fa-ban" title={`${user.username} is banned`} />
+            : <Avatar title={user.username} imageLink={user.picUrl} />
         }
         <div className="product-info">
           <span className="price-header">
             <span className="product-quantity">{product.quantity}</span>
-            <span className="product-times"><i className="fas fa-times"/></span>
+            <span className="product-times"><i className="fas fa-times" /></span>
             <span className="product-price">{product.price}</span>
             <span className="product-currency">{currency}</span>
           </span>
@@ -96,9 +101,11 @@ const ProductCard = ({removeProduct, updateProductList,eventId, product, categor
           </div>
         </div>
         {(loggedInUser.user.id === user.id || user.isEventAdmin)
-          && <Button classes="options-btn" clicked={changeOptions}>
+          && (
+          <Button classes="options-btn" clicked={changeOptions}>
             {tileState ? <i className="fas fa-times" /> : <i className="fas fa-ellipsis-v" />}
-          </Button>}
+          </Button>
+          )}
 
       </div>
     </>
@@ -107,21 +114,23 @@ const ProductCard = ({removeProduct, updateProductList,eventId, product, categor
 
 ProductCard.propTypes = {
   eventId: PropTypes.string.isRequired,
-  removeProduct: PropTypes.func,
+  updateProductList: PropTypes.func.isRequired,
+  removeProduct: PropTypes.func.isRequired,
   product: PropTypes.shape({
     id: PropTypes.number.isRequired,
     name: PropTypes.string.isRequired,
     price: PropTypes.number.isRequired,
-    quantity: PropTypes.number.isRequired
+    quantity: PropTypes.number.isRequired,
   }).isRequired,
   user: PropTypes.shape({
     id: PropTypes.number.isRequired,
     picUrl: PropTypes.string.isRequired,
     username: PropTypes.string.isRequired,
-    isEventAdmin: PropTypes.bool.isRequired
+    isEventAdmin: PropTypes.bool.isRequired,
+    banned: PropTypes.bool,
   }).isRequired,
   category: PropTypes.string.isRequired,
-  currency: PropTypes.string.isRequired
+  currency: PropTypes.string.isRequired,
 
 };
 

@@ -4,6 +4,8 @@ import { Button } from "../../components/Button";
 import { FormContext } from "../../context/FormContext";
 import { LoginFormContainer, RegisterFormContainer } from "./AuthFormContainer";
 
+import { parseQuery } from "../../validation/queryParser";
+
 import ChangePassword from "./AuthFormContainer/changePassword";
 
 import "./SplashScreen.scss";
@@ -19,16 +21,17 @@ const SplashScreen = () => {
     setChangedForm({ show: true, renderForm: <RegisterFormContainer /> });
   };
 
-  const changePassword = (token) => {
-    setChangedForm({ renderForm: <ChangePassword token={token} />, show: true });
+  const changePassword = (match) => {
+    const { token, userId } = parseQuery(match);
+    setChangedForm({ renderForm: <ChangePassword token={token} userId={userId} />, show: true });
     return <Redirect to="/" />;
-  }
+  };
 
   return (
     <div className="FirstLayout">
       <div className="SignContent">
         <div className="logo">
-          <img src="/logo.svg"></img>
+          <img src="/logo.svg" alt="skibidi"></img>
           <h1>Skibidi</h1>
         </div>
         <Button clicked={openLogIn} classes="btn-blueGradient btn-lg btn-blue-animated">
@@ -37,7 +40,7 @@ const SplashScreen = () => {
         <Button clicked={openRegister} classes="btn-orangeGradient btn-orange-animated btn-lg">
           Sign Up
         </Button>
-        <Route path="/changePassword/:token" exact render={({match}) => changePassword(match.params.token)} />
+        <Route path="/user/changePassword" render={({ location }) => changePassword(location.search)} />
       </div>
     </div>
   );

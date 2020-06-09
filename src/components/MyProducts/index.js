@@ -1,3 +1,4 @@
+/* eslint-disable no-param-reassign */
 import React, { useState } from "react";
 import PropTypes from "prop-types";
 
@@ -9,57 +10,67 @@ import { OptionsInput } from "../Inputs";
 
 import { productService } from "../../Authentication/service";
 
-const MyProducts = ({ isEventAdmin, eventId, supCont, currency }) => {
+const MyProducts = ({
+  isEventAdmin, eventId, supCont, currency,
+}) => {
   const [productContainer, setProductContainer] = useState({
     products: [...supCont],
-    showMore: false
+    showMore: false,
   });
 
-  const getASetOfCategires = () =>{
-    let categorySet = new Set(supCont.map(cat => cat.productCategory));
+  const getASetOfCategires = () => {
+    const categorySet = new Set(supCont.map((cat) => cat.productCategory));
     categorySet.add("ALL");
     return Array.from(categorySet);
-  }
+  };
 
-  const [selectedCategories, setSelectedCategoreies] = useState({categories: getASetOfCategires(), selected: "ALL"})
+  const [selectedCategories, setSelectedCategoreies] = useState({ categories: getASetOfCategires(), selected: "ALL" });
 
 
-  const onChangeHandlerCategories = event => {
+  const onChangeHandlerCategories = (event) => {
     setSelectedCategoreies({
-        ...selectedCategories, selected: event.target.value
-    })
-}
+      ...selectedCategories, selected: event.target.value,
+    });
+  };
 
   const showMoreHandler = () => {
     productContainer.showMore = !productContainer.showMore;
     setProductContainer({ ...productContainer });
   };
 
-  const removeProductFromCategory = (eventId, productId) => {
+  const removeProductFromCategory = (productId) => {
     productService.removeProduct(eventId, productId)
-      .then(_res => {
-        setProductContainer({ ...productContainer, products: productContainer.products.filter(prod => prod.id !== productId), show: true })
-      }, err => {
-        console.log(err);
+      .then(() => {
+        setProductContainer({
+          ...productContainer,
+          products: productContainer.products.filter((prod) => prod.id !== productId),
+          show: true,
+        });
       })
-  }
+      .catch(() => {});
+  };
 
-  const calculateTotalPrice = () =>{
-    const totalPrice = productContainer.products.reduce((acc, val) =>{
-      return acc += val.price * val.quantity;
-    }, 0);
+  const calculateTotalPrice = () => {
+    const totalPrice = productContainer.products
+      // eslint-disable-next-line no-return-assign
+      .reduce((acc, val) => acc += val.price * val.quantity, 0);
     return Number(totalPrice).toFixed(2);
-  }
+  };
 
   const updateProductInList = (productId, newProd) => {
-    setProductContainer({ ...productContainer, products: productContainer.products.map(prod => {
-      if( prod.id === productId){
-        return {...prod, name: newProd.name, price: newProd.price, quantity: newProd.quantity }
-      }else{
+    setProductContainer({
+      ...productContainer,
+      products: productContainer.products.map((prod) => {
+        if (prod.id === productId) {
+          return {
+            ...prod, name: newProd.name, price: newProd.price, quantity: newProd.quantity,
+          };
+        }
         return prod;
-      }
-     }), show: true });
-  }
+      }),
+      show: true,
+    });
+  };
 
 
   return (
@@ -72,36 +83,37 @@ const MyProducts = ({ isEventAdmin, eventId, supCont, currency }) => {
         <div className="price-and-add">
           <p className="price-label-my-products">
             {calculateTotalPrice()}
-            <span> {currency}</span>
+            <span>
+              {" "}
+              {currency}
+            </span>
           </p>
         </div>
       </div>
 
       <div className="product-collection">
-        {productContainer.products.filter(product => product.productCategory === selectedCategories.selected || selectedCategories.selected === "ALL").map(sup => {
-          return (
-            <MyProductCard
-              currency={currency}
-              removeProduct={() => removeProductFromCategory(eventId, sup.id)}
-              updateProductList={updateProductInList}
-              eventId={eventId}
-              product={{
-                id: sup.id,
-                name: sup.name,
-                price: sup.price,
-                quantity: sup.quantity
-              }}
-              user={{
-                id: sup.userId,
-                picUrl: sup.picUrl,
-                username:sup.user,
-                isEventAdmin: isEventAdmin
-              }}
-              key={`my-product-${sup.id}-${sup.userId}`}
-              category={sup.productCategory}
-            />
-          );
-        })}
+        {productContainer.products.filter((product) => product.productCategory === selectedCategories.selected || selectedCategories.selected === "ALL").map((sup) => (
+          <MyProductCard
+            currency={currency}
+            removeProduct={() => removeProductFromCategory(sup.id)}
+            updateProductList={updateProductInList}
+            eventId={eventId}
+            product={{
+              id: sup.id,
+              name: sup.name,
+              price: sup.price,
+              quantity: sup.quantity,
+            }}
+            user={{
+              id: sup.userId,
+              picUrl: sup.picUrl,
+              username: sup.user,
+              isEventAdmin,
+            }}
+            key={`my-product-${sup.id}-${sup.userId}`}
+            category={sup.productCategory}
+          />
+        ))}
       </div>
     </div>
   );
@@ -110,8 +122,9 @@ const MyProducts = ({ isEventAdmin, eventId, supCont, currency }) => {
 MyProducts.propTypes = {
   eventId: PropTypes.string.isRequired,
   isEventAdmin: PropTypes.bool.isRequired,
-  supCont: PropTypes.array,
-  currency: PropTypes.string.isRequired
+  // eslint-disable-next-line react/forbid-prop-types
+  supCont: PropTypes.array.isRequired,
+  currency: PropTypes.string.isRequired,
 };
 
 export default MyProducts;

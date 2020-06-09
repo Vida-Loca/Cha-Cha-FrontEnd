@@ -1,3 +1,4 @@
+/* eslint-disable react/jsx-wrap-multilines */
 import React, { useState, useEffect, useContext } from "react";
 import { FormContext } from "../context/FormContext";
 import { FlashMessageContext } from "../context/FlashMessageContext";
@@ -12,7 +13,7 @@ const MyApplication = () => {
   const [isLoggedIn, setLoggedIn] = useState(false);
 
   useEffect(() => {
-    authenticationService.currentUser.subscribe(x => setLoggedIn(!!x));
+    authenticationService.currentUser.subscribe((x) => setLoggedIn(!!x));
   }, []);
 
   const [forms, setform] = useContext(FormContext);
@@ -28,19 +29,21 @@ const MyApplication = () => {
   return (
     <div className="App">
       {
-        flashMessage.show &&
-        <FlashMessage 
-          messageState={flashMessage.messageState} 
-          show={flashMessage.show} 
-          flashClose={hideFlashMessage} 
-          message={flashMessage.message} 
+        flashMessage.show
+        && <FlashMessage
+          messageState={flashMessage.messageState}
+          show={flashMessage.show}
+          flashClose={hideFlashMessage}
+          message={flashMessage.message}
         />
       }
-      
+
       {forms.show
-        && <Modal show={forms.show} modalClose={hideModal}>
+        && (
+        <Modal show={forms.show} modalClose={hideModal}>
           {forms.renderForm}
-        </Modal>}
+        </Modal>
+        )}
       {isLoggedIn ? <MainLayout /> : <SplashScreen />}
     </div>
   );

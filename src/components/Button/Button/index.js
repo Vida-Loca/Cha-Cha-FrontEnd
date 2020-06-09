@@ -2,7 +2,9 @@ import React from "react";
 import PropTypes from "prop-types";
 import "./button.scss";
 
-const Button = ({ classes, clicked, children, dissabled }) => (
+const Button = ({
+  classes, clicked, children, dissabled,
+}) => (
   <button className={classes} onClick={clicked} disabled={dissabled}>
     {children}
   </button>
@@ -11,14 +13,14 @@ const Button = ({ classes, clicked, children, dissabled }) => (
 Button.defaultProps = {
   clicked: null,
   classes: "",
-  dissabled: false
+  dissabled: false,
 };
 
 Button.propTypes = {
   dissabled: PropTypes.bool,
   clicked: PropTypes.func,
   classes: PropTypes.string,
-  children: PropTypes.node.isRequired
+  children: PropTypes.node.isRequired,
 };
 
 export default Button;

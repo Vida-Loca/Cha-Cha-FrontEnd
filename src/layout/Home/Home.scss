@@ -28,6 +28,10 @@
     gap: 2rem;
     height: 100%;
 
+    .map-cont {
+      overflow-x: hidden;
+    }
+
     @include breaking-point-2 {
       grid-template-columns: 1fr 1fr;
       .map-cont{

@@ -10,29 +10,32 @@ import AddNewProductContainer from "../../layout/EventTabs/Products/AddNewProduc
 import { FormContext } from "../../context/FormContext";
 import { productService } from "../../Authentication/service";
 
-const ProductCategory = ({ isEventAdmin, eventId, supCont, currency }) => {
+const ProductCategory = ({
+  isEventAdmin, eventId, supCont, currency,
+}) => {
   const [supplyContainer, setsupplyContainer] = useState({
     ...supCont,
-    showMore: false
+    showMore: false,
   });
   const [, setform] = useContext(FormContext);
 
   const addProduct = (addedProduct) => {
-    let tempSup = supplyContainer.products;
+    const tempSup = supplyContainer.products;
 
-    let foundIndexOfProduct = tempSup.findIndex( prod => prod.id === addedProduct.product.id);
-    if(foundIndexOfProduct > -1){
+    const foundIndexOfProduct = tempSup.findIndex((prod) => prod.id === addedProduct.product.id);
+    if (foundIndexOfProduct > -1) {
       tempSup[foundIndexOfProduct].quantity = addedProduct.product.quantity;
-    } else{
+    } else {
       tempSup.push(addedProduct.product);
     }
     setsupplyContainer({ ...supplyContainer, products: tempSup });
-  }
+  };
 
   const openModalAddSupply = () => {
     setform({
       show: true,
-      renderForm: <AddNewProductContainer addProductToList={addProduct} id={eventId} category={supplyContainer.productCategory} />
+      // eslint-disable-next-line max-len
+      renderForm: <AddNewProductContainer addProductToList={addProduct} id={eventId} category={supplyContainer.productCategory} />,
     });
   };
 
@@ -41,25 +44,32 @@ const ProductCategory = ({ isEventAdmin, eventId, supCont, currency }) => {
     setsupplyContainer({ ...supplyContainer });
   };
 
-  const removeProductFromCategory = (eventId, productId) => {
+  const removeProductFromCategory = (productId) => {
     productService.removeProduct(eventId, productId)
-      .then(res => {
-        console.log(res);
-        setsupplyContainer({ ...supplyContainer, products: supplyContainer.products.filter(prod => prod.id !== productId), show: true });
-      }, err => {
-        console.log(err);
+      .then(() => {
+        setsupplyContainer({
+          ...supplyContainer,
+          products: supplyContainer.products.filter((prod) => prod.id !== productId),
+          show: true,
+        });
       })
-  }
+      .catch(() => {});
+  };
 
   const updateProductInList = (productId, newProd) => {
-    setsupplyContainer({ ...supplyContainer, products: supplyContainer.products.map(prod => {
-      if( prod.id === productId){
-        return {...prod, name: newProd.name, price: newProd.price, quantity: newProd.quantity }
-      }else{
+    setsupplyContainer({
+      ...supplyContainer,
+      products: supplyContainer.products.map((prod) => {
+        if (prod.id === productId) {
+          return {
+            ...prod, name: newProd.name, price: newProd.price, quantity: newProd.quantity,
+          };
+        }
         return prod;
-      }
-     }), show: true });
-  }
+      }),
+      show: true,
+    });
+  };
 
 
   return (
@@ -72,11 +82,14 @@ const ProductCategory = ({ isEventAdmin, eventId, supCont, currency }) => {
         <div className="price-and-add">
           <p className="price-label">
             {Number(
-              Object.keys(supplyContainer.products).reduce((previous, index) => {
-                return previous + supplyContainer.products[index].price * supplyContainer.products[index].quantity;
-              }, 0)
+              Object.keys(supplyContainer.products)
+                // eslint-disable-next-line max-len
+                .reduce((previous, index) => previous + supplyContainer.products[index].price * supplyContainer.products[index].quantity, 0),
             ).toFixed(2)}
-            <span> {currency}</span>
+            <span>
+              {" "}
+              {currency}
+            </span>
           </p>
           <Button clicked={openModalAddSupply} classes="btn-sm btn-orangeGradient">
             <i className="fas fa-plus-circle" />
@@ -85,28 +98,26 @@ const ProductCategory = ({ isEventAdmin, eventId, supCont, currency }) => {
       </div>
 
       <div className="product-collection">
-        {supplyContainer.products.map(sup => {
-          return (
-            <ProductCard
-              currency={currency}
-              updateProductList={updateProductInList}
-              removeProduct={() => removeProductFromCategory(eventId, sup.id)}
-              eventId={eventId}
-              product={{
-                id: sup.id,
-                name: sup.name,
-                price: sup.price,
-                quantity: sup.quantity
-              }}
-              user={{
-                ...sup.user,
-                isEventAdmin: isEventAdmin
-              }}
-              key={`${sup.id}-${sup.userId}`}
-              category={supCont.productCategory}
-            />
-          );
-        })}
+        {supplyContainer.products.map((sup) => (
+          <ProductCard
+            currency={currency}
+            updateProductList={updateProductInList}
+            removeProduct={() => removeProductFromCategory(sup.id)}
+            eventId={eventId}
+            product={{
+              id: sup.id,
+              name: sup.name,
+              price: sup.price,
+              quantity: sup.quantity,
+            }}
+            user={{
+              ...sup.user,
+              isEventAdmin,
+            }}
+            key={`${sup.id}-${sup.userId}`}
+            category={supCont.productCategory}
+          />
+        ))}
       </div>
     </div>
   );
@@ -117,8 +128,9 @@ ProductCategory.propTypes = {
   isEventAdmin: PropTypes.bool.isRequired,
   supCont: PropTypes.shape({
     productCategory: PropTypes.string.isRequired,
-    products: PropTypes.array.isRequired
-  })
+    products: PropTypes.array.isRequired,
+  }).isRequired,
+  currency: PropTypes.string.isRequired,
 };
 
 export default ProductCategory;

@@ -1,7 +1,8 @@
+/* eslint-disable react-hooks/exhaustive-deps */
+/* eslint-disable no-underscore-dangle */
 import React, { useState, useEffect } from "react";
 import { Route, Redirect } from "react-router-dom";
 import PropTypes from "prop-types";
-
 
 import { eventService } from "../../Authentication/service";
 
@@ -17,36 +18,40 @@ import Forum from "./Forum";
 import "./Event.scss";
 
 const Event = ({ eventId, eventPath }) => {
+  const [eventInfo, setEventInfo] = useState({ name: "Loading...", type: "None", status: false });
 
-  const [eventInfo, setEventInfo] = useState({ name: "Loading...", type: "None" });
-
-  const [hasAuthorization, setAuthorization] = useState({auth:false, isEventAdmin: false});
+  const [hasAuthorization, setAuthorization] = useState({ auth: false, isEventAdmin: false });
   const [loaded, setLoaded] = useState(false);
 
   useEffect(() => {
     let __isMounted = true;
 
-    let a = eventService.getEventByID(eventId);
-    let b = eventService.isCurrentUserAdminOfEvent(eventId);
+    const a = eventService.getEventByID(eventId);
+    const b = eventService.isCurrentUserAdminOfEvent(eventId);
 
-    Promise.all([a.catch(e => e), b.catch(e => e)])
-      .then(res => {
-        setEventInfo({ name: res[0].name, type: res[0].eventType, currency: res[0].currency });
+    Promise.all([a.catch((e) => e), b.catch((e) => e)])
+      .then((res) => {
+        setEventInfo({
+          name: res[0].name,
+          type: res[0].eventType,
+          currency: res[0].currency,
+          status: res[0].over,
+        });
 
         if (res[1].err !== undefined) {
           // user is not a part of this event
-          setAuthorization({auth:false, isEventAdmin: false});
-        }  else {
+          setAuthorization({ auth: false, isEventAdmin: false });
+        } else {
           // user is a part of this event
-          setAuthorization({auth:true, isEventAdmin: res[1]});
+          setAuthorization({ auth: true, isEventAdmin: res[1] });
         }
       })
-      .catch(err => console.log('Catch', err))
+      .catch(() => {})
       .finally(() => {
         if (__isMounted) {
-            setLoaded(true);
+          setLoaded(true);
         }
-      })
+      });
 
     return () => {
       __isMounted = false;
@@ -55,14 +60,22 @@ const Event = ({ eventId, eventPath }) => {
 
   return (
     <div className="event-container">
-
-      <h1 className="event-name">{eventInfo.name}</h1>
+      <div className="event-name">
+        <h1>{eventInfo.name}</h1>
+        <p>{eventInfo.status ? "event is over" : "ongoing"}</p>
+      </div>
       <Route
         path={`${eventPath}/`}
         exact
-        render={() => loaded ? <MainPage isAuth={hasAuthorization.auth}
-          eventPath={eventPath} eventId={eventId} type={eventInfo.type} />
-          : <Spinner />}
+        render={() => (loaded ? (
+          <MainPage
+            isAuth={hasAuthorization.auth}
+            eventPath={eventPath}
+            eventId={eventId}
+            type={eventInfo.type}
+          />
+        )
+          : <Spinner />)}
       />
       {
         hasAuthorization.auth ? (
@@ -84,7 +97,7 @@ const Event = ({ eventId, eventPath }) => {
 
 Event.propTypes = {
   eventId: PropTypes.string.isRequired,
-  eventPath: PropTypes.string.isRequired
+  eventPath: PropTypes.string.isRequired,
 };
 
 export default Event;

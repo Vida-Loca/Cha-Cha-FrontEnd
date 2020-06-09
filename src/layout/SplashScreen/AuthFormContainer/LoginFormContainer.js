@@ -14,26 +14,26 @@ const LoginFormContainer = () => {
   const [changedForm, setChangedForm] = useContext(FormContext);
   const [login, setLogin] = useState({
     username: { value: "", isValid: true, err: [] },
-    password: { value: "", isValid: true, err: [] }
+    password: { value: "", isValid: true, err: [] },
   });
 
   const loginForm = [
     {
       name: "username",
       config: {
-        type: 'text',
+        type: "text",
         placeholder: "username",
-        classes: "input-blue"
-      }
+        classes: "input-blue",
+      },
     },
     {
       name: "password",
       config: {
-        type: 'password',
+        type: "password",
         placeholder: "password",
-        classes: "input-blue"
-      }
-    }
+        classes: "input-blue",
+      },
+    },
   ];
 
   const submitLogin = () => {
@@ -42,34 +42,35 @@ const LoginFormContainer = () => {
 
       authenticationService.login({
         username: login.username.value,
-        password: login.password.value
-      }).then(_ => {
-        setChangedForm({ ...changedForm, show: false })
-      }, err => {
+        password: login.password.value,
+      }).then(() => {
+        setChangedForm({ ...changedForm, show: false });
+      }, (err) => {
         setLogin({
           ...login,
           username: { value: "", isValid: false, err: [err.username] },
-          password: { value: "", isValid: false, err: [err.password] }
+          password: { value: "", isValid: false, err: [err.password] },
         });
         setSendingDataSpinner(false);
       });
-
     }
-  }
-  const onChangeHandler = event => {
+  };
+  const onChangeHandler = (event) => {
     setLogin({
       ...login,
-      [`${event.target.name}`]: { ...login[`${event.target.name}`], isValid: true, err: [], value: event.target.value }
+      [`${event.target.name}`]: {
+        ...login[`${event.target.name}`], isValid: true, err: [], value: event.target.value,
+      },
     });
   };
 
   const resetPasswordModal = () => {
     setChangedForm({ show: true, renderForm: <ResetPassword /> });
-  }
+  };
 
   return (
     <div>
-      {loginForm.map(el => (
+      {loginForm.map((el) => (
         <TextInput
           onChange={onChangeHandler}
           key={el.name}
@@ -83,9 +84,9 @@ const LoginFormContainer = () => {
       ))}
 
       {sendingDataSpinner
-        ? <Spinner classes={"spinner-container-h-sm"} size={"spinner-sm"} />
-        : <Button clicked={submitLogin} classes="btn-blueGradient btn-md submit-btn">Log In</Button>
-      }
+        ? <Spinner classes="spinner-container-h-sm" size="spinner-sm" />
+        : <Button clicked={submitLogin} classes="btn-blueGradient btn-md submit-btn">Log In</Button>}
+      ,
       <Button clicked={resetPasswordModal} classes="btn-orangeGradient btn-sm reset-password-btn">Forgot password</Button>
     </div>
   );

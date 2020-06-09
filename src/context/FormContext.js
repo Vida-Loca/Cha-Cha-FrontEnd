@@ -6,7 +6,7 @@ export const FormContext = createContext();
 export const FormProvider = ({ children }) => {
   const [form, setform] = useState({
     renderForm: "",
-    show: false
+    show: false,
   });
 
   return <FormContext.Provider value={[form, setform]}>{children}</FormContext.Provider>;

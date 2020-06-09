@@ -4,13 +4,15 @@ import Pagination from "../Pagination";
 
 import "./PaginatedContainer.scss";
 
-const PaginatedContainer = ({ render, items, perPage, title, noContentMsg }) => {
+const PaginatedContainer = ({
+  render, items, perPage, title, noContentMsg,
+}) => {
   const [currentPage, setCurrentPage] = useState(1);
   const indexOfLastPost = currentPage * perPage;
   const indexOfFirstPost = indexOfLastPost - perPage;
   const currentPosts = items.slice(indexOfFirstPost, indexOfLastPost);
 
-  const paginate = pageNumber => setCurrentPage(pageNumber);
+  const paginate = (pageNumber) => setCurrentPage(pageNumber);
   return (
     <div className="paginated-content-column">
       {title !== "" && <h2 className="pagination-title">{title}</h2>}
@@ -18,7 +20,12 @@ const PaginatedContainer = ({ render, items, perPage, title, noContentMsg }) => 
       {items.length === 0
         ? <p>{noContentMsg}</p>
         : render({ items: currentPosts })}
-      <Pagination currentPage={currentPage} postsPerPage={perPage} totalPosts={items.length} paginate={paginate} />
+      <Pagination
+        currentPage={currentPage}
+        postsPerPage={perPage}
+        totalPosts={items.length}
+        paginate={paginate}
+      />
     </div>
   );
 };
@@ -26,15 +33,16 @@ const PaginatedContainer = ({ render, items, perPage, title, noContentMsg }) => 
 PaginatedContainer.defaultProps = {
   perPage: 5,
   title: "",
-  noContentMsg: "empty"
+  noContentMsg: "empty",
 };
 
 PaginatedContainer.propTypes = {
   render: PropTypes.func.isRequired,
+  // eslint-disable-next-line react/forbid-prop-types
   items: PropTypes.array.isRequired,
   perPage: PropTypes.number,
   noContentMsg: PropTypes.string,
-  title: PropTypes.oneOfType([PropTypes.string, PropTypes.object])
+  title: PropTypes.oneOfType([PropTypes.string, PropTypes.object]),
 };
 
 export default PaginatedContainer;

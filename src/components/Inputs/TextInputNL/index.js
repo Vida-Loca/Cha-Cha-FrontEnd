@@ -2,20 +2,19 @@ import React from "react";
 import PropTypes from "prop-types";
 import "./EditInput.scss";
 
-const TextInputNL = ({ name, type, onChange, size, disabled, value, classes }) => {
-
-  return (
-    <input
-      className={`Text-Input-NL ${classes} ${size} `}
-      type={type}
-      name={name}
-      onChange={onChange}
-      required
-      disabled={disabled}
-      value={value}
-    />
-  );
-};
+const TextInputNL = ({
+  name, type, onChange, size, disabled, value, classes,
+}) => (
+  <input
+    className={`Text-Input-NL ${classes} ${size} `}
+    type={type}
+    name={name}
+    onChange={onChange}
+    required
+    disabled={disabled}
+    value={value}
+  />
+);
 
 TextInputNL.defaultProps = {
   type: "text",
@@ -23,7 +22,7 @@ TextInputNL.defaultProps = {
   size: "",
   disabled: false,
   value: undefined,
-  classes: ""
+  classes: "",
 };
 
 TextInputNL.propTypes = {
@@ -33,7 +32,7 @@ TextInputNL.propTypes = {
   onChange: PropTypes.func,
   name: PropTypes.string.isRequired,
   type: PropTypes.oneOf(["text", "password", "number"]),
-  classes: PropTypes.string
+  classes: PropTypes.string,
 };
 
 export default TextInputNL;
