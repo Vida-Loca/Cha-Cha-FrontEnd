@@ -31,7 +31,6 @@ const Event = ({ eventId, eventPath }) => {
 
     Promise.all([a.catch((e) => e), b.catch((e) => e)])
       .then((res) => {
-        console.log(res);
         setEventInfo({
           name: res[0].name,
           type: res[0].eventType,

@@ -51,8 +51,7 @@ const ChangePassword = ({ token, userId }) => {
   const submitNewPassword = () => {
     if (login.password.isValid && login.retypePassword.isValid) {
       profileService.resetPassword(userId, token, login.password.value, login.retypePassword.value)
-        .then((res) => {
-          console.log("res: ", res);
+        .then(() => {
           setChangedForm({ ...forms, show: false });
           setFlashMessage({
             message: "succesfully changed passwords",
@@ -60,7 +59,6 @@ const ChangePassword = ({ token, userId }) => {
             messageState: "success",
           });
         }, (err) => {
-          console.log(err);
           setFlashMessage({
             message: err.err,
             show: true,

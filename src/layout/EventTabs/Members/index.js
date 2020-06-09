@@ -32,6 +32,7 @@ const Members = ({ eventId, eventType, isEventAdmin }) => {
     if (isEventAdmin) {
       eventService.getEventPendingInvitations(eventId)
         .then((res) => {
+          console.log(res);
           if (__isMounted) {
             seSentRequests({ members: res, spinner: false });
           }
@@ -83,15 +84,28 @@ const Members = ({ eventId, eventType, isEventAdmin }) => {
       });
   };
   const ignoreRequest = (userId, invitationId) => {
-    eventService.rejectEventInvitation(invitationId)
+    eventService.rejectRequest(invitationId)
       .then(() => {
         seEventRequests({
-          members: eventRequests.members.filter((prod) => prod.id !== userId),
+          members: eventRequests.members.filter((invitation) => invitation.id !== invitationId),
           spinner: false,
         });
       })
       .catch(() => {});
   };
+
+  const cancelInvitation = (userId, invitationId) => {
+    eventService.rejectEventInvitation(invitationId)
+      .then((res) => {
+        console.log(res);
+        seSentRequests({
+          members: sentRequests.members.filter((invitation) => invitation.id !== invitationId),
+          spinner: false,
+        });
+      })
+      .catch(() => {});
+  };
+
   const acceptUsers = (userId, invitationId, username) => {
     eventService.acceptRequest(invitationId)
       .then(() => {
@@ -175,7 +189,7 @@ const Members = ({ eventId, eventType, isEventAdmin }) => {
                   isBanned={ev.user.banned}
                   showControlls
                 >
-                  <Button clicked={() => ignoreRequest(ev.user.id, ev.id)} classes="btn-orangeGradient-icon btn-sm">
+                  <Button clicked={() => cancelInvitation(ev.user.id, ev.id)} classes="btn-orangeGradient-icon btn-sm">
                     <i className="fas fa-times-circle" />
                   </Button>
                 </UserCard>

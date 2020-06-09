@@ -18,11 +18,18 @@ const InviteUserFormContainer = ({ id }) => {
 
   useEffect(() => {
     let __isMounted = true;
-    userService.getFriendsList()
+    Promise.all([
+      userService.getFriendsList(),
+      eventService.getEventMembers(id),
+      eventService.getEventPendingInvitations(id),
+    ])
       .then((res) => {
+        const filteredUsers = res[0]
+          .filter((el) => !res[1].find((member) => member.id === el.id))
+          .filter((el) => !res[2].find((member) => member.user.id === el.id));
         if (__isMounted) {
-          setFriendList({ friends: res, spinner: false });
-          setDislpayFreinds({ friends: res, spinner: false });
+          setFriendList({ friends: filteredUsers, spinner: false });
+          setDislpayFreinds({ friends: filteredUsers, spinner: false });
         }
       }).catch(() => {
         if (__isMounted) {
@@ -34,6 +41,7 @@ const InviteUserFormContainer = ({ id }) => {
     return () => {
       __isMounted = false;
     };
+  // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
   const onChangeHandler = (event) => {
