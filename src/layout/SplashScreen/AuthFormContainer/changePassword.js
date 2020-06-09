@@ -1,5 +1,7 @@
-import React, { useState } from "react";
+import React, { useState, useContext } from "react";
 import PropTypes from "prop-types";
+import { FormContext } from "../../../context/FormContext";
+import { FlashMessageContext } from "../../../context/FlashMessageContext";
 import { TextInput } from "../../../components/Inputs";
 import { Button } from "../../../components/Button";
 import { profileService } from "../../../Authentication/service";
@@ -8,7 +10,7 @@ import Spinner from "../../../components/Spinner";
 
 import "./authStyle.scss";
 
-const ChangePassword = ({ token }) => {
+const ChangePassword = ({ token, userId }) => {
   const [sendingDataSpinner, setSendingDataSpinner] = useState(false);
 
   // const [, setChangedForm] = useContext(FormContext);
@@ -16,6 +18,8 @@ const ChangePassword = ({ token }) => {
     password: { value: "", isValid: true, err: [] },
     retypePassword: { value: "", isValid: true, err: [] },
   });
+  const [forms, setChangedForm] = useContext(FormContext);
+  const [, setFlashMessage] = useContext(FlashMessageContext);
 
   const changePassForm = [
     {
@@ -46,11 +50,22 @@ const ChangePassword = ({ token }) => {
 
   const submitNewPassword = () => {
     if (login.password.isValid && login.retypePassword.isValid) {
-      profileService.resetPassword("1", "370c0368-de80-4194-95dc-c0309d3b4284", login.password.value, login.retypePassword.value)
+      profileService.resetPassword(userId, token, login.password.value, login.retypePassword.value)
         .then((res) => {
-          console.log(res);
+          console.log("res: ", res);
+          setChangedForm({ ...forms, show: false });
+          setFlashMessage({
+            message: "succesfully changed passwords",
+            show: true,
+            messageState: "success",
+          });
         }, (err) => {
           console.log(err);
+          setFlashMessage({
+            message: err.err,
+            show: true,
+            messageState: "error",
+          });
         });
       setSendingDataSpinner(true);
       setSendingDataSpinner(false);
@@ -99,6 +114,7 @@ const ChangePassword = ({ token }) => {
 
 ChangePassword.propTypes = {
   token: PropTypes.string.isRequired,
+  userId: PropTypes.string.isRequired,
 };
 
 

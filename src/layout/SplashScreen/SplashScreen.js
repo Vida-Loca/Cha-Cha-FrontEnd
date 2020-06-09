@@ -4,6 +4,8 @@ import { Button } from "../../components/Button";
 import { FormContext } from "../../context/FormContext";
 import { LoginFormContainer, RegisterFormContainer } from "./AuthFormContainer";
 
+import { parseQuery } from "../../validation/queryParser";
+
 import ChangePassword from "./AuthFormContainer/changePassword";
 
 import "./SplashScreen.scss";
@@ -19,9 +21,9 @@ const SplashScreen = () => {
     setChangedForm({ show: true, renderForm: <RegisterFormContainer /> });
   };
 
-  const changePassword = (token) => {
-    setChangedForm({ renderForm: <ChangePassword token={token} />, show: true });
-    console.log(token);
+  const changePassword = (match) => {
+    const { token, userId } = parseQuery(match);
+    setChangedForm({ renderForm: <ChangePassword token={token} userId={userId} />, show: true });
     return <Redirect to="/" />;
   };
 
@@ -38,7 +40,7 @@ const SplashScreen = () => {
         <Button clicked={openRegister} classes="btn-orangeGradient btn-orange-animated btn-lg">
           Sign Up
         </Button>
-        <Route path="/changePassword" render={({ match }) => changePassword(match)} />
+        <Route path="/user/changePassword" render={({ location }) => changePassword(location.search)} />
       </div>
     </div>
   );

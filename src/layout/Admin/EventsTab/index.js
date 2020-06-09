@@ -38,6 +38,12 @@ const EventLayout = () => {
     };
   }, []);
 
+  const removeEventFromList = (eventId) => {
+    let tempEventList = allEventsList.events;
+    tempEventList = tempEventList.filter((ev) => ev.id !== eventId);
+    setAllEventsList({ spinner: false, events: tempEventList });
+    setDisplayEvent({ spinner: false, events: tempEventList });
+  };
 
   const handleSearch = (event) => {
     setSearchFilter({
@@ -75,7 +81,14 @@ const EventLayout = () => {
   };
 
   const openEventInfoCard = (eventId) => {
-    setForms({ renderForm: <EventInfoContainer eventId={eventId} />, show: true });
+    setForms({
+      renderForm:
+  <EventInfoContainer
+    eventId={eventId}
+    removeEventFromList={removeEventFromList}
+  />,
+      show: true,
+    });
   };
   return (
     <div className="all-user-container">
@@ -122,7 +135,7 @@ const EventLayout = () => {
                 eventState={ev.over}
               />
             ))
-}
+        }
       />
 
     </div>

@@ -11,7 +11,7 @@ import { FlashMessageContext } from "../../../../context/FlashMessageContext";
 
 import "./EventInfoContainer.scss";
 
-const EventInfoContainer = ({ eventId }) => {
+const EventInfoContainer = ({ eventId, removeEventFromList }) => {
   const [, setForm] = useContext(FormContext);
   const [, setFlashMessage] = useContext(FlashMessageContext);
 
@@ -65,6 +65,7 @@ const EventInfoContainer = ({ eventId }) => {
   const confirmDeleteEvent = () => {
     adminService.deleteEvent(eventId)
       .then(() => {
+        removeEventFromList(eventId);
         setForm({ renderForm: "", show: false });
         setFlashMessage({
           message: `successfuly deleted event id: ${eventId}`,
@@ -208,6 +209,7 @@ const EventInfoContainer = ({ eventId }) => {
 
 EventInfoContainer.propTypes = {
   eventId: PropTypes.string.isRequired,
+  removeEventFromList: PropTypes.func.isRequired,
 };
 
 

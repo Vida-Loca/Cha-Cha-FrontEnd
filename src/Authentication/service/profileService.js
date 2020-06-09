@@ -49,7 +49,11 @@ const sendRequestToChangePassword = (email) => {
   return fetch(`${serverURL}/user/resetPassword?email=${email}`, requestOptions).then(handleResponse);
 };
 const resetPassword = (userId, token, password, matchingPassword) => {
-  const requestOptions = { method: "PUT", headers: authHeader(), body: JSON.stringify({ password, matchingPassword }) };
+  const data = {
+    password,
+    matchingPassword,
+  };
+  const requestOptions = { method: "PUT", headers: { "Content-Type": "application/json" }, body: JSON.stringify(data) };
   return fetch(`${serverURL}/user/changePassword?token=${token}&userId=${userId}`, requestOptions).then(handleResponse);
 };
 

@@ -10,11 +10,21 @@ import "./Overview.scss";
 const Overview = ({ eventId, currency }) => {
   const [userExpenses, setUserExpenses] = useState({ users: [], spinner: true });
 
-
   useEffect(() => {
-    productService.getAllUSerExpenses(eventId)
+    Promise.all([
+      productService.getAllUSerExpenses(eventId),
+      productService.getTotalEventAmount(eventId),
+    ])
       .then((res) => {
-        setUserExpenses({ users: res, spinner: false });
+        const userExpensesRes = res[0];
+        const totalEventPrice = res[1];
+        setUserExpenses({
+          users: userExpensesRes.map((user) => ({
+            ...user,
+            expenses: (user.expenses - parseFloat(totalEventPrice) / userExpensesRes.length).toFixed(2),
+          })),
+          spinner: false,
+        });
       });
     return () => { };
   }, []);
@@ -39,8 +49,8 @@ const Overview = ({ eventId, currency }) => {
                   isBanned={user.eventUser.user.banned}
                   showControlls
                 >
-                  <span className="money-label">
-                    <span className="money">{user.expenses}</span>
+                  <span className={`money-label ${user.expenses >= 0 ? "ok" : "bad"}`}>
+                    <span className="money">{user.expenses > 0 ? `+${user.expenses}` : user.expenses}</span>
                     <span className="currency">{currency}</span>
                   </span>
                 </UserCard>
