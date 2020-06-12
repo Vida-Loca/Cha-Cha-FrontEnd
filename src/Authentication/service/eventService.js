@@ -90,6 +90,10 @@ const rejectRequest = (requestId) => {
   const requestOptions = { method: "PUT", headers: authHeader() };
   return fetch(`${serverURL}/event/request/${requestId}/reject`, requestOptions).then(handleResponse);
 };
+const cancellSentRequest = (invitationId) => {
+  const requestOptions = { method: "DELETE", headers: authHeader() };
+  return fetch(`${serverURL}/event/invite/${invitationId}/cancel`, requestOptions).then(handleResponse);
+};
 
 const kickUserFromEvent = (eventId, userId) => {
   const requestOptions = { method: "DELETE", headers: authHeader() };
@@ -144,4 +148,5 @@ export const eventService = {
   getAllEventAdmins,
   promoteToEventAdmin,
   getAllFriendsEvents,
+  cancellSentRequest
 };

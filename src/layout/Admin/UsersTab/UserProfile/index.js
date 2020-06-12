@@ -73,7 +73,8 @@ const UserProfile = ({
 
   const deleteAccount = () => {
     adminService.deleteUser(userInfo.id)
-      .then(() => {
+      .then((res) => {
+        console.log("res", res);
         setFlashMessage({
           message: `user ${userInfo.username} has been succesfully deleted`,
           show: true,
@@ -82,7 +83,8 @@ const UserProfile = ({
         setForm({ renderForm: "", show: false });
         removeUserFromList(userInfo.id);
       })
-      .catch(() => {
+      .catch((err) => {
+        console.log("err", err);
         setFlashMessage({
           message: "there has been a problem with deleting this user",
           show: true,

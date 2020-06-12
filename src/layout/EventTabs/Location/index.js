@@ -266,11 +266,11 @@ const Location = ({ eventId, isEventAdmin }) => {
         (address.lat.value !== "" && address.long.value !== "" && loaded)
         && (
         <div className="map-container">
-          <MapBox
+          {/* <MapBox
             latitude={parseFloat(address.lat.value)}
             longitude={parseFloat(address.long.value)}
             markers={[{ lat: parseFloat(address.lat.value), long: parseFloat(address.long.value) }]}
-          />
+          /> */}
         </div>
         )
       }

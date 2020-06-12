@@ -130,7 +130,7 @@ const Home = () => {
           }
         />
         <div className="map-cont">
-          {
+          {/* {
             (publicEventMarkers.loaded && publicEventMarkers.markers.length > 0)
             && (
             <MapBox
@@ -141,7 +141,7 @@ const Home = () => {
               markers={publicEventMarkers.markers}
             />
             )
-          }
+          } */}
         </div>
       </div>
 
