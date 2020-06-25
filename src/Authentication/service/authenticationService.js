@@ -38,6 +38,17 @@ const register = (data) => {
     .then(handleResponse)
     .then((myJson) => myJson);
 };
+
+const registerConfirmation = (token) => {
+  const requestOptions = {
+    method: "GET",
+    headers: { "Content-Type": "application/json" },
+  };
+
+  return fetch(`${ServerURL}/registrationConfirm?token=${token}`, requestOptions)
+    .then(handleResponse)
+    .then((myJson) => myJson);
+};
 const logout = () => {
   // remove user from local storage to log user out
   localStorage.removeItem("currentUser");
@@ -50,6 +61,7 @@ export const authenticationService = {
   login,
   register,
   logout,
+  registerConfirmation,
   currentUser: currentUserSubject.asObservable(),
   get currentUserValue() { return currentUserSubject.value; },
 };

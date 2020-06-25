@@ -72,16 +72,20 @@ const MainPage = ({
   };
   const acceptInvitationToEvent = () => {
     eventService.acceptEventInvitation(invitationId)
-      .then(() => {
+      .then((res) => {
+        console.log("res: ", res);
         history.go(0);
-      }, () => {
+      }, (err) => {
+        console.log("err:", err);
       });
   };
   const rejectInvitationToEvent = () => {
     eventService.rejectEventInvitation(invitationId)
-      .then(() => {
+      .then((res) => {
+        console.log("res: ", res);
         history.push("/");
-      }, () => {
+      }, (err) => {
+        console.log("err:", err);
       });
   };
 

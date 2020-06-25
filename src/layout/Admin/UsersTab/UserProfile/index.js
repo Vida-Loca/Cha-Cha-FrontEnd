@@ -12,7 +12,7 @@ import { FormContext } from "../../../../context/FormContext";
 import "./UserProfile.scss";
 
 const UserProfile = ({
-  promoteToAdminInList, removeUserFromList, banUserInList, userDetails, isAdmin,
+  promoteToAdminInList, banUserInList, userDetails, isAdmin,
 }) => {
   const [userInfo, setUserInfo] = useState({
     id: "",
@@ -61,9 +61,6 @@ const UserProfile = ({
   ]);
 
 
-  const editDelete = () => {
-    setEdit({ ...editState, delete: !editState.delete });
-  };
   const editPromote = () => {
     setEdit({ ...editState, admin: !editState.admin });
   };
@@ -71,25 +68,27 @@ const UserProfile = ({
     setEdit({ ...editState, ban: !editState.ban });
   };
 
-  const deleteAccount = () => {
-    adminService.deleteUser(userInfo.id)
-      .then(() => {
-        setFlashMessage({
-          message: `user ${userInfo.username} has been succesfully deleted`,
-          show: true,
-          messageState: "success",
-        });
-        setForm({ renderForm: "", show: false });
-        removeUserFromList(userInfo.id);
-      })
-      .catch(() => {
-        setFlashMessage({
-          message: "there has been a problem with deleting this user",
-          show: true,
-          messageState: "warning",
-        });
-      });
-  };
+  // const deleteAccount = () => {
+  //   adminService.deleteUser(userInfo.id)
+  //     .then((res) => {
+  //       console.log("res", res);
+  //       setFlashMessage({
+  //         message: `user ${userInfo.username} has been succesfully deleted`,
+  //         show: true,
+  //         messageState: "success",
+  //       });
+  //       setForm({ renderForm: "", show: false });
+  //       removeUserFromList(userInfo.id);
+  //     })
+  //     .catch((err) => {
+  //       console.log("err", err);
+  //       setFlashMessage({
+  //         message: "there has been a problem with deleting this user",
+  //         show: true,
+  //         messageState: "warning",
+  //       });
+  //     });
+  // };
 
   const promoteToAdmin = () => {
     adminService.grantUserAdmin(userInfo.id)
@@ -179,7 +178,7 @@ const UserProfile = ({
         <span>date joined:</span>
         <p>{userInfo.datejoined}</p>
       </div>
-      {
+      {/* {
         !isAdmin
         && (
           <EditButton
@@ -197,7 +196,7 @@ const UserProfile = ({
             )}
           />
         )
-      }
+      } */}
 
       {
         !isAdmin && (
@@ -242,7 +241,6 @@ const UserProfile = ({
 
 UserProfile.propTypes = {
   promoteToAdminInList: PropTypes.func.isRequired,
-  removeUserFromList: PropTypes.func.isRequired,
   banUserInList: PropTypes.func.isRequired,
   // eslint-disable-next-line react/forbid-prop-types
   userDetails: PropTypes.object.isRequired,

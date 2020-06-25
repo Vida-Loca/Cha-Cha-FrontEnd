@@ -18,7 +18,7 @@ const LeaveEventContainer = ({ eventId }) => {
 
   const leaveEvent = () => {
     eventService.leaveEvent(eventId)
-      .then(() => {
+      .then((res) => {
         setform({ show: false, renderForm: "" });
         history.push("/");
         setFlashMessage({
@@ -26,9 +26,9 @@ const LeaveEventContainer = ({ eventId }) => {
           show: true,
           messageState: "success",
         });
-      }, () => {
+      }, (err) => {
         setFlashMessage({
-          message: "error",
+          message: err.err,
           show: true,
           messageState: "error",
         });

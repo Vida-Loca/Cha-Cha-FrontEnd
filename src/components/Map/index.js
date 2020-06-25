@@ -65,7 +65,7 @@ const MapBox = ({
               {
                   (showPopups && marker.selected)
                   && (
-                  <Popup key={`pop-${marker.lat}-${marker.long}`} latitude={marker.lat} longitude={marker.long} onClose={() => selectmarker(null)}>
+                  <Popup key={`pop-${marker.lat}-${marker.long}`} latitude={marker.lat} longitude={marker.long}>
                     <div className="map-popup">
                       <div className="event-name">{marker.eventName}</div>
                       <Link className="join-now" to={`/event/${marker.eventId}`}>

@@ -94,18 +94,6 @@ const Members = ({ eventId, eventType, isEventAdmin }) => {
       .catch(() => {});
   };
 
-  const cancelInvitation = (userId, invitationId) => {
-    eventService.rejectEventInvitation(invitationId)
-      .then((res) => {
-        console.log(res);
-        seSentRequests({
-          members: sentRequests.members.filter((invitation) => invitation.id !== invitationId),
-          spinner: false,
-        });
-      })
-      .catch(() => {});
-  };
-
   const acceptUsers = (userId, invitationId, username) => {
     eventService.acceptRequest(invitationId)
       .then(() => {
@@ -189,9 +177,6 @@ const Members = ({ eventId, eventType, isEventAdmin }) => {
                   isBanned={ev.user.banned}
                   showControlls
                 >
-                  <Button clicked={() => cancelInvitation(ev.user.id, ev.id)} classes="btn-orangeGradient-icon btn-sm">
-                    <i className="fas fa-times-circle" />
-                  </Button>
                 </UserCard>
               ))
           }

@@ -11,8 +11,8 @@ export const handleResponse = (response) => response.text().then((text) => {
     data = { err: text };
   }
   if (!response.ok) {
-    if ([401, 403].indexOf(response.status) !== -1) {
-      // auto logout if 401 Unauthorized or 403 Forbidden response returned from api
+    if ([401].indexOf(response.status) !== -1) {
+      // auto logout if 401 Unauthorized
 
       authenticationService.logout();
       // location.reload(true);

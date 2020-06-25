@@ -6,18 +6,16 @@ import { FormProvider } from "./context/FormContext";
 import { UserProvider } from "./context/UserContext";
 import { FlashMessageProvider } from "./context/FlashMessageContext";
 
-const App = () => {
-  return (
-    <BrowserRouter >
+const App = () => (
+  <BrowserRouter>
     <FlashMessageProvider>
       <UserProvider>
         <FormProvider>
           <MyApplication />
         </FormProvider>
       </UserProvider>
-      </FlashMessageProvider>
-    </BrowserRouter>
-  );
-};
+    </FlashMessageProvider>
+  </BrowserRouter>
+);
 
 export default App;

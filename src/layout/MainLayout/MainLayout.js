@@ -5,6 +5,7 @@ import { Switch, Route, Redirect } from "react-router-dom";
 import {
   mainNav, adminNav, adminEventNav, mainNavNoAdmin,
 } from "./Navs";
+import { authenticationService } from "../../Authentication/service/authenticationService";
 import { adminService, profileService } from "../../Authentication/service";
 import { UserContext } from "../../context/UserContext";
 import { FlashMessageContext } from "../../context/FlashMessageContext";
@@ -29,6 +30,7 @@ const MainLayout = () => {
         }
       }).catch((err) => {
         if (err.status === 403) {
+          authenticationService.logout();
           setFlashMessage({
             message: "you are banned",
             show: true,

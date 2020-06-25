@@ -1,10 +1,11 @@
 /* eslint-disable no-bitwise */
-import React, { useState } from "react";
+import React, { useState, useContext } from "react";
 import { history } from "../../../Authentication/helper";
 import { TextInput, OptionsInput } from "../../../components/Inputs";
 import { Button } from "../../../components/Button";
 import checkValidation from "../../../validation";
 import Spinner from "../../../components/Spinner";
+import { FlashMessageContext } from "../../../context/FlashMessageContext";
 import { primaryInfoFormRules, adressFormRules } from "./validationCfg";
 
 import { eventService } from "../../../Authentication/service";
@@ -13,6 +14,7 @@ import "./CreateEvent.scss";
 
 const CreateEventContainer = () => {
   const [sendingDataSpinner, setSendingDataSpinner] = useState(false);
+  const [, setFlashMessage] = useContext(FlashMessageContext);
 
   const [Information, setInformation] = useState({
     name: {
@@ -106,6 +108,12 @@ const CreateEventContainer = () => {
       }).then((res) => {
         history.push(`/event/${res.id}`);
         setSendingDataSpinner(false);
+      });
+    } else {
+      setFlashMessage({
+        message: "some fields are not valid",
+        show: true,
+        messageState: "warning",
       });
     }
   };
