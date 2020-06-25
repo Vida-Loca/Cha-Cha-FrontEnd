@@ -12,7 +12,7 @@ import { FormContext } from "../../../../context/FormContext";
 import "./UserProfile.scss";
 
 const UserProfile = ({
-  promoteToAdminInList, removeUserFromList, banUserInList, userDetails, isAdmin,
+  promoteToAdminInList, banUserInList, userDetails, isAdmin,
 }) => {
   const [userInfo, setUserInfo] = useState({
     id: "",
@@ -61,9 +61,6 @@ const UserProfile = ({
   ]);
 
 
-  const editDelete = () => {
-    setEdit({ ...editState, delete: !editState.delete });
-  };
   const editPromote = () => {
     setEdit({ ...editState, admin: !editState.admin });
   };
@@ -244,7 +241,6 @@ const UserProfile = ({
 
 UserProfile.propTypes = {
   promoteToAdminInList: PropTypes.func.isRequired,
-  removeUserFromList: PropTypes.func.isRequired,
   banUserInList: PropTypes.func.isRequired,
   // eslint-disable-next-line react/forbid-prop-types
   userDetails: PropTypes.object.isRequired,
