@@ -29,14 +29,11 @@ const SplashScreen = () => {
   };
   const activateUserRegistration = (match) => {
     const { token } = parseQuery(match);
-    console.log(token);
     authenticationService.registerConfirmation(token)
-      .then((res) => {
-        console.log(res);
+      .then(() => {
         setChangedForm({ renderForm: <RegistrationConfirmed />, show: true });
       })
-      .catch((err) => {
-        console.log(err);
+      .catch(() => {
       });
     return <Redirect to="/" />;
   };

@@ -68,27 +68,6 @@ const UserProfile = ({
     setEdit({ ...editState, ban: !editState.ban });
   };
 
-  // const deleteAccount = () => {
-  //   adminService.deleteUser(userInfo.id)
-  //     .then((res) => {
-  //       console.log("res", res);
-  //       setFlashMessage({
-  //         message: `user ${userInfo.username} has been succesfully deleted`,
-  //         show: true,
-  //         messageState: "success",
-  //       });
-  //       setForm({ renderForm: "", show: false });
-  //       removeUserFromList(userInfo.id);
-  //     })
-  //     .catch((err) => {
-  //       console.log("err", err);
-  //       setFlashMessage({
-  //         message: "there has been a problem with deleting this user",
-  //         show: true,
-  //         messageState: "warning",
-  //       });
-  //     });
-  // };
 
   const promoteToAdmin = () => {
     adminService.grantUserAdmin(userInfo.id)

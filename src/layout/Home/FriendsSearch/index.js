@@ -30,8 +30,7 @@ const SearchFriends = () => {
 
   const sendAFriendRequest = (id) => {
     userService.inviteUserByID(id)
-      .then((res) => {
-        console.log("res", res);
+      .then(() => {
         const newEl = dislpayFriends.users.map((user) => {
           if (user.id === id) {
             return { ...user, sent: true };
@@ -44,8 +43,7 @@ const SearchFriends = () => {
           show: true,
           messageState: "success",
         });
-      }, (err) => {
-        console.log("err", err);
+      }, () => {
         setFlashMessage({
           message: "there is a problem with sending this friend request",
           show: true,

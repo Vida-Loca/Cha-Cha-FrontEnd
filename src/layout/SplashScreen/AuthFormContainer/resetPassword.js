@@ -31,12 +31,10 @@ const ResetPassword = () => {
       setSendingDataSpinner(true);
 
       profileService.sendRequestToChangePassword(email.value)
-        .then((res) => {
-          console.log(res);
+        .then(() => {
           setResetPass(!resetPass);
           setSendingDataSpinner(false);
-        }, (err) => {
-          console.log(err);
+        }, () => {
           setSendingDataSpinner(false);
           setFlashMessage({
             message: "error - we have encountered a problem",

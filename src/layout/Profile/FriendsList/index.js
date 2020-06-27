@@ -44,8 +44,7 @@ const FriendsList = () => {
   const removeFromFriendsList = (userID, username) => {
     userService.removeFromFriends(userID)
       // eslint-disable-next-line no-unused-vars
-      .then((res) => {
-        console.log("res", res);
+      .then(() => {
         setFriendList({
           friends: friendList.friends.filter((user) => user.id !== userID),
           spinner: false,
@@ -56,8 +55,7 @@ const FriendsList = () => {
           messageState: "success",
         });
       })
-      .catch((err) => {
-        console.log("err", err);
+      .catch(() => {
         setFriendList({ ...friendList, spinner: false });
         setFlashMessage({
           message: `there has been a problem removing user ${username} from friends list`,
@@ -69,15 +67,13 @@ const FriendsList = () => {
   const ignoreRequestFriendsList = (invitationId) => {
     userService.rejectInvite(invitationId)
       .then((res) => {
-        console.log("res", res);
         setFriendRequests({
           requests: friendRequests.requests
             .filter((invitation) => invitation.invitor.id !== res.invitor.id),
           spinner: false,
         });
       })
-      .catch((err) => {
-        console.log("err", err);
+      .catch(() => {
         setFriendRequests({ ...friendRequests, spinner: false });
         setFlashMessage({
           message: "encoutered a problem",
@@ -89,7 +85,6 @@ const FriendsList = () => {
   const acceptFriendsList = (invitationId) => {
     userService.acceptInvite(invitationId)
       .then((res) => {
-        console.log("res", res);
         const tempFriedsList = friendList.friends;
         const acceptFriendsInvitation = friendRequests.requests
           .filter((invitation) => invitation.invitor.id === res.relatedUserId)[0];
@@ -106,8 +101,7 @@ const FriendsList = () => {
           messageState: "success",
         });
       })
-      .catch((err) => {
-        console.log("err", err);
+      .catch(() => {
         setFriendList({ ...FriendsList, spinner: false });
         setFlashMessage({
           message: "there has been a problem accepting a friend request",
