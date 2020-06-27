@@ -67,9 +67,7 @@ const ChangePassword = ({ token, userId }) => {
         });
       setSendingDataSpinner(true);
       setSendingDataSpinner(false);
-      // console.log(`this is the token:`,token);
     }
-    // console.log(`this is the token:`,token);
   };
 
   const onChangeHandler = (event) => {

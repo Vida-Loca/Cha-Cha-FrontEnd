@@ -32,7 +32,6 @@ const Members = ({ eventId, eventType, isEventAdmin }) => {
     if (isEventAdmin) {
       eventService.getEventPendingInvitations(eventId)
         .then((res) => {
-          console.log(res);
           if (__isMounted) {
             seSentRequests({ members: res, spinner: false });
           }
